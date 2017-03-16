@@ -1,0 +1,33 @@
+body {background-color:blue;}
+
+h1 {
+	color:red; 
+	font-size:400%;
+	font-family:verdana;    
+	text-align: center;  
+	vertical-align: middle;  
+} 
+
+p {
+	color:yellow; 
+	font-size:200%;
+}
+
+table, td, tr{
+	border: 1px solid green; 
+	font-size: 36px;
+	padding:5px;
+}
+
+li, ol, ul{
+	color:orange;
+	font-size:30px;
+}
+
+p.center{
+	text-align: center; 
+}
+
+li.large{
+	font-size:40px;
+}
