@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+div p {
+    background-color: yellow;
+}
+
+div > p {
+    font-size: 30px;
+}
+
+div ~ p {
+    background-color: green;
+}
+
+div + p {
+    font-size:5px;
+}
+
+h6::first-line {
+    color: #ff0000;
+    font-variant: small-caps;
+}
+
+h6::first-letter {
+    font-size:200%;
+}
+</style>
+</head>
+<body>
+
+<div>
+  <p>Paragraph 1 in the div.</p> <!--div > p和div p皆有效果-->
+  <p>Paragraph 2 in the div.</p>
+  <span><p>Paragraph 3 in the div.</p></span>  <!--只用到div p（div中所有的p皆有此效果），沒被div > p覆蓋到效果（因為div > p是div到p中間不能有任何標籤） -->
+</div>
+
+<p>Paragraph 4. Not in a div.</p> <!--div ~ p(div旁邊的p皆有效果)，但此還有div + p(在div旁的第1行p有此效果)-->
+<p>Paragraph 5. Not in a div.</p> <!--div ~ p(div旁邊的p皆有效果)-->
+
+<h6>11111111<br>   <!--因為h6::first-line，所以只有第一行有效果   ，且因為h6::first-letter只有首字變大 -->
+111111</h6>
+
+</body>
+</html>
