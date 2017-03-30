@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<meta charset = "utf-8">
+	<head>
+		<title>test</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--隨網站而變大變小-->
+		<style>
+			div.container {
+    			width: 100%;
+    			vertical-align: "center";
+			}
+
+			header {
+    			padding: 1em;  /*與整個頁面的距離（1em是rwd的網頁）*/
+    			color: black;  /*字型顏色*/
+    			background-color: blue;  /*背景顏色*/
+    			clear: left;
+    			text-align: right;   /*文字對齊方式*/
+    			border-bottom:1px solid red;  /*外框（下方）*/
+			}
+
+			footer {
+				padding: 1em;
+    			color: black;
+    			background-color: pink;
+    			clear: left;
+    			text-align: left;
+    			border-top:1px solid gray;
+			}
+
+			nav {
+    			float: left;  /*左邊*/
+    			max-width: 200px;
+    			margin: 0;
+    			padding: 1em;
+			}
+
+			nav ul {
+    			padding: 0;
+			}
+   
+			nav ul a {
+    			text-decoration: none;
+			}
+
+			article {
+    			margin-left: 200px;
+    			border-left: 2px solid gray;
+    			padding: 1em;
+    			overflow: hidden;
+    			text-align: center;
+			}
+
+			h1 {
+				position:relative;
+				margin-bottom:0px;
+			}
+
+		</style>
+	</head>
+	<body>
+		<div class = "container">
+		<header><h1>我的烘培雞</h1></header>
+
+		<nav>
+			<a href="https://www.google.com.tw" target = "_self">google</a>
+			<br>
+    		<a href="http://www.yahoo.com.tw" target = "_black">yahoo</a>
+		</nav>
+
+		<article>
+			<center><p>我是盧禹宏 禁止拍打</p></center>
+  			<center><img src="1.jpg" alt="hello"></center>
+		</article>
+		
+		<footer><p>本網站由B10409006盧禹宏製作</p></footer>
+		</div>
+	</body>
+</html>
