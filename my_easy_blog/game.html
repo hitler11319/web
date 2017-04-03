@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<meta charset = "utf-8">
+	<head>
+		<title>小遊戲</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--隨網站而變大變小-->
+		<style>
+			p {
+				color:blue;
+				text-align: left;
+			}
+
+			h1 {
+				font-size:500%;
+			}
+
+			h1.wrong {
+				color:red;
+			}
+
+			h1.right {
+				color:green;
+			}
+
+			div.fixed {
+    			position: fixed;
+    			bottom: 60px;
+    			left:900px;
+			}
+	
+		</style>
+	</head>
+	<body>
+		<a name = "top" id = "top"></a><p>點擊二下圖示會自動跳到下方告訴你對或錯</p>
+		<table>
+			<tr>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+			</tr>
+
+			<tr>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+			</tr>
+
+			<tr>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+				<td><a href = "#right"><img src = "img\pic.jpg"></a></td>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+			</tr>
+
+			<tr>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+				<td><a href = "#wrong"><img src = "img\pic.jpg"></a></td>
+			</tr>
+		</table>
+
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+
+		<a name = "wrong" id = "wrong"></a><p>哦哦</p>  <!--命名錨點-->
+		<br>
+		<br>
+		<center><h1 class = "wrong">答錯了</h1><center>
+		<br>
+		<br>
+		<p>請再接再勵</p>
+		<br>
+		<br>
+		<br>
+
+		<a name = "right" id = "right"></a><p>恭喜您</p>
+		<br>
+		<br>
+		<center><h1 class = "right">答對了</h1><center>
+		<br>
+		<br>
+		<p>真的太棒了！</p>
+		<br>
+		<br>
+		<br>
+
+		<div class = "fixed"><a href = "#top">回頂端頁</a></div>
+
+	</body>
+</html>
