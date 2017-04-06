@@ -7,10 +7,10 @@
 <script>
 	function judge(x){
 		if(x <= 100 && x >= 0){
-			if(x >= 60){document.getElementById('demo2').innerHTML= "及格";}
-			else{document.getElementById('demo2').innerHTML= "不及格";}
+			if(x >= 60){document.getElementById('demo2').innerHTML= "及格"; document.getElementById('demo2').style.color = "blue";}
+			else{document.getElementById('demo2').innerHTML= "不及格"; document.getElementById('demo2').style.color = "red";}
 		}
-		else{document.getElementById('demo2').innerHTML= "over range";}
+		else{document.getElementById('demo2').innerHTML= "over range"; document.getElementById('demo2').style.color = "green";}
 	}
 </script>
 
