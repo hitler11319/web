@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Judge score</h1>
+<meta charset = "utf-8">
+<script>
+	function judge(x){
+		if(x <= 100 && x >= 0){
+			if(x >= 60){document.getElementById('demo2').innerHTML= "及格";}
+			else{document.getElementById('demo2').innerHTML= "不及格";}
+		}
+		else{document.getElementById('demo2').innerHTML= "over range";}
+	}
+</script>
+
+<label>input </label><input   type="text" id="input_x" value = "100"><br><br>
+
+<!-- parseInt(字串) 是把字串換成數值-->
+<!--input如果有id則先用id, 如果不想用id用name也可以（有些不行，但是我的這個可以） -->
+
+
+<button type="button" onclick="judge(parseInt(input_x.value))"> 輸入</button> 
+
+
+<p id="demo2"></p><br>
+
+
+</body>
+</html> 
