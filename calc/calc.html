@@ -10,6 +10,12 @@
 	function myfunc1(p1, p2){ return p1+p2;}
 	function myfunc2(p1, p2){ return p1/p2;}	
 	function myfunc3(p1, p2){ return p1-p2;}
+
+	function clean() {
+		document.getElementById('input_x').value = "";
+		document.getElementById('input_y').value = "";
+	}
+
 </script>
 
 
@@ -25,7 +31,8 @@
 <button type="button" onclick="document.getElementById('demo2').innerHTML = myfunc2(parseInt(input_x.value) , parseInt(input_y.value))"> 讓您輸入的x和y相除</button> <!--取input的值來算-->
 
 <button type="button" onclick="document.getElementById('demo2').innerHTML = myfunc3(parseInt(input_x.value) , parseInt(input_y.value))"> 讓您輸入的x和y相減</button> <!--取input的值來算-->
-<button type="button" onclick="document.getElementById('input_x').value = ''; document.getElementById('input_y').value = ''">clear</button>
+
+<button type="button" onclick="clean()">clear2</button>  <!--不要用clear()，應該是保留字-->
 
 
 <br>
@@ -42,9 +49,6 @@
 
 
 <p id="demo2"></p><br>
-
-<label>請輸入運算式</label><input  type="text" name="ca" value = ""><br><br>
-<button type="button" onclick="document.getElementById('demo2').innerHTML = calc(ca.value)">把運算式算出來</button>
 
 
 </body>
