@@ -10,11 +10,15 @@
 	function myfunc1(p1, p2){judge(p1+p2); return p1+p2;}
 	function myfunc2(p1, p2){judge(p1/p2); return p1/p2;}	
 	function myfunc3(p1, p2){judge(p1-p2); return p1-p2;}
+	function clear(){
+		document.getElementById('inputx').value = ""; 
+		document.getElementById('inputy').value = "";
+	}
 </script>
 
 
-<label>input x</label><input   type="text" id="input_x" value = "50"><br><br>
-<label>input y</label><input  type="text" id="input_y" value = "2"><br><br>
+<label>input x</label><input   type="text" id="inputx" value = "50"><br><br>
+<label>input y</label><input  type="text" id="inputy" value = "2"><br><br>
 
 <!-- parseInt(字串) 是把字串換成數值-->
 <!--input如果有id則先用id, 如果不想用id用name也可以（有些不行，但是我的這個可以） -->
@@ -26,6 +30,7 @@
 
 <button type="button" onclick="document.getElementById('demo2').innerHTML = myfunc3(parseInt(input_x.value) , parseInt(input_y.value))"> 讓您輸入的x和y相減</button> <!--取input的值來算-->
 <button type="button" onclick="document.getElementById('input_x').value = ''; document.getElementById('input_y').value = ''">clear</button>
+<button type="button" onclick="clear()">clear</button> <!--待解決-->
 
 <br>
 <br>
