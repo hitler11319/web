@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>My First JavaScript</h1>
+<meta charset = "utf-8">
+
+<script>
+	function myfunc(p1, p2){return p1*p2;}
+	function myfunc1(p1, p2){return p1+p2;}
+	function myfunc2(p1, p2){return p1/p2;}	
+	function myfunc3(p1, p2){return p1-p2;}
+</script>
+
+
+<label>input x</label><input   type="text" name="input_x" value = "50"><br><br>
+<label>input y</label><input  type="text" name="input_y" value = "2"><br><br>
+
+<!-- parseInt(字串) 是把字串換成數值-->
+<button type="button" onclick="document.getElementById('demo2').innerHTML = myfunc(parseInt(input_x.value) , parseInt(input_y.value))"> 讓您輸入的x和y相乘</button> <!--取input的值來算-->
+
+<button type="button" onclick="document.getElementById('demo2').innerHTML = myfunc1(parseInt(input_x.value) , parseInt(input_y.value))"> 讓您輸入的x和y相加</button> <!--取input的值來算-->
+
+<button type="button" onclick="document.getElementById('demo2').innerHTML = myfunc2(parseInt(input_x.value) , parseInt(input_y.value))"> 讓您輸入的x和y相除</button> <!--取input的值來算-->
+
+<button type="button" onclick="document.getElementById('demo2').innerHTML = myfunc3(parseInt(input_x.value) , parseInt(input_y.value))"> 讓您輸入的x和y相減</button> <!--取input的值來算-->
+
+
+<p id="demo2"></p>
+
+</body>
+</html> 
