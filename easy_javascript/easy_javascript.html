@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>My First JavaScript</h1>
+<meta charset = "utf-8">
+
+<script>
+	function myfunc(p1, p2){return p1*p2;}
+	function myfnc2(p1, p2){return p1/p2;}
+
+	/* parseInt(字串) 是把字串換成數值-*/
+	/* \\是字串的\ ，然後他要用字串相加的，直接用img\pic_bulbon.gif是不行的 */
+	function pic1_change(){document.getElementById('myImage').src="img"+ "\\" + "pic_bulbon.gif";}   
+	function pic2_change(){document.getElementById('myImage').src="img"+ "\\" + "pic_bulboff.gif";}
+	function myfunc3(p1, p2){alert(p1-p2);}
+</script>
+
+
+<label>input x</label><input   type="text" name="input_x" value = "50"><br><br>
+<label>input y</label><input  type="text" name="input_y" value = "2"><br><br>
+
+<button type="button" onclick="document.getElementById('demo2').innerHTML = myfunc(input_x.value , input_y.value)"> 讓您輸入的x和y相乘</button> <!--取input的值來算-->
+
+<button type="button" onclick="document.getElementById('demo2').innerHTML = parseInt(input_x.value) + parseInt(input_y.value)"> 讓您輸入的x和y相加</button> <!--取input的值來算-->
+
+
+<p id="demo2"></p>
+<br>
+<br>
+
+<button type="button"
+onclick="document.getElementById('demo').innerHTML = Date()">    <!--讓demo跑出今天日期-->
+Click me to display Date and Time.</button>
+
+<button type="button"
+onclick="var x, y; x = 1; y = 2; document.getElementById('demo').innerHTML = x + y">  <!--讓demo跑出1+2=3（可在裡面做運算），也可放入文字-->
+Click me to display 1+2.</button>
+
+<button type="button"
+onclick="var x, y; x = 1; y = 2; document.getElementById('demo').innerHTML = myfunc(x, y)">  <!--讓demo跑出1*2=2（可在裡面做運算）-->
+Click me to display 1*2.</button>
+
+<button type="button"
+onclick="var x, y; x = 18; y = 3; document.getElementById('demo').innerHTML = myfnc2(x, y)">  <!--讓demo跑出18/3=6（可在裡面做運算）-->
+Click me to display 18/3.</button>
+
+<button type="button"
+onclick="var x, y; x = 5; y = 2; myfunc3(x, y)">  <!--讓提示視窗跑出5-2=3（可在裡面做運算）-->
+Click me to display 5-2 in alert.</button>
+
+<p id="demo"></p>
+
+<br>
+<br>
+
+<button onclick="pic1_change()">change pic1</button>   <!--改變myImage的圖片-->
+
+<img id="myImage" src="img\pic_bulboff.gif" style="width:100px">
+
+<button onclick="pic2_change()">change pic2</button>
+
+<br>
+<br>
+<br>
+
+<button type="button" onclick="document.getElementById('demo').style.fontSize='24pt'">Click Me to change font-size!</button>  <!--改變字型大小-->
+
+<button type="button" onclick="document.getElementById('demo').style.display='none'">Click Me let text invisible!</button>  <!--讓demo消失-->
+<button type="button" onclick="document.getElementById('demo').style.display='block'">Click Me let text visible!</button>  <!--讓demo出現-->
+
+
+</body>
+</html> 
