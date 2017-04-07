@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<meta charset = "utf-8">
+	<head>
+		<title>home</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--隨網站而變大變小-->
+		<script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>   <!--頁籤-->
+    	<link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
+
+	</head>
+	<body>
+	<script >
+		document.getElementById('demo').style.display="none";
+
+		function change() {
+			if (parseInt(document.getElementById('demo').innerHTML) == 1){document.getElementById('demo').innerHTML = 3; }
+			else {document.getElementById('demo').innerHTML = parseInt(document.getElementById('demo').innerHTML)-1;}
+			document.getElementById('myImage').src="img"+ "\\" + "pic"+ document.getElementById('demo').innerHTML+".png";
+		}
+
+		function change_add() {
+			if (parseInt(document.getElementById('demo').innerHTML) == 3){document.getElementById('demo').innerHTML = 1; }
+			else {document.getElementById('demo').innerHTML = parseInt(document.getElementById('demo').innerHTML)+1;}
+			document.getElementById('myImage').src="img"+ "\\" + "pic"+ document.getElementById('demo').innerHTML+".png";
+		}
+	</script>
+		<center><table>
+			<tr>
+				<td><img src = "img\arrow1.png" onclick= "change()"></td>
+				<td><img src = "img\pic1.png" id = "myImage"></td>
+				<td><img src = "img\arrow.png" onclick = "change_add()"></td>
+			</tr>
+		</table></center>
+		<p id="demo" style="display:none">1</p>
+
+		<br>
+		<br>
+		<br>
+
+		<center><h1 style="color:blue;font-size:200%">Top3排行榜</h1></center>
+
+		<br>
+
+		<center><div id="TabbedPanels1" class="TabbedPanels">
+  			<ul class="TabbedPanelsTabGroup">
+    			<li class="TabbedPanelsTab" tabindex="0">愛情類</li>
+    			<li class="TabbedPanelsTab" tabindex="0">恐怖類</li>
+    			<li class="TabbedPanelsTab" tabindex="0">喜劇</li>
+ 			 </ul>
+  			<div class="TabbedPanelsContentGroup">
+    			<div class="TabbedPanelsContent">
+      				<table>
+      					<tr>
+        					<td><img src = "img\top1.jpg" ></td>
+        					<td><img src = "img\top2.jpg" ></td>
+        					<td><img src = "img\top3.jpg" ></td>
+      					</tr>
+      					<tr>
+        					<td>愛情類1</td>
+        					<td>愛情類2</td>
+        					<td>愛情類3</td>
+      					</tr>
+      				</table>
+    			</div>
+
+    			<div class="TabbedPanelsContent">
+    				<table>
+      					<tr>
+        					<td><img src = "img\top1.jpg" ></td>
+        					<td><img src = "img\top2.jpg" ></td>
+        					<td><img src = "img\top3.jpg" ></td>
+      					</tr>
+      					<tr>
+        					<td>恐怖類1</td>
+        					<td>恐怖類2</td>
+        					<td>恐怖類3</td>
+      					</tr>
+      				</table>
+    			</div>
+
+    			<div class="TabbedPanelsContent">
+    				<table>
+      					<tr>
+        					<td><img src = "img\top1.jpg" ></td>
+        					<td><img src = "img\top2.jpg" ></td>
+        					<td><img src = "img\top3.jpg" ></td>
+      					</tr>
+      					<tr>
+        					<td>喜劇1</td>
+        					<td>喜劇2</td>
+        					<td>喜劇3</td>
+      					</tr>
+      				</table>
+    			</div>
+
+  			</div>
+		</div></center>
+	<script type="text/javascript">
+		var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
+	</script>
+
+
+	</body>
+</html>

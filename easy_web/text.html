@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<meta charset = "utf-8">
+	<head>
+		<title>文章分類</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--隨網站而變大變小-->
+		<script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>  <!--頁籤-->
+    <link href="SpryAssets/SpryTabbedPanels1.css" rel="stylesheet" type="text/css" />
+
+    <!--項目列表（bookstrap的）-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-  BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	</head>
+	<body>
+  <br>
+  <br>
+  <br>
+
+
+	  <center><form action="/index.html" method="post">
+        欲搜尋文章名稱: <input type="text" name="search_text">
+        <button type="button" onclick="document.getElementById('demo').innerHTML = '查無此文章'"> 搜尋</button>
+        <br>
+        <p id = "demo"></p>
+    </form></center>
+
+		<br>
+		<br>
+		<br>
+    <hr>
+
+		<center><h1 style="color:blue;font-size:200%">Top3排行榜</h1></center>
+
+		<br>
+
+		<center><div id="TabbedPanels1" class="TabbedPanels">
+  			<ul class="TabbedPanelsTabGroup">
+    			<li class="TabbedPanelsTab" tabindex="0">愛情類</li>
+    			<li class="TabbedPanelsTab" tabindex="0">恐怖類</li>
+    			<li class="TabbedPanelsTab" tabindex="0">喜劇</li>
+ 			 </ul>
+  			<div class="TabbedPanelsContentGroup">
+    			<div class="TabbedPanelsContent">
+
+      		  <div class="container1">
+                  <a class="list-group-item" href="single_text.html" style="background-color:#93FF93" target = "_blank"><img src = "img\head_pic.gif">愛情類1</a>
+                  <a class="list-group-item" href="single_text.html" style="background-color:#93FF93" target = "_blank"><img src = "img\head_pic.gif" >愛情類2</a>
+                  <a class="list-group-item" href="single_text.html" style="background-color:#93FF93" target = "_blank"><img src = "img\head_pic.gif" >愛情類3</a>
+    			 </div>
+          </div>
+
+    			<div class="TabbedPanelsContent">
+    				    <div class="container1">
+                  <a class="list-group-item" href="single_text.html" style="background-color:#93FF93" target = "_blank"><img src = "img\head_pic.gif" >恐怖類1</a>
+                  <a class="list-group-item" href="single_text.html" style="background-color:#93FF93" target = "_blank"><img src = "img\head_pic.gif">恐怖類2</a>
+                  <a class="list-group-item" href="single_text.html" style="background-color:#93FF93" target = "_blank"><img src = "img\head_pic.gif">恐怖類3</a>
+                </div>
+    			</div>
+
+    			<div class="TabbedPanelsContent">
+    				    <div class="container1">
+                  <a class="list-group-item" href="single_text.html" style="background-color:#93FF93" target = "_blank"><img src = "img\head_pic.gif" >喜劇1</a>
+                  <a class="list-group-item" href="single_text.html" style="background-color:#93FF93" target = "_blank"><img src = "img\head_pic.gif" >喜劇2</a>
+                  <a class="list-group-item" href="single_text.html" style="background-color:#93FF93" target = "_blank"><img src = "img\head_pic.gif">喜劇3</a>
+                </div>
+    			</div>
+
+  			</div>
+		</div></center>
+	<script type="text/javascript">
+		var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
+	</script>
+
+
+	</body>
+</html>

@@ -1,0 +1,26 @@
+			footer {
+				padding: 1em;
+    			color: white;
+    			background-color: black;
+    			clear: left;
+    			text-align: center;
+    			margin-top: -5px;
+                height:20px;
+			}
+
+			article {
+                padding-top:5em;
+    			overflow: hidden;
+			}
+			ul {
+    			list-style-type: none;
+    			padding: 0;
+    			overflow: hidden;
+    			background-color: black;
+                margin-top:-50px;
+                margin-left:100px;
+			}
+
+			li.list {
+    			font-size:180%;
+			}

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <meta charset = "utf-8">
+  <head>
+    <title>登入</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--隨網站而變大變小-->
+  </head>
+  <body>
+  <form action="/index.html" method="post">
+        文章名稱: <input type="text" id="text_name"><br><p>
+        文章標題: <input type="text" id="title"><br><p>
+        劇透度（1最小，5最大）: <input type="number" id="quantity" min="1" max="5" step="1" value="1"><br><p>    
+        <p>文章內容:</p><textarea id="comment" rows="5" cols="45"></textarea><br><br>
+        <input type="button" value="送出">
+        <input type="reset" value="清除">
+        </form>
+  </body>
+</html>
