@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<meta charset = "utf-8">
+	<head>
+		<title>猜謎遊戲</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--隨網站而變大變小-->
+		<style>
+			div.container {
+    			width: 100%;
+    			vertical-align: "center";
+			}
+			header {
+    			padding: 1em;  /*與整個頁面的距離（1em是rwd的網頁）*/
+    			clear: left;
+    			height:70px;
+    			width:760px;
+    			background-image: url("img\\game_title.png");
+    			background-repeat: no-repeat;
+			}
+			footer {
+				padding: 1em;
+    			color: white;
+    			background-color: black;
+    			clear: left;
+    			text-align: center;
+    			width:760px;
+    			height:50px;
+			}
+			article {
+				border:1px solid gray;
+    			padding: 1em;
+    			overflow: hidden;
+    			width:760px;
+    			height:450px;
+    			text-align: center;
+			}
+
+			body {
+				background-image:url("img\\background.png");
+			}
+
+			table, tr , td {
+				border:1px solid gray;
+				text-align: left;
+			}
+		</style>
+	</head>
+	<body>
+		<div class = "container" id = "show">
+		<center><header></header></center>
+
+			<center><article>
+					<h1>猜猜下面的題目吧</h1>
+
+          <label>一群人拿雞蛋砸槍    (猜四個字成語)</label><input   type="text" id="test1" value = "">
+          <button type="button" onclick="if(test1.value == '槍林彈雨'){document.getElementById('demo1').innerHTML = '答對了！答案是：槍林彈雨（槍淋蛋雨）'}"> 確定</button>
+          <p id="demo1" style = "color:red"></p>
+
+          <br>
+
+          <label>有一隻熊走過來  (猜四個字成語)</label><input   type="text" id="test2" value = "">
+          <button type="button" onclick="if(test2.value == '有備而來'){document.getElementById('demo2').innerHTML = '答對了！答案是：有備而來（有BEAR來）'}"> 確定</button>
+          <p id="demo2" style = "color:red"></p>
+
+          <br>
+
+          <label>雞與鴨的對話 (猜四個字成語)</label><input   type="text" id="test3" value = "">
+          <button type="button" onclick="if(test3.value == '雞同鴨講'){document.getElementById('demo3').innerHTML = '答對了！答案是：雞同鴨講'}"> 確定</button>
+          <p id="demo3" style = "color:red"></p>
+
+          <br>
+
+          <label>誰家沒有電話？(猜二個字)</label><input   type="text" id="test4" value = "">
+          <button type="button" onclick="if(test4.value == '天衣'){document.getElementById('demo4').innerHTML = '答對了！答案是：天衣（天衣無PHONE）'}"> 確定</button>
+          <p id="demo4" style = "color:red"></p>
+
+          <br>
+
+          <label>牛一下水游泳後就不叫了  (猜四個字成語)</label><input   type="text" id="test5" value = "">
+          <button type="button" onclick="if(test5.value == '有勇無謀'){document.getElementById('demo5').innerHTML = '答對了！答案是：有勇無謀(游泳無哞)'}"> 確定</button>
+          <p id="demo5" style = "color:red"></p>
+
+  				<br>
+
+  				<h1 style = "color:orange">恭喜完成所以項目，獲得寶藏   進度完成度：100%</h1>			
+			</article></center>
+				
+		<center><footer><p>本網站由B10409006盧禹宏製作</p></footer><center>
+		</div>
+	</body>
+</html>
