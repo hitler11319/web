@@ -1,70 +1,89 @@
 <!DOCTYPE html>
 <html>
-  <meta charset = "utf-8">
-  <head>
+<meta charset="utf-8">
+
+<head>
     <title>登入</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--隨網站而變大變小-->
-    <link rel = "stylesheet" href="layout.css">
-    <link href="http://www.movier.tw/assets/css/bootstrap.css" rel="stylesheet">   <!--功能列表的東西-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--隨網站而變大變小-->
+    <link rel="stylesheet" href="layout.css">
+    <link href="http://www.movier.tw/assets/css/bootstrap.css" rel="stylesheet">
+    <!--功能列表的東西-->
     <link href="http://www.movier.tw/assets/css/bootstrap-responsive.css" rel="stylesheet">
-  </head>
-  <body>
-  <!--功能列表-->
+</head>
+
+<body>
+    <!--功能列表-->
     <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"></a>
-          <a class="brand" href="index.html" name="top"><div><img src = "img\head_pic.gif"></div></a>
-        <div class="nav-collapse collapse">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"></a>
+                <a class="brand" href="index.html" name="top">
+                    <div><img src="img\head_pic.png" style="width:130px"></div>
+                </a>
+                <div class="nav-collapse collapse">
 
-            <ul class="nav fanpage pull-right">
-  
-              <li>
-                  <input type="text" id="account" placeholder="帳號" style="margin-top: 10px; width: 115px; margin-left: 10px; height: 24px;"/>
-                  <input type="password" id="password" placeholder="密碼" style="margin-top: 10px; width: 115px; margin-left: 20px; height: 24px;"/>
-              </li>
+                    <ul class="nav fanpage pull-right">
 
-            <div id="login">
-                <ul class="nav pull-right">
-                    <li><a id="login" href="sign_in_after_index.html">登入</a></li>
-                </ul>
+                        <li>
+                            <input type="text" id="account" placeholder="帳號" style="margin-top: 10px; width: 115px; margin-left: 10px; height: 24px" />
+                            <input type="password" id="password" placeholder="密碼" style="margin-top: 10px; width: 115px; margin-left: 20px; height: 24px;" />
+                        </li>
+
+                        <div id="login">
+                            <ul class="nav pull-right">
+                                <li><a id="login" href="sign_in_after_index.html">登入</a></li>
+                            </ul>
+                        </div>
+                    </ul>
+                </div>
+                <!--/.nav-collapse -->
             </div>
-            </ul>
-      </div>
-      <!--/.nav-collapse -->
+            <!--/.container-fluid -->
+        </div>
+        <!--/.navbar-inner -->
     </div>
-    <!--/.container-fluid -->
-  </div>
-  <!--/.navbar-inner -->
-</div>
-<!--/.navbar -->
+    <!--/.navbar -->
 
-<article>
-	<table>
-    <tr>
-      <td><img src = "img\pic4.png"></td>
-      <td>
-        <center><h1>免費創帳號</h1></center>
-        <center><form action="/index.html" method="post">
-        帳號: <input type="text" id="new_account"><br><p>
-        密碼: <input type="password" id="new_password"><br><p>
-        電子信箱: <input type="email" id="new_email"><br><p>
-        <input type="button" value="創建">
-        </form></center>
+    <article>
+        <table>
+            <tr>
+                <td><img src="img\pic4.png"></td>
+                <td>
+                    <center>
+                        <h1 style="outline-color: rgba(255, 0, 0, 0.4); outline-style: dashed">免費創帳號</h1>
+                        <br></br>
+                    </center>
+                    <center>
+                        <form action="/index.html" method="post" style=" font-weight: bold;font-size:25px;color:blue">
+                            帳號: <input type="text" id="new_account"><br>
+                            <p>
+                                密碼: <input type="password" id="new_password"><br>
+                                <p>
+                                    e-mail: <input type="email" id="new_email"><br>
+                                    <p>
+                                        <input type="button" value="創建">
+                        </form>
+                    </center>
 
-        <br>
-        <hr>
+                    <br>
+                    <hr>
 
-        <center><h1>忘記密碼</center>
-        <center><form action="/index.html" method="post">
-        電子信箱: <input type="email" id="email">
-        <input type="button" value="找回密碼">
-        </form></center>
+                    <center>
+                        <h1 style="outline-color: rgba(255, 0, 0, 0.4); outline-style: dashed">忘記密碼</center>
+                    <br></br>
+                    <center>
+                        <form action="/index.html" method="post" style=" font-size:25px;font-weight: bold;color:blue">
+                            e-mail: <input type="email" id="email">
+                            <input type="button" value="找回密碼">
+                        </form>
+                    </center>
 
-      </td>
-    </tr>
-  </table>
-</article>
+                </td>
+            </tr>
+        </table>
+    </article>
 
-  </body>
+</body>
+
 </html>

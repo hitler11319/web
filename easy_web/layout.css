@@ -1,26 +1,35 @@
 			footer {
-				padding: 1em;
-    			color: white;
-    			background-color: black;
-    			clear: left;
-    			text-align: center;
-    			margin-top: -5px;
-                height:20px;
+			    padding: 1em;
+			    color: white;
+			    font-size: 18px;
+			    font-family: fantasy;
+			    background-color: black;
+			    clear: left;
+			    text-align: center;
+			    margin-top: -5px;
+			    height: 20px;
+			    text-decoration: underline;
 			}
-
+			
 			article {
-                padding-top:5em;
-    			overflow: hidden;
+			    padding-top: 5em;
+			    overflow: hidden;
 			}
+			
 			ul {
-    			list-style-type: none;
-    			padding: 0;
-    			overflow: hidden;
-    			background-color: black;
-                margin-top:-50px;
-                margin-left:100px;
+			    list-style-type: none;
+			    padding-top: 0px;
+			    overflow: hidden;
+			    background-color: black;
+			    margin-left: 100px;
+			    font-size: 20px;
+			    font-weight: bold;
+			    font-family: fantasy;
 			}
-
+			
 			li.list {
-    			font-size:180%;
+			    font-size: 180%;
+			    font-family: fantasy;
+			    font-weight: bold;
+			    letter-spacing: 3px;
 			}

@@ -1,53 +1,81 @@
 <!DOCTYPE html>
 <html>
-  <meta charset = "utf-8">
-  <head>
+<meta charset="utf-8">
+
+<head>
     <title>電影觀賞心得分享平台</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--隨網站而變大變小-->
-    <link rel = "stylesheet" href="layout.css">
-    <link href="http://www.movier.tw/assets/css/bootstrap.css" rel="stylesheet">   <!--功能列表的東西-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--隨網站而變大變小-->
+    <link rel="stylesheet" href="layout.css">
+    <link href="http://www.movier.tw/assets/css/bootstrap.css" rel="stylesheet">
+    <!--功能列表的東西-->
     <link href="http://www.movier.tw/assets/css/bootstrap-responsive.css" rel="stylesheet">
-  </head>
-  <body>
-  <!--功能列表-->
+</head>
+
+<body>
+    <!--功能列表-->
     <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"></a>
-          <a class="brand" href="index.html" name="top"><div><img src = "img\head_pic.gif"></div></a>
-        <div class="nav-collapse collapse">
-          <ul class="nav">
-            <li class = "list"><a href="home.html" target = "myframe">首頁</li>
-            <li class = "list"><a href="text.html" target = "myframe">文章分類</a></li>
-            <li class = "list"><a href="member.html" target = "myframe">開發團隊</a></li>
-          </ul>
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"></a>
+                <a class="brand" href="index.html" name="top">
+                    <div><img src="img\head_pic.png" style="width:130px"></div>
 
-        <ul class="nav fanpage pull-right">
-  
-          <li><input type="text" name="SEARCH" placeholder="請輸入關鍵字" style="margin-top: 10px; width: 115px; margin-left: 10px; height: 24px;"/><div class="btn" id="search" style="margin-top: 6px;">搜尋</div></li>
 
-        <div id="login">
-            <ul class="nav pull-right">
-                <li><a href="sign_in.html" id="login" target = "_self"><i class="fa fa-facebook-square fa-2x"></i> 登入</a></li>
-            </ul>
+                </a>
+
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+
+                        <li class="list">
+                            <a href="home.html" target="myframe">
+                                <ol><br>首頁</br>
+                                </ol>
+                            </a>
+                        </li>
+                        <li class="list">
+                            <a href="text.html" target="myframe">
+                                <ol><br>文章分類</br>
+                                </ol>
+                            </a>
+                        </li>
+                        <li class="list">
+                            <a href="member.html" target="myframe">
+                                <ol><br>開發團隊</br>
+                                </ol>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <ul class="nav fanpage pull-right">
+
+                        <li><input type="text" name="SEARCH" placeholder="請輸入關鍵字" style="margin-top: 10px; width: 115px; margin-left: 10px; height: 24px;" />
+                            <div class="btn" id="search" style="margin-top: 6px;">搜尋</div>
+                        </li>
+
+                        <div id="login">
+                            <ul class="nav pull-right">
+                                <li><a href="sign_in.html" id="login" target="_self"><i class="fa fa-facebook-square fa-2x"></i> 登入</a></li>
+                            </ul>
+                        </div>
+                    </ul>
+
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+            <!--/.container-fluid -->
         </div>
-        </ul>
-
-      </div>
-      <!--/.nav-collapse -->
+        <!--/.navbar-inner -->
     </div>
-    <!--/.container-fluid -->
-  </div>
-  <!--/.navbar-inner -->
-</div>
-<!--/.navbar -->
+    <!--/.navbar -->
 
-<article>
-	<iframe src="home.html" name="myframe" width = "1200" height = "800" scrolling="auto" ></iframe>
-</article>
+    <article>
+        <iframe src="home.html" name="myframe" width="1200" height="800" scrolling="auto"></iframe>
+    </article>
 
-<footer>
-	<p>版權所有，抄襲必究</p>
-</footer>
-  </body>
+    <footer>
+        <p>版權所有，抄襲必究</p>
+    </footer>
+</body>
+
 </html>
