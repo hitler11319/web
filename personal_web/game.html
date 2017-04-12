@@ -31,7 +31,7 @@
     			padding: 1em;
     			overflow: hidden;
     			width:760px;
-    			height:450px;
+    			height:600px;
     			text-align: center;
 			}
 
@@ -40,13 +40,32 @@
 			}
 
 			table, tr , td {
-				border:1px solid gray;
-				text-align: left;
+				text-align: center;
 			}
 		</style>
 	</head>
 	<body>
-		<div class = "container" id = "show">
+
+  <script>
+    function open_pic(){
+      document.getElementById('thread').src="img"+ "\\" + "open_back.png";
+      document.getElementById('showtext').style.display = "block";
+    }
+
+    function change_pic(){
+      document.getElementById('demo').innerHTML = parseInt(document.getElementById('demo').innerHTML) + 1;
+        if(parseInt(document.getElementById('demo').innerHTML) <= 6){
+            document.getElementById('show_pic').src="img"+ "\\" + "flash" + "\\" + "game_" + document.getElementById('demo').innerHTML + ".png";
+          }
+          else{
+            document.getElementById('show').style.display = "block";
+            document.getElementById('index_show').style.display = "none";
+          }
+    }
+
+  </script>
+
+		<div class = "container" id = "show" style = "display:none">
 		<center><header></header></center>
 
 			<center><article>
@@ -83,9 +102,37 @@
   				<br>
 
   				<h1 style = "color:orange">恭喜完成所以項目，獲得寶藏   進度完成度：100%</h1>			
+
+          <br>
+
+          <center><table>
+            <tr>
+              <td><img src = "img\thread.png" id = "thread" onclick="open_pic()"></td>
+              <td id = "showtext" style="display:none"><h1>恭喜你看完了全部網頁的內容</h1></td>
+            </tr>
+          </table></center>
+
 			</article></center>
 				
 		<center><footer><p>本網站由B10409006盧禹宏製作</p></footer><center>
 		</div>
+
+        <div class = "content" id = "index_show">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <center><table>
+          <tr>
+            <td><img src = "img\flash\game_1.png" id = "show_pic"></td>
+            <td><button type="button" onclick="change_pic()">繼續</button></td>
+          </tr>
+        </table></center>
+        <p id = "demo" style = "display:none">1</p>
+
+        </div>
+
 	</body>
 </html>

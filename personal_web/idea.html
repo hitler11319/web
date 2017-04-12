@@ -45,7 +45,21 @@
     </style>
   </head>
   <body>
-    <div class = "container" id = "show">
+
+    <script>
+      function change_pic(){
+          document.getElementById('demo').innerHTML = parseInt(document.getElementById('demo').innerHTML) + 1;
+          if(parseInt(document.getElementById('demo').innerHTML) <= 6){
+            document.getElementById('show_pic').src="img"+ "\\" + "flash" + "\\" + "idea_" + document.getElementById('demo').innerHTML + ".png";
+          }
+          else{
+            document.getElementById('show').style.display = "block";
+            document.getElementById('index_show').style.display = "none";
+          }
+      }
+  </script>
+
+    <div class = "container" id = "show" style = "display:none">
     <center><header></header></center>
 
       <center><article>
@@ -81,5 +95,23 @@
         
     <center><footer><p>本網站由B10409006盧禹宏製作</p></footer><center>
     </div>
+
+        <div class = "content" id = "index_show">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <center><table>
+          <tr>
+            <td><img src = "img\flash\idea_1.png" id = "show_pic"></td>
+            <td><button type="button" onclick="change_pic()">繼續</button></td>
+          </tr>
+        </table></center>
+
+        <p id = "demo" style = "display:none">1</p>
+    </div>
+
   </body>
 </html>

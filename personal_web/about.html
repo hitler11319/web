@@ -40,13 +40,31 @@
 			}
 
 			table, tr , td {
-				border:1px solid gray;
 				text-align: left;
 			}
+
+      table.bor, tr.bor, td.bor {
+        border: 1px solid gray;
+      }
 		</style>
 	</head>
 	<body>
-		<div class = "container" id = "show">
+
+  <script>
+      function change_pic(){
+          document.getElementById('demo').innerHTML = parseInt(document.getElementById('demo').innerHTML) + 1;
+          if(parseInt(document.getElementById('demo').innerHTML) <= 5){
+            document.getElementById('show_pic').src="img"+ "\\" + "flash" + "\\" + "about_" + document.getElementById('demo').innerHTML + ".png";
+          }
+          else{
+            document.getElementById('show').style.display = "block";
+            document.getElementById('index_show').style.display = "none";
+          }
+      }
+  </script>
+
+
+		<div class = "container" id = "show" style = "display:none">
 		<center><header></header></center>
 
 			<center><article>
@@ -54,28 +72,28 @@
   					<p>學號:B10409006</p>
  					<p>生日:不想告訴你</p>
 
-					<center><table>
-  						<tr>
-    						<td>3個願望</td>
-    						<td>最喜歡的一部電影</td>
-    						<td>想去國家</td>
-    						<td>興趣</td>
+					<center><table class = "bor">
+  						<tr class = "bor">
+    						<td class = "bor">3個願望</td>
+    						<td class = "bor">最喜歡的一部電影</td>
+    						<td class = "bor">想去國家</td>
+    						<td class = "bor">興趣</td>
   						</tr>
-  						<tr>
-    						<td>
+  						<tr class = "bor">
+    						<td class = "bor">
         						<ol>
          							<li>從台科大畢業</li>
           							<li>多益550</li>
           							<li>平安過完這一生</li>
         						</ol>
     						</td>
-    						<td>
+    						<td class = "bor">
         						<p>沒有、無感</p>
     						</td>
-    						<td>
+    						<td class = "bor">
      							 <p>德國</p>
     						</td>
-    						<td>
+    						<td class = "bor">
     							<ol> 
     								<li>打遊戲</li>
     								<li>打電腦</li>
@@ -95,5 +113,22 @@
 				
 		<center><footer><p>本網站由B10409006盧禹宏製作</p></footer><center>
 		</div>
+
+    <div class = "content" id = "index_show">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <center><table>
+          <tr>
+            <td><img src = "img\flash\about_1.png" id = "show_pic"></td>
+            <td><button type="button" onclick="change_pic()">繼續</button></td>
+          </tr>
+        </table></center>
+
+        <p id = "demo" style = "display:none">1</p>
+    </div>
 	</body>
 </html>
