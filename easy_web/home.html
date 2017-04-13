@@ -12,9 +12,13 @@
 
 </head>
 
-<body>
+<body onload = "rand()">
     <script>
-        document.getElementById('demo').style.display = "none";
+        function rand(){
+            var r = parseInt(Math.random()*3+1);
+            document.getElementById('demo').innerHTML = r;
+            document.getElementById('myImage').src = "img" + "\\" + "pic" + document.getElementById('demo').innerHTML + ".jpg";
+        }
 
         function change() {
             if (parseInt(document.getElementById('demo').innerHTML) == 1) {
