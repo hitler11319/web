@@ -4,6 +4,9 @@
 	<head>
 		<title>個人介紹</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--隨網站而變大變小-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<style>
 			div.container {
     			width: 100%;
@@ -12,7 +15,7 @@
 			header {
     			padding: 1em;  /*與整個頁面的距離（1em是rwd的網頁）*/
     			clear: left;
-    			height:70px;
+    			height:102px;
     			width:760px;
     			background-image: url("img\\about_title.png");
     			background-repeat: no-repeat;
@@ -31,7 +34,7 @@
     			padding: 1em;
     			overflow: hidden;
     			width:760px;
-    			height:750px;
+    			height:800px;
     			text-align: center;
 			}
 
@@ -62,6 +65,11 @@
             document.getElementById('index_show').style.display = "none";
           }
       }
+
+      function skip(){
+            document.getElementById('show').style.display = "block";
+            document.getElementById('index_show').style.display = "none";
+      }
   </script>
 
 
@@ -70,8 +78,7 @@
 
 			<center><article>
 					<h1>我是四資管二 盧禹宏</h1>
-  					<p>學號:B10409006</p>
- 					<p>生日:不想告訴你</p>
+  				<p>現在是台科資管二年級的學生，沒什麼興趣。沒事就在家當宅宅。</p>
 
 					<center><table class = "bor">
   						<tr class = "bor">
@@ -82,7 +89,7 @@
   						</tr>
   						<tr class = "bor">
     						<td class = "bor">
-        						<ol>
+        						<ol style="float:left">
          							<li>從台科大畢業</li>
           							<li>多益550</li>
           							<li>平安過完這一生</li>
@@ -104,10 +111,21 @@
   						</tr>
   					</table></center>
 
-  					<p>我的照片：</p>
-  					<img src="img\me.jpg">	
+            <br>
+				
+  					<p>我的照片：<img src="img\me.jpg" class="img-circle"></p>
 
   					<br>
+
+            <h2>持有證照</h2>
+              <ul class="list-group">
+                <li class="list-group-item list-group-item-success">電腦軟體應用乙級</li>
+                <li class="list-group-item list-group-item-info">電腦軟體應用丙級</li>
+                <li class="list-group-item list-group-item-warning">會計丙級</li>
+                <li class="list-group-item list-group-item-danger">中/英打</li>
+              </ul>
+
+              <br>
 
   					<h1 style = "color:orange">下一站：生活照片   進度完成度：25%</h1>			
 			</article></center>
@@ -125,7 +143,8 @@
         <center><table>
           <tr>
             <td><img src = "img\flash\about_1.png" id = "show_pic"></td>
-            <td><button type="button" onclick="change_pic()">繼續</button></td>
+            <td><button type="button" onclick="change_pic()">繼續</button><br><br>
+            <button type="button" onclick="skip()">skip</button></td>
           </tr>
         </table></center>
 

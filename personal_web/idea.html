@@ -2,7 +2,7 @@
 <html>
   <meta charset = "utf-8">
   <head>
-    <title>猜謎遊戲</title>
+    <title>創作理念</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--隨網站而變大變小-->
     <style>
       div.container {
@@ -31,7 +31,7 @@
           padding: 1em;
           overflow: hidden;
           width:760px;
-          height:640px;
+          height:750px;
           text-align: center;
       }
 
@@ -57,6 +57,11 @@
             document.getElementById('show').style.display = "block";
             document.getElementById('index_show').style.display = "none";
           }
+      }
+
+      function skip(){
+            document.getElementById('show').style.display = "block";
+            document.getElementById('index_show').style.display = "none";
       }
   </script>
 
@@ -91,6 +96,13 @@
 
       <br>
 
+      <p>會有如此的想法，是因為看著每個網頁都照版來切就覺得就算網頁很美很棒，其實</p>
+      <p>大家的版的差不多一樣。個人認為：網頁的重點應該是內容，而非表面進入首頁的</p>
+      <p>光鮮亮麗。所以我才會做成這種的風格，就是要讓使用者（或稱玩家）慢慢體會網</p>
+      <p>頁的樂趣。而不是做得如此炫的背景。</p>
+
+      <br>
+
       <h1 style = "color:orange">下一站：猜謎遊戲   進度完成度：75%</h1>      
       </article></center>
         
@@ -107,7 +119,8 @@
         <center><table>
           <tr>
             <td><img src = "img\flash\idea_1.png" id = "show_pic"></td>
-            <td><button type="button" onclick="change_pic()">繼續</button></td>
+            <td><button type="button" onclick="change_pic()">繼續</button><br><br>
+            <button type="button" onclick="skip()">skip</button></td>
           </tr>
         </table></center>
 

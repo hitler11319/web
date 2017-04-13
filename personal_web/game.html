@@ -64,6 +64,11 @@
           }
     }
 
+    function skip(){
+            document.getElementById('show').style.display = "block";
+            document.getElementById('index_show').style.display = "none";
+      }
+
   </script>
 
 		<div class = "container" id = "show" style = "display:none">
@@ -128,7 +133,8 @@
         <center><table>
           <tr>
             <td><img src = "img\flash\game_1.png" id = "show_pic"></td>
-            <td><button type="button" onclick="change_pic()">繼續</button></td>
+            <td><button type="button" onclick="change_pic()">繼續</button><br><br>
+            <button type="button" onclick="skip()">skip</button></td>
           </tr>
         </table></center>
         <p id = "demo" style = "display:none">1</p>
