@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>   <!--先載入-->
+<script>
+$(document).ready(function(){
+    $("#hide_p").click(function(){   /*隱藏(那1000指的是1秒)*/
+        $(this).hide(1000);
+    });
+
+    $("#show_p").click(function(){   /*appear*/
+        $("#hide_p").show(1000);
+    });
+
+    $("#toggle_button").click(function(){  /*toggle收合式*/
+        $("p").toggle(500);
+    });
+
+    $("#flip").click(function(){   /*收合式面版的出現*/
+        $("#panel").slideDown(2500);
+    });
+
+    $("#stop").click(function(){   /*停止*/
+        $("#panel").stop();
+    });
+
+    $("#panel").click(function(){  /*收上去*/
+        $("#panel").slideUp(1000);
+    });
+
+    $("#show_href").click(function(){  /*show網址*/
+        alert($("#google").attr("href"));
+    });
+
+    $("#change_href").click(function(){  /*改變網址連結*/
+        $("#google").attr("href", "https://www.yahoo.com.tw");
+        $("#google").html(function(){   /*改文字(用.text)  改成超連結(用.html)*/
+            return "yahoo.com"; 
+            });
+    });
+
+    $("#append_text").click(function(){   /*新增文字*/
+        $("p").append(" <b>Appended text</b>.");
+        $("body").append("<br> <p>this is new </p>");
+        $("p").before("<b>before</b>");  /*在p前面多文字*/
+    });
+});
+</script>
+
+<style> 
+#panel, #flip {
+    padding: 5px;
+    font-size: 18px;
+    text-align: center;
+    background-color: #555;
+    color: white;
+    border: solid 1px #666;
+    border-radius: 3px;
+}
+
+#panel {
+    padding: 50px;
+    display: none;
+}
+</style>
+
+</head>
+<body>
+
+<button id = "toggle_button">toggle</button>
+<p>If you click on me, I will disappear.</p>
+<p id = "hide_p">Click me hide!</p>
+<p id = "show_p">Click me show!</p>
+
+<br>
+
+<button id="stop">Stop sliding</button>
+
+<div id="flip">Click to slide down panel</div>
+<div id="panel">Hello world!</div>
+
+<br>
+
+<p id = "text"><a href="https://google.com.tw" id="google">google.com</a></p>
+
+<button id = "show_href">Show href Value</button>
+<button id = "change_href">change href Value</button>
+
+<br>
+<br>
+
+<button id="append_text">Append text</button>
+
+</body>
+</html>
