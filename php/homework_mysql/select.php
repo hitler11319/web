@@ -15,14 +15,18 @@
 		die("connection Error:".$conn->connect_error);  //die會顯示文字，且其後的程式不執行
 	}
 
-	$sql = "select * from goods where ";
+	$sql = "select * from goods ";
 
-	if($goodsid != ""){check_and($count, $sql); $sql = $sql."goodsid = '$goodsid '"; $count = $count+1;}
-	if($goodsname != ""){check_and($count, $sql); $sql = $sql."goodsname = '$goodsname '"; $count = $count+1;}
-	if($goodsscribe != ""){check_and($count, $sql); $sql = $sql."goodsscribe = '$goodsscribe '"; $count = $count+1;}
-	if($goodscost != ""){check_and($count, $sql); $sql = $sql."goodscost = '$goodscost '"; $count = $count+1;}
-	if($goodssize != ""){check_and($count, $sql); $sql = $sql."goodssize = '$goodssize '"; $count = $count+1;}
-	if($amount != ""){check_and($count, $sql); $sql = $sql."amount = '$amount '"; $count = $count+1;}
+	if($goodsid != "" || $goodsname != "" || $goodsscribe != "" || $goodscost != "" || $goodssize != "" || $amount != ""){
+		$sql = $sql."where ";
+
+		if($goodsid != ""){check_and($count, $sql); $sql = $sql."goodsid = '$goodsid '"; $count = $count+1;}
+		if($goodsname != ""){check_and($count, $sql); $sql = $sql."goodsname = '$goodsname '"; $count = $count+1;}
+		if($goodsscribe != ""){check_and($count, $sql); $sql = $sql."goodsscribe = '$goodsscribe '"; $count = $count+1;}
+		if($goodscost != ""){check_and($count, $sql); $sql = $sql."goodscost = '$goodscost '"; $count = $count+1;}
+		if($goodssize != ""){check_and($count, $sql); $sql = $sql."goodssize = '$goodssize '"; $count = $count+1;}
+		if($amount != ""){check_and($count, $sql); $sql = $sql."amount = '$amount '"; $count = $count+1;}
+	}
 
 
 	$sql = $sql.";";
