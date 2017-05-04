@@ -17,6 +17,6 @@ from django.conf.urls import include, url   #要加include
 from django.contrib import admin
 
 urlpatterns = [
-	url(r'^polls/', include('polls.urls')),
+	url(r'^', include('polls.urls')),  #這樣可以直接用127.0.0.1:8000，不用後面再加路徑了
     url(r'^admin/', admin.site.urls),
 ]
