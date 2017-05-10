@@ -7,6 +7,6 @@
     echo "seccuss";
   }
   else{
-    echo "fail";
+    echo "<script>alert('fail'); location.href = 'cookies.php';</script>";  //先跑出錯誤訊息再跳轉
   }
 ?>
