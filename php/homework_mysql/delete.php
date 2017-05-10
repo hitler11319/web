@@ -6,6 +6,8 @@
 		die("connection Error:".$conn->connect_error);  //die會顯示文字，且其後的程式不執行
 	}
 
+	mysql_set_charset($conn, "utf-8");
+
 	$sql = "delete from goods where goodsid = '$goodsid';";
 	$result = $conn->query($sql);
 	if($result == TRUE){  //看是否刪除成功
