@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>index</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1>我的投票網站</h1>
+  <p>進來就要付手續費啦</p> 
+</div>
+  
+<div class="container">
+  <h1>歡迎進來投票網站</h1>
+	{% if latest_question_list %}
+    	<ul>
+    	{% for question in latest_question_list %}
+        <li style="font-size:36px"><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>   <!--{% url 'polls:detail' question.id %} 這是會去找我們polls資料夾下的detail函式，前把參數question.id傳進去-->
+    	{% endfor %}
+    	</ul>
+	{% else %}
+    	<p>No polls are available.</p>
+	{% endif %}
+</div>
+
+</body>
+</html>
+
