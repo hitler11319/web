@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>detail</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <style>
+    table, tr, td {
+      border:2px solid green;
+      font-size:30px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1>歡迎來到餐廳總管</h1>
+  <p>各種餐廳應有盡有，請大家慢慢選擇</p> 
+</div>
+  
+<div class="container">
+  <center><h1>{{ restaurant.restaurant_name }}</h1></center>
+  <center><h2>地址：{{ restaurant.address }}</h2></center>
+
+	{% if error_message %}<center><p><strong>{{ error_message }}</strong></p></center>{% endif %}
+  <center><table>
+    <tr><td>產品名稱</td><td>價錢</td><td>人氣</td></tr>
+    {% csrf_token %}
+    {% for menu in restaurant.menu_set.all %}
+        <tr><td>{{menu.dish_name}}</td><td>{{menu.price}}</td><td>{{menu.population}}</td></tr>
+    {% endfor %}
+  </table></center>
+
+  <br><br>
+  <hr>
+	
+	<center><form action="{% url 'polls:vote' restaurant.id %}" method="post">
+		{% csrf_token %}
+		{% for menu in restaurant.menu_set.all %}
+    		<input type="radio" name="menu" id="menu{{ forloop.counter }}" value="{{ menu.id }}"  style = "font-size:24px"/>
+    		<label for="menu{{ forloop.counter }}" style = "font-size:36px">{{ menu.dish_name }}</label><br />
+		{% endfor %}
+			<input type="submit" value="Vote" style = "font-size:28px"/>
+	</form></center>
+</div>
+
+</body>
+</html>

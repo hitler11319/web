@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>index</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1>歡迎來到餐廳總管</h1>
+  <p>各種餐廳應有盡有，請大家慢慢選擇</p> 
+</div>
+  
+<div class="container">
+  <center><h1>現有餐廳列表</h1></center>
+	{% if restaurant_list %}
+    	<center><ul class="list-group">
+    	{% for restaurant in restaurant_list %}
+        <li class="list-group-item list-group-item-success" style = "font-size:28px"><a href="{% url 'polls:detail' restaurant.id %}">{{ restaurant.restaurant_name }}</a></li> 
+    	{% endfor %}
+    	</ul></center>
+	{% else %}
+    	<p>No polls are available.</p>
+	{% endif %}
+</div>
+
+</body>
+</html>
+
