@@ -25,6 +25,7 @@
 <div class="container">
   <center><h1>{{ restaurant.restaurant_name }}</h1></center>
   <center><h2>地址：{{ restaurant.address }}</h2></center>
+  <center><h2>共有{{ restaurant.menu_set.all | length }}道菜</h2></center>
 
 	{% if error_message %}<center><p><strong>{{ error_message }}</strong></p></center>{% endif %}
   <center><table>
@@ -39,7 +40,7 @@
   <hr>
 	
 	<center><form action="{% url 'polls:vote' restaurant.id %}" method="post">
-		{% csrf_token %}
+		{% csrf_token %}   <!--要post一定要有此行-->
 		{% for menu in restaurant.menu_set.all %}
     		<input type="radio" name="menu" id="menu{{ forloop.counter }}" value="{{ menu.id }}"  style = "font-size:24px"/>
     		<label for="menu{{ forloop.counter }}" style = "font-size:36px">{{ menu.dish_name }}</label><br />

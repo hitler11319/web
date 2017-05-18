@@ -47,3 +47,20 @@ def add_restaurant(request):   #新增餐廳資料的函式
     context = {'restaurant_list': restaurant_list}
     return render(request, 'polls/index.html', context)
 
+def delete_restaurant(request):   #新增餐廳資料的函式
+    name = request.POST['restaurant_name']  #拿資料（是拿name）
+
+    res = Restaurant.objects.get(restaurant_name = name).delete()
+
+    #重回index
+    restaurant_list = Restaurant.objects.order_by('-restaurant_name')[:10]
+    context = {'restaurant_list': restaurant_list}
+    return render(request, 'polls/index.html', context)
+
+
+
+    #update :  f = Restaurant.objects.filter(restaurant_name = "哈哈哈早餐店").update(address="高雄市")
+    #f = Restaurant.objects.all()   是把所以餐廳列表印出來
+    #create :  f = Restaurant.objects.create(restaurant_name = "aaa", address = "bbb")  這個要寫f.save()
+    #delete : f = Restaurant.objects.get(restaurant_name = "哈哈哈早餐店").delete()
+

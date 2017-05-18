@@ -33,10 +33,18 @@
 
 <!--新增資料的表單-->
 <center><form action="{% url 'polls:add_restaurant' %}" method="post">
-  {% csrf_token %}
+  {% csrf_token %}  <!--要post一定要有此行-->
   請輸入餐廳名稱：<input type = 'text' id = 'restaurant_name' name = 'restaurant_name'> <br>
   請輸入餐廳地址：<input type = 'text' id = 'address' name = 'address'> <br>
   <input type="submit" value="add" style = "font-size:28px"/>
+</form></center>
+
+<br>
+<hr>
+<center><form action="{% url 'polls:delete_restaurant' %}" method="post">
+  {% csrf_token %}
+  請要刪的輸入餐廳名稱：<input type = 'text' id = 'restaurant_name' name = 'restaurant_name'> <br>
+  <input type="submit" value="delete" style = "font-size:28px"/>
 </form></center>
 
 </body>
