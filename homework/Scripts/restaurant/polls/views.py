@@ -34,3 +34,16 @@ def vote(request, restaurant_id):
         selected_dish.population += 1
         selected_dish.save()
         return HttpResponseRedirect(reverse('polls:results', args=(restaurant.id,)))
+
+def add_restaurant(request):   #新增餐廳資料的函式
+    name = request.POST['restaurant_name']  #拿資料（是拿name）
+    address = request.POST['address']
+
+    res = Restaurant(restaurant_name = name , address = address)  #新建Restaurant類別
+    res.save()  #儲存
+
+    #重回index
+    restaurant_list = Restaurant.objects.order_by('-restaurant_name')[:10]
+    context = {'restaurant_list': restaurant_list}
+    return render(request, 'polls/index.html', context)
+
