@@ -1,0 +1,27 @@
+<html> 
+<head> 
+<script type="text/javascript">
+var count = 1;
+var countid;
+function initial(){
+  document.getElementById('test').innerHTML = count;
+  countid=window.setInterval(show,1000);
+}
+function show(){ 
+  switch(count){
+    case 3:
+      document.getElementById('myImage').src="open_back.png";
+      clearInterval(countdownid);
+      return;
+  }
+  count = count +1;
+  initial();
+}
+</script>
+</head> 
+<body> 
+<img src = "thread.png" id = "myImage">
+<button type="button" onclick="initial()">start</button>
+<p id = "test">1</p>
+</body> 
+</html>
