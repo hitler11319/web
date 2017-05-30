@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>detail</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1>我的投票網站</h1>
+  <p>進來就要付手續費啦</p> 
+</div>
+  
+<div class="container">
+  <h1>{{ question.question_text }}</h1>
+
+	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+	<!--{% url 'polls:vote' question.id %} 這是會去找我們polls資料夾下的vote函式，前把參數question.id傳進去-->
+	<form action="{% url 'polls:vote' question.id %}" method="post">
+		{% csrf_token %}
+		{% for choice in question.choice_set.all %}
+    		<input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}"  style = "font-size:36px"/>
+    		<label for="choice{{ forloop.counter }}" style = "font-size:36px">{{ choice.choice_text }}</label><br />
+		{% endfor %}
+			<input type="submit" value="Vote" style = "font-size:36px"/>
+	</form>
+</div>
+
+</body>
+</html>
