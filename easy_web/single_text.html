@@ -1,36 +1,44 @@
 <!DOCTYPE html>
 <html>
-	<meta charset = "utf-8">
-	<head>
-		<title>電影名稱之文章列表</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--隨網站而變大變小-->
+<meta charset="utf-8">
+
+<head>
+    <title>電影名稱之文章列表</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--隨網站而變大變小-->
 
     <!--項目列表（bookstrap的）-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-  BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	</head>
-	<body>
+</head>
+
+<body>
     <table>
-      <tr>
-        <td><img src = "img\movie_text_pic.png"></td>
-        <td>此電影之簡介</td>
-        <td><a href="write.html" target = "_blank">我要寫文章</a></td>
-      </tr>
+        <tr>
+            <hr>
+            <td><img src="img\movie_text_pic.jpg" style="width:80%"></td>
+
+            <td style="width:30% ;font-size:30px;font-weight: bold">此電影之簡介</td>
+
+        </tr>
+        <tr>
+            <td>
+                <br><a href="write.html" target="_self" style="width:30% ;font-size:30px;font-weight: bold">我要寫文章</a></br>
+            </td>
+        </tr>
     </table>
 
-		<br>
-		<br>
-		<br>
+    <br>
     <hr>
+    <br>
+    <h1 style="color:blue; font-size:200% ;font-weight: bold">文章列表</h1>
 
-		<br>
-    <h1 style = "color:blue; font-size:200%">文章列表</h1>
-
-    <div class="container1">
-        <a class="list-group-item" href="movie_text.html" style="background-color:#93FF93">文章1</a>
-        <a class="list-group-item" href="movie_text.html" style="background-color:#93FF93">文章2</a>
-        <a class="list-group-item" href="movie_text.html" style="background-color:#93FF93">文章3</a>
+    <div class="container1" style="font-weight: bold">
+        <a class="list-group-item" href="movie_text.html" style="background-color:#93FF93" target = "_self">文章1</a>
+        <a class="list-group-item" href="movie_text.html" style="background-color:#93FF93" target = "_self">文章2</a>
+        <a class="list-group-item" href="movie_text.html" style="background-color:#93FF93" target = "_self">文章3</a>
     </div>
 
-	</body>
+</body>
+
 </html>
