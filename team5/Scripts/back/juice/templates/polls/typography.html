@@ -1,0 +1,284 @@
+<!--A Design by W3layouts
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Harvest Life an agriculture Category Bootstrap responsive Website Template | Typography :: w3layouts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="keywords" content="Harvest Life Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- bootstrap-css -->
+{% load static %}
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+<!--// bootstrap-css -->
+<!-- css -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all" />
+<!--// css -->
+<!-- font-awesome icons -->
+<link href="{% static 'css/font-awesome.css' %}" rel="stylesheet"> 
+<link href="{% static 'css/typo.css' %}" rel="stylesheet"> 
+<!-- //font-awesome icons -->
+<!-- font -->
+<link href="//fonts.googleapis.com/css?family=Playball&amp;subset=latin-ext" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,700italic,700,400italic,300italic,300' rel='stylesheet' type='text/css'>
+<!-- //font -->
+<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$(".scroll").click(function(event){		
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+		});
+	});
+	$(function() {
+		 $(".cs").hide();
+		 $(".code > c2").click(function() {
+		  $(this)
+		      .parent()
+		      .find(".cs")
+		      .slideToggle();
+		 });
+		});
+</script> 
+<script>
+	function get_current_time(){
+		var Today = new Date();
+		document.getElementById('time').value = Today;
+	}
+</script>
+<style>
+
+.bd {
+	text-align:center;
+}
+.container_slot {
+	margin:0 auto;
+	width:400px;
+}
+.slot-wrapper {
+	 border: 1px solid #000000;
+}
+.slot {
+	background:url("{% static 'images/reel_normal.jpg' %}") repeat-y; /*Taken from http://www.swish-designs.co.uk*/
+	width:130px;
+	height:80px;
+	float:left;
+	border:1px solid #000;
+	background-position:0 7px;
+}
+.motion {
+	background:url("{% static 'images/reel_blur.png' %}") repeat-y; /*Taken from http://www.swish-designs.co.uk*/
+}
+button {
+	display:block;
+	width:138px;
+	height:33px;
+	margin:20px 60px;
+	font-size:16px;
+	cursor:pointer;
+}
+#result {
+	margin:20px 0;
+	font-size:18px;
+	font-weight:bold;
+	height:22px;
+}
+.credits {
+	font-size:15px;
+	margin-top:20px;
+}
+.credits .browsers {
+	font-style:italic;
+	font-size:14px;
+	color:#777;
+	margin-top:4px;
+}
+.clear {
+	clear:both;
+}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+<script src="{% static 'js/slot.js' %}"></script>
+<script src="{% static 'js/jquery_spritely.js' %}"></script>
+<script src="{% static 'js/jquery_backgroundPosition.js' %}"></script>
+</head>
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<![endif]-->
+</head>
+<body>
+<p id = "check" style = "display:none">{{name}}</p>
+	<!-- banner -->
+	<div class="banner about-banner">
+		<div class="header">
+			<div class="container">
+			<h3 align="right" align="top" style="color:white;" id = "not_login"><a href="{% url 'juice:blog' %}" style="color:white;">登入</a>/<a href="{% url 'juice:registered' %}" style="color:white;">註冊</a><h3>
+			<h3 align="right" align="top" style="color:white" id = "logined">{{name}}您好<a href = "{% url 'juice:login_out' %}" style="color:blue;">登出</a></h3>
+			<script>
+				if(document.getElementById('check').innerHTML == ""){
+						document.getElementById('not_login').style.display = "block";
+						document.getElementById('logined').style.display = "none";
+				}
+				else{
+						document.getElementById('not_login').style.display = "none";
+						document.getElementById('logined').style.display = "block";
+				}
+			</script>
+				<div class="header-left">
+					<div class="w3layouts-logo">
+						<h1>
+							<a href="{% url 'juice:index' %}">Juice <span><sup>愛喝</sup></span></a>
+						</h1>
+					</div>
+				</div>
+				<div class="header-right">
+					<div class="agileinfo-social-grids">
+						<ul>
+							<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+							<li><a href="#"><i class="fa fa-rss"></i></a></li>
+							<li><a href="#"><i class="fa fa-vk"></i></a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+		<div class="header-bottom">
+			<div class="container">
+			
+				<div class="top-nav">
+						<nav class="navbar navbar-default">
+								<div class="navbar-header">
+									<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+										<span class="sr-only">Toggle navigation</span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+									</button>
+								</div>
+							<!-- Collect the nav links, forms, and other content for toggling -->
+							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+								<ul class="nav navbar-nav">
+									<li><a href="{% url 'juice:index' %}">首頁</a></li>
+									<li><a href="{% url 'juice:about' %}">關於我們</a></li>
+									<li><a href="{% url 'juice:single' %}">文章專區</a></li>						
+									<li><a href="{% url 'juice:gallery' %}">產品資訊</a></li>
+									<li><a href="{% url 'juice:blog' %}">會員專區</a></li>
+									<li><a class="list-border1" href="{% url 'juice:contact' %}">聯絡我們</a></li>
+								</ul>	
+								<div class="clearfix"> </div>
+							</div>	
+						</nav>		
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- //banner -->
+	<div class="about-heading" style="background-color: white">	
+		<div class="container">
+			<h2>抽獎拉霸</h2>
+		</div>
+		<br>
+	</div>
+	<!-- typography -->
+	<div class="bd">
+		<div class="container_slot">
+			<div class="slot-wrapper">
+				<div id="slot1" class="slot"></div>
+				<div id="slot2" class="slot"></div>
+				<div id="slot3" class="slot"></div>
+				<div class="clear"></div>
+			</div>
+			<br>
+			<div id="result" style = "font-size:30pt"></div><br>
+			<div>
+				<button id="control" style = "width:300px;height:80px;font-size:28pt">Start</button>
+				<a href = "{% url 'juice:bouns' %}"><button id="bouns" style = "display:none;width:300px;height:80px;font-size:30pt">領獎囉</button></a>
+				<a href = "{% url 'juice:membership' %}"><button id="leave" style = "display:none;width:300px;height:80px;font-size:30pt">銘謝惠顧</button></a>
+			</div>
+
+		</div>
+		
+	</div>
+
+	<div class="footer">
+		<div class="container">
+			<div class="agile-footer-grids">
+				<div class="col-md-3 w3-agile-footer-grid">
+					<h3>關於我們</h3>
+					<p>我們是一群台科大的學生,希望藉由這樣的店來推廣醜蔬果的實用性,更推廣人們不要因為外觀而唾棄食物</p>
+				</div>
+				<div class="col-md-3 w3-agile-footer-grid">
+					<h3>活動資訊</h3>
+					<ul>
+						<p>歡慶Juice愛喝開幕，每次消費皆可獲得拉霸抽獎乙次!!</p>
+					</ul>
+				</div>
+				<div class="col-md-3 w3-agile-footer-grid">
+					<h3>站內連結</h3>
+					<ul>
+						<li class="text"><a href="{% url 'juice:about' %}">關於我們</a></li>
+						<li class="text"><a href="{% url 'juice:gallery' %}">產品資訊</a></li>
+						<li class="text" id = "button_login"><a href="{% url 'juice:blog' %}">登入</a></li>
+						<li class="text"><a href="{% url 'juice:contact' %}">聯絡我們</a></li>
+					</ul>
+
+					<script>
+						if(document.getElementById('check').innerHTML != ""){
+							document.getElementById('button_login').style.display = "none";
+						}else{
+							document.getElementById('button_login').style.display = "block";
+						}
+					</script>
+
+				</div>
+				<div class="col-md-3 w3-agile-footer-grid">
+					<h3>加盟專線</h3>
+					<ul>
+						<p>0800-123-456</p>
+					</ul>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+	<!-- //footer -->
+	<!-- copyright -->
+	<div class="copyright">
+		<div class="container">
+			<p>© Juice 愛喝 | Design by <a href="{% url 'juice:about' %}"> 第五組全體組員</a> </p>
+		</div>
+	</div>
+	<!-- //copyright -->
+	<script src="{% static 'js/SmoothScroll.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/move-top.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/easing.js' %}"></script>
+	<!-- here stars scrolling icon -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			/*
+				var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear' 
+				};
+			*/
+								
+			$().UItoTop({ easingType: 'easeOutQuart' });
+								
+			});
+	</script>
+	<!-- //here ends scrolling icon -->
+</body>	
+</html>

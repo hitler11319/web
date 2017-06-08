@@ -1,0 +1,391 @@
+<!--A Design by W3layouts
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Group5_homepage</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="keywords" content="Harvest Life Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- bootstrap-css -->
+{% load static %}
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+<!--// bootstrap-css -->
+<!-- css -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all" />
+<!--// css -->
+<!-- font-awesome icons -->
+<link href="{% static 'css/font-awesome.css' %}" rel="stylesheet"> 
+<!-- //font-awesome icons -->
+<!-- font -->
+<link href="//fonts.googleapis.com/css?family=Playball&amp;subset=latin-ext" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+
+<link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,700italic,700,400italic,300italic,300' rel='stylesheet' type='text/css'>
+<!-- //font -->
+<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$(".scroll").click(function(event){		
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+		});
+	});
+</script> 
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<![endif]-->
+<style>
+	#D3{
+    width:200px;
+    height:50px;
+    background-image:url(image/image4);
+    background-repeat:no-repeat;
+    border:1px #ccc solid;
+    background-size:contain;
+}
+
+</style>
+
+</head>
+<body>
+<p id = "check" style = "display:none">{{name}}</p>
+	<div class="banner-top">
+		<div class="slider">
+			<div class="callbacks_container">
+				<ul class="rslides callbacks callbacks1" id="slider4">
+					<li>
+						<div class="w3layouts-banner-top">
+							<div class="container">
+								<div class="agileits-banner-info">
+									<h3>healthy, delicious, customized <span>variety of choices</span></h3>
+									<p>Welcome to juice愛喝 , we will provide the best juice for you.</p>
+									<div class="w3-button">
+										<a href="{% url 'juice:about' %}">More</a>
+									</div>
+								</div>	
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="w3layouts-banner-top w3layouts-banner-top1">
+							<div class="container">
+								<div class="agileits-banner-info">
+									<h3>healthy, delicious, customized<span>variety of choices</span></h3>
+									<p>Welcome to juice愛喝 , we will provide the best juice for you.</p>
+									<div class="w3-button">
+										<a href = "{% url 'juice:about' %}">More</a>
+									</div>
+								</div>	
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="w3layouts-banner-top w3layouts-banner-top2">
+							<div class="container">
+								<div class="agileits-banner-info">
+									<h3>healthy, delicious, customized <span>variety of choices</span></h3>
+									<p>Welcome to juice愛喝 , we will provide the best juice for you.</p>
+									<div class="w3-button">
+										<a href = "{% url 'juice:about' %}">More</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="clearfix"> </div>
+			<script src="{% static 'js/responsiveslides.min.js' %}"></script>
+			<script>
+						// You can also use "$(window).load(function() {"
+						$(function () {
+						  // Slideshow 4
+						  $("#slider4").responsiveSlides({
+							auto: true,
+							pager:true,
+							nav:true,
+							speed: 500,
+							namespace: "callbacks",
+							before: function () {
+							  $('.events').append("<li>before event fired.</li>");
+							},
+							after: function () {
+							  $('.events').append("<li>after event fired.</li>");
+							}
+						  });
+					
+						});
+			</script>
+			<!--banner Slider starts Here-->
+		</div>
+	</div>
+	<!-- banner -->
+	<div class="banner">
+		<div class="header">
+			<div class="container">
+			<h3 align="right" align="top" style="color:white;" id = "not_login"><a href = "{% url 'juice:blog' %}" style="color:white;">登入/</a>
+			<a href= "{% url 'juice:registered' %}" style="color:white;">註冊</a></h3>
+			<h3 align="right" align="top" style="color:white" id = "logined">{{name}}您好<a href = "{% url 'juice:login_out' %}" style="color:blue;">登出</a></h3>
+			<script>
+				if(document.getElementById('check').innerHTML == ""){
+						document.getElementById('not_login').style.display = "block";
+						document.getElementById('logined').style.display = "none";
+				}
+				else{
+						document.getElementById('not_login').style.display = "none";
+						document.getElementById('logined').style.display = "block";
+				}
+
+
+			</script>
+				<div class="header-left">
+					<div class="w3layouts-logo">
+						<h1>
+							<a href= "{% url 'juice:index' %}">Juice <span><sup>愛喝</sup></span></a>
+						</h1>
+					</div>
+				</div>
+				<div class="header-right">
+					<div class="agileinfo-social-grids">
+						<ul>
+							<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+							<li><a href="#"><i class="fa fa-rss"></i></a></li>
+							<li><a href="#"><i class="fa fa-vk"></i></a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+		<div class="header-bottom">
+			<div class="container">
+
+				<div class="top-nav">
+						<nav class="navbar navbar-default">
+								<div class="navbar-header">
+									<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+										<span class="sr-only">Toggle navigation</span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+									</button>
+								</div>
+							<!-- Collect the nav links, forms, and other content for toggling -->
+							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+								<ul class="nav navbar-nav">
+									<li><a class="active list-border" href= "{% url 'juice:index' %}">首頁</a></li>
+									<li><a href="{% url 'juice:about' %}">關於我們</a></li>
+									<li><a href="{% url 'juice:single' %}">文章專區</a></li>
+									<li><a href="{% url 'juice:gallery' %}">產品資訊</a></li>
+									<li><a href="{% url 'juice:blog' %}">會員專區</a></li>
+									<li><a class="list-border1" href="{% url 'juice:contact' %}">聯絡我們</a></li>
+								</ul>	
+								<div class="clearfix"> </div>
+							</div>	
+						</nav>		
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- //banner -->
+	<!-- welcome -->
+	<div class="welcome">
+	    
+		<div class="container">
+			<div class="w3-welcome-grids">
+				<div class="col-md-5 w3l-welcome-left">
+
+					<h2>歡迎來到 <span>Juice愛喝的小天地</span></h2>
+					<p>我們是一間採用看似平凡無奇的醜蔬果,卻能提供滿滿的維他命,最重要的是飲料是由你們自行搭配,這兩個都是我們主打的特色</p>
+					<div class="w3ls-button">
+						<a href="{% url 'juice:about' %}">認識我們</a>
+					</div>
+				</div>
+				<div class="col-md-7 w3l-welcome-right">
+					<div class="w3l-welcome-right-grids">
+						<div class="col-sm-5 w3l-welcome-right-img">
+
+							<img src="{% static 'images/image2.jpg' %}"  alt="" />
+						</div>
+						<div class="col-sm-7 w3l-welcome-right-img1">
+							<img src="{% static 'images/image.jpg' %}" alt="" />
+						</div>
+						<div class="clearfix"> </div>
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+
+	</div>
+	<!-- //welcome -->
+	<!-- services -->
+	<div class="services">
+		<div class="container">
+			<div class="agileits-services-grids">
+				<div class="col-md-4 agileinfo-services-left">
+					<h3>Our <span>Concept</span></h3>
+					<p>我們是一群來自台科大的熱血學生，發現了現代人越來越在乎健康和保養，看如何在健康的同時吃的開心吃得快了呢?我們的Juice愛喝為您找到解答。現代人們越來越重視健康生活，台灣人對於飲品消費也是十分頻繁。於是我們想到製作一個健康蔬果汁販賣的管道，將健康營養的蔬果汁推廣分享給更多的人。我們所販售的飲品可以於消費者指定所要的食材，以客製化的方式製作。此外，我們所使用的食材是將外表賣像不是非常好但是十分新鮮的有機蔬果做成果汁，能有效發揮出蔬果的美味而不會浪費掉珍貴健康的食材。</p>
+				</div>
+				<div class="col-md-8 agileinfo-services-right">
+					<div class="col-md-6 w3-agileits-services-grid">
+						<i class="fa fa-cogs" aria-hidden="true"></i>
+						<h4>珍惜每一份食材，不浪費食物</h4>
+						<p>過去的醜蔬果總是會被人們唾棄,然而我們希望藉由果汁的方式推廣出去,達到健康又不浪費食物的最佳平衡</p>
+					</div>
+					<div class="col-md-6 w3-agileits-services-grid">
+						<i class="fa fa-comments" aria-hidden="true"></i>
+						<h4>超豐富的飲料選擇，提供客製化的服務</h4>
+						<p>每次最多可以選擇3種素材，為您做出屬於您的專屬果汁，快來JUICE愛喝享受美味，滿足您的味蕾!!</p>
+					</div>
+				</div>
+				<div class="col-md-8 agileinfo-services-right">
+					<div class="col-md-6 w3-agileits-services-grid">
+						<i class="fa fa-heart" aria-hidden="true"></i>
+						<h4>保證食材有機新鮮，提供您最好的享受</h4>
+						<p>我們提供最新鮮的飲品，JUICE是你最佳的選擇，快點體驗看看我們豐富的菜單吧!!</p>
+					</div>
+					<div class="col-md-6 w3-agileits-services-grid">
+						<i class="fa fa-plane" aria-hidden="true"></i>
+						<h4>豐富的活動消息</h4>
+						<p>慶祝JUICE愛喝開幕，凡是在本店消費皆可獲得一次拉霸抽獎的機會，機會難得，請把握機會。在享受美味果汁時順便試試手氣吧!!</p>
+
+					</div>
+				</div>
+
+
+
+					<div class="clearfix"> 
+                     <img src="{% static 'images/intro.jpg' %}" style="width:1200px;height:240px">
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+	<!-- //services -->
+	<!-- news -->
+	<div class="news">
+		<div class="container">
+			<div class="wthree-news-grids">
+				<div class="col-md-4 agileinfo-services-left agile-news-left">
+					<h3>我們的 <span>夢想之醜蔬果大變身篇</span></h3>
+					<p>過去的醜蔬果總是會被人們唾棄,然而我們希望藉由果汁的方式推廣出去,達到健康又不浪費食物的最佳平衡</p>
+				</div>
+				<div class="col-md-8 agile-news-right">
+					<div class="col-md-6 agile-news-right-info">
+						<div class="col-md-6 agile-news-img">
+							
+						</div>
+						<div class="col-md-6 agile-news-img-info">
+							<h5><a href="{% url 'juice:single' %}">產品食材</a></h5>
+							<div class="agileits-w3layouts-border"> </div>
+							<p>我們堅持使用新鮮的食材，提供新鮮美味的果汁給我們的消費者.</p>
+							<h6><i class="fa fa-calendar" aria-hidden="true"></i> </h6>
+						</div>
+						<div class="clearfix"> </div>
+					</div>
+					<div class="col-md-6 agile-news-right-info">
+						<div class="col-md-6 agile-news-img agile-news-img1">
+							
+						</div>
+						<div class="col-md-6 agile-news-img-info">
+							<h5><a href="{% url 'juice:single' %}">產品食材</a></h5>
+							<div class="agileits-w3layouts-border"> </div>
+							<p>我們堅持使用新鮮的食材，提供新鮮美味的果汁給我們的消費者.</p>
+							<h6><i class="fa fa-calendar" aria-hidden="true"></i> </h6>
+						</div>
+						<div class="clearfix"> </div>
+					</div>
+					<div class="clearfix"> </div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+	<!-- //news -->
+	<!-- footer -->
+	<div class="footer">
+		<div class="container">
+			<div class="agile-footer-grids">
+				<div class="col-md-3 w3-agile-footer-grid">
+					<h3>關於我們</h3>
+					<p>我們是一群台科大的學生,希望藉由這樣的店來推廣醜蔬果的實用性,更推廣人們不要因為外觀而唾棄食物</p>
+				</div>
+				<div class="col-md-3 w3-agile-footer-grid">
+					<h3>活動資訊</h3>
+					<ul>
+						<p>歡慶Juice愛喝開幕，每次消費皆可獲得拉霸抽獎乙次!!</p>
+					</ul>
+				</div>
+				<div class="col-md-3 w3-agile-footer-grid">
+					<h3>站內連結</h3>
+					<ul>
+						<li class="text"><a href="{% url 'juice:about' %}">關於我們</a></li>
+						<li class="text"><a href="{% url 'juice:gallery' %}">產品資訊</a></li>
+						<li class="text" id = "button_login"><a href="{% url 'juice:blog' %}">登入</a></li>
+						<li class="text"><a href="{% url 'juice:contact' %}">聯絡我們</a></li>
+					</ul>
+
+					<script>
+						if(document.getElementById('check').innerHTML != ""){
+							document.getElementById('button_login').style.display = "none";
+						}else{
+							document.getElementById('button_login').style.display = "block";
+						}
+					</script>
+
+				</div>
+				<div class="col-md-3 w3-agile-footer-grid">
+					<h3>加盟專線</h3>
+					<ul>
+						<p>0800-123-456</p>
+					</ul>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+	<!-- //footer -->
+	<!-- copyright -->
+	<div class="copyright">
+		<div class="container">
+			<p>© Juice 愛喝 | Design by <a href="{% url 'juice:about' %}"> 第五組全體組員</a> </p>
+		</div>
+	</div>
+	<!-- //copyright -->
+	<script src="{% static 'js/responsiveslides.min.js' %}"></script>
+	<script src="{% static 'js/SmoothScroll.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/move-top.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/easing.js' %}"></script>
+	<!-- here stars scrolling icon -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			/*
+				var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear' 
+				};
+			*/
+								
+			$().UItoTop({ easingType: 'easeOutQuart' });
+								
+			});
+	</script>
+<!-- //here ends scrolling icon -->
+</body>	
+</html>

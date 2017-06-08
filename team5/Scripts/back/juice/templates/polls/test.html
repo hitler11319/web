@@ -1,0 +1,41 @@
+<html>
+<head>
+
+</head>
+<body>
+<form id="fomr1" name="fomr1" action="" method="post">
+<table id="mytable" width="580" border="1" align="center" cellpadding="0" cellspacing="0" >
+  <tr>
+    <td width="150" class="td01">名稱</td>
+    <td width="200" class="td01">備註</td>
+  </tr>
+  <tr>
+    <td>
+    <input name="name[]" type="text" size="12">
+    </td>
+    <td>
+    <input name="content[]" type="text" size="12">
+    </td>
+  </tr>
+</table>
+<input type="button" value="增加" onclick="add_new_data()"> <input type="button" value="減少" onclick="remove_data()"><br />
+<input type="submit" value="送出">
+</form>
+<script>
+function add_new_data() {
+	var num = document.getElementById("mytable").rows.length;
+	var Tr = document.getElementById("mytable").insertRow(num);
+	Td = Tr.insertCell(Tr.cells.length);
+	Td.innerHTML =   '<input name="name[]" type="text" size="12">';
+	Td = Tr.insertCell(Tr.cells.length);
+	Td.innerHTML =   '<input name="content[]" type="text" size="12">';
+}
+
+function remove_data() {
+	var num = document.getElementById("mytable").rows.length;
+	if(num >2)
+    	document.getElementById("mytable").deleteRow(-1);
+}
+</script>
+</body>
+</html>

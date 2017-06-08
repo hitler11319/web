@@ -1,0 +1,706 @@
+<!--A Design by W3layouts
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Harvest Life an agriculture Category Bootstrap responsive Website Template | About :: w3layouts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="keywords" content="Harvest Life Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- bootstrap-css -->
+{% load static %}
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+<!--// bootstrap-css -->
+<!-- css -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all" />
+<!--// css -->
+<!-- font-awesome icons -->
+<link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">  
+<!-- //font-awesome icons -->
+<!-- font -->
+<link href="//fonts.googleapis.com/css?family=Playball&amp;subset=latin-ext" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,700italic,700,400italic,300italic,300' rel='stylesheet' type='text/css'>
+
+<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+<!-- //font -->
+<link href="{% static 'owl-carousel/owl.carousel.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css1/lightbox.css' %}">
+<link href="{% static 'css1/style.css' %}" rel="stylesheet">
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="{% static 'css2/animate.min.css'%}" rel="stylesheet">
+    <link href="{% static 'css2/icons/icons.css'%}" rel="stylesheet">
+    <link href="{% static 'css2/style.css'%}" rel="stylesheet">
+
+
+<script src="{% static 'js3/jquery-3.2.1.min.js' %}"></script>
+	
+
+<script src="{% static 'js3/bootstrap.min.js' %}"></script>
+
+
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$(".scroll").click(function(event){		
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+		});
+	});
+</script> 
+
+<style>
+	header.main-header
+	{
+
+	    
+	    background: url("{% static 'images/back3.jpg' %}") no-repeat center center ;
+	    -webkit-background-size: cover;
+     -moz-background-size: cover;
+     background-size: cover;
+      -o-background-size: cover;
+	    min-height: 660px;
+	    padding: 10px 5px;
+	    position: relative;
+	    height: 80%;
+	    width: 100%;
+	  
+	}
+	.jumbotron{
+    background: linear-gradient(
+            rgba(0, 0, 0, 0.1),
+            rgba(0, 0, 0, 0.2)
+    ), url("{% static 'images/bg7.jpg' %}");
+    background-size: cover;
+    color: #A42D00;
+    padding: 0;
+
+    }
+
+.up-triangle {
+    width: 0;
+    height: 0;
+    border-bottom: 200px solid #FFE66F;
+    border-left: 122px solid transparent;
+    border-right: 122px solid transparent;
+    position: relative;
+
+}
+
+.down-triangle {
+    width: 0;
+    height: 0;
+    border-top: 200px solid #FFE66F ;
+    border-left: 122px solid transparent;
+    border-right: 122px solid transparent;
+    position: relative;
+
+}
+  
+   
+   .up-triangle div.info{
+    position:absolute;bottom:-170px;color:#FF8888;margin-left:-100px;width:200px;text-align:center;font-size: 14pt;
+    font-family: 'Arvo';
+    }
+.down-triangle div.info{
+    position:absolute;top:-170px;color:#FF8888;margin-left:-100px;width:200px;text-align:center;font-family: 'Arvo';font-size: 14pt;
+    }
+       
+    .triangles .icon{
+    font-size: 40pt;
+    color: 	#9F5000;
+    line-height: 60px;
+    -webkit-transition: all 500ms ease-out;
+    -moz-transition: all 500ms ease-out;
+    -o-transition: all 500ms ease-out;
+    transition: all 500ms ease-out;
+}
+
+    .smpl-step {
+        margin-top: 40px;
+    }
+    .smpl-step {
+        border-bottom: solid 1px #e0e0e0;
+        padding: 0 0 10px 0;
+    }
+
+    .smpl-step > .smpl-step-step {
+        padding: 0;
+        position: relative;
+    }   
+
+    .smpl-step > .smpl-step-step .smpl-step-num {
+        font-size: 17px;
+        margin-top: -20px;
+        margin-left: 47px;
+    }
+
+    .smpl-step > .smpl-step-step .smpl-step-info {
+        font-size: 20px;
+        padding-top: 27px;
+    }
+
+    .smpl-step > .smpl-step-step > .smpl-step-icon {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        display: block;
+        background: #5CB85C;
+        top: 45px;
+        left: 50%;
+        margin-top: -35px;
+        margin-left: -15px;
+        border-radius: 50%;
+    }
+
+    .smpl-step > .smpl-step-step > .progress {
+        position: relative;
+        border-radius: 0px;
+        height: 8px;
+        box-shadow: none;
+        margin-top: 37px;
+    }
+
+   .smpl-step > .smpl-step-step > .progress > .progress-bar {
+       width: 0px;
+       box-shadow: none;
+       background: #428BCA;
+   }
+
+    .smpl-step > .smpl-step-step.complete > .progress > .progress-bar {
+        width: 100%;
+    }
+
+    .smpl-step > .smpl-step-step.active > .progress > .progress-bar {
+        width: 50%;
+    }
+
+    .smpl-step > .smpl-step-step:first-child.active > .progress > .progress-bar {
+        width: 0%;
+    }
+
+    .smpl-step > .smpl-step-step:last-child.active > .progress > .progress-bar {
+        width: 100%;
+    }
+
+    .smpl-step > .smpl-step-step.disabled > .smpl-step-icon {
+        background-color: #f5f5f5;
+    }
+
+    .smpl-step > .smpl-step-step.disabled > .smpl-step-icon:after {
+        opacity: 0;
+    }
+
+    .smpl-step > .smpl-step-step:first-child > .progress {
+        left: 50%;
+        width: 50%;
+    }
+
+    .smpl-step > .smpl-step-step:last-child > .progress {
+        width: 50%;
+    }
+
+    .smpl-step > .smpl-step-step.disabled a.smpl-step-icon {
+        pointer-events: none;
+    }
+
+
+</style>
+
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<![endif]-->
+</head>
+<body>
+<p id = "check" style = "display:none">{{name}}</p>
+	<!-- banner -->
+	<div class="banner about-banner">
+		<div class="header">
+			<div class="container">
+			<h3 align="right" align="top" style="color:white;" id = "not_login"><a href="{% url 'juice:blog' %}" style="color:white">登入</a>/<a href="{% url 'juice:registered' %}" style="color:white">註冊</a><h3>
+			<h3 align="right" align="top" style="color:white" id = "logined">{{name}}您好<a href = "{% url 'juice:login_out' %}" style="color:blue;">登出</a></h3>
+			<script>
+				if(document.getElementById('check').innerHTML == ""){
+						document.getElementById('not_login').style.display = "block";
+						document.getElementById('logined').style.display = "none";
+				}
+				else{
+						document.getElementById('not_login').style.display = "none";
+						document.getElementById('logined').style.display = "block";
+				}
+
+
+			</script>
+			
+				<div class="header-left">
+					<div class="w3layouts-logo">
+						<h1>
+							<a href="{% url 'juice:index' %}">Juice <span><sup>愛喝</sup></span></a>
+						</h1>
+					</div>
+				</div>
+				<div class="header-right">
+					<div class="agileinfo-social-grids">
+						<ul>
+							<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+							<li><a href="#"><i class="fa fa-rss"></i></a></li>
+							<li><a href="#"><i class="fa fa-vk"></i></a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+		<div class="header-bottom">
+			<div class="container">
+				<div class="top-nav">
+						<nav class="navbar navbar-default">
+								<div class="navbar-header">
+									<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+										<span class="sr-only">Toggle navigation</span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+									</button>
+								</div>
+							<!-- Collect the nav links, forms, and other content for toggling -->
+							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+								<ul class="nav navbar-nav">
+									<li><a href="{% url 'juice:index' %}">首頁</a></li>
+									<li><a class="active list-border" href="{% url 'juice:about' %}">關於我們</a></li>
+									<li><a href="{% url 'juice:single' %}">文章專區</a></li>						
+									<li><a href="{% url 'juice:gallery' %}">產品資訊</a></li>
+									<li><a href="{% url 'juice:blog' %}">會員專區</a></li>
+									<li><a class="list-border1" href="{% url 'juice:contact' %}">聯絡我們</a></li>
+								</ul>	
+								<div class="clearfix"> </div>
+							</div>		
+						</nav>		
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- //banner -->
+	<!-- a-about -->
+	<div class="a-grid">
+		<div class="container">
+			<div class="w3l-about-heading">
+				<h2>關於 <span>我們</span></h2>
+			</div>
+			<div class="agileits-a-about-grids">
+				<div class="col-md-5 agileits-a-about-left">
+					<img src="{% static 'images/a1.jpg' %}" alt="" />
+				</div>
+				<div class="col-md-7 agileits-a-about-right">
+					<h3>我們的故事</h3>
+					<h4>我們是一群來自台科大的熱血學生，發現了現代人越來越在乎健康和保養，看如何在健康的同時吃的開心吃得快了呢?我們的Juice愛喝為您找到解答</h4>
+					<p>現代人們越來越重視健康生活，台灣人對於飲品消費也是十分頻繁。於是我們想到製作一個健康蔬果汁販賣的管道，將健康營養的蔬果汁推廣分享給更多的人。我們所販售的飲品可以於消費者指定所要的食材，以客製化的方式製作。此外，我們所使用的食材是將外表賣像不是非常好但是十分新鮮的有機蔬果做成果汁，能有效發揮出蔬果的美味而不會浪費掉珍貴健康的食材。
+					</p>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+	<!-- //a-about -->
+	<!-- different -->
+
+	
+
+	
+
+	<header class="main-header">
+		
+		<!-- Static Header -->
+		<div class="header-text">
+			<div class="col-sm-6 fix-right">
+				<a href="index.html"><img src="{% static 'images/back2.jpg' %}" class="img-responsive" alt=""></a>
+			</div>
+			<div class="col-sm-6">
+				<div class="header-text-inner">
+					<h1>我們和其他人<span>不一樣</span></h1>
+					<p>我們的飲料和市面上賣的飲料非常不同，我們不只使用了完全新鮮的蔬果，還是利用了那些因為賣相而滯銷的水果製作的，不只健康好喝又環保。不只如此，我們還提供了多樣化的選擇，讓您喝到您想喝的蔬果組合，不只方便、環保、多樣又好喝。</p>
+					
+				</div>
+			</div>
+		</div><!-- /header-text -->
+		
+	</header>
+	<!-- /Sect
+
+	<div id="page-content">
+	
+		<!-- ////////////Overview Main Nav -->
+		<div class="no-gutter" id="overview-mainnav">
+			<div class="col-sm-4 col-xs-6 nav-item" data-nav="featured">
+				<div class="nav-item-inner">
+					<div class="nav-item-image gradient-5" style="background-image: url('{% static 'images/progess.jpg' %}')"></div>
+					<h3 class="sub-title">01.</h3>
+					<div class="nav-item-detail">
+						<h2 class="title"><strong>最準時&最有保障</strong> 服務</h2>
+						
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4 col-xs-6 nav-item" data-nav="slide">
+				<div class="nav-item-inner">
+					<div class="nav-item-image gradient-5" style="background-image: url('{% static 'images/progess2.jpg' %}')"></div>
+					<h3 class="sub-title">02.</h3>
+					<div class="nav-item-detail">
+						<h2 class="title"><strong>水果來自</strong> 台灣最有名盛產地</h2>
+						
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4 col-xs-6 nav-item" data-nav="team">
+				<div class="nav-item-inner">
+					<div class="nav-item-image gradient-5" style="background-image: url('{% static 'images/team.jpg' %}')"></div>
+					<h3 class="sub-title">03.</h3>
+					<div class="nav-item-detail">
+						<h2 class="title"><strong>無懈可擊</strong> 的團隊</h2>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4 col-xs-6 nav-item" data-nav="gallery">
+				<div class="nav-item-inner">
+					<div class="nav-item-image gradient-5" style="background-image: url('{% static 'images/sun.jpg' %}')"></div>
+					<h3 class="sub-title">04.</h3>
+					<div class="nav-item-detail">
+						<h2 class="title"><strong>最充足與滋潤的</strong> 養分</h2>
+						
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4 col-xs-6 nav-item" data-nav="leader">
+				<div class="nav-item-inner">
+					<div class="nav-item-image gradient-5" style="background-image: url('{% static 'images/organic.jpg' %}')"></div>
+					<h3 class="sub-title">05.</h3>
+					<div class="nav-item-detail">
+						<h2 class="title"><strong>有機</strong>是我們的宗旨</h2>
+						
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4 col-xs-6 nav-item" data-nav="contact">
+				<div class="nav-item-inner">
+					<div class="nav-item-image gradient-5" style="background-image: url('{% static 'images/heart.jpg' %}')"></div>
+					<h3 class="sub-title">06.</h3>
+					<div class="nav-item-detail">
+						<h2 class="title"><strong>以顧客為上的</strong>心</h2>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+  
+
+			<div class="jumbotron" id="home">
+    <div class="intro">
+        <div class="container">
+
+            <div class="row">
+                <h1 class="text-center">訂單 <span>流程</span></h1>
+                   <br></br>
+
+			       <div class="container2">
+					      
+			    <div class="row smpl-step" style="border-bottom: 0; min-width: 1000px;">
+			        <div class="col-xs-2 smpl-step-step complete">
+			            <div class="text-center smpl-step-num">Step 1</div>
+			            <div class="progress">
+			                <div class="progress-bar"></div>
+			            </div>
+			            <a class="smpl-step-icon"><i class="fa fa-user" style="font-size: 80px; padding-left: 10px; padding-top: 10px; color: black;"></i></a>
+			            <br></br>
+			            <div class="smpl-step-info text-center">登入帳號</div>
+			        </div>
+
+			        <div class="col-xs-2 smpl-step-step complete">           
+			            <div class="text-center smpl-step-num">Step 2</div>
+			            <div class="progress">
+			                <div class="progress-bar"></div>
+			            </div>
+			            <a class="smpl-step-icon"><i class="fa fa-dollar" style="font-size: 80px; padding-left: 10px; padding-top: 10px; color: black;"></i></a>
+			            <br></br>
+			            <div class="smpl-step-info text-center">選擇你喜歡的飲料並且下訂單</div>
+			        </div>
+			        <div class="col-xs-2 smpl-step-step complete">          
+			            <div class="text-center smpl-step-num">Step 3</div>
+			            <div class="progress">
+			                <div class="progress-bar"></div>
+			            </div>
+			            <a class="smpl-step-icon"><i class="fa fa-check-square" style="font-size: 80px; padding-left: 10px; padding-top: 10px; color: black;"></i></a>
+			            <br></br>
+			            <div class="smpl-step-info text-center">確認訂單是否完成</div>
+			        </div>
+			        <div class="col-xs-2 smpl-step-step complete">           
+			            <div class="text-center smpl-step-num">Step 4</div>
+			            <div class="progress">
+			                <div class="progress-bar"></div>
+			            </div>
+			            <a class="smpl-step-icon"><i class="fa fa-adjust" style="font-size: 80px; padding-left: 10px; padding-top: 10px; color: black; "></i></a>
+			            <br></br>
+			            <div class="smpl-step-info text-center">1~2個工作天</div>
+			        </div>
+			         <div class="col-xs-2 smpl-step-step complete">           
+			            <div class="text-center smpl-step-num">Step 4</div>
+			            <div class="progress">
+			                <div class="progress-bar"></div>
+			            </div>
+			            <a class="smpl-step-icon"><i class="fa fa-truck" style="font-size: 80px; padding-left: 10px; padding-top: 10px; color: black; "></i></a>
+			            <br></br>
+			            <div class="smpl-step-info text-center">大約3個運送天</div>
+			        </div>
+                      <div class="col-xs-2 smpl-step-step complete">           
+			            <div class="text-center smpl-step-num">Step 4</div>
+			            <div class="progress">
+			                <div class="progress-bar"></div>
+			            </div>
+			            <a class="smpl-step-icon"><i class="fa fa-gift" style="font-size: 80px; padding-left: 6px; padding-top: 7px; color: black; "></i></a>
+			            <br></br>
+			            <div class="smpl-step-info text-center">貨物送達</div>
+			        </div>
+
+			    </div>
+			
+
+               
+            </div>
+            <div class="row triangles">
+                <div class="up-triangle animated fadeInUp">
+                    <div class="info">
+                        <i class="icon icon-thumbs-up"></i><br/>
+                        <h3>J</h3>
+                    </div>
+                </div>
+                <div class="down-triangle animated fadeInDown">
+                    <div class="info">
+
+                        
+                        <i class="icon icon-thumbs-up"></i><br/>
+                        <h3>u</h3>
+                    </div>
+                </div>
+                <div class="up-triangle animated fadeInUp">
+                    <div class="info">
+
+                        <i class="icon icon-thumbs-up"></i><br/>
+                        <h3>i</h3>
+                    </div>
+                </div>
+                <div class="down-triangle animated fadeInDown">
+                    <div class="info">
+
+                        
+                        <i class="icon icon-thumbs-up"></i><br/>
+                        <h3>c</h3>
+                    </div>
+                </div>
+
+                <div class="down-triangle animated fadeInDown visible-sm">
+                    <div class="info">
+
+                        Clean Code<br/>
+                        <i class="icon icon-code"></i>
+                    </div>
+                </div>
+
+                <div class="up-triangle animated fadeInUp">
+                    <div class="info">
+
+                        <i class="icon icon-thumbs-up"></i><br/>
+                         <h3>e</h3>
+                    </div>
+                </div>
+                <div class="down-triangle animated fadeInDown">
+                    <div class="info">
+
+                        
+                        <i class="icon icon-thumbs-up"></i><br/>
+                         <h3>愛</h3>
+                    </div>
+                </div>
+                <div class="up-triangle animated fadeInUp">
+                    <div class="info">
+
+                        <i class="icon icon-thumbs-up"></i><br/>
+                        <h3>喝</h3>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>   	
+
+   </div>
+
+	<!-- //different -->
+	<!-- team -->
+	<div class="team">
+		<div class="container">
+			<div class="agileinfo-team-heading">
+				<h3>成員 <span>介紹</span></h3>
+			</div>
+			<div class="team-grids">
+				<div class="col-md-3 col-xs-6 agileinfo-team-grid">
+					<img src="{% static 'images/images1.jpg' %}" alt=""  style = "width:200px; height=300px"/>
+					<div class="captn">
+						<h4>盧禹宏</h4>
+						<p>決策總司令 </p>
+						<div class="w3l-social">
+							<ul>
+								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+								<li><a href="#"><i class="fa fa-rss"></i></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 col-xs-6 agileinfo-team-grid">
+					<img src="{% static 'images/images2.jpg' %}" alt="" style = "width:200px; height=300px" />
+					<div class="captn">
+						<h4>陳楷倫</h4>
+						<p>組員</p>
+						<div class="w3l-social">
+							<ul>
+								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+								<li><a href="#"><i class="fa fa-rss"></i></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 col-xs-6 agileinfo-team-grid">
+					<img src="{% static 'images/images3.jpg' %}" alt=""  style = "width:200px; height=300px" />
+					<div class="captn">
+						<h4>王政淳</h4>
+						<p>組員</p>
+						<div class="w3l-social">
+							<ul>
+								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+								<li><a href="#"><i class="fa fa-rss"></i></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 col-xs-6 agileinfo-team-grid">
+					<img src="{% static 'images/images4.jpg' %}" alt="" style = "width:200px; height=300px" />
+					<div class="captn">
+						<h4>高聖哲</h4>
+						<p>組長</p>
+						<div class="w3l-social">
+							<ul>
+								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+								<li><a href="#"><i class="fa fa-rss"></i></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+	<!-- //team -->
+	<!-- footer -->
+	<div class="footer">
+		<div class="container">
+			<div class="agile-footer-grids">
+				<div class="col-md-3 w3-agile-footer-grid">
+					<h3>關於我們</h3>
+					<p>我們是一群台科大的學生,希望藉由這樣的店來推廣醜蔬果的實用性,更推廣人們不要因為外觀而唾棄食物</p>
+				</div>
+				<div class="col-md-3 w3-agile-footer-grid">
+					<h3>活動資訊</h3>
+					<ul>
+						<p>歡慶Juice愛喝開幕，每次消費皆可獲得拉霸抽獎乙次!!</p>
+					</ul>
+				</div>
+				<div class="col-md-3 w3-agile-footer-grid">
+					<h3>站內連結</h3>
+					<ul>
+						<li class="text"><a href="{% url 'juice:about' %}">關於我們</a></li>
+						<li class="text"><a href="{% url 'juice:gallery' %}">產品資訊</a></li>
+						<li class="text" id = "button_login"><a href="{% url 'juice:blog' %}">登入</a></li>
+						<li class="text"><a href="{% url 'juice:contact' %}">聯絡我們</a></li>
+					</ul>
+
+					<script>
+						if(document.getElementById('check').innerHTML != ""){
+							document.getElementById('button_login').style.display = "none";
+						}else{
+							document.getElementById('button_login').style.display = "block";
+						}
+					</script>
+
+				</div>
+				<div class="col-md-3 w3-agile-footer-grid">
+					<h3>加盟專線</h3>
+					<ul>
+						<p>0800-123-456</p>
+					</ul>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+	<!-- //footer -->
+	<!-- copyright -->
+	<div class="copyright">
+		<div class="container">
+			<p>© Juice 愛喝 | Design by <a href="{% url 'juice:about' %}"> 第五組全體組員</a> </p>
+		</div>
+	</div>
+	<!-- //copyright -->
+	<script src="{% static 'js/SmoothScroll.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/move-top.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/easing.js' %}"></script>
+	<!-- here stars scrolling icon -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			/*
+				var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear' 
+				};
+			*/
+								
+			$().UItoTop({ easingType: 'easeOutQuart' });
+								
+			});
+	</script>
+	<!-- //here ends scrolling icon -->
+	<!-- parallax -->
+	<script src="{% static 'js/jarallax.js' %}"></script>
+	<script type="text/javascript">
+        /* init Jarallax */
+        $('.jarallax').jarallax({
+            speed: 0.5,
+            imgWidth: 1366,
+            imgHeight: 768
+        })
+    </script>
+	<!-- //parallax -->
+</body>	
+</html>

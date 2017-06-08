@@ -1,0 +1,466 @@
+<!--A Design by W3layouts
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Harvest Life an agriculture Category Bootstrap responsive Website Template | Single :: w3layouts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="keywords" content="Harvest Life Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- bootstrap-css -->
+{% load static %}
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+<!--// bootstrap-css -->
+<!-- css -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all" />
+<!--// css -->
+<!-- font-awesome icons -->
+<link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'assets1/css/main.css' %}" />
+<!-- //font-awesome icons -->
+<!-- font -->
+<link href="//fonts.googleapis.com/css?family=Playball&amp;subset=latin-ext" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,700italic,700,400italic,300italic,300' rel='stylesheet' type='text/css'>
+<!-- //font -->
+<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$(".scroll").click(function(event){		
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+		});
+	});
+</script> 
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<![endif]-->
+</head>
+<body>
+<p id = "check" style = "display:none">{{name}}</p>
+	<!-- banner -->
+	<div class="banner about-banner">
+		<div class="header">
+			<div class="container">
+				<div class="header-left">
+					<div class="w3layouts-logo">
+						<h1>
+							<a href="{% url 'juice:index' %}">Juice<span><sup>愛喝</sup></span></a>
+						</h1>
+					</div>
+				</div>
+				<div class="header-right">
+					<div class="agileinfo-social-grids">
+						<ul>
+							<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+							<li><a href="#"><i class="fa fa-rss"></i></a></li>
+							<li><a href="#"><i class="fa fa-vk"></i></a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+		<div class="header-bottom">
+			<div class="container">
+			<h3 align="right" align="top" style="color:white;" id = "not_login"><a href="{% url 'juice:blog' %}" style="color:white">登入</a>/<a href="{% url 'juice:registered' %}" style="color:white">註冊</a><h3>
+			<h3 align="right" align="top" style="color:white" id = "logined">{{name}}您好<a href = "{% url 'juice:login_out' %}" style="color:blue;">登出</a></h3>
+			<script>
+				if(document.getElementById('check').innerHTML == ""){
+						document.getElementById('not_login').style.display = "block";
+						document.getElementById('logined').style.display = "none";
+				}
+				else{
+						document.getElementById('not_login').style.display = "none";
+						document.getElementById('logined').style.display = "block";
+				}
+
+
+			</script>
+				<div class="top-nav">
+						<nav class="navbar navbar-default">
+								<div class="navbar-header">
+									<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+										<span class="sr-only">Toggle navigation</span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+									</button>
+								</div>
+							<!-- Collect the nav links, forms, and other content for toggling -->
+							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+								<ul class="nav navbar-nav">
+									<li><a class="active list-border" href="{% url 'juice:index' %}">首頁</a></li>
+									<li><a href="{% url 'juice:about' %}">關於我們</a></li>
+									<li><a href="{% url 'juice:single' %}">文章專區</a></li>								
+									<li><a href="{% url 'juice:gallery' %}">產品資訊</a></li>
+									<li><a href="{% url 'juice:blog' %}">會員專區</a></li>
+									<li><a class="list-border1" href="{% url 'juice:contact' %}">聯絡我們</a></li>
+								</ul>	
+								<div class="clearfix"> </div>
+							</div>	
+						</nav>		
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- //banner -->
+	<div id="wrapper">
+
+				<!-- Header -->
+					
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<article class="post">
+								<header>
+									<div class="title">
+										<h2>早上喝蔬果汁的風潮</h2>
+										<p>多吃蔬果</p>
+									</div>
+									<div class="meta">
+										<time class="published" datetime="2015-11-01">June 7, 2017</time>
+										<a href="{% url 'juice:single' %}" class="author"><span class="name">Team5</span><img src="{% static 'images/images1.jpg' %}">
+									</div>
+								</header>
+								<a href="#" class="image featured"><img src="{% static 'images/image4.jpg' %}"></a>
+								<p>【早安健康／林明慧編譯】近年來興起早上喝蔬果汁的風潮，將各種綠黃色蔬菜、水果倒入果汁機攪拌，一杯就含有滿滿的維生素、礦物質及酵素。製作方法簡單，又能補充人體容易缺乏的營養素，深受許多重視健康及美容的人士喜愛。可是你知道嗎？早上的蔬果汁不得不慎選，喝錯了反而會加速身體老化！  
+
+時間營養學告訴你，哪些蔬果早上NG
+
+時間營養學指的是什麼時間該吃什麼東西才是最有效的。比方說雞蛋最好在晚上吃，由於含有必須胺基酸及豐富的蛋白質，有助消化，並促進生長荷爾蒙分泌。而豬肉則在早上吃，優良蛋白質可以刺激主司代謝蛋白質的肝臟，提高代謝能力、預防肥胖。而蔬菜水果也是一樣，有些是不適合在早上食用的。 
+
+許多蔬果汁食譜中常添加芹菜、巴西里、西洋芹等傘形科的植物，或是檸檬、橘子等柑橘類水果，雖然有豐富的維生素、鐵分及膳食纖維，有美容、減重、改善貧血等功效。但是日本わかば診療所院長、美容皮膚科工藤清加醫師表示，這些蔬果含有一種叫「補骨脂素」（psoralen）的感光物質，如果一早喝完就出門上班的話，會吸收太陽紫外線，導致肌膚失去光澤與彈性，產生暗沈、黑斑或雀斑。 
+
+另外，許多人習慣用冰水或加冰塊來調製蔬果汁，喝起來清爽又順口。可是早上喝冷飲容易使內臟冰冷，導致腸道環境惡化，引發排便不順的問題，不利排毒、美容及減重。 
+
+早上該喝的是這一杯！生薑蘋果汁
+
+日本教養節目「林先生が驚く初耳学」裡介紹了一款適合早上飲用的蔬果汁，喝對了，給你一早滿滿的活力！</p>
+								<footer>
+									<ul class="actions">
+										<li><a href="#" class="button big">Continue Reading</a></li>
+									</ul>
+									<ul class="stats">
+										<li><a href="#">General</a></li>
+										<li><a href="#" class="icon fa-heart">28</a></li>
+										<li><a href="#" class="icon fa-comment">128</a></li>
+									</ul>
+								</footer>
+							</article>
+
+						<!-- Post -->
+							<article class="post">
+								<header>
+									<div class="title">
+										<h2>冬季難道不能吃寒涼水果嗎？</h2>
+										<p>多吃蔬果</p>
+									</div>
+									<div class="meta">
+										<time class="published" datetime="2015-10-25">June 6, 2017</time>
+										<a href="{% url 'juice:single' %}" class="author"><span class="name">Team5</span><img src="{% static 'images/images2.jpg' %}"></a>
+									</div>
+								</header>
+								<a href="#" class="image featured"><img src="{% static 'images/a1.jpg' %}"></a>
+								<p>每到大節氣，我總是喜歡考病人一個小問題：節氣看的是陰曆還是陽曆？答錯的比例還不少。很多人其實沒注意到，節氣和每年跳來跳去，有時在一月有時在二月的農曆春節不同，看的是陽曆，而且每年都是相對固定的前後那幾個日子，譬如冬至就是每年的12月21～23日。
+
+節氣與太陽的移動有關，看的是陽曆！
+
+其實，只要想想冬至的意義，大家也就不會太意外了。就像大家熟知的，夏至、冬至分別是一年中白天最長、最短的日子，與太陽的變動相關，自然看的是陽曆。實際上，整個24節氣就是依據太陽在南、北迴歸線之間的移動，以及隨之而來的氣候變化所得來的結果。
+
+冬至，也被稱為「日短」，太陽這天繞行到南迴歸線上，北半球白天最短，夜最長。冬至過後，日照向北迴轉，白天愈來愈長，在氣候上也有著寒溫轉折的意義。所謂：「陰極之至，陽氣始生，日短之至，故曰冬至」。
+
+每個節氣可再細分為「三候」，跟著氣候變化來養生
+
+古人對氣候的觀察是相當仔細的，每個節氣期間再細分的話可以再分三個「候」，冬至的三候如下：「一候蚯蚓結；二候麋角解；三候水泉動。」描述的也是一個陰陽轉換，陽氣初生使動的一個動態。在第一候中，陽氣雖已初生，但整體來說氣候還是相當陰寒，土中的蚯蚓仍然蜷縮著身體。直到第三候，山中的寒冰初融，涓涓泉水開始可以流動，就是一個陽氣萌發的過程。
+
+對於養生，先人也是順著這種「一陽生」的概念而行。所謂春生、夏長、秋收、冬藏，萬物在秋冬的收藏儲備，正是為了來年的生長。在冬至進補就是希望掌握這陰氣將盡、陽氣初生的時刻。
+
+雖然視個體有別，也有人的體質比較適合平補或涼補，但整體而言冬令進補仍是以溫補為宜才符合冬季養生「祛寒就溫」的思路。然而，有些患者就會問：「那水果呢？很多水果不是性質比較寒涼嗎？這段時間適合吃嗎？」
+
+水果到底適不適合多吃？建議蔬菜為主，水果為輔綜合攝取
+
+老實說，不論是不是冬天，有部分中醫師是都不贊成大量食用水果的，嚴格一點甚至完全禁止。我個人是屬於比較中立的立場，畢竟，還是有許多營養學的研究告訴我們水果對人體有正面的幫助。但我還是常提醒患者從一個角度思考：多數營養指南在強調每天要「幾份蔬果」的時候，蔬菜往往還是佔比較大的比重，水果是輔助的地位。例如現在大家比較熟悉的蔬果579，不都是蔬菜多一份，水果少一份？整體來說，「全水果餐」我個人不贊成，但我還是認為每天都需要綜合性的蔬果攝取。
+
+那麼，寒涼性水果的問題我的看法是什麼？在之前我曾寫過一篇文章「橘子性寒，感冒咳嗽不能吃？」，其中就提過我自己對於橘子的寒、熱性質感到疑惑，最後看了一些資訊後得到的結論是：橘子被描述為性寒主要可能與檸檬酸刺激呼吸道有關，但是否吃了橘子真的會讓咳嗽加重則取決於食用量與個人體質狀況的敏感度，所以怎樣才是適量？其實是有個體差異的。所以，真的有絕對的寒熱嗎？
+
+寒熱無絕對，掌握個人體質均衡飲食，不要過度焦慮
+
+我們確實碰過患者一吃荔枝就嘴破、一吃龍眼就眼睛刺痛，但不是每個人都這樣啊！中醫講的寒熱、陰陽一直都是相對性的。如同前面所說，就算是冬至，多數人可以溫補，但也有人的體質比較適合平補或涼補，甚至還是有人不能補！該怎麼做，實在不能一概而論。
+
+基本上我對飲食的看法向來就是「均衡攝取」。除非有特殊體質，否則什麼都吃一點，但不要因為愛吃就一次性地大量吃，或長期一直吃。每個人都應該懂得避開那些自己吃了會不舒服的東西，但除此之外，對於蔬果我還是認為應該要多樣性地輪替，蔬菜為主，水果為輔，每天綜合性地攝取。
+
+寫到這邊，或許還是有些朋友心中就是記掛著：「如果我想均衡地吃蔬果，可是還是擔心一些寒涼的禁忌怎麼辦？」我之前倒是看過一個有趣的概念：熱果汁。這是日本中醫師兼營養師提出來的主意。對於這樣的主意，直覺來說會比較擔心經過加熱後，一些維生素B、C的流失會浪費了水果的營養成分。但另一方面，茄紅素（蕃茄、木瓜……等）、胡蘿蔔素（紅蘿蔔、南瓜、枸杞、柿子……等）等對人體有益的抗氧化物反而會增加，整體來說似乎不容易權衡利弊。考慮到維生素是在「加熱過久、過度高溫」的狀況下流失較嚴重，台灣知名的永豐棧飯店主廚曾採用的折衷辦法，溫果汁，或許可以嘗試。</p>
+								<footer>
+									<ul class="actions">
+										<li><a href="#" class="button big">Continue Reading</a></li>
+									</ul>
+									<ul class="stats">
+										<li><a href="#">General</a></li>
+										<li><a href="#" class="icon fa-heart">28</a></li>
+										<li><a href="#" class="icon fa-comment">128</a></li>
+									</ul>
+								</footer>
+							</article>
+
+						<!-- Post -->
+							<article class="post">
+								<header>
+									<div class="title">
+										<h2>多吃蔬果好處多，也能延年益壽</h2>
+										<p>多吃蔬果</p>
+									</div>
+									<div class="meta">
+										<time class="published" datetime="2015-10-22">June 6, 2017</time>
+										<a href="#" class="author"><span class="name">Team5</span><img src="{% static 'images/images3.jpg' %}"> </a>
+									</div>
+								</header>
+								<a href="{% url 'juice:single' %}" class="image featured"><img src="{% static 'images/g3.jpg' %}"> </a>
+								<p>多吃蔬果好處多，也能延年益壽？英國研究指出，每天吃10份蔬果可避免早死。
+英國廣播公司報導，英國國王學院指出，食用某些蔬果能降低罹患癌症與疾病風險，即便是少量改變也有助健康。研究設定一份蔬果量為80公克，界定各種蔬果分類如綠色蔬菜波菜、黃色蔬菜甜椒、花椰菜；水果分為蘋果、桃子、柑橘類、沙拉菜、綠葉菜。
+研究對比完全未吃蔬果者的早死機率指出，每天吃200公克蔬果能降低心血管疾病13%，吃到800克則降低28%。
+食用200公克蔬果降低4%癌症機率，食用800公克蔬果降低13%。
+食用200公克蔬果降低早死機率15%，食用800公克降低31%。
+仰賴蔬果飲食的米卡勒夫（Harriet Micallef）表示，她每餐一定會吃蔬菜或沙拉，因此每天吃8至10份蔬果是很輕鬆的事。
+醫生安恩（Dagfinn Aune）表示，蔬果可以降低體內膽固醇、血壓，對血壓與免疫系統有幫助，同時還有抗毒元素，可以減少DNA受損，同時降低罹癌風險，「可惜的是很多人連WHO建議一天五份都吃不到」。（余浚安／綜合外電報導）</p>
+								<footer>
+									<ul class="actions">
+										<li><a href="#" class="button big">Continue Reading</a></li>
+									</ul>
+									<ul class="stats">
+										<li><a href="#">General</a></li>
+										<li><a href="#" class="icon fa-heart">28</a></li>
+										<li><a href="#" class="icon fa-comment">128</a></li>
+									</ul>
+								</footer>
+							</article>
+
+						
+							<ul class="actions pagination">
+								<li><a href="" class="disabled button big previous">Previous Page</a></li>
+								<li><a href="#" class="button big next">Next Page</a></li>
+							</ul>
+
+					</div>
+
+				<!-- Sidebar -->
+					<section id="sidebar">
+
+						<!-- Intro -->
+							<section id="intro">
+								<a href="#" class="logo"><img src="{% static 'images/image2.jpg' %}" alt="" /></a>
+								<header>
+									<h2>相關新聞</h2>
+									<p>更多相關訊息提供給您</a></p>
+								</header>
+							</section>
+
+						<!-- Mini Posts -->
+							<section>
+								<div class="mini-posts">
+
+									<!-- Mini Post -->
+										<article class="mini-post">
+											<header>
+												<h3><a href="#">一天一蘋果，醫生遠離我</a></h3>
+												<time class="published" datetime="2015-10-20">October 20, 2015</time>
+												<a href="#" class="author"></a>
+											</header>
+											<a href="#" class="image"><img src="{% static 'images/1.jpg' %}" alt="" /></a>
+										</article>
+
+									<!-- Mini Post -->
+										<article class="mini-post">
+											<header>
+												<h3><a href="#">多吃蔬果有益健康</a></h3>
+												<time class="published" datetime="2015-10-19">October 19, 2015</time>
+												<a href="#" class="author"></a>
+											</header>
+											<a href="#" class="image"><img src="{% static 'images/news6.jpg' %}" alt="" /></a>
+										</article>
+
+									<!-- Mini Post -->
+										<article class="mini-post">
+											<header>
+												<h3><a href="#">沒事多吃水果</a></h3>
+												<time class="published" datetime="2015-10-18">October 18, 2015</time>
+												<a href="#" class="author"></a>
+											</header>
+											<a href="#" class="image"><img src="{% static 'images/news7.jpg' %}" alt="" /></a>
+										</article>
+
+									<!-- Mini Post -->
+										<article class="mini-post">
+											<header>
+												<h3><a href="#">喝JUICE愛喝的飲品，是你最佳的選擇</a></h3>
+												<time class="published" datetime="2015-10-17">October 17, 2015</time>
+												<a href="#" class="author"></a>
+											</header>
+											<a href="#" class="image"><img src="{% static 'images/g4.jpg' %}" alt="" /></a>
+										</article>
+
+								</div>
+							</section>
+
+						<!-- Posts List -->
+							<section>
+								<ul class="posts">
+									<li>
+										<article>
+											<header>
+												<h3>超多組合任你選擇，ＪＵＩＣＥ愛喝</h3>
+											</header>
+											<a href="#" class="image"><img src="{% static 'images/news1.jpg' %}" alt="" /></a>
+										</article>
+									</li>
+									<li>
+										<article>
+											<header>
+												<h3><a href="#">沒事就喝JUICE愛喝</a></h3>
+												<time class="published" datetime="2015-10-15">October 15, 2015</time>
+											</header>
+											<a href="#" class="image"><img src="{% static 'images/news2.jpg' %}" alt="" /></a>
+										</article>
+									</li>
+									<li>
+										<article>
+											<header>
+												<h3><a href="#">JUICE愛喝，不二選擇</a></h3>
+												<time class="published" datetime="2015-10-10">October 10, 2015</time>
+											</header>
+											<a href="#" class="image"><img src="{% static 'images/news3.jpg' %}" alt="" /></a>
+										</article>
+									</li>
+									<li>
+										<article>
+											<header>
+												<h3><a href="#">JUICE愛喝，就是愛喝</a></h3> <time class="published" datetime="2015-10-08">October 8, 2015</time>
+											</header>
+											<a href="#" class="image"><img src="{% static 'images/news4.jpg' %}" alt="" /></a>
+										</article>
+									</li>
+									<li>
+										<article>
+											<header>
+												<h3><a href="#">台科JUICE愛喝，您的最佳選擇</a></h3>
+												<time class="published" datetime="2015-10-06">October 7, 2015</time>
+											</header>
+											<a href="#" class="image"><img src="{% static 'images/news5.jpg' %}" alt="" /></a>
+										</article>
+									</li>
+								</ul>
+							</section>
+
+						<!-- About -->
+							<section class="blurb">
+								<h2>About</h2>
+								<p>現代人們越來越重視健康生活，台灣人對於飲品消費也是十分頻繁。於是我們想到製作一個健康蔬果汁販賣的管道，將健康營養的蔬果汁推廣分享給更多的人。我們所販售的飲品可以於消費者指定所要的食材，以客製化的方式製作。此外，我們所使用的食材是將外表賣像不是非常好但是十分新鮮的有機蔬果做成果汁，能有效發揮出蔬果的美味而不會浪費掉珍貴健康的食材。</p>
+								<ul class="actions">
+									<li><a href="{% url 'juice:about' %}" class="button">Learn More</a></li>
+								</ul>
+							</section>
+
+						<!-- Footer -->
+							<section id="footer">
+								<ul class="icons">
+									<li><a href="#" class="fa-twitter"><span class="label">Twitter</span></a></li>
+									<li><a href="#" class="fa-facebook"><span class="label">Facebook</span></a></li>
+									<li><a href="#" class="fa-instagram"><span class="label">Instagram</span></a></li>
+									<li><a href="#" class="fa-rss"><span class="label">RSS</span></a></li>
+									<li><a href="#" class="fa-envelope"><span class="label">Email</span></a></li>
+								</ul>
+								<p class="copyright">© Juice 愛喝 | Design by <a href="{% url 'juice:about' %}"> 第五組全體組員</a></p>
+							</section>
+
+					</section>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+			<script src="{% static 'assets/js/skel.min.js' %}"></script>
+			<script src="{% static 'assets/js/util.js' %}"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="{% static 'assets/js/main.js' %}"></script>
+	<!-- //blog -->
+	<!-- footer -->
+	<div class="footer">
+		<div class="container">
+			<div class="agile-footer-grids">
+				<div class="col-md-3 w3-agile-footer-grid">
+					<h3>關於我們</h3>
+					<p>我們是一群台科大的學生,希望藉由這樣的店來推廣醜蔬果的實用性,更推廣人們不要因為外觀而唾棄食物</p>
+				</div>
+				<div class="col-md-3 w3-agile-footer-grid">
+					<h3>活動資訊</h3>
+					<ul>
+						<p>歡慶Juice愛喝開幕，每次消費皆可獲得拉霸抽獎乙次!!</p>
+					</ul>
+				</div>
+				<div class="col-md-3 w3-agile-footer-grid">
+					<h3>站內連結</h3>
+					<ul>
+						<li class="text"><a href="{% url 'juice:about' %}">關於我們</a></li>
+						<li class="text"><a href="{% url 'juice:gallery' %}">產品資訊</a></li>
+						<li class="text" id = "button_login"><a href="{% url 'juice:blog' %}">登入</a></li>
+						<li class="text"><a href="{% url 'juice:contact' %}">聯絡我們</a></li>
+					</ul>
+
+					<script>
+						if(document.getElementById('check').innerHTML != ""){
+							document.getElementById('button_login').style.display = "none";
+						}else{
+							document.getElementById('button_login').style.display = "block";
+						}
+					</script>
+
+				</div>
+				<div class="col-md-3 w3-agile-footer-grid">
+					<h3>加盟專線</h3>
+					<ul>
+						<p>0800-123-456</p>
+					</ul>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+	<!-- //footer -->
+	<!-- copyright -->
+	<div class="copyright">
+		<div class="container">
+			<p>© Juice 愛喝 | Design by <a href="{% url 'juice:about' %}"> 第五組全體組員</a> </p>
+		</div>
+	</div>
+	<!-- //copyright -->
+	<script src="{% static 'js/SmoothScroll.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/move-top.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/easing.js' %}"></script>
+	<!-- here stars scrolling icon -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			/*
+				var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear' 
+				};
+			*/
+								
+			$().UItoTop({ easingType: 'easeOutQuart' });
+								
+			});
+	</script>
+	<!-- //here ends scrolling icon -->
+</body>	
+</html>

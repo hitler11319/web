@@ -1,0 +1,154 @@
+ <style>
+   
+
+    #f2
+    {
+        font-family: 'Nunito', sans-serif;
+        color: #384047;
+    }
+
+    #panel1
+    {
+        padding: 10px 20px;
+        background: #f4f7f8;
+        border-radius: 8px;
+    }
+
+    h1
+    {
+        margin: 0 0 30px 0;
+        text-align: center;
+    }
+
+    #f2 input[type="text"],
+    #f2 input[type="password"],
+    #f2 input[type="date"],
+    #f2 input[type="datetime"],
+    #f2 input[type="email"],
+    #f2 input[type="number"],
+    #f2 input[type="search"],
+    #f2 input[type="tel"],
+    #f2 input[type="time"],
+    #f2 input[type="url"],
+    #f2 textarea,
+   
+
+    #f2 textarea,
+    #f2 select
+    {
+        border: 1px solid #ccc;
+    }
+
+    #f2 input[type="radio"],
+    #f2 input[type="checkbox"]
+    {
+        margin: 0 4px 8px 0;
+    }
+
+    #f2 .sui-sprite.sui-calendar-icon
+    {
+        margin-top: 14px;
+    }
+
+    #b1
+    {
+        padding: 19px 39px 18px 39px;
+        color: #FFF;
+        background-color: #4bc970;
+        font-size: 18px;
+        text-align: center;
+        font-style: normal;
+        border-radius: 5px;
+        width: 100%;
+        border: 1px solid #3ac162;
+        border-width: 1px 1px 3px;
+        box-shadow: 0 -1px 0 rgba(255,255,255,0.1) inset;
+        margin-bottom: 10px;
+    }
+
+    fieldset
+    {
+        margin-bottom: 30px;
+        border: none;
+    }
+
+    legend
+    {
+        font-size: 1.4em;
+        margin-bottom: 10px;
+    }
+
+    label
+    {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+        label.light
+        {
+            font-weight: 300;
+            display: inline;
+        }
+
+    .number
+    {
+        background-color: #5fcf80;
+        color: #fff;
+        height: 30px;
+        width: 30px;
+        display: inline-block;
+        font-size: 0.8em;
+        margin-right: 4px;
+        line-height: 30px;
+        text-align: center;
+        text-shadow: 0 1px 0 rgba(255,255,255,0.2);
+        border-radius: 100%;
+    }
+
+    #footer
+    {
+        font-size: 10px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    #passwordMatch
+    {
+        text-align: center;
+    }
+
+    .input-group-addon
+    {
+        background-color: #e8eeef;
+    }
+
+    #or
+    {
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .social
+    {
+        list-style-type: none;
+        background: #29AFBB;
+        height: 52px;
+        border: 2px solid#218C95;
+    }
+
+        .social li
+        {
+            padding-right: 20px;
+            display: inline-block;
+            font-size: 27px;
+            border-bottom: 5px solid#29AFBB;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+            .social li a
+            {
+                color: #fff;
+                vertical-align: -webkit-baseline-middle;
+            }
+</style>
