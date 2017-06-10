@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+
+<head>
+    <title>home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body onload = "rand()">
+    <script>
+        function rand(){
+            var r = parseInt(Math.random()*3+1);
+            document.getElementById('demo').innerHTML = r;
+            document.getElementById('myImage').src = "img" + "\\" + document.getElementById('demo').innerHTML + ".jpg";
+        }
+
+        function change() {
+            if (parseInt(document.getElementById('demo').innerHTML) == 1) {
+                document.getElementById('demo').innerHTML = 3;
+            } else {
+                document.getElementById('demo').innerHTML = parseInt(document.getElementById('demo').innerHTML) - 1;
+            }
+            document.getElementById('myImage').src = "img" + "\\" + document.getElementById('demo').innerHTML + ".jpg";
+        }
+
+        function change_add() {
+            if (parseInt(document.getElementById('demo').innerHTML) == 3) {
+                document.getElementById('demo').innerHTML = 1;
+            } else {
+                document.getElementById('demo').innerHTML = parseInt(document.getElementById('demo').innerHTML) + 1;
+            }
+            document.getElementById('myImage').src = "img" + "\\" +document.getElementById('demo').innerHTML + ".jpg";
+        }
+    </script>
+    <center>
+        <table>
+            <tr>
+                <p style="font-weight: bold;font-family: fantasy ; font-size:50px ; color:red ">即將上映</p>
+
+                <td><img src="img\arrow1.png" onclick="change()"></td>
+                <td><img src="img\pic1.jpg" id="myImage"></td>
+                <td><img src="img\arrow.png" onclick="change_add()"></td>
+            </tr>
+        </table>
+    </center>
+    <p id="demo" style="display:none">1</p>
+</body>
+
+</html>
