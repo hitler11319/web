@@ -14,7 +14,7 @@
 			die("connection Error:".$conn->connect_error);  //die會顯示文字，且其後的程式不執行
 		}
 
-		mysql_set_charset($conn, "utf-8");
+		mysqli_set_charset($conn, "utf8");
 
 		$sql = "insert into goods(goodsid, goodsname, goodsscribe, goodscost, goodssize, amount) values ('$goodsid', '$goodsname', '$goodsscribe', '$goodscost', '$goodssize', '$amount');";
 		//要面的參數一定要用單引號！！！（很重要，說三次）

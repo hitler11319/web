@@ -14,7 +14,7 @@
 			die("connection Error:".$conn->connect_error);  //die會顯示文字，且其後的程式不執行
 		}
 
-	mysql_set_charset($conn, "utf-8");
+	mysqli_set_charset($conn, "utf8");
 
 
 	$sql = "update goods set goodsid = '$goodsid', goodsname = '$goodsname', goodsscribe = '$goodsscribe', goodscost = '$goodscost', goodssize = '$goodssize', amount = '$amount' where goodsid = '$older_goodsid'";
