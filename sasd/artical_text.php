@@ -21,7 +21,7 @@
 
     <br>
     <br>
-    <div class="container1" style="font-weight: bold; width:1000px">
+    <div class="container1" style="font-weight: bold; width:1200px">
                 <?php
                    
                     $conn = new mysqli('localhost', 'root', '', 'filmcritic');
@@ -36,9 +36,9 @@
                     
                     $result = $conn->query($sql);
                     while($row = $result->fetch_assoc()){
-                    echo "<h1 style='font-size:40pt'>".$row['ArticalTitle']."</h1>";
+                    echo "<h1 style='font-size:40pt'>文章標題： ".$row['ArticalTitle']."</h1>";
                     echo "<br><br>" ;
-                    echo "<h4>".$row['artical_content']."</h4>";
+                    echo "<h3>".$row['artical_content']."</h3>";
                     $movie_id = $row['MovieID'];
                     }
                     $conn->close();

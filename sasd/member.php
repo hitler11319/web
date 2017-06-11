@@ -61,7 +61,7 @@ require_once 'db.php';
                 <qa class="abc">姓名:劉映秀<br><br>系籍:四不分二<br><br>興趣:打籃球 浮潛<br><br>負責:文章 電影管理</qa>
               </tr>
               <tr>
-                <td><br><br><img src="img/國禎.jpg " alt="黃國禎 " style="width:150px;height:150px;-webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; " class="img-circle "></td>
+                <td><br><br><img src="img/jen.jpg " alt="黃國禎 " style="width:150px;height:150px;-webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; " class="img-circle "></td>
               </td>
               <td>
                 <br><br>
@@ -69,19 +69,19 @@ require_once 'db.php';
               </td>
             </tr>
             <tr>
-              <td><br><br><img src="img/于慧.jpg " alt="連于慧 " style="width:150px;height:150px;-webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; " class="img-circle "></td>
+              <td><br><br><img src="img/yu.jpg " alt="連于慧 " style="width:150px;height:150px;-webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; " class="img-circle "></td>
               <td><br><br>
                 <qa class="abc">姓名:連于慧<br><br>系籍:四資管三<br><br>興趣:羽球 聽音樂<br><br>負責:會員管理</qa>
               </td>
             </tr>
             <tr>
-              <td><br><br><img src="img/雅涵.jpg " alt="楊雅涵" style="width:150px;height:150px;-webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; " class="img-circle "></td>
+              <td><br><br><img src="img/han.jpg " alt="楊雅涵" style="width:150px;height:150px;-webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; " class="img-circle "></td>
               <td><br><br>
                 <qa class="abc">姓名:楊雅涵<br><br>系籍:四資管二<br><br>興趣:美勞 手遊<br><br>負責:網站排版 功能構想</qa>
               </td>
             </tr>
             <tr>
-              <td><br><br><img src="img/禹宏.jpg " alt="盧禹宏 " style="width:150px;height:150px;-webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; " class="img-circle "></td>
+              <td><br><br><img src="img/hong.jpg " alt="盧禹宏 " style="width:150px;height:150px;-webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; " class="img-circle "></td>
               <td><br><br>
                 <qa class="abc">姓名:盧禹宏<br><br>系籍:四資管二<br><br>興趣:打程式 看影集<br><br>負責:整體架構 凱瑞組員</qa>
               </td>

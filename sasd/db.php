@@ -1,10 +1,10 @@
 <?php
 	@session_start();
-	$host='localhost';
-	$dbuser='root';
-	$dbpassword='sarah011';
-	$dbname='filmcritic';
-	$_SESSION['link'] = mysqli_connect($host, $dbuser, '', $dbname);
+	$host='sql306.byethost18.com';
+	$dbuser='b18_20209784';
+	$dbpassword='movietext';
+	$dbname='b18_20209784_filmcritic';
+	$_SESSION['link'] = mysqli_connect($host, $dbuser, $dbpassword, $dbname);
 
 	if ($_SESSION['link'])
 	{

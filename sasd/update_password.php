@@ -61,8 +61,8 @@ require_once 'db.php';
 							</div>
 							<div class="form-group">
 								<div class="col-lg-9 col-lg-offset-3">
-									<button type="reset" class="btn btn-default">Cancel</button>
-									<button type="submit" class="btn btn-primary">Submit</button>
+									<button type="reset" class="btn btn-default">清除</button>
+									<button type="submit" class="btn btn-primary">送出</button>
 								</div>
 							</div>
 						</fieldset>
@@ -86,21 +86,15 @@ $sql = "UPDATE `member` SET `MemberPassword`='{$MemberPassword}' ,`MemberEmail`=
 $result = mysqli_query($_SESSION['link'], $sql);
 if(mysqli_affected_rows($_SESSION['link']) > 0)
 {
-echo "<script>alert('更新成功！');</script>";
-$_SESSION['login_user_id']=0;
+echo "<script>alert('更新成功！'); parent.location.href = 'index.php' ;</script>";
 //mysqli_close($_SESSION['link']);
 //$new_id = mysqli_insert_id($_SESSION['link']);
-echo '<meta http-equiv=REFRESH CONTENT=1;url=login.php>';
 //echo "執行成功，新增後的 id 為 {$new_id}";
 }
 elseif(mysqli_affected_rows($_SESSION['link']) == 0)
-{
-echo "無資料更新";
-}
+{echo "無資料更新";}
 else
-{
-echo  "<br>{$sql} 語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);
-}
+{echo  "<br>{$sql} 語法執行失敗，錯誤訊息：" . mysqli_error($_SESSION['link']);}
 
 }
 

@@ -43,7 +43,7 @@
       <?php
       if($_SESSION['login_user_id']>0){
       echo"<ul class='nav navbar-nav navbar-right'>";
-        echo"<li><a href='logout.php' target='_self'>登出</a></li>";
+        echo"<li><a href='logout.php' target='myframe'>登出</a></li>";
       echo"</ul>";
       echo"<ul class='nav navbar-nav navbar-right'>";
         echo"<li><a href='update_password.php' target='myframe'>修改會員資料</a></li>";
@@ -53,10 +53,10 @@
       echo"</ul>";
       }else{
       echo "<ul class='nav navbar-nav navbar-right'>";
-        echo"<li><a href='login.php' target='_self'>登入</a></li>";
+        echo"<li><a href='login.php' target='myframe'>登入</a></li>";
       echo"</ul>";
       echo"<ul class='nav navbar-nav navbar-right'>";
-        echo"<li><a href='register.php' target='_self'>註冊</a></li>";
+        echo"<li><a href='register.php' target='myframe'>註冊</a></li>";
       echo"</ul>";
       } 
       ?>

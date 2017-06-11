@@ -34,13 +34,12 @@
         <br>
         <center>
         <form action="artical_insert.php" method="post">
-        <?php echo "<label style = 'color:white;font-size:24pt'>".$name."</label>"; ?><br>
+        <?php echo "<label style = 'color:white;font-size:42pt'>電影名稱：".$name."</label>"; ?><br><br>
         <input type = "text"style = "display:none" name="movie_id" value = <?php echo $id; ?>>
-        <label style = "color:white">文章標題:</label><input type="text" name="title"><br><p>
-        <label style = "color:white">劇透度（1最小，5最大）: </label><input type="number" name="quantity" min="1" max="5" step="1" value="1"><br><p>    
-        <label style = "color:white">文章內容:</label><br><textarea name="comment" rows="5" cols="45"></textarea><br><br>
-        <button >送出</button>
-        <input type="reset" value="清除">
+        <label style = "color:white;font-size:24pt">文章標題:</label><input type="text" name="title" style = "width:250px;height:40px"><br><p>
+        <label style = "color:white;font-size:24pt">劇透度（1最小，5最大）: </label><input type="number" name="quantity" min="1" max="5" step="1" value="1" style = "width:250px;height:40px"><br><p>    
+        <label style = "color:white;font-size:24pt">文章內容:</label><br><textarea name="comment" rows="15" cols="45" style = "width:1000px;height:600px"></textarea><br><br>
+        <button  style = "font-size:36pt; width:200px;height:80px">送出</button>
         </form>
         </center>
         <?php echo "<a href='movie_text.php?id=".$id.">回上頁</a>"; ?>

@@ -9,7 +9,7 @@ $conn = new mysqli('localhost', 'root', '', 'filmcritic');
 if ($conn->connect_error) {
     die($conn->connect_error);
 }
-mysqli_set_charset($conn, 'utf-8');
+mysqli_set_charset($conn, 'utf8');
 
 $sql =" INSERT INTO artical(MovieID, ArticalTitle, Spoiler, artical_content) values ('$id', '$title', '$quantity', '$comment');";
 

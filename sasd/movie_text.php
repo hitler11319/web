@@ -70,7 +70,7 @@
                 
                     $result = $conn->query($sql);
                     while($row = $result->fetch_assoc()){
-                    echo "<a class='list-group-item' href='artical_text.php?id=".$row['ArticalID']."' style='background-color:#93FF93;font-size:24pt' target = '_self'>".$row['ArticalTitle']."</a>";
+                    echo "<a class='list-group-item' href='artical_text.php?id=".$row['ArticalID']."' style='background-color:#93FF93;font-size:24pt' target = '_self'>".$row['ArticalTitle']."（劇透度：".$row['Spoiler']."）</a>";
                     }
 
                     $conn->close();
