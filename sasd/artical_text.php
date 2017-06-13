@@ -38,7 +38,7 @@
                     while($row = $result->fetch_assoc()){
                     echo "<h1 style='font-size:40pt'>文章標題： ".$row['ArticalTitle']."</h1>";
                     echo "<br><br>" ;
-                    echo "<h3>".$row['artical_content']."</h3>";
+                    echo "<h3>".nl2br($row['artical_content'])."</h3>";
                     $movie_id = $row['MovieID'];
                     }
                     $conn->close();
