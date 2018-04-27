@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>Testing QR code</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script type="text/javascript">
+            function generateBarCode(){
+                var url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + document.getElementById('text').value + '&amp;size=100x100';
+                document.getElementById('barcode').src = url;
+            }
+        </script>
+    </head>
+    <body>
+        <input id="text" type="text" value="input data"/> 
+
+      <img id='barcode' 
+            src="https://api.qrserver.com/v1/create-qr-code/?data=NRIC or Work Permit&amp;size=100x100" 
+            alt="" 
+            title="your qrcode" 
+            width="300" 
+            height="300" />
+       <button id="create" onclick="generateBarCode();" >click </button>
+    </body>
+</html>
