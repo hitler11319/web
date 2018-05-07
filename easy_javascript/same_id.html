@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+
+<p id="a">1</p>
+<p id="a">2</p>
+<p id="a">3</p>
+
+<script>
+document.getElementById('a').innerHTML = "4";
+document.getElementById('a').id = "b";
+document.getElementById('a').innerHTML = "5";
+</script>
+
+<!-- 在相同的id下，只會先改第一個找到的，所以如同上面，1會先改成4，而再改完id後，做第3行則2變成5
+-->
+
+</body>
+</html>
+
