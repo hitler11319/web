@@ -39,6 +39,10 @@
 				echo nl2br("<tr><td>".$good["goodsid"]."</td><td>".$good["goodsname"]."</td><td>".$good["goodsscribe"]."</td><td>".$good["goodscost"]."</td><td>".$good["goodssize"]."</td><td>".$good["amount"]."</td><td>  <a href='update.php?goodsid=".$good["goodsid"]."'>修改</a></td><td><a href='delete.php?goodsid=".$good["goodsid"]."'>刪除</a></td></tr>");
 			}
 			$conn->close();
+
+			//這邊因為php列出資料階段不支援js，所以看起來得用網址，但相對危險（以下2點是我想到的解決方案）
+			// 1.每個table再用form包起來，將要傳出去的寫在隱藏的input中，只要按下按鈕就會把此form傳出去（一筆資料一個form）
+			// 2.都先列出資料後，在下方寫js（內容就寫button 按下去後傳什麼）  ex:  document.getElementlyById('aaa').onclick = "";  這種寫法
 		?>
 	</table>
 	<br>
