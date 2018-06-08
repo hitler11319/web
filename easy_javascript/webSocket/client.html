@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset = "utf-8">
+	<title>client</title>
+	<style>
+		table, tr , td {
+			border:1px solid gray;
+		}
+	</style>
+</head>
+<body>
+
+<h1>Client</h1>
+<input type = "text" id = "message">
+<button onclick="toSend();">送出</button><br><br>
+
+
+<table id="my_table"><tr id = "tr"></tr></table>
+
+
+<script>
+
+//目前無但作用，大致上長成這樣
+//http://muki.tw/tech/websocket-simple-introduce-and-use/
+
+	function init(){
+
+	url = "";   //是要要連線的網址（http要改這成ws, https改成 wss）
+	websocket = new WebSocket(url);   //開啟socket
+
+	//onopen看有沒有連線
+	websocket.onopen = function(evt) { 
+        alert("已成功連線");
+    };
+
+    //onclose連線中斷時
+    websocket.onclose = function(evt) {
+        alert("未成功連線");
+    };
+
+    //onmessage是只收到訊息後要做啥
+    websocket.onmessage = function(evt) {
+        
+    	var data = $.parseJSON(evt.data);   //用json來傳（也可直接字串來行）
+
+    	var sender = data.sender;
+    	var message = data.message;
+
+
+    	var tr = document.getElementById("tr");
+		var td = document.createElement('td');
+		var t = document.createTextNode(sender + "說:  " + message);
+		td.appendChild(t);
+		tr.appendChild(td);
+    };
+
+    //onerror是前判連線或事件是否正確
+    websocket.onerror = function(evt) {
+        alert("error:  " + evt.data);
+    };
+
+}
+
+
+    //自己寫的函式，來送資料的
+    function toSend(){
+
+    	websocket.send(JSON.stringify({
+    		'sender': "client",
+    		'message': document.getElementById("message").value,
+		}));
+    }
+
+
+    window.addEventListener("load", init, false);   //在load的時候載入監聽  init為function
+
+    //websocket.close()  //關連線
+</script>
+
+
+
+</body>
+</html> 
