@@ -43,6 +43,7 @@
 			//這邊因為php列出資料階段不支援js，所以看起來得用網址，但相對危險（以下2點是我想到的解決方案）
 			// 1.每個table再用form包起來，將要傳出去的寫在隱藏的input中，只要按下按鈕就會把此form傳出去（一筆資料一個form）
 			// 2.都先列出資料後，在下方寫js（內容就寫button 按下去後傳什麼）  ex:  document.getElementlyById('aaa').onclick = "";  這種寫法
+			// 3.或試試 在button onclick裡寫 <?php echo "<script> document.getElementryById('demo').value = '3'; </script> ? >" 這樣寫(在php中再包一個php的echo)
 		?>
 	</table>
 	<br>
