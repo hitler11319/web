@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset = "utf-8">
+    <title>p2p communication</title>
+</head>
+<body onload="openWebsocket();">
+
+<h1>p2p communication</h1>
+<input type = "text" id = "message">
+<button onclick="toSend();">送出</button><br><br>
+
+<div id="displaychat"></div>
+
+
+<script>
+
+function toSend(){
+    var text = document.getElementById('message').value;
+    document.getElementById('displaychat').connection.send(text);
+    $('#displaychat').append('Me say :<br>' + text + '<br><br>');
+    document.getElementById('message').value = '';
+}
+
+
+function openWebsocket(){
+    var url = document.URL;
+    url = url.replace('http', 'ws');
+    alert(url);
+    var connection = new WebSocket(url);
+
+    connection.onopen = function(){
+        connection.send("start chat");
+    }
+
+    connection.onerror = function(error){
+        alert('websocket error:  ' + error);
+    }
+
+    connection.onmessage = function(e){
+        var output = JSON.parse(e.data);
+        var text = output.data;
+
+        $('#displaychat').append('other say :<br>' + text + '<br><br>');
+    }
+
+    document.getElementById(displaychat).connection = connection;
+}
+</script>
+
+
+
+</body>
+</html> 
