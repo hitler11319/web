@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body >
+<div style="width:1000px;height:500px;" onclick="showCoords(event);"></div>
+<button id="pos" style="position:absolute;">now</button>
+<p id="demo"></p>
+
+<script>
+function showCoords(event) {
+    var x = event.screenX;
+    var y = event.screenY;
+    var coords = "X: " + x + ", Y: " + y
+    document.getElementById("demo").innerHTML = coords;
+    //因為實際上位置會有落差，所以做以下調整（依據不同的會有不同的調整）
+    //目前可以覺得的原因是div的部份並不是完全貼著body（即(0,0)走的）
+    y = y -66;
+    x = x -0;
+    document.getElementById("pos").style.top = y + "px";
+    document.getElementById("pos").style.left = x + "px";
+    //alert(document.getElementById("pos").style.top + " " + document.getElementById("pos").style.left);
+}
+</script>
+
+</body>
+</html>
