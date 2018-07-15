@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<body>
+<head>
+<meta charset="utf-8">
+<title>Radar Chart</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="js\Chart.js"></script>
+<script src="js\utils.js"></script>
+<style>
+    .zone{width:100%; height:100%;}
+</style>
+</head>
+<body>
+
+<div class="box">
+    <canvas id="chart-area" class="zone"></canvas>
+</div>
+
+<script>
+var config = {
+        
+        type: 'radar',
+        data: {
+            // 雷達圖的角
+            labels: ["體力", "耐力", "技能強度", "力量", "防守力", "速度", "魔力"],
+            color: '#fff',
+            datasets: [{
+                // 雷達圖颜色
+                backgroundColor: window.chartColors.red,
+                borderColor: window.chartColors.blue,
+                pointBackgroundColor: window.chartColors.yellow,
+                // 數據 如[1, 2, 3, 4, 5, 6, 7, 8]
+                data: [3, 2, 5, 7, 2, 1, 5]
+            }]
+        },
+        options: {
+            fontColor:window.chartColors.green,
+
+            custom: {
+                fontColor: window.chartColors.pink,
+                color: window.chartColors.orange
+            },
+            legend: {
+                display: true,
+                position: 'left',
+            },
+            title: {
+                display: true,
+                text: '我的能力值',
+                fontColor: window.chartColors.red,
+                fontSize: 36
+            },
+            scale: {
+                // ticks 0 10 20等標籤
+                fontColor: window.chartColors.red,
+                ticks: {
+                    display: true,
+                    beginAtZero: true,
+                    fontColor: "#fff",
+                    maxTicksLimit: undefined,
+                },
+                scaleLabel: {
+                    fontColor: window.chartColors.green,
+                },
+                // 線條
+                gridLines: {
+                    color: window.chartColors.black,
+                    //zeroLineColor: '#fff'
+                }
+            }
+        }
+    };
+
+    window.onload = function() {
+        var ctx = document.getElementById('chart-area').getContext('2d');
+        window.myLine = new Chart(ctx, config);
+    };
+</script>
+
+
+</body>
+</html>
