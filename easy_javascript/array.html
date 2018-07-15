@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>JavaScript Arrays</h2>
+
+<p>The length property provides an easy way to append new elements to an array without using the push() method.</p>
+
+<button onclick="myFunction()">add lemon</button>
+<button onclick="myFunction2()">add pineapple</button>
+<button onclick="is_array(fruits)">this array is array?</button>
+<button onclick="join_array(fruits)">array join</button>
+<button onclick="myFunction3()">remove last</button>
+<button onclick="myFunction4()">remove first</button>
+<button onclick="myFunction5()">splice 1 </button>
+<button onclick="myFunction6()">splice 2 </button>
+
+<p id="demo"></p>
+<p id="demo2"></p>
+
+<script>
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+document.getElementById("demo").innerHTML = fruits;
+
+function myFunction() {
+    fruits[fruits.length] = "Lemon";
+    document.getElementById("demo").innerHTML = fruits;
+}
+
+function myFunction2() {
+    fruits.push("Pineapple");
+    document.getElementById("demo").innerHTML = fruits;
+}
+
+function is_array(myArray){
+	document.getElementById("demo2").innerHTML = myArray instanceof Array;
+}
+
+function join_array(myArray){
+	document.getElementById("demo2").innerHTML = myArray.join(" * ");
+}
+
+function myFunction3() {
+    fruits.pop();  //移除最後一項
+    document.getElementById("demo").innerHTML = fruits;
+}
+
+function myFunction4() {
+    fruits.shift();  //移除第一項
+    document.getElementById("demo").innerHTML = fruits;
+}
+
+function myFunction5() {
+    fruits.splice(2, 0, "Lemon", "Kiwi"); //前的2個數字代表 第2個位置開始remove 0個項目，後面的參數是可以新增的項目 =>第2個位置開始新增2個項目（所以原先的Apple就往後移了）
+    document.getElementById("demo").innerHTML = fruits;
+}
+
+function myFunction6() {
+    fruits.splice(0, 1, "apple", "orange");  //第0個位置開始，先刪掉1個項目，再從0的位置新增apple和orange
+    document.getElementById("demo").innerHTML = fruits;
+}
+
+//如果是splice(2)就從0開始刪掉2個項目
+//a = [0, 1, 2] b = [4,5,6]
+//a.concat(b)  =>串接2個array（當然也可以3個以上）
+//a.sort() =>排序
+//也可這樣寫sort(function(a, b){return a - b});
+//a.reverse() =>順序全部相反 第一個變最後一個
+//Math.max.apply(null, a);  =>取a陣列的最大值（陣列中要是int)
+//Math.min.apply(null, a);  =>取a陣列的最小值（陣列中要是int)
+//a.forEach(myFunction7);  =>把a陣列內容全部放入myfunction7中
+
+function myFunction7(item, index) {
+    txt = txt + item + "<br>"; 
+}
+
+//var b = a.map(myFunction8);  => b為a陣列全部放墜myfunction8中後的結果（所以b也是陣列）
+
+//a.filter(myfunction9) =>filter a的內容
+//a.every(myfunction10) =>全部內容都要過標準會return true否則為false
+//a.reduce(myfunction11) =>把內容全部送進function11且會有個值會一直增加（即total 會把上次的結果繼續帶到下次）
+function myFunction11(total, value, index, array) {
+    return total + value;
+}
+//a.indexOf(2);  =>找其值的位置
+
+</script>
+
+</body>
+</html>

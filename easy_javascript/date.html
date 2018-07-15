@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>	
+	for(var i = 0; i <= 10; i++){
+    	var p = document.createElement('p');
+    	p.id = "demo" + i.toString();
+        document.body.append(p);
+    }
+</script>
+
+<script>
+var d = new Date();
+document.getElementById("demo0").innerHTML = d.toDateString();
+document.getElementById("demo1").innerHTML = d.toUTCString();
+document.getElementById("demo2").innerHTML = d.toString();
+document.getElementById("demo3").innerHTML = d;
+
+var a = new Date(-1000000000);
+document.getElementById("demo4").innerHTML = a;
+
+var b = new Date(86400000);
+document.getElementById("demo5").innerHTML = b;
+
+var c = new Date(2018, 11, 24);
+document.getElementById("demo6").innerHTML = c;
+
+var e = new Date("2015-03-25");
+document.getElementById("demo7").innerHTML = e;
+
+var f = new Date("2015");
+document.getElementById("demo8").innerHTML = f;
+
+var g = new Date("03/25/2015");
+document.getElementById("demo9").innerHTML = g;
+</script>
+
+</body>
+</html>

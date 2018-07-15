@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<body>
+<head>
+<meta charset="utf-8">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+            <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="row">
+                                    <label for="">票券種類新增刪除：</label>
+                                </div>
+                                <br>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="ticName">票種名稱：</label>
+                                            <input id="ticName" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="ticPrice">價格：</label>
+                                            <input id="ticPrice" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="ticNumber">張數：</label>
+                                            <input id="ticNumber" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 col-md-offset-6">
+                                    <button type="button" id="addRow" class="btn btn-default">新增票卷</button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" id="delRow" class="btn btn-default">刪除票卷</button>
+                                </div>
+                            </div>
+
+                            <br>
+                            <table class="table table-bordered" id="ticList">
+                                <thead>
+                                    <tr>
+                                        <th>&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                        <th>票券種類</th>
+                                        <th>票券價格</th>
+                                        <th>票券張數</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                    </div>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $("#addRow").click(function() {
+            var name = document.getElementById('ticName').value;
+            var price = document.getElementById('ticPrice').value;
+            var number = document.getElementById('ticNumber').value;
+            let count = $("#ticList tbody tr").length;
+
+            if (count > 4) {
+                alert("最多五種！");
+            } else {
+                if (name != "" && price != "" && number != "" && parseInt(number) > 0 && parseInt(price) >= 0) {
+                    var trElement = "<tr><td><input type='checkbox' class='record'></td><td>" + name + "</td><td>"+ price + "</td><td>"+ number + "</td></tr>";
+                    $("#ticList tbody").append(trElement);
+                }
+            }
+        });
+
+        // Find and remove selected table rows
+        $("#delRow").click(function() {
+            $("#ticList tbody").find('.record').each(function() {
+                if ($(this).is(":checked")) {
+                    $(this).parents("tr").remove();
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
