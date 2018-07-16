@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.ancestors * { 
+    display: block;
+    border: 2px solid lightgrey;
+    color: lightgrey;
+    padding: 5px;
+    margin: 15px;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+	$("#b1").click(function(){
+    	$("span").parents().css({"color": "red", "border": "2px solid red"});
+    });
+    
+    $("#b2").click(function(){
+    	$("span").parents("ul").css({"color": "red", "border": "2px solid red"});
+    });
+    
+    $("#b3").click(function(){
+    	$("span").parent().css({"color": "red", "border": "2px solid red"});
+    });
+    
+    $("#b4").click(function(){
+    	$("span").parentsUntil("div").css({"color": "red", "border": "2px solid red"});
+    });
+});
+</script>
+</head>
+
+<body >body (great-great-grandparent)
+  <div class="ancestors" style="width:500px;">div (great-grandparent)
+    <ul>ul (grandparent)  
+      <li>li (direct parent)
+        <span>span</span>
+      </li>
+    </ul>   
+  </div>
+  
+  <button id='b1'>parents</button>
+  <button id='b2'>parents - ul</button>
+  <button id='b3'>parent</button>
+  <button id='b4'>under parent div element , but no own</button>
+</body>
+
+<!-- The outer red border, before the body element, is the html element (also an ancestor) -->
+</html>

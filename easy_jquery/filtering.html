@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+
+	$("#b1").click(function(){
+    	$("div").first().css("background-color", "yellow");
+    });
+    
+    $("#b2").click(function(){
+    	$("div").last().css("background-color", "yellow");
+    });
+    
+   	$("#b3").click(function(){
+    	$("p").eq(1).css("background-color", "yellow");
+        $("p").eq(4).css("background-color", "yellow");//從0開始算的
+    });
+    
+    $("#b4").click(function(){
+    	$("p").filter(".intro").css("background-color", "yellow");
+    });
+    
+    $("#b5").click(function(){
+    	$("p").not(".intro").css("background-color", "yellow");
+    });
+    
+});
+</script>
+</head>
+<body>
+
+<h1>Welcome to My Homepage</h1>
+
+<p>This is a paragraph.</p>
+
+<div style="border: 1px solid black;">
+  <p class='intro'>A paragraph in a div.</p>
+  <p class='intro1'>Another paragraph in a div.</p>
+</div>
+<br>
+
+<div style="border: 1px solid black;">
+  <p class='intro2'>A paragraph in another div.</p>
+  <p class='intro3'>Another paragraph in another div.</p>
+</div>
+<br>
+
+<button id='b1'>first div</button>
+<button id='b2'>last div</button>
+<button id='b3'>second 'p'</button>
+<button id='b4'>p that class is intro</button>
+<button id='b5'>p that class isn't intro</button>
+
+</body>
+</html>

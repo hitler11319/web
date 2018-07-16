@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+
+	//此2種都是傳資料到php or asp中進行處理並回傳資料
+    //hello.php尚未寫，只做練習用
+    $("#b1").click(function(){
+        $.get("hello.asp", function(data, status){
+            alert("Data: " + data + "\nStatus: " + status);
+        });
+    });
+    
+    $("#b2").click(function(){
+        $.post("hello2.asp",
+        {
+          name: "Donald Duck",
+          city: "Duckburg"
+        },
+        function(data,status){
+            alert("Data: " + data + "\nStatus: " + status);
+        });
+    });
+});
+</script>
+</head>
+<body>
+
+<button id='b1'>Send an HTTP GET request to a page and get the result back</button>
+<button id='b2'>Send an HTTP POST request to a page and get the result back</button>
+
+</body>
+</html>
+
+<!--記得要開server-->

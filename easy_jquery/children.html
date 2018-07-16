@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.descendants * { 
+    display: block;
+    border: 2px solid lightgrey;
+    color: lightgrey;
+    padding: 5px;
+    margin: 15px;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+	$("#b1").click(function(){
+    	$("div").children().css({"color": "red", "border": "2px solid red"});
+    });
+    
+   	$("#b2").click(function(){
+    	$("div").find("*").css({"color": "red", "border": "2px solid red"});
+    });
+    
+   	$("#b3").click(function(){
+    	$("div").children("p.first").css({"color": "red", "border": "2px solid red"});
+    });
+    
+    $("#b4").click(function(){
+    	$("div").find("span").css({"color": "red", "border": "2px solid red"});
+    });
+    
+});
+</script>
+</head>
+<body>
+
+<div class="descendants" style="width:500px;">div (current element) 
+  <p class='first'>p (child)
+    <span>span (grandchild)</span>     
+  </p>
+  <p class="second">p (child)
+    <span>span (grandchild)</span>
+  </p> 
+</div>
+
+<button id='b1'>children</button>
+<button id='b2'>all children</button>
+<button id='b3'>children p that class = first</button>
+<button id='b4'>children span </button>
+
+</body>
+</html>

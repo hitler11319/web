@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#b1").click(function(){
+        $("#div1").load("hello.txt");
+    });
+    
+    $("#b2").click(function(){
+        $("#div1").load("hello.txt #p1");  //會把h2給取代掉，並且是p而id是p1
+    });
+    
+    $("#b3").click(function(){
+        $("#div1").load("hello.txt", function(responseTxt, statusTxt, xhr){
+        	if(statusTxt == "success")
+            	alert("External content loaded successfully!");
+        	if(statusTxt == "error")
+            	alert("Error: " + xhr.status + ": " + xhr.statusText);
+    	});
+    });
+});
+</script>
+</head>
+<body>
+
+<div id="div1"><h2>Let jQuery AJAX Change This Text</h2></div>
+
+<button id='b1'>Get External Content</button>
+<button id='b2'>Get External Content to class is p1</button>
+<button id='b3'>Get External Content and alert</button>
+
+</body>
+</html>
+
+<!--要記得開server-->
