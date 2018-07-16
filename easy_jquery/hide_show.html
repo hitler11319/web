@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("p").click(function(){
+        $(this).hide();
+    });
+    
+    $("#hide").click(function(){
+        $("p").hide();
+    });
+    $("#show").click(function(){
+        $("p").show();
+    });
+    
+    $("#later").click(function(){
+        $("p").hide(1000);
+    });
+    
+    $("#later2").click(function(){
+        $("p").show(1000);
+    });
+    
+    $("#toggle").click(function(){
+        $("p").toggle(800);  //收縮
+    });
+});
+</script>
+</head>
+<body>
+
+<p>If you click on the "Hide" button, I will disappear.</p>
+
+<button id="hide">Hide</button>
+<button id="show">Show</button>
+<button id="later">later 1 s to hide</button>
+<button id="later2">later 1 s to show</button>
+<button id="toggle">toggle</button>
+
+</body>
+</html>

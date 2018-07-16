@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("p#a").click(function(){
+        $(this).hide();
+    });
+    
+    $("p#b").dblclick(function(){
+        $(this).hide();
+    });
+    
+    $("#p1").mouseenter(function(){
+        $(this).hide();
+    });
+    
+    $("#p2").mouseleave(function(){
+        $(this).hide();
+    });
+    
+    $("#p3").mousedown(function(){
+        alert("Mouse down over p3!");
+    });
+    
+    $("#p4").mouseup(function(){
+        alert("Mouse up over p4!");
+    });
+    
+    $("#p5").hover(function(){
+        alert("You entered p1!");
+    },
+    function(){
+        alert("Bye! You now leave p1!");
+    });
+    
+    
+    $("input").focus(function(){
+        $(this).css("background-color", "#cccccc");
+    });
+    $("input").blur(function(){   //離開focus
+        $(this).css("background-color", "#ffffff");
+    });
+    
+    $("p#c").on({
+    dblclick: function(){
+        $(this).css("background-color", "lightgray");
+    },  
+    click: function(){
+        $(this).css("background-color", "yellow");
+    } 
+});
+});
+</script>
+</head>
+<body>
+
+<p id="a">If you click on me, I will disappear.</p>
+<p id="b">If you double click on me, I will disappear.</p>
+<p id="p1">this is p1</p>
+<p id="p2">this is p2</p>
+<p id="p3">this is p3</p>
+<p id="p4">this is p4</p>
+<p id="p5">this is p5</p><br>
+
+Name: <input type="text" name="fullname"><br>
+Email: <input type="text" name="email">
+
+<br>
+
+<p id="c">this is many function</p>
+
+</body>
+</html>

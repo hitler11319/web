@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script> 
+$(document).ready(function(){
+    $("#b1").click(function(){
+        $("div").animate({left: '250px'});
+    });
+    
+    $("#b2").click(function(){
+    	$("div").animate({
+        	left: '+=250px',
+        	opacity: '0.5',
+        	height: '150px',
+        	width: '150px'
+    	});
+	});
+    
+    $("#b3").click(function(){
+    	$("div").animate({
+        	left: '-=250px',
+        	height: '+=150px',
+        	width: '+=150px'
+        });
+    });
+    
+    $("#b4").click(function(){
+        $("div").animate({
+            height: 'toggle'  //have 'show' , 'hide' and 'toggle' can choose
+        });
+    });
+    
+    $("#b5").click(function(){
+        $("div").animate({top: '+=150px'});
+    });
+    
+    $("#b6").click(function(){
+        $("div").animate({top: '-=150px'});
+    });
+    
+});
+</script> 
+</head>
+<body>
+
+<button id='b1'>start to left fixed 250px</button>
+<button id='b2'>start to left 250px and change height and width</button>
+<button id='b3'>start to right 150px and change height and width</button>
+<button id='b4'>toggle height</button>
+<button id='b5'>start to top 150px</button>
+<button id='b6'>start to top -150px</button>
+
+<br><br>
+
+<div style="background:#98bf21;height:100px;width:100px;position:absolute;"></div>
+
+</body>
+</html>
