@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body>
+<form>
+<input type="file" accept="image/*" onchange="loadFile(event)">
+<button >上傳</button><br>
+<img id="output"/>
+</form>
+<script>
+  var loadFile = function(event) {
+    var output = document.getElementById('output');
+    output.src = URL.createObjectURL(event.target.files[0]);
+  };
+</script>
+
+
+</body>
+</html>
