@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<button onclick="window.open();">click to open other windows</button>
+<button onclick="openWin();">other mathod to opern other windows</button>
+<button onclick="window.close();">click to close current windows</button>
+<button onclick="window.moveTo(500, 100);">click to move current windows</button>
+<button onclick="window.resizeTo(1000, 800);">click to resize current windows</button>
+
+
+<script>
+	function openWin() {
+    	var myWindow=window.open("", "myWindow", "width=200, height=100");
+    	myWindow.document.write("<p>This is 'myWindow'</p>");
+	}
+</script>
+</body>
+</html>
