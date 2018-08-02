@@ -22,20 +22,29 @@
   </form>
 
   <a href="#" onclick="printScreen(print_parts);" >Printing ... </a>
-  
+  <a href="#" onclick="printscreen();" >Printing </a>
 </div>
 
 <script type="text/javascript">
 function printScreen(printlist) 
   {
+     var h_value = document.head.innerHTML;
      var value = printlist.innerHTML;
      var printPage = window.open("", "Printing...", "");
      printPage.document.open();
-     printPage.document.write("<HTML><head></head><BODY onload='window.print();window.close()'>");
+     printPage.document.write("<HTML><head>");
+     printPage.document.write(h_value);
+     printPage.document.write("</head><BODY onload='window.print();window.close()'>");
      printPage.document.write("<PRE>");
      printPage.document.write(value);
      printPage.document.write("</PRE>");
      printPage.document.close("</BODY></HTML>");
+  }
+
+  //另一種
+  function printscreen(){
+    var text = document;
+    Print(text);
   }
 </script>
 
