@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>寫/讀檔</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<script>
+//建立FileSystemObject物件
+var objFSO=new ActiveXObject("Scripting.FileSystemObject");
+
+//開啟文字檔
+var objStream=objFSO.OpenTextFile("test.txt",ForWriting,true,false)
+//ForWriting:可寫入
+//ForReading:唯讀
+//ForAppending:可入資料至檔尾
+
+//第一個true:是否建立新檔案
+//第二個false: 表示使用 ASC II 編碼開啟檔案
+
+//寫檔
+objStream.WriteLine("寫入的字串");
+//Write(line):寫入一行資料
+//WriteLine(line);寫入一行資料加上換行字元
+//writeBlankLines(num);寫入 1 或num 行空白行
+
+//讀檔
+var line=objFSO.ReadLine();
+document.write(line);
+//ReadLine():讀 取一行，不包含換行字元
+//Read(num):讀取 num 個字元
+//ReadAll():讀取檔案全部
+
+
+//關閉檔案
+objStream.Close();
+</script>
+
+</body>
+</html>
