@@ -37,10 +37,8 @@ function printScreen(printlist)
      printPage.document.open();
      printPage.document.write("<HTML><head>");
      printPage.document.write(h_value);
-     printPage.document.write("</head><BODY onload='window.print();window.close()'>");
-     printPage.document.write("<PRE>");
+     printPage.document.write("</head><BODY onload='window.print();window.close();return false;'>");
      printPage.document.write(value);
-     printPage.document.write("</PRE>");
      printPage.document.close("</BODY></HTML>");
   }
 
