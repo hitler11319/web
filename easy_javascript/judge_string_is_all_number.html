@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>信用卡繳費</title>
+    <meta name='description' content="" />
+    <meta name='keywords' content="" />
+    <meta name="MobileOptimized" content="width">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap-wizard/1.2/jquery.bootstrap.wizard.js"></script>
+</head>
+<body>
+    <br>
+    <center><h1>信用卡繳費</h1></center><br><br>
+
+        <center><div class="panel panel-primary setup-content"  style="width:80%;">
+                <div class="panel-heading">
+                    <h3 class="panel-title">輸入您的信用卡卡號</h3>
+                </div>
+                <div class="panel-body">
+
+                    <form class="form-horizontal" >
+
+                        <div class="form-group">
+                            <label for="brand" class="col-sm-2 control-label">帳號</label>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="card_number1" value="1000" maxlength="4">
+                            </div>
+                            <div class="col-sm-1">
+                                <p>-</p>
+                            </div>
+
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="card_number2"  value="8856" maxlength="4">
+                            </div>
+                            <div class="col-sm-1">
+                                <p>-</p>
+                            </div>
+
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="card_number3"  value="4213" maxlength="4">
+                            </div>
+                            <div class="col-sm-1">
+                                <p>-</p>
+                            </div>
+
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="card_number4"  value="7785" maxlength="4">
+                            </div>
+
+                        </div>
+                        <br><br>
+
+                        <button class="btn btn-success  btn-lg" type="button" onclick="check();">送出</button>
+                    </form>
+                </div>               
+            </div></center>
+
+            <script>
+                    function check(){
+                        var alert_text = "";
+                        for(var i = 1; i <= 4; i++){
+                            if(document.getElementById('card_number' + i.toString()).value == ""){
+                                alert_text = "您有資料未輸入";
+                                break;
+                            }else{
+                                //判斷全是數字
+                                if(/^[\d]+$/.test(document.getElementById('card_number' + i.toString()).value) == false){alert_text = "格式錯誤";break;}
+                                if(document.getElementById('card_number' + i.toString()).value.length != 4){alert_text = "資料格式錯誤";}
+                            }
+                        }
+
+                        if(alert_text == ""){
+                            //做接下來的事
+                        }else{
+                            alert(alert_text);
+                        }
+                    }
+            </script>
+</body>
+</html>
