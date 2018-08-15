@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Inputs</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="form-group">
+        <label for="centerName" class="col-md-2 control-label">姓名</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" value="" placeholder="姓名" id="name" onkeyup="checkName()">
+            <span id="validationName" style="color: red"></span>
+        </div>
+    </div>
+    <script type="text/javascript">
+    function checkName() {
+        var value = $('#name').val()
+        if (!value) {
+            document.getElementById('validationName').innerText = '欄位不得為空'
+        } else {
+            document.getElementById('validationName').innerText = ''
+        }
+        return document.getElementById('validationName').innerText
+    }
+    </script>
+</body>
+
+</html>
