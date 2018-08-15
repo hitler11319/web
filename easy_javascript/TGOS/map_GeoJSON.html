@@ -57,12 +57,18 @@
         var str1 = pDrawingManager.getGeoJson();  //取得所有JSON
         document.getElementById("res").innerHTML = str1;
 
-        var kml = tokml(JSON.parse(str1));
-        document.getElementById('res1').innerHTML = kml;
-        //var convertedData = 'application/vnd.google-earth.kml+xml;charset=utf-8,' + encodeURIComponent(kml);
+        var kml = tokml(JSON.parse(str1), {
+            documentName: 'Your Map',
+        });
+        alert(kml);
 
-        //document.getElementById('export').setAttribute('href', 'data:' + convertedData);
-        //document.getElementById('export').setAttribute('download','data.kml');
+        var convertedData = 'application/vnd.google-earth.kml+xml;charset=utf-8,' + encodeURIComponent(kml);
+
+        document.getElementById('export').setAttribute('href', 'data:' + convertedData);
+        document.getElementById('export').setAttribute('download','data.kml');
+
+        //要取到座標值之陣列
+        //kml.features[0].geometry.coordinates[0]
     };
     
 </script>            
@@ -73,7 +79,8 @@
 		<input type="button" value="移除所有繪圖" onclick="clearAllGraphics();"style="color:red;height:30px;font-size:16px;font-family:Microsoft JhengHei"/>
 		<br />
         <input type="button" value="取得 GeoJson" onclick="getGraphicsGeoJson();"style="height:30px;font-size:16px;font-family:Microsoft JhengHei"/>
-		<br />
+        <br />
+        <a href="" id="export">點我下載</a>
 	</div>
     <div id="res" style="position:absolute;top:0px; left:650px;height:350px;overflow-y:auto;"></div>
     <div id="res1" style="position:absolute;top:400px; left:650px;height:350px;overflow-y:auto;"></div>
@@ -81,7 +88,6 @@
 	<div id="pro" style="display:none;width:100px;height:100px;left:650px;top:360px;position: absolute;">
 		屬性內容: 
 		<textarea id="gj" cols="35" rows="5">{}</textarea>
-		<br>
-		
+		<br>		
     </div>
 </html>                                                        
