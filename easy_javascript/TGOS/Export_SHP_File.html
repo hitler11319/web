@@ -1,0 +1,115 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+<title>繪圖</title>
+<script type="text/javascript" src="https://api.tgos.tw/TGOS_API/tgos?ver=2&AppID=ZFKZNxK/lJ5dttW+L7AWim2x0W32rHgiUnWmpqkjC9Z8petpt0BVvw==&APIKey=cGEErDNy5yN/1fQ0vyTOZrghjE+jIU6ubO1Jgl3ipR6avYjvqMWVegeoOGYpJQwnqDK7InAz8AdW2GWoliDorE0iLltzasyUoPOU8AAS+5rp11bk+4nX5KO6p7jCDOcL1PRkyK4Mssqbo9eS9VqnF8iJO4mKZQ8FYw/iUlOEjrMfaIqI7aF4YQ3fbTNy6T3F+VOdGWwPpRhDUTrFUBkeTS4N3jD2eSufaMaJ1x+6P1/kWkt/ATtHmRGcGzOCPtIpLOHFsoHSOfI5nKzKL/2oIM3We1LKwl1xhuRjmelMoZgOF8GtSs09pBnOBkOhRRl4iDO44uPLOxfOBcfxvKmb7X55GcCCF8Ji75jcOGrxWjwbKwJt7F6HU7XabCf7FTiN/ISBSQIn5LA=" charset="utf-8"></script>
+<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<script src="FileSaver.js"></script>
+<script src="shpwrite.js"></script>
+<script src="tokml.js"></script>
+<script type="text/javascript"> 
+	var pMap = null;
+    var pDrawingManager = null;
+    var currentGraphic = null;
+    
+    //---- 繪圖工具 ----
+    
+    function InitWnd() {
+		var pOMap = document.getElementById("OMap");
+        //3857才是正常我們知道的經緯度，所以要轉成kml要讓其資料正確（記得一定要用3857）
+		pMap = new TGOS.TGOnlineMap(pOMap, TGOS.TGCoordSys.EPSG3857);
+        pDrawingManager = new TGOS.TGDrawing();
+        pDrawingManager.setMap(pMap);
+
+        // 設定編修時, 選到的那個圖形 callback function
+        pDrawingManager.setGraphicSelectedCallback(onGraphicSelected);
+        
+        function onGraphicSelected(p) {
+            if (p !== undefined) {
+                currentGraphic = p;
+                var geojson = currentGraphic.geoJsonProperties;
+                // 選到圖形時, getDrawingMode() 會由 "EDIT" 轉變為 "MODIFY".
+            }
+        }
+		
+		var btn = document.createElement("BUTTON");
+		btn.innerHTML = "編輯";
+		document.getElementById("pro").appendChild(btn);
+        
+        TGOS.TGEvent.addListener(pDrawingManager, 'overlay_complete', function (e) {
+            TGOS.TGEvent.addListener(e.overlay, 'click', function () {
+				document.getElementById("pro").style.display = "";
+				btn.onclick = function(){
+					pDrawingManager.setGeoJsonProperties(e.overlay, document.getElementById("gj").value); //選取到的圖形設定JSON屬性
+					getGraphicsGeoJson(); 
+					return false;
+				};
+            });
+            pDrawingManager.setDrawingMode(TGOS.TGOverlayType.NONE); //取消所有模式
+			document.getElementById("pro").style.display = "none";
+        });
+	};
+    
+    function clearAllGraphics() {
+        pDrawingManager.clearAllGraphics(); //清除所有繪圖
+    };
+    
+    function getGraphicsGeoJson() {
+ 
+        var str1 = pDrawingManager.getGeoJson();  //取得所有JSON
+        document.getElementById("res").innerHTML = str1;
+
+        var kml = tokml(JSON.parse(str1), {
+            documentName: 'Your Map',
+        });
+        alert(kml);
+
+        document.getElementById('export').style.display = 'block';
+        document.getElementById('export_shp').style.display = 'block';
+
+        var convertedData = 'application/vnd.google-earth.kml+xml;charset=utf-8,' + encodeURIComponent(kml);
+
+        document.getElementById('export').setAttribute('href', 'data:' + convertedData);
+        document.getElementById('export').setAttribute('download','data.kml');
+
+        //要取到座標值之陣列
+        //kml.features[0].geometry.coordinates[0]
+    };
+
+    //使用者按下去會download shp檔（整包的）
+    function getGraphicsShp(){
+        var data = JSON.parse(document.getElementById("res").innerHTML);
+
+        var options = {
+        folder: 'myshapes',
+        types: {
+            point: 'mypoints',
+            polygon: 'mypolygons',
+            line: 'mylines'
+            }
+        }
+
+        //shpwrite.zip(data, options).then(function(content) {saveAs(content);});
+        shpwrite.download(data, options);
+    }
+    
+</script>            
+</head>
+<body style="margin:5px" onload="InitWnd();">
+	<div id="OMap" style="position:absolute; top:5px; left:5px; width:640px; height:480px; border:1px solid #000000;"></div>
+	<div style="position:absolute;top:490px; left:5px;">
+		<input type="button" value="移除所有繪圖" onclick="clearAllGraphics();"style="color:red;height:30px;font-size:16px;font-family:Microsoft JhengHei"/>
+        <input type="button" value="取得 GeoJson" onclick="getGraphicsGeoJson();"style="height:30px;font-size:16px;font-family:Microsoft JhengHei"/>
+        <br />
+        <a href="" id="export" style="display:none;">點我下載kml</a>
+        <button type="button" onclick="getGraphicsShp();" id="export_shp" style="display:none;">點我下載shp</button>
+	</div>
+    <div id="res" style="position:absolute;top:0px; left:650px;height:350px;overflow-y:auto;"></div>
+    <div id="res1" style="position:absolute;top:400px; left:650px;height:350px;overflow-y:auto;"></div>
+    
+	<div id="pro" style="display:none;width:100px;height:100px;left:650px;top:360px;position: absolute;">
+		屬性內容: 
+		<textarea id="gj" cols="35" rows="5">{}</textarea>
+		<br>		
+    </div>
+</html>                                                        
