@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Moment</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="moment.js"></script>
+</head>
+
+<body>
+    <!--https://momentjs.com/-->
+    <script>
+    document.write(moment()); //現在時間
+    document.write("<br>");
+
+    document.write(moment().format('MMMM Do YYYY, h:mm:ss a')); // August 23rd 2018, 8:49:55 pm
+    document.write("<br>");
+
+    document.write(moment().format('dddd')); // Thursday
+    document.write("<br>");
+
+    document.write(moment().format("MMM Do YY")); // Aug 23rd 18
+    document.write("<br>");
+
+    document.write(moment().format('YYYY [escaped] YYYY')); // 2018 escaped 2018
+    document.write("<br>");
+
+    document.write(moment().format()); //2018-08-23T21:18:00+08:00
+    document.write("<br>");
+
+    document.write(moment("20111031", "YYYYMMDD").fromNow()); //和今天差幾年
+    document.write("<br>");
+
+    document.write(moment().startOf('day').fromNow()); //現在幾點（小時）
+    document.write("<br>");
+
+    document.write(moment().endOf('day').fromNow()); //24-上面的那個
+    document.write("<br>");
+
+    document.write(moment().startOf('hour').fromNow()); //現在幾分（分鐘）
+    document.write("<br>");
+
+    document.write(moment().subtract(10, 'days').calendar()); //8/13/2018
+    document.write("<br>");
+
+    document.write(moment().subtract(6, 'days').calendar());
+    document.write("<br>");
+
+    document.write(moment().subtract(1, 'days').calendar());
+    document.write("<br>");
+
+    document.write(moment().calendar());
+    document.write("<br>");
+
+    document.write(moment().add(1, 'days').calendar());
+    document.write("<br>");
+
+    document.write(moment().add(3, 'days').calendar());
+    document.write("<br>");
+
+    document.write(moment().add(10, 'days').calendar());
+    document.write("<br>");
+
+    document.write(moment().format('LT'));
+    document.write("<br>");
+
+    document.write(moment().format('LTS'));
+    document.write("<br>");
+
+    document.write(moment().format('L'));
+    document.write("<br>");
+
+    document.write(moment().format('l'));
+    document.write("<br>");
+
+    document.write("______________________________________________________________________");
+    document.write("<br>");
+
+    document.write(moment('20180506', 'YYYYMMDD').format('YYYY-MM-DD'));
+    document.write("<br>");
+
+    document.write(moment('20180506', 'YYYYMMDD'));
+    document.write("<br>");
+
+    document.write(moment('aaaaaa', 'YYYYMMDD').format('YYYY-MM-DD'));
+    document.write("<br>");
+
+    document.write(moment('aaaaaa', 'YYYYMMDD'));
+    document.write("<br>");
+
+    document.write(moment('20180832', 'YYYYMMDD'));
+    document.write("<br>");
+
+    document.write(moment('2018-05-06', 'YYYY-MM-DD').format('YYYY/MM/DD'));
+    document.write("<br>");
+
+    //document.write(moment('20180605', 'YYYYDDMM').format('YYYY/MM/DD');  不能用DDMM
+
+    document.write(moment('2018-05-06', 'YYYY-MM-DD').format('西元YYYY年MM月DD日'));
+    document.write("<br>");
+
+    document.write(moment('2018-11-26', 'YYYY-MM-DD').format('西元Y年M月D日'));
+    document.write("<br>");
+
+    document.write(moment().add(10, 'days').format('西元Y年M月D日'));
+    document.write("<br>");
+
+    document.write(moment().subtract(10, 'days').format('西元Y年M月D日'));
+    document.write("<br>");
+
+    document.write(moment('201805062315', 'YYYYMMDDhhmmss'));
+    document.write("<br>");
+
+    document.write(moment('201805062315', 'YYYYMMDDhhmmss').format('西元Y年M月D日h時m分s秒'));
+    document.write("<br>");
+    </script>
+</body>
+
+</html>
