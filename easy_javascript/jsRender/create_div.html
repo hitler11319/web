@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>create div</title>
+    <meta name='description' content="" />
+    <meta name='keywords' content="" />
+    <meta name="MobileOptimized" content="width">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="jsrender.min.js"></script>
+</head>
+
+<body>
+    <script>
+    $(document).ready(function(e) {
+
+        $('#addBtn').click(function() {
+            var addTemp = $.templates("#addTemp");
+            var addHtml = addTemp.render();
+            //    addHtml = addHtml.replace("@@total@@", $('.reg-record').length + 1);
+            var html = $(addHtml);
+
+            html.find(".del-icon").click(function() {
+                deleteRow($(this));
+            });
+
+            html.insertBefore($(this));
+
+        });
+
+    });
+
+    function deleteRow(btnEle) {
+        btnEle.closest('.reg-record').remove();
+    }
+    </script>
+    <script id="addTemp" type="text/x-jsrender">
+        <div class="panel panel-primary reg-record">
+            <div>
+                <div>
+                <label for="serialNo">人名：</label>
+                <input type="text" />
+                <button type="button" class="del-icon">-</button>
+                </div>
+                
+            </div>
+        </div>
+    </script>
+    <div class="panel panel-primary reg-record">
+        <div>
+            <div >
+                <label for="serialNo">人名：</label>
+                <input type="text" />
+            </div>
+        </div>
+    </div>
+    <button type="button" id="addBtn">+</button>
+</body>
+
+</html>
