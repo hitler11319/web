@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+
+    //附加事件，要附加的是onclick => 所以要打click，後面接function
+    $("#b1").on('click', function(){
+        alert('hello');
+    })
+
+    $("#i1").on('keyup', function(){
+        $("#p1").html("you input:" + $("#i1").val());
+    })
+});
+</script>
+</head>
+<body>
+
+<button id='b1'>click</button>
+<input type="text" id="i1">
+<p style="color:red;" id="p1"></p>
+
+
+</body>
+</html>
