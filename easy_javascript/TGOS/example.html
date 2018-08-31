@@ -5,38 +5,45 @@
 <script type="text/javascript" src="http://api.tgos.nat.gov.tw/TGOS_API/tgos?ver=2&AppID=你的APPID&APIKey=你的APIKey" charset="utf-8"></script>
 <!--下載後請將yourID及yourkey取代為您申請所取得的APPID及APIKEY方能正確顯示服務-->
 <script type="text/javascript"> 
-	var pMap = null;
-	var kmlLayer = null;
-	function InitWnd() {
-		var pOMap = document.getElementById("TGMap");
-		var mapOptions = {
-			mapTypeControl: false	//mapTypeControl(關閉地圖類型控制項)
-		};
-		pMap = new TGOS.TGOnlineMap(pOMap, TGOS.TGCoordSys.EPSG3826, mapOptions);	//宣告TGOnlineMap地圖物件並設定坐標系統
-	}
-	
-	function AddKML() {
-		if (kmlLayer) {
-			 kmlLayer.removeKml();							//假如圖面上已經有KML疊加層, 則先移除掉現有的kml圖層再加入新圖層
-		}
-		var list = document.getElementById("urlList");
-		var url = list.options[list.selectedIndex].text;	//取得下拉選單的KML網址
-		kmlLayer = new TGOS.TGKmlLayer(url, {				//設定KML圖層
-				map: pMap,									//設定欲疊加的底圖
-				suppressInfoWindows: false,				//可點選KML圖徵顯示訊息視窗, 若設為true則無法顯示訊息視窗
-				preserveViewport: true						//疊加KML後將圖面縮放至KML的範圍, 若設為false則取消這個功能
-            });
-	}
-</script>            
-</head>
-<body style="margin:0px" onload="InitWnd();">
-	<div id="TGMap" style="width:640px; height:480px; border: 1px solid #C0C0C0;"></div>
-	<br/>
-	<!--建立下拉選單, 提供預設兩組KML網址-->
-	<select id="urlList">
-		<option>http://drone.shengsen.com.tw/drone/假台北kml.kml</option>
-		<option>http://api.tgos.nat.gov.tw/TGOS_API/GWREGION.kml</option>
-	</select>
-	<br/>
-	<input type="button" value="加入KML圖層" onclick="AddKML();">
-</html> 
+            var pMap = null;
+            var kmlLayer = null;
+            function InitWnd() {
+                var pOMap = document.getElementById("TGMap");
+                var mapOptions = {
+                    mapTypeControl: false	//mapTypeControl(關閉地圖類型控制項)
+                };
+                pMap = new TGOS.TGOnlineMap(pOMap, TGOS.TGCoordSys.EPSG3857, mapOptions);	//宣告TGOnlineMap地圖物件並設定坐標系統
+            }
+            
+            function AddKML() {
+                //if (kmlLayer) {
+                    //kmlLayer.removeKml();							//假如圖面上已經有KML疊加層, 則先移除掉現有的kml圖層再加入新圖層
+                //}
+
+                var r = parseInt(Math.random()*5+1);  //圖層的疊加順序是隨機的
+
+                var list = document.getElementById("urlList");
+                var url = list.options[list.selectedIndex].text;	//取得下拉選單的KML網址
+                kmlLayer = new TGOS.TGKmlLayer(url, {				//設定KML圖層
+                        map: pMap,									//設定欲疊加的底圖
+                        suppressInfoWindows: false,				//可點選KML圖徵顯示訊息視窗, 若設為true則無法顯示訊息視窗
+                        preserveViewport: true,						//疊加KML後將圖面縮放至KML的範圍, 若設為false則取消這個功能
+                        zIndex: r                              //圖層的疊加順序（愈小愈上面）
+                    });
+            }
+        </script>            
+        </head>
+        <body style="margin:0px" onload="InitWnd();">
+            <div id="TGMap" style="width:640px; height:480px; border: 1px solid #C0C0C0;"></div>
+            <br/>
+            <!--建立下拉選單, 提供預設兩組KML網址-->
+            <select id="urlList">
+                <option>http://drone.shengsen.com.tw/drone/假台北kml.kml</option>
+                <option>http://drone.shengsen.com.tw/drone/hello.kml</option>
+                <option>http://drone.shengsen.com.tw/drone/test1.kml</option>
+                <option>http://drone.shengsen.com.tw/drone/test.kml</option>
+                <option>http://api.tgos.nat.gov.tw/TGOS_API/GWREGION.kml</option>
+            </select>
+            <br/>
+            <input type="button" value="加入KML圖層" onclick="AddKML();">
+        </html> 
