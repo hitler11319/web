@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>連續下拉式選單</title>
+    <meta name='description' content="" />
+    <meta name='keywords' content="" />
+    <meta name="MobileOptimized" content="width">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<script src="js/jquery-1.12.4.min.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<!--
+    頁面的RWD主要用bootstrap3來開發，表單和table也是用bootstrap的元件。
+    日期元件是使用jquery ui的元件，並附加中文語系。
+-->
+
+<body class="page">
+    <script>
+    function changeBrand(brandEle) {
+        var brand = brandEle.val();
+        var model = $(brandEle.closest('.form-group').next().find('.model'));
+        model.empty();
+        model.append("<option value=''>請選擇</option>");
+        if (brand == '01') {
+            model.append("<option value='1'>王大明</option>");
+            model.append("<option value='2'>王小明</option>");
+        } else if (brand == '02') {
+            model.append("<option value='3'>林大明</option>");
+            model.append("<option value='4'>林小明</option>");
+        } else if (brand == '03') {
+            model.append("<option value='5'>陳小明</option>");
+        }
+    }
+
+    function changeModel(modelEle) {
+        var model = modelEle.val();
+        var ground = $(modelEle.closest('.form-group').next().find('.ground'));
+        ground.empty();
+        ground.append("<option value=''>請選擇</option>");
+        if (model == '1') {
+            ground.append("<option value='松江路10號'>松江路10號</option>");
+        } else if (model == '2') {
+            ground.append("<option value='松江路30號'>松江路30號</option>");
+        } else if (model == '3') {
+            ground.append("<option value='松江路40號'>松江路40號</option>");
+        } else if (model == '4') {
+            ground.append("<option value='松江路50號'>松江路50號</option>");
+        } else if (model == '5') {
+            ground.append("<option value='松江路60號'>松江路60號</option>");
+        }
+    }
+
+    $(function() {
+        $('.brand').change(function() {
+            changeBrand($(this));
+        });
+
+        $('.model').change(function() {
+            changeModel($(this));
+        });
+
+        $('.brand').val('');
+    });
+    </script>
+    <div class="form-group">
+        <label for="brand">班級</label>
+        <select name="brand" class="brand form-control" id="brand">
+            <option value="">請選擇</option>
+            <option value="01">3班</option>
+            <option value="02">4班</option>
+            <option value="03">5班</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="model">學生</label>
+        <select name="model" class="model form-control" id="model">
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="ground">地址</label>
+        <select name="ground" class="ground form-control" id="ground">
+        </select>
+    </div>
+</body>
+
+</html>
