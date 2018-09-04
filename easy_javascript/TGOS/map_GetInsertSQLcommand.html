@@ -103,7 +103,16 @@
                     coordinates += " , ";
                 }
 
+
+                //因為sql的語法中第一點要和最後一點相同，不然會錯。所以全部都要再做一次判斷
+                if(data.coordinates[0][0][0] + data.coordinates[0][0][1] != data[0][data.coordinates[0].length-1][0] + data[0][data.coordinates[0].length-1][1]){
+                    coordinates += data.coordinates[0][0][0] + " " + data.coordinates[0][0][1];
+                    coordinates += " , ";
+                }
+
+
                 coordinates = coordinates.substring(0, coordinates.length - 3);
+
             }
 
 
