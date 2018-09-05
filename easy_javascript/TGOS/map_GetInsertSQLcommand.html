@@ -87,6 +87,7 @@
             alert(sql);
         };
 
+        //一般的取法（可以拿到整個INSERT語法）
         function GetCoordinates() {
             var frontTag = "Geometry::STGeomFromText('";
             var behindTage = "))', 4326));";
@@ -95,29 +96,58 @@
 
             if (kmlObj != null) {
                 var data = kmlObj.features[0].geometry;
+                var len = data.coordinates[0].length;
 
                 type = data.type;
 
-                for(var i = 0; i < data.coordinates[0].length; i++){
+                for(var i = 0; i < len; i++){
                     coordinates += data.coordinates[0][i][0] + " " + data.coordinates[0][i][1];
                     coordinates += " , ";
                 }
 
-
                 //因為sql的語法中第一點要和最後一點相同，不然會錯。所以全部都要再做一次判斷
-                if(data.coordinates[0][0][0] + data.coordinates[0][0][1] != data[0][data.coordinates[0].length-1][0] + data[0][data.coordinates[0].length-1][1]){
+                if(data.coordinates[0][0][0] + data.coordinates[0][0][1] != data.coordinates[0][len-1][0] + data.coordinates[0][len-1][1]){
                     coordinates += data.coordinates[0][0][0] + " " + data.coordinates[0][0][1];
                     coordinates += " , ";
                 }
 
-
                 coordinates = coordinates.substring(0, coordinates.length - 3);
-
             }
 
 
             return frontTag + type + "(("  + coordinates + behindTage;
         }
+
+
+        //只拿到POYLAN(120 25, .........)就好，因為在c#中可以把這段轉成DbGeometry類型
+        //https://gis.stackexchange.com/questions/54514/how-to-create-polygon-with-dbgeography-class-in-csharp
+        //DbGeometry graph = System.Data.Spatial.DbGeography.PolygonFromText("POLYGON((127.652 -26.244,127.652 ......))", 4326);
+        function GetCoordinates2() {
+        var coordinates = "";
+        var type = "";
+
+        if (kmlObj != null) {
+            var data = kmlObj.features[0].geometry;
+            var len = data.coordinates[0].length;
+
+            type = data.type;
+
+            for (var i = 0; i < len; i++) {
+                coordinates += data.coordinates[0][i][0] + " " + data.coordinates[0][i][1];
+                coordinates += " , ";
+            }
+
+            //因為sql的語法中第一點要和最後一點相同，不然會錯。所以全部都要再做一次判斷
+            if (data.coordinates[0][0][0] + data.coordinates[0][0][1] != data.coordinates[0][len - 1][0] + data.coordinates[0][len - 1][1]) {
+                coordinates += data.coordinates[0][0][0] + " " + data.coordinates[0][0][1];
+                coordinates += " , ";
+            }
+
+            coordinates = coordinates.substring(0, coordinates.length - 3);
+        }
+
+        return type + "((" + coordinates + "))";
+    }
 
         //使用者按下去會download shp檔（整包的）
         function getGraphicsShp() {
