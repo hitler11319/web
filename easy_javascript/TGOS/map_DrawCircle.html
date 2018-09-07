@@ -18,6 +18,9 @@
             //宣告TGOnlineMap地圖物件並設定坐標系統
         }
         function drawCircle() {
+
+            if(polygon2 != null){polygon2.setMap(null);}
+
             var ccX = Number(document.getElementById("Circle_centerX").value);
             var ccY = Number(document.getElementById("Circle_centerY").value);
             var CR = Number(document.getElementById("Circle_Redius").value);
@@ -34,7 +37,8 @@
 			});
         }
 		function clearCircle(){
-			polygons2.setMap(null);	//清除所有
+			polygon2.setMap(null);	//清除所有
+            polygon2 = null;
 		}
     </script>
 </head>
