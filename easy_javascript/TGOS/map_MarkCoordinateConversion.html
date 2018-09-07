@@ -1,0 +1,96 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+<title>TGOS MAP API 設定地圖標記</title>
+<script type="text/javascript" src="https://api.tgos.tw/TGOS_API/tgos?ver=2&AppID=你的AppID&APIKey=你的APIKey" charset="utf-8"></script>
+
+<script type="text/javascript"> 
+        var pTGMarker; //Marker物件1
+  		var pTGMarker2; //Marker物件2
+        var markerPoint; //Marker位置
+        var markerTitle; //Marker標題
+        var markerImg; //Marker圖片
+        function InitWnd() {
+            var pOMap = document.getElementById("TGMap");
+            var pMap = new TGOS.TGOnlineMap(pOMap, TGOS.TGCoordSys.EPSG3857); //宣告TGOnlineMap地圖物件並設定坐標系統
+            markerPoint = new TGOS.TGPoint(121.5, 25);
+            markerImg = new TGOS.TGImage("https://api.tgos.tw/TGOS_API/images/marker.png", new TGOS.TGSize(38, 33), new TGOS.TGPoint(0, 0), new TGOS.TGPoint(10, 33));
+            pTGMarker = new TGOS.TGMarker(pMap, markerPoint, "起飛點", markerImg);
+            //加入Marker(地圖物件,Marker坐標,Marker標題,Marker圖案)
+            //設定中心點（一開始的中心位置）
+			pMap.setCenter(new TGOS.TGPoint(121, 24.25));
+          
+          //------------------------------------------------------------------
+          
+            var pOMap = document.getElementById("TGMap2");
+            var pMap = new TGOS.TGOnlineMap(pOMap, TGOS.TGCoordSys.EPSG3826); //宣告TGOnlineMap地圖物件並設定坐標系統
+            markerPoint = new TGOS.TGPoint(303832.53300000075,2767738.2849981403);
+            markerImg = new TGOS.TGImage("https://api.tgos.tw/TGOS_API/images/marker.png", new TGOS.TGSize(38, 33), new TGOS.TGPoint(0, 0), new TGOS.TGPoint(10, 33));
+            pTGMarker2 = new TGOS.TGMarker(pMap, markerPoint, "起飛點", markerImg);
+            //加入Marker(地圖物件,Marker坐標,Marker標題,Marker圖案)
+            //設定中心點（一開始的中心位置）
+			pMap.setCenter(new TGOS.TGPoint(250000,2710398.5110692508));
+        }
+  //第一張地圖
+        function setMarker() {
+            markerTitle = document.getElementById("title").value;
+            pTGMarker.setTitle(markerTitle); //設定標題
+            markerPoint = new TGOS.TGPoint(Number(document.getElementById("X").value), Number(document.getElementById("Y").value));
+            //設定坐標
+            pTGMarker.setPosition(markerPoint); //設定位置
+        }
+  //第二張地圖
+          function setMarker2() {
+            markerTitle = document.getElementById("title2").value;
+            pTGMarker2.setTitle(markerTitle); //設定標題
+            markerPoint = new TGOS.TGPoint(Number(document.getElementById("X2").value), Number(document.getElementById("Y2").value));
+            //設定坐標
+            pTGMarker2.setPosition(markerPoint); //設定位置
+        }
+  		function TWD97toWGS84 ()
+		{
+		    var X97 = Number(document.getElementById("X2").value);
+            var Y97 = Number(document.getElementById("Y2").value);
+			var TT = new TGOS.TGTransformation();
+			TT.twd97towgs84(X97,Y97);
+			
+          	document.getElementById("title").value = document.getElementById("title2").value;
+          	document.getElementById("X").value = TT.transResult.x;
+          	document.getElementById("Y").value = TT.transResult.y;
+          
+          	setMarker();
+		}
+  
+  		function WGS84toTWD97()
+		{
+		    var X84 = Number(document.getElementById("X").value);
+            var Y84 = Number(document.getElementById("Y").value);
+			var TT = new TGOS.TGTransformation();
+			TT.wgs84totwd97(X84,Y84);
+          
+          	document.getElementById("title2").value = document.getElementById("title").value;
+          	document.getElementById("X2").value = TT.transResult.x;
+          	document.getElementById("Y2").value = TT.transResult.y;
+          
+          	setMarker2();
+		}
+</script>
+</head>
+<body style="margin:0px" onload="InitWnd();">
+  <div id="TGMap" style="width:600px;height:350px;border: 1px solid #C0C0C0;"></div>
+  標題:<input id="title" type="text" value="台北" />
+  X:<input id="X" type="text" value="121.5" />
+  Y:<input id="Y" type="text" value="25" /> 
+  <input type="button" value="確定修改" onclick="setMarker()"/>
+  <input type="button" value="轉換" onclick="WGS84toTWD97()"/>
+  <br>
+  <div id="TGMap2" style="width:600px;height:350px;border: 1px solid #C0C0C0;"></div>
+  <br/>
+  標題:<input id="title2" type="text" value="台北" />
+  X:<input id="X2" type="text" value="303832.53300000075" />
+  Y:<input id="Y2" type="text" value="2767738.2849981403" />   
+  <input type="button" value="確定修改" onclick="setMarker2()"/>
+  <input type="button" value="轉換" onclick="TWD97toWGS84()"/>
+    
+ </body>
+</html>
