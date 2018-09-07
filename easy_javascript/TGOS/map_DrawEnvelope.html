@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TGOS MAP API for Web 設定面圖徵</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<script type="text/javascript" src="https://api.tgos.tw/TGOS_API/tgos?ver=2&AppID=你的AppID&APIKey=你的APIKey" charset="utf-8"></script>
+	<!--下載後請將yourID及yourkey取代為您申請所取得的APPID及APIKEY方能正確顯示服務-->
+    <script type="text/javascript">
+        var map = null;
+		var polygon = null;
+		var opts;
+		
+        function main() {
+            var pOMap = document.getElementById("TGMap");
+            map = new TGOS.TGOnlineMap(pOMap, TGOS.TGCoordSys.EPSG3857);
+            var defaultOptions = {
+                mapTypeControl: false
+            };
+            map.setOptions(defaultOptions);
+			opts = {
+				fillColor: '#0000aa',
+				fillOpacity: 0.5,
+				strokeColor: '#00aa00',
+				strokeWeight: 2,
+				strokeOpacity: 1
+			};
+			polygon = new TGOS.TGFill(map, iLanBounds, opts);
+        }
+		
+      //2點是左上+右下  或者  左下+右上  的 經緯度
+		var iLanBounds = new TGOS.TGEnvelope(120, 24, 122, 23);
+		//定義要繪出面圖徵的面資料, 可為TGPolygon, TGCircle或TGEnvelope
+        function drawpolygon() {
+            var sw = Number(document.getElementById("strokeWeight").value);  //設定外框寬度變數值來源
+            var sc = document.getElementById("strokeColor").value;  //設定外框顏色變數值來源
+			var so = Number(document.getElementById("strokeOpacity").value);  //設定外框透明度變數值來源
+            var fc = document.getElementById("fillColor").value;  //設定填色顏色變數值來源
+            var fo = Number(document.getElementById("fillOpacity").value);  //設定填色透明度變數值來源
+			//var sd = document.getElementById("line1").value;
+			draggable: false
+			
+			polygon.setStrokeWeight(sw);  //設定外框寬度
+			polygon.setStrokeColor(sc);  //設定外框顏色
+			polygon.setStrokeOpacity(so);  //設定外框透明度
+			polygon.setFillColor(fc);  //設定填色顏色
+			polygon.setOpacity(fo);  //設定填色透明度
+			//polygon.setStrokeDasharray(sd); //設定外框樣式
+			
+        }
+		function Setpolyop() {
+			if (document.getElementById("drag").checked){
+				polygon.setDraggable(true);
+			} else {	
+				polygon.setDraggable(false);				
+			}		
+		}
+		function Lineoption() {
+			if (document.getElementById("line1").checked){
+				opts.strokeDasharray = ".";
+				polygon.setMap(null);
+				polygon = null;
+				polygon = new TGOS.TGFill(map, iLanBounds, opts);
+			} else {
+				opts.strokeDasharray = "";
+				polygon.setMap(null);
+				polygon = null;
+				polygon = new TGOS.TGFill(map, iLanBounds, opts);
+			}
+		}
+    </script>
+</head>
+<body onload="main()">
+    <div style="height: 480px; width: 720px" id="TGMap">
+    </div>
+    <input type="button" value="drawpolygon" onclick="drawpolygon();" /><br />
+    線寬：<input type="text" id="strokeWeight" value="5" /><br />
+    線顏色：<input type="text" id="strokeColor" value="#cc0000" /><br />
+	線透明度：<input type="text" id="strokeOpacity" value="0.6" /><br />
+    填滿顏色：<input type="text" id="fillColor" value="#aa00aa" /><br />
+    填滿透明度：<input type="text" id="fillOpacity" value="0.4" /><br />
+	<input type="checkbox" id="drag" onclick ="Setpolyop();"  />是否使用拖曳平移功能<!--使用勾選框讓使用者設定是否開啟拖曳平移功能--><br />
+	<input type="checkbox" id="line1" onclick ="Lineoption();"  />是否變更外框樣式為虛線
+</body>
+</html>

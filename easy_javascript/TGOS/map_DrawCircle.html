@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>TGOS MAP API for Web 圓形資料結構</title>
+	<script type="text/javascript" src="https://api.tgos.tw/TGOS_API/tgos?ver=2&AppID=你的AppID&APIKey=你的APIKey" charset="utf-8"></script>
+	<!--下載後請將yourID及yourkey取代為您申請所取得的APPID及APIKEY方能正確顯示服務-->
+    <script type="text/javascript">
+	var polygon2 = null;
+
+        function InitWnd() {
+            var pOMap = document.getElementById("TGMap");
+            pMap = new TGOS.TGOnlineMap(pOMap, TGOS.TGCoordSys.EPSG3857);
+            var defaultOptions = {
+                mapTypeControl: false
+            };
+            pMap.setOptions(defaultOptions);
+            //宣告TGOnlineMap地圖物件並設定坐標系統
+        }
+        function drawCircle() {
+            var ccX = Number(document.getElementById("Circle_centerX").value);
+            var ccY = Number(document.getElementById("Circle_centerY").value);
+            var CR = Number(document.getElementById("Circle_Redius").value);
+            var c2 = new TGOS.TGCircle();
+            p2 = new TGOS.TGPoint(ccX, ccY)
+            c2.setCenter(p2);
+            c2.setRadius(CR);
+            polygon2 = new TGOS.TGFill(pMap, c2, {  //圓形資料以TGFill呈現
+				fillColor: '#0000aa',
+				fillOpacity: 0.5,
+				strokeColor: '#00aa00',
+				strokeWeight: 1.8,
+				strokeOpacity: 0.8
+			});
+        }
+		function clearCircle(){
+			polygons2.setMap(null);	//清除所有
+		}
+    </script>
+</head>
+<body style="margin: 0px" onload="InitWnd();">
+    <div id="TGMap" style="height: 480px; width: 720px">
+    </div>
+
+    圓心X座標：<input type="text" id="Circle_centerX" value="121.5" />
+    圓心Y座標：<input type="text" id="Circle_centerY" value="25" />
+    半徑大小：<input type="text" id="Circle_Redius" value="20000" /><br>
+    <input type="button" value="畫Circle" onclick="drawCircle();" />
+	<input type="button" value="清除Circle" onclick="clearCircle();" />
+</body>
+</html> 
