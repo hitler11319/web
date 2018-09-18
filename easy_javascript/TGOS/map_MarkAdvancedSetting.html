@@ -1,0 +1,60 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+<title>滑鼠點擊顯示坐標</title>
+<script type="text/javascript" src="https://api.tgos.tw/TGOS_API/tgos?ver=2&AppID=你的AppID&APIKey=你的APIKey" charset="utf-8"></script>
+<!--下載後請將yourID及yourkey取代為您申請所取得的APPID及APIKEY方能正確顯示服務-->
+<script type="text/javascript"> 	
+	var pMap = null;
+	var messageBox = null; //訊息窗格物件
+    var markList = new Array();
+	
+	function InitWnd() {
+		var pOMap = document.getElementById("TGMap");
+		var mapOptions = {
+			mapTypeControl: false,		//mapTypeControl(關閉地圖類型控制項)
+			navigationControl: false,	//navigationControl(關閉縮放控制列)
+			scaleControl: false			//scaleControl(關閉比例尺控制項)
+		};
+		pMap = new TGOS.TGOnlineMap(pOMap, TGOS.TGCoordSys.EPSG3857, mapOptions);	//宣告TGOnlineMap地圖物件並設定坐標系統
+		pMap.setZoom(8);	//指定地圖起始層級
+		pMap.setCenter(new TGOS.TGPoint(121.5, 24));	//指定地圖起始中心點坐標
+				
+		var InfoWindowOptions = {
+			maxWidth: 4000,
+            pixelOffset: { x: 0, y: 0 },
+            zIndex: 0
+        };
+		
+		TGOS.TGEvent.addListener(pMap, "click", function (e) {	//加入滑鼠單擊地圖事件監聽器
+			if (markList.length > 1) {
+				alert('你已經輸入2個了');
+			}else{
+              
+            	var pt = e.point;	//取得滑鼠點擊位置坐標
+				pMap.setCenter(pt);	//地圖平移至點擊位置
+          		markList.push(pt);  //把它放入陣列中
+              
+              	var text = "";
+              	var icon = null;
+              	if(markList.length == 1){text = "起飛點"; icon = new TGOS.TGImage("https://api.tgos.tw/TGOS_API/images/marker.png", new TGOS.TGSize(38, 33), new TGOS.TGPoint(0, 0), new TGOS.TGPoint(10, 33));}
+              	if(markList.length == 2){text = "降落點"; icon = new TGOS.TGImage("https://api.tgos.tw/TGOS_API/images/marker2.png", new TGOS.TGSize(38, 33), new TGOS.TGPoint(0, 0), new TGOS.TGPoint(10, 33));}
+              
+				var level = pMap.getZoom(); //取得目前地圖層級
+				var message = "X坐標: " + pt.x + "<br>Y坐標: " + pt.y + "<br>地圖層級: " + level + "<br>" + text;	//組合顯示訊息
+				messageBox = new TGOS.TGInfoWindow(message, pt, InfoWindowOptions);	//在點擊位置上開啟訊息窗格, 並寫入坐標及地圖層級
+				messageBox.open(pMap);
+              
+              	var marker = new TGOS.TGMarker(pMap, new TGOS.TGPoint(pt.x, pt.y), text, icon);
+              	marker.setDraggable(true);
+            }
+			
+
+		});
+	}
+</script>            
+</head>
+<body style="margin:0px" onload="InitWnd();">
+	<div id="TGMap" style="width:640px; height:480px; border: 1px solid #C0C0C0;"></div>
+</body>
+</html> 
