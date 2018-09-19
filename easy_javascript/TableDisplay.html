@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+<button onclick="show();">show first tr</button>
+<button onclick="hide();">hide first tr</button>
+
+<table>
+    <tr id="t1">
+        <td>11111111</td>
+    </tr>
+
+    <tr id="t2">
+        <td>222222222</td>
+    </tr>
+</table>
+
+<script>
+    function show(){
+        //以前都是用block，但是表格的要用table-row
+        document.getElementById('t1').style.display = "table-row";
+    }
+
+    function hide(){
+        document.getElementById('t1').style.display = "none";
+    }
+</script>
+</body>
+
+</html>
