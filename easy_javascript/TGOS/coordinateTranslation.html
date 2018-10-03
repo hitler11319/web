@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8" />
+    <meta name="description" content="經緯度,度分秒轉換,DMS,DMM,DD,旅遊,露營" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <title>經緯度,度分秒轉換</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style type="text/css">
+        .gog {
+            width: 165px;
+            margin: 9px 5px auto auto;
+            float: left;
+        }
+
+        .btn-group,
+        .btn-group-vertical {
+            padding-right: 5px;
+            float: right;
+        }
+
+        .col-xs-5,
+        .col-xs-7 {
+            padding-right: 1px;
+            paDDing-left: 1px;
+        }
+
+        .bb {
+            display: inline-block;
+        }
+
+        .cc {
+            display: inline-block;
+            color: blueviolet
+        }
+
+        span input {
+            width: 60pt;
+        }
+
+        .container .panel-heading,
+        .panel-body,
+        .container .panel {
+            padding: 2px;
+            margin-bottom: 2px;
+        }
+
+        .adsbygoogle {
+            float: right;
+            margin-top: 15px;
+        }
+    </style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-44378354-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-44378354-3');
+    </script>
+
+    <script type="text/javascript">
+        /*! (c) 2017 GammaSky, Inc. | www.gammasky.com/license */
+
+        $(function () {
+            //輸入經緯度轉另外2個
+            $("#DDto").click(function () {
+                var u = parseFloat($("#lati").val()),
+                    f = parseFloat($("#longi").val()),
+                    r = parseInt(u);
+
+                var n = n = parseInt(f), t = t = (u - r) * 60;
+                var i = (f - n) * 60;
+                var e = parseInt(t), o = parseInt(i), s = (t - e) * 60, h = (i - o) * 60;
+
+                //轉成 度 分
+                $("#latiDMM1").val(r);
+                $("#longiDMM1").val(n);
+                $("#latiDMM2").val(parseInt(t * 1e4) / 1e4);                 
+                $("#longiDMM2").val(parseInt(i * 1e4) / 1e4);
+
+                //轉成 度 分 秒              
+                $("#latiDMS1").val(r); 
+                $("#longiDMS1").val(n);
+                $("#latiDMS2").val(e); 
+                $("#longiDMS2").val(o);
+                $("#latiDMS3").val(parseInt(s * 100) / 100);
+                $("#longiDMS3").val(parseInt(h * 100) / 100);
+
+                gmapurl = "http://maps.apple.com/maps?q=" + $("#lati").val() + "," + $("#longi").val(); $("#NEmap").val(gmapurl)
+            });
+
+            //輸入 度 、 分  轉成別2個
+            $("#dmto").click(function () {
+                var i = parseFloat($("#latiDMM1").val()),
+                    r = parseFloat($("#longiDMM1").val()),
+                    n = parseFloat($("#latiDMM2").val()),
+                    t = parseFloat($("#longiDMM2").val()), 
+                    o = i + n / 60;
+
+                var u = r + t / 60;
+
+                var f = parseInt(n), e = parseInt(t), s = (n - f) * 60, h = (t - e) * 60; 
+
+                //轉成經緯度
+                $("#lati").val(parseInt(o * 1e5) / 1e5);               
+                $("#longi").val(parseInt(u * 1e5) / 1e5);
+                
+
+                //轉成 度 分 秒
+                $("#latiDMS1").val(i);
+                $("#longiDMS1").val(r);
+                $("#latiDMS2").val(f);
+                $("#longiDMS2").val(e);
+                $("#latiDMS3").val(parseInt(s * 100) / 100); 
+                $("#longiDMS3").val(parseInt(h * 100) / 100);
+
+                gmapurl = "http://maps.apple.com/maps?q=" + $("#lati").val() + "," + $("#longi").val();
+
+                $("#NEmap").val(gmapurl)
+            });
+
+            //輸入 度 分 秒
+            $("#DMSto").click(function () {
+                var i = parseFloat($("#latiDMS1").val()),
+                    r = parseFloat($("#longiDMS1").val()),
+                    e = parseFloat($("#latiDMS2").val()),
+                    o = parseFloat($("#longiDMS2").val()),
+                    s = parseFloat($("#latiDMS3").val()),
+                    h = parseFloat($("#longiDMS3").val());
+
+                var n = e + s / 60, t = o + h / 60;
+                var u = i + n / 60; f = r + t / 60;
+
+                //轉成 度 分 
+                $("#latiDMM1").val(i);
+                $("#longiDMM1").val(r);                
+                $("#latiDMM2").val(parseInt(n * 1e4) / 1e4);
+                $("#longiDMM2").val(parseInt(t * 1e4) / 1e4);
+                 
+
+                //轉成經緯度
+                $("#lati").val(parseInt(u * 1e5) / 1e5);
+                $("#longi").val(parseInt(f * 1e5) / 1e5);
+
+                gmapurl = "http://maps.apple.com/maps?q=" + $("#lati").val() + "," + $("#longi").val();
+
+                $("#NEmap").val(gmapurl)
+            });
+
+            //打開網址（點我前往地圖的按鈕）
+            $("#map").click(function () {
+                location.href = gmapurl
+            });
+        })
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <h2>輸入任一種格式執行轉換、會自動計算另外二種格式.並填入地圖位置連結</h2>
+            <div class="col-xs-7 col-md-10 col-sm-9">
+                <div class="row">
+                    <div class="container">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">經緯度十進位(DD) 範例  E120.954111 N24.502389</div>
+                            <div class="panel-body">
+                                <span class="cc"> 經度(Longitude)
+                                    <input id="longi" type="text" value="">
+                                </span>
+
+                                <span class="bb"> 緯度(Latitude) &nbsp;&nbsp;&nbsp;
+                                    <input id="lati" type="text" value="">
+                                </span>
+                                <button type="button" id="DDto" class="btn btn-default">轉換</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="container">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">經緯度,度分(DMM) 範例 E120 57.2466 N24 30.1433</div>
+                            <div class="panel-body">
+                                <span class="cc"> 經度
+                                    <input id="longiDMM1" type="text" value="">
+                                </span>
+                                <span class="cc"> 經分
+                                    <input id="longiDMM2" type="text" value="">
+                                </span>
+
+                                <br />
+
+                                <span class="bb"> 緯度
+                                    <input id="latiDMM1" type="text" value="">
+                                </span>
+                                <span class="bb"> 緯分
+                                    <input id="latiDMM2" type="text" value="">
+                                </span>
+                                <button type="button" id="dmto" class="btn btn-default">轉換</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="container">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">經緯度,度分(DMS) 範例 E120 57 14.8 N24 30 08.6  </div>
+                            <div class="panel-body">
+                                <span class="cc"> 經度
+                                    <input id="longiDMS1" type="text" value="">
+                                </span>
+                                <span class="cc"> 經分
+                                    <input id="longiDMS2" type="text" value="">
+                                </span>
+                                <span class="cc"> 經秒
+                                    <input id="longiDMS3" type="text" value="">
+                                </span>
+
+
+                                <br />
+
+                                <span class="bb"> 緯度
+                                    <input id="latiDMS1" type="text" value="">
+                                </span>
+                                <span class="bb"> 緯分
+                                    <input id="latiDMS2" type="text" value="">
+                                </span>
+                                <span class="bb"> 緯秒
+                                    <input id="latiDMS3" type="text" value="">
+                                </span>
+
+                                <button type="button" id="DMSto" class="btn btn-default">轉換</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="container" id="mapext">
+                        <div class="alert alert-danger" role="alert">
+                            地圖位置連結<input type="text" id="NEmap" style="width:300px">
+                            <button type="button" id="map" class="btn btn-default">打開地圖</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
