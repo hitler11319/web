@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="http://oss.sheetjs.com/js-xlsx/xlsx.full.min.js"></script>
+</head>
+
+<body>
+    <input type="file" onchange="importExcel(this)" accept=".xls, .xlsx" />
+    <div id="demo"></div>
+    <script>
+        /*
+        FileReader共有4積讀取方法：
+        1.readAsArrayBuffer(file)：將文件讀取為ArrayBuffer。
+        2.readAsBinaryString(file)：將文件讀取為二進制字串
+        3.readAsDataURL(file)：將文件讀取為Data URL
+        4.readAsText(file, [encoding])：将文件讀取為文本，encoding值為'UTF-8'
+        */
+
+
+        var wb;//讀取完成的數據
+        var rABS = false; //是否將文件讀取為二進制字串
+
+
+        //Import
+        function importExcel(obj) { //傳入檔案
+
+            //如果傳入的不是檔案，出去
+            if (!obj.files) {
+                return;
+            }
+
+
+            const IMPORTFILE_MAXSIZE = 2 * 1024;            //自訂傳入的文件大小
+            var suffix = obj.files[0].name.split(".")[1]   //找出副檔名
+
+            //如果不是excel
+            if (suffix != 'xls' && suffix != 'xlsx') {
+                alert('你傳上來的檔案格式不會')
+                return;
+            }
+            if (obj.files[0].size / 1024 > IMPORTFILE_MAXSIZE) {
+                alert('傳入的檔案請小於2M')
+                return;
+            }
+
+
+            var f = obj.files[0];   //檔案本身
+
+            //開始讀檔
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var data = e.target.result;
+                if (rABS) {
+                    wb = XLSX.read(btoa(fixdata(data)), {   //手動轉換
+                        type: 'base64'
+                    });
+                } else {
+                    wb = XLSX.read(data, {
+                        type: 'binary'
+                    });
+                }
+
+                //wb.SheetNames[0]是Sheets中第一個Sheet的名字
+                //wb.Sheets[Sheet名]得到此Sheet名的資料
+
+                var jsonData = JSON.stringify(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
+
+                document.getElementById("demo").innerHTML = jsonData;
+                alert(jsonData);
+
+                //轉成物件才能取資料
+                var jsonParseData = JSON.parse(jsonData);
+                //alert(jsonParseData[0]["所屬類別"])   //這裡的["所屬類別"]是填欄位的名稱，實際情況修改請先看你上方的json產生出來的再寫名稱
+
+                //取到所有資料
+                for (var y = 0; y < jsonParseData.length; y++) {
+                    //alert(jsonParseData[y]["所屬類別"]);  //這裡的["所屬類別"]是填欄位的名稱，實際情況修改請先看你上方的json產生出來的再寫名稱
+                }
+            };
+
+            //看文件是不是二進制的來做事
+            if (rABS) {
+                //不用轉二進位
+                reader.readAsArrayBuffer(f);
+            } else {
+                //轉成二進位
+                reader.readAsBinaryString(f);
+            }
+        }
+
+        function fixdata(data) { //文件轉成BinaryString
+            var o = "",
+                l = 0,
+                w = 10240;
+            for (; l < data.byteLength / w; ++l) o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
+
+            o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
+
+            return o;
+        }
+
+    </script>
+</body>
+
+</html>
+
+<!-- 本文来自 Alex__Gong 的CSDN 博客 ，全文地址请点击：https://blog.csdn.net/GongZhongNian/article/details/76438555?utm_source=copy-->
