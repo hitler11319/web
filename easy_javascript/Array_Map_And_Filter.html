@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="http://oss.sheetjs.com/js-xlsx/xlsx.full.min.js"></script>
+</head>
+
+<body>
+
+    <script>
+
+        var data = [3, 8, 7, 6, 5, 5, 2, 6, 1, 0, 9, 8];
+
+        //map不只可以用在checkbox中，也可以用在陣列中，把每筆都跑一次並且回傳一個值變成新陣列（不會改變原先陣列的值）
+        var mappingData = data.map(function(value){
+            return value * 2;
+        })
+
+        //篩選出不相同的（即上方就算*2，仍然有很多重複的，用這個寫法可以取的不重複的值變為一個新陣列
+        //後面參數分別為  值  序號  此陣列本來
+        var NoRepeatData = mappingData.filter(function(value, index, arr){
+            //看其是否和index相同，如果false就不拿取（代表他是重複的）
+            return arr.indexOf(value) === index;
+        });
+
+        //取到重複的值之陣列只要改一下寫法即可
+        var RepeatData = mappingData.filter(function(value, index, arr){
+            return arr.indexOf(value) !== index;
+        });
+
+
+        var alertText = "原值：" + data.join(",") + "\n" + "乘2倍後:" + mappingData.join(",") + "\n" +
+                        "沒有重複的陣列：" + NoRepeatData.join(",") + "\n" + "重複的值之陣列：" + RepeatData.join(",");
+
+        alert(alertText);
+
+    </script>
+</body>
+
+</html>
