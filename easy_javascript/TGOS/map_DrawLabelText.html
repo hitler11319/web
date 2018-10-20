@@ -1,0 +1,80 @@
+<!--程式碼範例-->
+<!DOCTYPE html>
+<html style="width: 100%; height: 100%">
+<head>
+    <title>TGOS MAP API 圖面文字註記</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <!--呼叫TGOS MAP API-->
+	<script type="text/javascript" src="https://api.tgos.tw/TGOS_API/tgos?ver=2&AppID=yourID&APIKey=yourkey" charset="utf-8"></script>
+    <script type="text/javascript">
+		var mapDiv, pMap;
+        var label = null;
+        var labels = new Array();
+		var markerPoint = new TGOS.TGPoint(303895, 2773227);
+				
+		function InitWnd() {
+			mapDiv = document.getElementById("TGMap");
+			pMap = new TGOS.TGOnlineMap(mapDiv, TGOS.TGCoordSys.EPSG3826);	//初始圖台，將坐標系統設為TWD97_TM2
+			pMap.setZoom(11);				//初始地圖縮放層級
+			pMap.setCenter(markerPoint);	//初始地圖位置						
+		
+		
+			TGOS.TGEvent.addListener(pMap, 'click', function(event){	//監聽地圖點擊事件, 於點擊位置加入文字註記
+				//var pt = event.point;		//取得點擊位置
+				var pt = new TGOS.TGPoint(event.point.x,event.point.y); 
+				var labelOpts = {
+					map: pMap,
+					//fontColor: "#ff0100",		//字型顏色
+					//fontSize: 24,		//字體大小
+					//font: "微軟正黑體",		//字型
+					//fontWeight: "bold",	//字體粗細
+					//opacity: 0.8,			//透明度
+					//position: pt,											//註記位置
+					//label: document.getElementById('content').value	
+					
+					fontColor: document.getElementById('color').value,		//字型顏色
+					fontSize: document.getElementById('size').value,		//字體大小
+					font: document.getElementById('FontList').value,		//字型
+					fontWeight: document.getElementById('weight').value,	//字體粗細
+					opacity: document.getElementById('opa').value,			//透明度
+					position: pt,											//註記位置
+					label: document.getElementById('content').value			//註記文字內容
+					
+				};
+				label = new TGOS.TGLabel(labelOpts);
+                labels.push(label);
+			});
+		}
+      	function ClearAll(){
+			if (labels.length > 0) {				
+				for (var i = 0; i < labels.length; i++) {
+					labels[i].setMap(null);	//清除所有
+				}
+			}
+		}
+    </script>
+</head>
+<body style="margin: 0; width: 100%; height: 100%" onload="InitWnd();">
+    <!-- 加入地圖 -->
+	<div id="TGMap" style="top:5px; left:5px; width:640px; height:480px; border:1px solid #000000;"></div>
+	---點擊地圖加入文字註記---<br>
+	註記文字:<input type="text" id="content" value="測試文字"/>
+	
+	字型:
+	<select id="FontList">
+		<option value="新細明體">新細明體</option>
+		<option value="標楷體">標楷體</option>
+		<option value="微軟正黑體">微軟正黑體</option>
+	</select>
+	字型大小:<input type="text" id="size" value="24" size=1/><br>
+	字體:
+	<select id="weight">
+		<option value="normal">正常</option>
+		<option value="bold">粗體</option>
+	</select>
+	文字顏色:<input type="text" id="color" value="#FF0000" size=5/>
+	透明度(0~1):<input type="text" id="opa" value="0.8" size=1/><br>
+    <input type="button" value="Clear_All" onclick="ClearAll();" />
+	
+</body>
+</html>                                                        
