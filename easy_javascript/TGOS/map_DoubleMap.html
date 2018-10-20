@@ -1,0 +1,61 @@
+<!--程式碼範例-->
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>TGOS MAP API 雙圖面連動操作</title>
+    <script type="text/javascript" src="https://api.tgos.tw/TGOS_API/tgos?ver=2&AppID=yourID&APIKey=yourkey" charset="utf-8"></script>
+    <!--下載後請將yourID及yourkey取代為您申請所取得的APPID及APIKEY方能正確顯示服務-->
+    <script type="text/javascript"> 
+        var pMap = null;
+        var satMap = null;
+        var kmlLayer = null;
+        function InitWnd() {
+            var pOMap = document.getElementById("TGOSMap");
+            var mapOptions1 = {
+                mapTypeControl: false,														//mapTypeControl(關閉地圖類型控制項)
+                navigationControl: false,													//navigationControl(關閉縮放控制列)
+                scaleControl: false															//scaleControl(關閉比例尺控制項)		
+            };
+            pMap = new TGOS.TGOnlineMap(pOMap, TGOS.TGCoordSys.EPSG3857, mapOptions1);		//宣告TGOnlineMap地圖物件並設定坐標系統
+
+            var pSatMap = document.getElementById("Satellite");							//宣告第二張地圖, 放入容器'Satellite'內
+            var mapOptions2 = {
+                mapTypeControl: false,														//mapTypeControl(關閉地圖類型控制項)
+                navigationControl: false,													//navigationControl(關閉縮放控制列)
+                scaleControl: false														//scaleControl(關閉比例尺控制項)			
+            };
+            satMap = new TGOS.TGOnlineMap(pSatMap, TGOS.TGCoordSys.EPSG3857, mapOptions2);	//宣告TGOnlineMap地圖物件並設定坐標系統
+            satMap.setMapTypeId('F2IMAGE');													//第二張地圖設定為衛星影像（詳情其他請看map_SetMapType.html)
+
+            var listener1;
+            var listener2;
+            TGOS.TGEvent.addListener(pMap, "mouseover", function () {
+                listener1 = TGOS.TGEvent.addListener(pMap, "bounds_changed", function () {	//加入地圖邊界改變監聽事件
+                    var MapBound = pMap.getBounds();										//取得改變後的地圖邊界
+                    satMap.fitBounds(MapBound);												//設定第二張地圖的邊界
+                });
+            });
+            TGOS.TGEvent.addListener(pMap, "mouseout", function () {
+                TGOS.TGEvent.removeListener(listener1);
+            });
+
+            TGOS.TGEvent.addListener(satMap, "mouseover", function () {
+                listener2 = TGOS.TGEvent.addListener(satMap, "bounds_changed", function () {//加入地圖邊界改變監聽事件
+                    var MapBound = satMap.getBounds();										//取得改變後的地圖邊界
+                    pMap.fitBounds(MapBound);												//設定第二張地圖的邊界
+                });
+            });
+            TGOS.TGEvent.addListener(satMap, "mouseout", function () {
+                TGOS.TGEvent.removeListener(listener2);
+            });
+        }
+    </script>
+</head>
+
+<body style="margin:0px" onload="InitWnd();">
+    <div id="TGOSMap" style="position:absolute; width:400px;height:400px;border: 1px solid #C0C0C0;"></div>
+    <div id="Satellite" style="position:absolute; left: 410px; width:400px;height:400px;border: 1px solid #C0C0C0;"></div>
+</body>
+
+</html>
