@@ -1,0 +1,65 @@
+<!--程式碼範例-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>TGOS MAP API for Web 行政區定位</title>
+	<script type="text/javascript" src="https://api.tgos.tw/TGOS_API/tgos?ver=2&AppID=yourID&APIKey=yourkey" charset="utf-8"></script>
+	<!--下載後請將yourID及yourkey取代為您申請所取得的APPID及APIKEY方能正確顯示服務-->
+    <script type="text/javascript">
+        var locator = new TGOS.TGLocateService();
+        var addressInput;
+        var districtInput;
+        var mDiv, map;
+        var marker;
+        function InitWnd() {
+            pMap = document.getElementById("TGMap");
+            map = new TGOS.TGOnlineMap(pMap, TGOS.TGCoordSys.EPSG3857, {
+                mapTypeControlOptions: {
+                    mapTypeControlStyle: TGOS.TGMapTypeControlStyle.DEFAULT
+                }
+            });
+            marker = new TGOS.TGMarker(map, new TGOS.TGPoint(0, 0));
+            marker.setVisible(false);
+            districtInput = document.getElementById('district');
+			//讀取輸入的行政區
+        };
+		var fill = null;
+        function locateDistrict() {  //加入行政區定位
+			if (fill) {fill.setMap(null)};
+          
+          //locator.locateTWD97的話，上面要改成TGOS.TGCoordSys.EPSG3826
+            locator.locateWGS84({
+                district: districtInput.value
+            }, function (e, status) {
+                if (status != TGOS.TGLocatorStatus.OK) {
+                    alert('查無行政區');
+					return;
+                }
+                marker.setVisible(true);  //設定標記點標示行政區中心
+                marker.setPosition(e[0].geometry.location);
+                map.fitBounds(e[0].geometry.viewport);  
+				map.setZoom(map.getZoom() - 1);
+				//調整畫面符合行政區邊界
+				var pgn = e[0].geometry.geometry;
+				console.log(pgn);
+				//讀取行政區空間資訊
+				fill = new TGOS.TGFill(map, pgn, {
+				//將行政區空間資訊以面圖徵呈現
+					fillColor: '#00AAAA',
+					fillOpacity: 0.2,
+					strokeColor: '#009090',
+					strokeWeight: 5,
+					strokeOpacity: 1
+				});
+            });
+        }
+    </script>
+</head>
+<body style="margin: 0px" onload="InitWnd();">
+    <div id="TGMap" style="width: 640px; height: 480px; border: 1px solid #C0C0C0;">
+    </div>
+    <br />
+    行政區 :<input style="width: 40%" id='district' value='台北市中山區行政里' />
+    <input type="submit" value="行政區定位 TWD97" onclick="locateDistrict()" />
+</body>
+</html> 
