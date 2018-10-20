@@ -1,0 +1,29 @@
+<!--程式碼範例-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>TGOS MAP API for Web 鷹眼圖控制項</title>
+	<script type="text/javascript" src="https://api.tgos.tw/TGOS_API/tgos?ver=2&AppID=yourID&APIKey=yourkey" charset="utf-8"></script>
+
+    <script type="text/javascript">
+        var pMap;
+        function InitWnd() {
+            var pOMap = document.getElementById("TGMap");
+            pMap = new TGOS.TGOnlineMap(pOMap, TGOS.TGCoordSys.EPSG3857); //宣告TGOnlineMap地圖物件並設定坐標系統
+            pMap.setZoom(10);  
+            pMap.setCenter(new TGOS.TGPoint(121.4139208042, 24.930265));
+            
+        }
+        function showIndexView() {
+            var IndexView = new TGOS.TGIndexViewControl(pMap); //呼叫索引圖控制項
+            IndexView.show(document.getElementById("indexView").checked);
+        }
+    </script>
+</head>
+<body style="margin: 0px" onload="InitWnd();">
+    <div id="TGMap" style="width: 640px; height: 480px; border: 1px solid #C0C0C0;">
+    </div>
+    <br />
+    <input id="indexView" type="checkbox" onclick="showIndexView();">顯示鷹眼圖<br />
+</body>
+</html>
