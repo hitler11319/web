@@ -1,0 +1,59 @@
+<!--程式碼範例-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TGOS MAP API for Web 面資料結構</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<script type="text/javascript" src="https://api.tgos.tw/TGOS_API/tgos?ver=2&AppID=yourID&APIKey=yourkey" charset="utf-8"></script>
+
+    <script type="text/javascript">
+        var map = null;
+		var polygon = null;
+		var polygons = new Array();
+        function main() {
+            var pOMap = document.getElementById("TGMap");
+            map = new TGOS.TGOnlineMap(pOMap, TGOS.TGCoordSys.EPSG3857);
+			var sZoom = 9;
+			map.setZoom(sZoom);
+			var CenterX = 121.5637729839237294;
+			var CenterY = 24.27392849048320340;
+            map.setCenter(new TGOS.TGPoint(CenterX, CenterY));
+        }
+        function drawpolygon() {
+            // 定義範圍資料
+            var p1 = new TGOS.TGPoint(121.5178233948, 24.8402803);
+            var p2 = new TGOS.TGPoint(121.603342, 24.8209302);
+            var p3 = new TGOS.TGPoint(121.652342, 24.48933002);
+			var p4 = new TGOS.TGPoint(121.583232, 24.480329);
+			var p5 = new TGOS.TGPoint(121.523343, 24.33902892);
+			var path1 = [p1, p2, p3, p4, p5, p1];
+			var path2 = new TGOS.TGLineString(path1);
+            var boarder = new TGOS.TGLinearRing(path2);
+			var district1 = new TGOS.TGPolygon([boarder]);
+            //畫出一個 polygon
+            polygon = new TGOS.TGFill(map, district1, {
+                fillColor: '#00FFFF',
+				fillOpacity: 0.5,
+				strokeColor: '#00FF00',
+				strokeWeight: 3,
+				strokeOpacity: 0.5
+            });
+			polygons.push(polygon);
+        }
+		function clearflat(){
+			if (polygons.length > 0) {
+				
+				for (var i = 0; i < polygons.length; i++) {
+					polygons[i].setMap(null);	//清除所有
+				}
+			}
+		}
+    </script>
+</head>
+<body onload="main()">
+    <div style="height: 480px; width: 720px" id="TGMap">
+    </div>
+    <input type="button" value="Draw" onclick="drawpolygon();" />
+	<input type="button" value="Clear" onclick="clearflat();" />
+</body>
+</html>  
