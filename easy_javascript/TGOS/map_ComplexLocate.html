@@ -1,0 +1,183 @@
+<!--程式碼範例-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <style>
+        .panel {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            margin: 16px;
+            margin-left: 64px;
+            background-color: snow;
+            padding: 5px;
+            border: 1px solid #000000;
+            box-shadow: 2px 2px 4px #606060;
+        }
+
+        html,
+        body,
+        #TGMap {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+    </style>
+    <script type="text/javascript" src="https://api.tgos.tw/TGOS_API/tgos?ver=2&AppID=yourID&APIKey=yourkey" charset="utf-8"></script>
+    <!--參考網址https://api.tgos.tw/TGOS_MAP_API/docs/site/web/ComplexLocate-->
+    <script type="text/javascript">
+        var mapDiv, map;
+        var tgLocate;
+        var coordSys = TGOS.TGCoordSys.EPSG3857;
+        var markers = [];
+        var info;
+        //清除MARKER範例
+        function clearMarkers() {
+            markers.forEach(function (marker) {
+                marker.setMap(null);
+            });
+        }
+        //Marker InfoWindow 範例
+        function bindMarkerInfoWindow(markers) {
+            markers.forEach(function (marker) {
+                //加入Marker Click事件
+                TGOS.TGEvent.addListener(marker, "click", function (e) {
+                    //設定IndoWindow 內容
+                    info.setContent(this.annotation.county + this.annotation.town + this.annotation.name);
+                    info.setPosition(this.position);
+                    info.open(map);
+                })
+            });
+        }
+        //complexLocate
+        function locate() {
+            //取得X 及 Y
+            var cx = parseFloat(document.querySelector("#centerX").value);
+            var cy = parseFloat(document.querySelector("#centerY").value);
+            //設定中心點坐標
+            var center = new TGOS.TGPoint(cx, cy);
+            //TGLocate 定位請求的設定
+            var request = {
+                geometryInfo: document.querySelector("#geometryInfo").checked,
+                requestText: document.querySelector("#requestText").value,
+                pageNumber: parseInt(document.querySelector("#page-number").value),
+                county: document.querySelector("#county").value,
+                town: document.querySelector("#town").value
+            }
+            //判斷取得的X & Y 是否有數值
+            if (!isNaN(cx) && !isNaN(cy)) {
+                var center = new TGOS.TGPoint(cx, cy);
+                //設定查詢所在位置，若此屬性有設定則回傳結果會依照與查詢位置的距離排序。
+                request.center = center;
+            }
+            //綜合定位要求
+            tgLocate.complexLocate(request, coordSys, function (results, status) {
+                console.log(arguments);
+                if (status !== TGOS.TGLocatorStatus.OK && status !== TGOS.TGLocatorStatus.TOO_MANY_RESULTS) {
+                    alert(status);
+                    return;
+                }
+                //markers 陣列中存在 marker 先於圖台中清除，後將　markers　陣列清空
+                if (markers) {
+                    for (var i = 0; i < markers.length; i++) {
+                        markers[i].setMap(null);
+                    }
+                    markers = [];
+                }
+                //確定 markers 陣列清空後，設定新取得的 Marker 到 Markers 陣列中
+                for (var i = 0; i < results.length; i++) {
+                    var re = results[i];
+                    if (re.geometry) {
+                        var marker = new TGOS.TGMarker(map, re.geometry.location);
+                        //設定Marker的Title
+                        marker.setTitle(re.name);
+                        //設定標記點註解
+                        marker.annotation = re;
+                        //設定Marker點擊事件
+                        TGOS.TGEvent.addListener(marker, "click", function (e) {
+                            //設定InfoWindow內容
+                            info.setContent(this.annotation.county + this.annotation.town + this.annotation.name + " [" + this.annotation.type + "]");
+                            info.setPosition(this.position);
+                            info.open(map);
+                        })
+                        markers.push(marker);
+                    }
+                }
+            });
+        }
+
+        // Set ordering center
+        function addCenter() {
+
+            //設定一次性點擊事件
+            TGOS.TGEvent.addListenerOnce(map, "click", function (e) {
+                //取得點擊圖面座標位置
+                document.querySelector("#centerX").value = e.point.x;
+                document.querySelector("#centerY").value = e.point.y;
+            })
+        }
+        function main() {
+            //圖台初始化
+            mapDiv = document.getElementById("TGMap");
+            map = new TGOS.TGOnlineMap(mapDiv, coordSys);
+
+            tgLocate = new TGOS.TGLocate();
+            info = new TGOS.TGInfoWindow();
+        }
+    </script>
+</head>
+
+<body onload="main();">
+    <div id="TGMap">
+    </div>
+    <div class="panel">
+        <strong>複合式定位</strong>
+        <br>
+        <label for="requestText">
+            查詢字串 :
+        </label>
+        <input id="requestText" value="東華" type="text" />
+        <br>
+        <label>
+            目標縣市 :
+        </label>
+        <input style="width: 8em" id="county" value="" type="text" />
+        <br>
+        <label>
+            目標鄉鎮市區 :
+        </label>
+        <input style="width: 8em" id="town" value="" type="text" />
+        <br>
+        <button id="locateBtn" onclick="locate();">
+            進行定位
+        </button>
+        <hr>
+        <strong>定位設定</strong>
+        <br>
+        <label for="page-number">
+            頁次 :
+        </label>
+        <input style="width: 8em" id="page-number" value="1" type="number" />
+        <br>
+        <label for="centerX">
+            查詢中心點X坐標 :
+        </label>
+        <input style="width: 8em" id="centerX" value="120.685056" type="text" />
+        <br>
+        <label for="centerY">
+            查詢中心點Y坐標 :
+        </label>
+        <input style="width: 8em" id="centerY" value="24.137001" type="text" />
+        <br>
+        <button onclick="addCenter();">
+            設定查詢中心點</button>
+        <br>
+        <input id="geometryInfo" type="checkbox" checked />
+        <label for="geometryInfo">回傳幾何資訊</label>
+    </div>
+</body>
+
+</html>
