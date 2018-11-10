@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<body>
+	<input type="text" name="a">
+	<input type="text" name="a">
+	<input type="text" name="a">
+
+
+	<input type="text" name="b">
+	<input type="text" name="b">
+	<input type="text" name="b">
+
+
+	<script>
+		function getName(ele){
+			ele.val("hello i name is a");
+
+			//如果今天沒有加$()的話那就要用
+			//ele.value = "hello i name is a" （像是GetElementById的形式）
+		}
+	</script>
+
+
+	<script>
+		//each的用法，一定後面要傳2個參數（參數名稱可隨便取） => 第一個是序號，第二個是元素本身（因為要把他弄成jquery，所以變成$(element)
+		$('input[name=a]').each((index, element) => getName($(element)));
+
+
+		//each的第二種寫法
+		$('input[name=b]').each(function(index, element){
+			element.value = "i name is b and i index is" + index.toString();
+		})
+	</script>
+
+
+
+
+</body>
+</head>
+</html>
