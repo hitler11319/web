@@ -7,26 +7,25 @@
 </head>
 
 <body>
-
     出生年月日(例：2018/5/20，請自行加上/)<input type="text" id="Birthday">
     <button type="button" onclick="GetAge();">算年齡</button>
-
+    
     <script>
-        function GetAge(){
-            //先算年齡
-            var today = new Date();
-            var birthDate = new Date(document.getElementById('Birthday').value);
+    function GetAge() {
+        //先算年齡
+        var today = new Date();
+        var birthDate = new Date(document.getElementById('Birthday').value);
 
-            //年齡
-            var age = today.getFullYear() - birthDate.getFullYear();
-            var m = today.getMonth() - birthDate.getMonth();   //月份
-            //如果月份加減 < 0 或者 月份相減=0且今天天數 < 生日天數   => 年齡要再減1
-            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-                age--;
-            }
-
-            alert(age);
+        //年齡
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth(); //月份
+        //如果月份加減 < 0 或者 月份相減=0且今天天數 < 生日天數   => 年齡要再減1
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
         }
+
+        alert(age);
+    }
     </script>
 </body>
 
