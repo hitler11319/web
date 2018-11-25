@@ -1,3 +1,16 @@
+<!--
+
+  /*
+
+component.ts就是Controller
+component.html就是View
+data.service.ts就是Service
+之概念
+
+*/
+
+-->
+
 <section class="todoapp">
   <header class="header">
     <!--看app.component.ts裡的AppComponent類型裡的參數-->
@@ -17,24 +30,42 @@
       autofocus 
     />
   </header>
-  <!--
-    This section should be hidden by default and shown when there are todos
-  -->
+
   <section class="main">
-    <input class="toggle-all" type="checkbox" />
+    <input class="toggle-all" type="checkbox" (change)="completeAll()" />
     <label for="toggle-all">Mark all as complete</label>
     <ul class="todo-list">
-      <!-- These are here just to show the structure of the list items -->
-      <!--
-        List items should get the class `editing` when editing and `completed` when marked as completed
-      -->
-      <li class="completed">
+
+      <!--用他的for迴要用*ngFor，而裡面要設定的屬性也要加上ng（例如：[ngClass]）-->
+      <!--宣告變數idx = index-->
+      <!--如同下方[ngClass]是設定class-->
+      <!--是用for迴圈跑出來結果的，這裡是這樣的for todo in dataService.todos.where(x => x.state == 狀態);這種的感覺-->
+      <!--上一句說到的其實是呼叫state-filter裡的transform（而dataService.todos 和 後面的）就是傳入的參數值-->
+      <!--並且會得到todo和idx=index就是只for迴圈中的i-->
+      <li
+        *ngFor="
+          let todo of (dataService.todos | stateFilter: dataService.state);
+          let idx = index
+        "
+        [ngClass]="{ completed: todo.isCompleted }"
+      >
         <div class="view">
-          <input class="toggle" type="checkbox" checked />
-          <label>Taste JavaScript</label> <button class="destroy"></button>
+          <input
+            class="toggle"
+            type="checkbox"
+            [checked]="false"
+            (change)="toggleComplete(todo)"
+          />
+          <label>{{ todo.label }}</label>
+          <label>{{ todo.isCompleted }}</label>
+
+          <!--刪除的話，就是要把id和值傳回去-->
+          <button class="destroy" (click)="removeAll(idx, todo)"></button>
         </div>
         <input class="edit" value="Create a TodoMVC template" />
       </li>
+
+      <!--上面出來的樣子就等於下面的樣子（這裡只有一個，但上面會一直新增列出來）
       <li>
         <div class="view">
           <input class="toggle" type="checkbox" /> <label>Buy a unicorn</label>
@@ -42,27 +73,15 @@
         </div>
         <input class="edit" value="Rule the web" />
       </li>
+    -->
+
     </ul>
   </section>
-  <!-- This footer should hidden by default and shown when there are todos -->
-  <footer class="footer">
-    <!-- This should be `0 items left` by default -->
-    <span class="todo-count"><strong>0</strong> item left</span>
-    <!-- Remove this if you don't implement routing -->
-    <ul class="filters">
-      <li><a class="selected" href="#/">All</a></li>
-      <li><a href="#/active">Active</a></li>
-      <li><a href="#/completed">Completed</a></li>
-    </ul>
-    <!-- Hidden if no completed items are left ↓ -->
-    <button class="clear-completed">Clear completed</button>
-  </footer>
+  <!--引用section-footer裡的內容-->
+  <app-section-footer></app-section-footer>
 </section>
-<footer class="info">
-  <p>Double-click to edit a todo</p>
-  <!-- Remove the below line ↓ -->
-  <p>Template by <a href="http://sindresorhus.com">Sindre Sorhus</a></p>
-  <!-- Change this out with your name and url ↓ -->
-  <p>Created by <a href="http://todomvc.com">you</a></p>
-  <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
-</footer>
+
+<!--引用footer裡的內容-->
+<app-footer></app-footer>
+
+

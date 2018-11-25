@@ -5,11 +5,15 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
 import { DataService } from './data.service';
+import { StateFilterPipe } from './state-filter.pipe';
+import { SectionFooterComponent } from './section-footer/section-footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FooterComponent
+    FooterComponent,
+    StateFilterPipe,
+    SectionFooterComponent
   ],
   imports: [
     BrowserModule,

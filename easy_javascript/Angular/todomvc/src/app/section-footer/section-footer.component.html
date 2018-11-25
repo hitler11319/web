@@ -1,0 +1,55 @@
+
+<!--
+
+  /*
+
+component.ts就是Controller
+component.html就是View
+data.service.ts就是Service
+之概念
+
+*/
+
+-->
+
+
+<footer class="footer">
+    <!--這裡的dataService變數即為其ts中的變數（固下方的click事件可以直接改變其值也是這個原因）-->
+    <span class="todo-count"
+      ><strong>{{ dataService.itemLeft }}</strong> item left</span
+    >
+
+    <ul class="filters">
+      <li>
+        <!-- [class.selected]跟ngClass的意思一樣，只是寫法不同 -->
+        <a
+          [class.selected]="dataService.state === ''"
+          href="#/"
+          (click)="dataService.state = ''"
+          >All</a
+        >
+      </li>
+      <li>
+        <a
+          href="#/active"
+          [class.selected]="dataService.state === 'active'"
+          (click)="dataService.state = 'active'"
+          >Active</a
+        >
+      </li>
+      <li>
+        <a
+          href="#/completed"
+          [class.selected]="dataService.state === 'completed'"
+          (click)="dataService.state = 'completed'"
+          >Completed</a
+        >
+      </li>
+    </ul>
+    
+    <button class="clear-completed" (click)="clearComplete()">
+      Clear completed
+    </button>
+  </footer>
+  <!-- pipe的用法：把todos陣列用json格式表示 -->
+  <code> {{ dataService.todos | json }}</code>
