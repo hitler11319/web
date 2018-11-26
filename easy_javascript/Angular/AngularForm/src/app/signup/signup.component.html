@@ -1,0 +1,179 @@
+<h1>註冊畫面</h1>
+<!--在ts中設定的f的值取出來，並且用json呈現-->
+{{ f.value | json }}
+<hr />
+<!-- 如果input有disabled，就不會把值傳到後端，如果都要取就加上這行 -->
+<!--這行會將輸入的資料結果show在這裡-->
+{{ f.form.getRawValue() | json }}
+
+<!--上面f.value和f.form.getRawValue()看起來是一樣的答案-->
+
+<!--重設表單，裡面的f.reset({})是把表單中name=personName的值改成Kevin, name=email的值改成''-->
+<button (click)="f.reset({ personName: 'Jack', email: '' })">
+  reset form
+</button>
+
+<!--表單 設定表單用#f="ngForm" ， (ngSubmit)是指按下submit要觸發的動作， novalidate是不判斷日期-->
+<form #f="ngForm" (ngSubmit)="submitForm(f)" novalidate>
+  <div class="form-group row">
+    <label for="staticEmail" class="col-sm-2 col-form-label">姓名</label>
+    <div class="col-sm-10">
+      <!--name為personName，後面皆要用到，required是必填，minlength="3"是最小長度3-->
+      <!--有寫ngModel屬性是代表 加入ngModel-->
+      <input
+        type="text"
+        name="personName"
+        ngModel
+        #personName="ngModel"
+        class="form-control"
+        placeholder="姓名 (必填)"
+        required
+        minlength="3"
+      />
+
+      <!--錯誤用json呈現（這裡的personName就是上面設定的name="personName"）-->
+        <!--如果required和minlength都沒錯話，就會顯示null（代表沒有要顯示的）-->
+      {{ personName.errors | json }}
+
+      <!--驗證-->
+      <div style="color:blue;">invalid: {{ personName.invalid }}</div>
+
+      <!--如果沒輸入值，就跑這一行-->
+      <span *ngIf="personName.hasError('required')" style="color:red;">必須輸入姓名欄位</span>
+
+      <!--如果長度沒有大於3，就跑這一行-->
+      <span *ngIf="personName.hasError('minlength')" style="color:red;">{{
+        personName.getError('minlength') | json
+      }}</span>
+
+    
+    </div>
+  </div>
+
+  <br>
+
+  <div class="form-group row">
+    <label for="staticEmail" class="col-sm-2 col-form-label">E-mail</label>
+    <div class="col-sm-10">
+      <input
+        type="email"
+        name="email"
+        ngModel
+        class="form-control"
+        placeholder="Email (必填)"
+        required
+      />
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="inputPassword" class="col-sm-2 col-form-label"></label>
+    <div class="col-sm-10">
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value=""
+          id="defaultCheck1"
+          ngModel
+          name="send"
+          #send="ngModel"
+        />
+        <label class="form-check-label" for="defaultCheck1">
+          寄送產品型錄
+        </label>
+      </div>
+    </div>
+  </div>
+  <!--
+    下面的ngIf是用來判斷如果checkbox有被勾選才會顯示下列的資訊(該用法會多一層div)
+  -->
+  <!-- <div *ngIf="send.value"> 代表上面name="send"的checkbox有勾才會顯示下面的資料，記得要用ng-container來用喔 -->
+  <!-- 下面這行可以解決多一層div的問題 -->
+  <ng-container *ngIf="send.value">
+    <div class="form-group row">
+      <label for="addressType" class="col-sm-2 col-form-label">地址類別</label>
+      <div class="col-sm-10">
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="addressType"
+            value="home"
+            checked
+          />
+          <label class="form-check-label" for="inlineRadio1">住家</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="addressType"
+            value="office"
+          />
+          <label class="form-check-label" for="inlineRadio2">公司</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="addressType"
+            value="other"
+          />
+          <label class="form-check-label" for="inlineRadio3">其他</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="staticEmail" class="col-sm-2 col-form-label">縣市區域、郵遞區號</label>
+      <div class="col-sm-10">
+        <div class="row">
+          <div class="col">
+            <select
+              id="inputState"
+              class="form-control"
+              [ngModel]="city"
+              name="city"
+              (ngModelChange)="getTownOption($event)"
+            >
+
+              <option selected>請選擇縣市</option>
+              <!--foreach(var city in cityOptions)-->
+              <option *ngFor="let city of cityOptions">{{ city }}</option>
+            </select>
+          </div>
+          <div class="col">
+            <select
+              id="inputState"
+              class="form-control"
+              [ngModel]="town"
+              name="town"
+              (ngModelChange)="getZipcodeOption($event)"
+            >
+              <option selected>請選擇區域</option>
+              <!--foreach(var town in townOptions)-->
+              <!--value = town 的值-->
+              <option *ngFor="let town of townOptions" [ngValue]="town">{{
+                  town[0]
+                }}</option>
+            </select>
+          </div>
+          <div class="col">
+            <input type="text" class="form-control" placeholder="郵遞區號" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="staticEmail" class="col-sm-2 col-form-label">地址</label>
+      <div class="col-sm-10"><input type="text" class="form-control" /></div>
+    </div>
+  </ng-container>
+
+  <!-- </div> [disabled]="f.invalid" 是代表驗證f.invalid傳回ture 或 false-->
+  <button type="submit" class="btn btn-primary" [disabled]="f.invalid">
+    送出
+  </button>
+</form>

@@ -1,0 +1,7 @@
+1.像AngularForm裡的product資料夾
+
+用 ng g m product （新增module）即可
+
+但裡面的component呢？  
+
+跑到product資料夾裡面輸入 ng g c edit 和 ng g c list 他自動會把路徑弄好
