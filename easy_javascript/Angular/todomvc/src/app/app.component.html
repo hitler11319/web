@@ -41,6 +41,7 @@ data.service.ts就是Service
       <!--如同下方[ngClass]是設定class-->
       <!--是用for迴圈跑出來結果的，這裡是這樣的for todo in dataService.todos.where(x => x.state == 狀態);這種的感覺-->
       <!--上一句說到的其實是呼叫state-filter裡的transform（而dataService.todos 和 後面的）就是傳入的參數值-->
+      <!--上一句說的即是用Pipe的概念（Value值 | 使用的Pipe的name : 參數值)-->
       <!--並且會得到todo和idx=index就是只for迴圈中的i-->
       <li
         *ngFor="
