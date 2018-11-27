@@ -1,5 +1,31 @@
+
+<!--
+
+ngModel詳細 請看 https://angular.io/api/forms/NgModel
+
+介紹：
+
+而有寫 #xxx="ngModel"的和#f="ngForm"是要讓它可以使用
+
+例如：f.value  f.form.getRawValue()  f.reset() personName.errors personName.invalid personName.getError('minlength')
+
+以上要使用這些就必需要有 #xxx="ngModel"  或 #xxx="ngForm"才能使用
+
+，而且不只能夠使用 有寫上面這些的才能夠被取到值（像118行的input就是因為沒寫，所以才不會取到值）
+
+
+
+寫法：（前提name都要先取）
+1. 加入 ngModel ，並且寫 #xxx="ngModel" （第49行）
+2. [ngModel] = "xxx"  （第159行）
+
+都是相同的意思
+
+-->
+
 <h1>註冊畫面</h1>
-<!--在ts中設定的f的值取出來，並且用json呈現-->
+
+<!--這裡的f指的是下方的#f="ngForm"的f-->
 {{ f.value | json }}
 <hr />
 <!-- 如果input有disabled，就不會把值傳到後端，如果都要取就加上這行 -->
@@ -168,7 +194,7 @@
 
     <div class="form-group row">
       <label for="staticEmail" class="col-sm-2 col-form-label">地址</label>
-      <div class="col-sm-10"><input type="text" class="form-control" /></div>
+      <div class="col-sm-10"><input type="text" class="form-control" ngModel #address="ngModel" name="address" /></div>
     </div>
   </ng-container>
 

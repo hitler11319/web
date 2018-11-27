@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http'; // 要用HttpClient
 })
 export class SignupComponent implements OnInit {
 
-// form盡量不要用ViewChild的方式取得（要import ViewChild）
+// form盡量不要用ViewChild的方式取得（要import ViewChild） ，這裡的f 是前端設定的 #f = "ngForm"
 @ViewChild('f') form;
 
 // 宣告變數

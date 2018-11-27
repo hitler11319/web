@@ -7,6 +7,8 @@ import { ListComponent } from './list/list.component';
 @NgModule({
   imports: [
     CommonModule,
+
+    // 設定路徑 （是用forChild => 所以會是 localhost:4200/product/list  這樣）
     RouterModule.forChild([
       { path: 'list', component: ListComponent },
       // path : 'edit/:id' 即是 edit/id

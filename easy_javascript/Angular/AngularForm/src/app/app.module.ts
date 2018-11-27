@@ -21,7 +21,7 @@ import { SignupAdvanceComponent } from './signup-advance/signup-advance.componen
     ReactiveFormsModule,
     HttpClientModule,
 
-    // 設定路徑
+    // 設定路徑（ForRoot，所以是直接的路徑 localhost:4200/signup）
     RouterModule.forRoot([
       // {path : 名稱 , component : 所要用的Component}
       { path: 'signup', component: SignupComponent },

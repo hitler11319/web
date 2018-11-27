@@ -1,3 +1,17 @@
+<!--
+
+[formGroup]="formData"  視同 先有 formGroup 再來是 #formData="formGroup"的概念
+
+
+但是這邊的name設法是formControlName="name"  等同於 name="name"
+
+
+
+記得在後端（ts）中也要加喔！！！！
+
+-->
+
+
 <h1>註冊畫面</h1>
 {{ formData.value | json }}
 <!-- 將 formGroup 與 template 做連結 -->
@@ -48,6 +62,7 @@
         type="text"
         class="form-control"
         placeholder="手機號碼 (必填)"
+        formControlName="cellphone"
         required
       />
     </div>
@@ -143,16 +158,33 @@
     <div class="col-sm-10">
       <div class="row">
         <div class="col">
-          <select id="inputState" class="form-control">
-            <option selected>請選擇縣市</option>
-            <option>...</option>
-          </select>
+          <select
+          #city
+          id="inputState"
+          class="form-control"
+          formControlName="city"
+          (Change)="getTownOption(city)"
+        >
+          <option selected>請選擇縣市</option>
+          <!--foreach(var city in cityOptions)-->
+          <option *ngFor="let city of cityOptions">{{ city }}</option>
+        </select>
         </div>
         <div class="col">
-          <select id="inputState" class="form-control">
-            <option selected>請選擇區域</option>
-            <option>...</option>
-          </select>
+          <select
+          #town
+          id="inputState"
+          class="form-control"
+          formControlName="town"
+          (Change)="getZipcodeOption(town)"
+        >
+          <option selected>請選擇區域</option>
+          <!--foreach(var town in townOptions)-->
+          <!--value = town 的值-->
+          <option *ngFor="let town of townOptions" [ngValue]="town">{{
+              town[0]
+            }}</option>
+        </select>
         </div>
         <div class="col">
           <input type="text" class="form-control" placeholder="郵遞區號" />
