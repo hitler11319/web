@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 })
 
 export class Page2Component implements OnInit {
+
+  // 宣告 路徑router
   constructor(private router: Router) {}
 
   ngOnInit() {}

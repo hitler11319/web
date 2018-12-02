@@ -6,10 +6,12 @@
   <li><a routerLink="/page2/3">Page 2 Detail with ID 3</a></li>
 </ul>
 <router-outlet></router-outlet>
-<!--
-  <button (click)="loadData()">Load</button>
-  <ul>
-    <li *ngFor="let post of posts">{{ post | json }}</li>
-  </ul>
--->
+
+<p>----------------------------------------------------------------------------------------------</p>
+
+<label>請輸入要載入多少筆</label><input type="number" #num autofocus><button (click)="loadData()">Load</button>
+
+<ul>
+  <li *ngFor="let post of show(num.value)">{{ post | json }}</li>
+</ul>
 
