@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>CSS Style的繫結</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <!--出自https://cn.vuejs.org/v2/guide/class-and-style.html ，僅作練習使用-->
+
+
+    <!--基本設定class-->
+
+    <div id="app1">
+        <!--自已設定的class和v-bind:class是不會互相覆蓋的-->
+        <div class="static" v-bind:class="{ active: isActive, 'text-danger': hasError }">記得去f12觀看class喔
+        </div>
+    </div>
+
+
+    <script>
+        var app1 = new Vue({
+            el: '#app1',
+            data: {
+                isActive: true,
+                hasError: true
+            }
+        })
+    </script>
+
+
+    <br>
+    <hr>
+
+    <!--使用記數屬性-->
+    <div id="app2">
+        <div v-bind:class="classObject">記得去f12觀看</div>
+    </div>
+
+
+    <script>
+        var app2 = new Vue({
+            el: '#app2',
+            data: {
+                isActive: true,
+                error: null
+            },
+
+            //記數屬性（很好用，但要去了解）
+            computed: {
+                //記錄屬性可以建立一個屬性（而這個屬性是一個func的形式）
+                classObject: function () {
+                    return {
+                        //這裡的active是只到時候class 會不會顯示active
+                        active: this.isActive && !this.error,  // =>true  （有此屬性）
+
+                        //這裡的text-danger也是指class中的text-danger（可以用''包起來，也可以不用）
+                        'text-danger': this.error && this.error.type === 'fatal' // => false  （沒此屬性）
+                    }
+                }
+            }
+
+            /*視同這串（上面的computed）
+                data: {
+                    classObject: {
+                        active: true,
+                        'text-danger': false
+                    }
+                }
+            */
+        })
+    </script>
+
+
+    <br>
+    <hr>
+
+
+    <!--數組語法-->
+    <div id="app3">
+        <div v-bind:class="[activeClass, errorClass]">1. 這裡記得去f12看</div>
+
+        <!--2和3是相同的-->
+        <div v-bind:class="[isActive ? activeClass : '', errorClass]">2. 這裡記得去f12看</div>
+        <div v-bind:class="[{ active: isActive }, errorClass]">3. 這裡記得去f12看</div>
+    </div>
+
+
+    <script>
+        var app3 = new Vue({
+            el: '#app3',
+            data: {
+                activeClass: 'active',   //設定他們的屬性
+                errorClass: 'text-danger',   //設定他們的屬性
+                isActive: false
+            }
+        })
+    </script>
+
+
+    <br>
+    <hr>
+
+    <!--對象語法-->
+    <div id="app4">
+        <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }">記得去f12看</div>
+        <div v-bind:style="styleObject">記得去f12看</div>
+    </div>
+
+
+    <script>
+        var app4 = new Vue({
+            el: '#app4',
+            data: {
+                activeColor: 'red',
+                fontSize: 30,
+
+                styleObject: {
+                    color: 'red',
+                    fontSize: '13px'
+                }
+            }
+        })
+    </script>
+
+
+
+
+
+
+</body>
+
+</html>
