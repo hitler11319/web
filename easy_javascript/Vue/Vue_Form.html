@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue 表單</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <!--出自https://cn.vuejs.org/v2/guide/forms.html ，僅作練習使用-->
+
+    <div id="FormAPP">
+
+        <form id="form1" action="" method="GET">
+
+            <!--基本input-->
+            <input v-model="message" v-bind:placeholder="placeholder1">
+            <p>Message is: {{ message }}</p>
+
+
+            <hr>
+
+            <!--textarea-->
+            <textarea v-model="MultipleLineMessage" v-bind:placeholder="placeholder2"></textarea>
+            <textarea>{{ MultipleLineMessage }}</textarea>
+
+            <hr>
+
+            <!--checkbox-->
+
+            <!--單個（會是bool值）-->
+            <input type="checkbox" id="checkbox" v-model="checked">{{ checked }}
+
+            <!--但也可以自訂其值（但一開始進入時，checked1會是顯示false。當你勾選時，才會變成yes） => 避免方法 checked一開始設為'no'-->
+            <input type="checkbox" id="checkbox" v-model="checked1" true-value="yes" false-value="no">{{ checked1 }}
+
+            <br>
+
+            <!--多個（到同一個值）-->
+            <!--要value是動態的，那就可以用v-bind:value-->
+            <input type="checkbox" id="jack" v-bind:value="checkList[0]" v-model="checkedNames">
+            <label for="jack">Jack</label>
+            <input type="checkbox" id="john" v-bind:value="checkList[1]" v-model="checkedNames">
+            <label for="john">John</label>
+            <input type="checkbox" id="mike" v-bind:value="checkList[2]" v-model="checkedNames">
+            <label for="mike">Mike</label>
+            <br>
+            <span>Checked names: {{ checkedNames }}</span>
+
+
+            <hr>
+
+
+            <!--radioButton-->
+            <input type="radio" id="one" value="One" v-model="picked">
+            <label for="one">One</label>
+            <br>
+            <input type="radio" id="two" value="Two" v-model="picked">
+            <label for="two">Two</label>
+            <br>
+            <span>Picked: {{ picked }}</span>
+
+
+            <hr>
+
+
+            <!--下拉式選單-->
+            <select v-model="selected">
+                <option disabled value="">請選擇</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+            </select>
+            <span>Selected: {{ selected }}</span>
+
+
+            <hr>
+
+            <!--複選下拉式選單-->
+            <select v-model="Mutiselected" multiple style="width: 50px;">
+                <option value="First">First</option>
+                <option value="Second">Second</option>
+                <option value="Third">Third</option>
+            </select>
+            <br>
+            <span>Selected: {{ Mutiselected }}</span>
+
+
+            <hr>
+
+
+            <!--用for來跑出來-->
+            <select v-model="selected2">
+                <option v-for="option in options" v-bind:value="option.value">
+                    {{ option.text }}
+                </option>
+            </select>
+            <span>Selected: {{ selected2 }}</span>
+
+            <hr>
+
+            <!--其他一些設定-->
+
+            <!-- 加入.lazy後，在“change”時而非“input”時更新 -->
+            <input v-model.lazy="msg">
+
+            <!--加入.number後，輸入數字形式（且會讓他不能輸入數字以外的）-->
+            <input v-model.number="age" type="number">
+
+            <!--加入.trim後，會將輸入的值頭尾去空白-->
+            <input v-model.trim="msg1">
+
+
+            <button type="submit">送出</button>
+
+        </form>
+    </div>
+
+
+    <script>
+        new Vue({
+            el: "#FormAPP",
+            data: {
+                placeholder1: 'edit me',
+                placeholder2: 'add multiple lines',
+                message: '',
+                MultipleLineMessage: '',
+                checkList: ['Jack', 'John', 'Mike'],
+                checked: false,
+                checked1: 'no',
+                checkedNames: [],
+                picked: '',
+                selected: '',
+                Mutiselected: [],
+                selected2: 'A',
+                options: [
+                    { text: 'One', value: 'A' },
+                    { text: 'Two', value: 'B' },
+                    { text: 'Three', value: 'C' }
+                ],
+                msg: '',
+                age: 0,
+                msg1: ''
+            }
+        })
+    </script>
+
+</body>
+
+</html>
