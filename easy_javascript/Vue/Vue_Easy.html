@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>幾個簡單的測試</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <!--出自https://cn.vuejs.org/v2/guide/instance.html ，僅作練習使用-->
+
+
+    <div id="example">{{ a }}</div>
+
+
+    <!--所有的屬性每個的值改會時，大家會響應，即匹配更新为新的值。（例如：上面有個{{text}} ，但 當 text的值改變時，那個值也會改變）-->
+
+    <script>
+        // 創一個資料
+        var data = { a: 1 }
+
+        // 加入vue中
+        var vm = new Vue({
+            el: '#example',
+            data: data
+        })
+
+        //取得屬性
+        vm.a == data.a // => true
+
+        //改變屬性，會影響到原值
+        vm.a = 2
+        data.a // => 2
+
+        // ……反之亦然
+        data.a = 3
+        vm.a // => 3
+
+
+
+
+        //也可以用$來取得
+        vm.$data === data // => true
+        vm.$el === document.getElementById('example') // => true
+
+        // $watch 是一個實例方法
+        vm.$watch('a', function (newValue, oldValue) {
+            // 在vm.a被改變後觸發
+            alert('oldValue = ' + oldValue.toString() + '   newValue=' + newValue.toString());
+        })
+
+        vm.a = 4;
+    </script>
+
+
+    <script>
+        //但是只有在一開始創建時就在的，才會改變時也改變原值
+
+        //現在才新加的，是不會變動後原值也改變的
+        vm.b = "hi"
+    </script>
+
+
+    <div id="app">
+        <p>這不會被改變 {{ foo }}</p>
+
+        <!--加上v-once的只會載入一次，所以也是不會隨值變動而改變-->
+        <span v-once>這將不會改變: {{ foo }}</span>
+        <button v-on:click="foo = 'baz'">Change it</button>
+    </div>
+
+    <script>
+        //不想讓其值變更 html的頁面上的資料也一起變動
+
+        var obj = {
+            foo: 'bar'
+        }
+
+        //加上這一行，並把obj丟進去。這樣就算obj變動了 html上的仍然不會改變
+        Object.freeze(obj)
+
+        new Vue({
+            el: '#app',
+            data: obj
+        })
+    </script>
+
+
+    <!--創建時的一些mathod-->
+    <script>
+        var v2 = new Vue({
+            data: {
+                cc: 123
+            },
+
+            //被創建時觸發
+            created: function () {
+                // `this` 指向 vm 
+                alert('cc is: ' + this.cc)
+            },
+
+            //其他請看上面的網址中，按下那些來看詳細資料
+        })
+    </script>
+
+
+</body>
+
+</html>
