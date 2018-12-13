@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>toGeoJSON</title>
+
+        <script src='togeojson.js'></script>
+    </head>
+    <body>
+        <textarea id='in' style="width:100%;height:400px;">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                        &lt;kml xmlns=&quot;http://www.opengis.net/kml/2.2&quot;&gt;
+                        &lt;Placemark&gt;
+                        &lt;name&gt;Simple placemark&lt;/name&gt;
+                        &lt;description&gt;Attached to the ground. Intelligently places itself
+                        at the height of the underlying terrain.&lt;/description&gt;
+                        &lt;Point&gt;
+                        &lt;coordinates&gt;-122.0822035425683,37.42228990140251,0&lt;/coordinates&gt;
+                        &lt;/Point&gt;
+                        &lt;/Placemark&gt;
+                        &lt;/kml&gt;
+        </textarea>
+
+        <br>
+
+        <button type="button" onclick="ToGeoJSON();">轉換</button>
+
+        <br>
+                
+
+        <textarea id='output'  style="width:100%;height:400px;"></textarea>
+
+        
+        <script>
+            function ToGeoJSON(){
+                var input = document.getElementById('in').value;
+                var out = document.getElementById('output');
+
+                //這段就是把kml轉成geoJSON的，input為kml文字，其餘不用動
+                out.value = JSON.stringify(toGeoJSON["kml"]((new DOMParser()).parseFromString(input, 'text/xml')), null, 4);
+            }
+        </script>
+
+    </body>
+</html>
