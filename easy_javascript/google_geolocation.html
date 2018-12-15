@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <title>KML圖層套疊</title>
+  </head>
+  <body>
+
+<!--參考網址： https://www.oxxostudio.tw/articles/201810/google-maps-20-get-current-position.html -->
+
+    <script>
+      navigator.geolocation.watchPosition(function(position) {
+        //得到的position只能在裡面用，拿到外面存起來也沒用（要注意）
+        alert(
+          "lat = " +
+            position.coords.latitude.toString() +
+            "   lng= " +
+            position.coords.longitude
+        );
+      });
+    </script>
+  </body>
+</html>
