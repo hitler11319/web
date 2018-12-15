@@ -18,6 +18,16 @@
             return value * 2;
         })
 
+
+        //如果今天是html的物件的話，可以用map的函式
+        /*
+            //function後的2個分別為，序號、html物件本身（所以如果要用jquery的方法去做，要記得加上$）
+            $('input[name=hello]).map(function(index, ele){
+                result += "<tr><td>" + $(ele).val() + "</td></tr>"
+            })
+        */
+
+
         //篩選出不相同的（即上方就算*2，仍然有很多重複的，用這個寫法可以取的不重複的值變為一個新陣列
         //後面參數分別為  值  序號  此陣列本來
         var NoRepeatData = mappingData.filter(function(value, index, arr){
