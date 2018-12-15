@@ -33,6 +33,17 @@ document.getElementById("demo8").innerHTML = f;
 
 var g = new Date("03/25/2015");
 document.getElementById("demo9").innerHTML = g;
+
+
+//日期加淢
+var today = new Date();   //今天日期
+var addDate = today.setDate(today.getDate() + 14);  //加天數
+var addMonth = today.setMonth(today.getMonth() + 6);  //加月份
+var addYear = today.setFullYear(today.getFullYear() + 10);  //加年
+
+//取得日期
+var result = "中華民國" + (today.getFullYear() - 1911) + " 年 " + (today.getMonth()+1) + " 月 " + today.getDate() + " 日";
+
 </script>
 
 </body>
