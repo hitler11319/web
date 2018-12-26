@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue IF判別式</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <!--出自https://cn.vuejs.org/v2/guide/conditional.html ，僅作練習使用-->
+
+
+
+    <div id="demo">
+        <h1 v-if="ok2">Yes</h1>
+
+        <h1 v-if="ok3">Yes</h1>
+        <h1 v-else>No</h1>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: '#demo',
+            data: {
+                ok2: true,
+                ok3: false
+            }
+        })
+    </script>
+
+    <!--IF ELSE IF-->
+
+    <div id="demo2">
+        <div v-if="rnd > 0.75">
+            random number > 0.75
+        </div>
+        <div v-else-if="rnd > 0.5">
+            random number > 0.5
+        </div>
+        <div v-else-if="rnd > 0.25">
+            random number > 0.25
+        </div>
+        <div v-else>
+            <p>random number
+                <=0 .25</p>
+        </div>
+    </div>
+
+    <script>
+        var vm2 = new Vue({
+            el: '#demo2',
+            data: {
+                rnd: Math.random()
+            }
+        })
+    </script>
+
+
+    <!--再一個範例（要與下面的做比較的）-->
+
+    <div id="demo3">
+        <template v-if="loginType === 'username'">
+            <label>Username</label>
+            <input placeholder="Enter your username">
+        </template>
+        <template v-else>
+            <label>Email</label>
+            <input placeholder="Enter your email address">
+        </template>
+
+        <button v-on:click="changeType">交換Type</button>
+    </div>
+
+    <script>
+        var vm3 = new Vue({
+            el: '#demo3',
+            data: {
+                loginType: 'username'
+            },
+            methods: {
+                changeType: function () {
+                    
+                    if(this.loginType === 'username'){
+                        this.loginType = 'email'
+                    }else{
+                        this.loginType = 'username'
+                    }
+                }
+            }
+        })
+    </script>
+
+    <!--
+        有沒有發現因為2個模板使用相同的元素，<input>不會被替換，而是只有placeholder改變（當然label也是這種情形）
+        ，故使用方方的作法（加上key）
+    -->
+
+
+    <div id="demo4">
+            <template v-if="loginType === 'username'">
+                <label>Username</label>
+                <input placeholder="Enter your username" key="username-input">
+            </template>
+            <template v-else>
+                <label>Email</label>
+                <input placeholder="Enter your email address" key="email-input">
+            </template>
+    
+            <button v-on:click="changeType">交換Type</button>
+        </div>
+    
+        <script>
+            var vm4 = new Vue({
+                el: '#demo4',
+                data: {
+                    loginType: 'username'
+                },
+                methods: {
+                    changeType: function () {
+                        
+                        if(this.loginType === 'username'){
+                            this.loginType = 'email'
+                        }else{
+                            this.loginType = 'username'
+                        }
+                    }
+                }
+            })
+        </script>
+
+</body>
+
+</html>
