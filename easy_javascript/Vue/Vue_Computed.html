@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue 計數屬性 和 監聽</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <!--出自https://cn.vuejs.org/v2/guide/computed.html ，僅作練習使用-->
+
+    <div id="example">
+        <input v-model="message">
+        <p>Computed reversed message: "{{ reversedMessage }}"</p>
+        <p>Methods reversed message : "{{ reversedMessage2() }}"</p>
+        <p>now is {{ now }}</p>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: '#example',
+            data: {
+                message: 'Hello'
+            },
+            computed: {
+                // 計算屬性的 getter
+
+                //計算屬性就類例一個function，但會隨著它所依附的值改變而改變
+                reversedMessage: function () {
+                    // `this` 指的是vm本身
+                    return this.message.split('').reverse().join('')
+                },
+
+                //依據下方的註解，這個是不會再改變了！因為他沒有依附的值，所以也就不會有依附的值改變的事情發生
+                now: function () {
+                    var Today = new Date();
+                    return Today.getFullYear().toString() + " 年 " + (Today.getMonth() + 1).toString() + " 月 " + Today.getDate().toString() + " 日"
+                }
+            },
+
+            //我們可將同一函數定義為一個方法而不是計算屬性，2個方法最後結果相同。但不同的是計算屬放會依附在他們的相關值。只在其其關的值發生改變才會重新求值
+            //所以message還沒發生改變，reversedMessage計算屬性會傳回之前的結果，而不會再度執行函式
+            methods: {
+                reversedMessage2: function () {
+                    return this.message.split('').reverse().join('')
+                }
+            }
+        })
+    </script>
+
+
+    <!--監聽屬性-->
+
+
+    <div id="demo">{{ fullName }}</div>
+
+    <script>
+        var vm2 = new Vue({
+            el: '#demo',
+            data: {
+                firstName: 'Foo',
+                lastName: 'Bar',
+                fullName: 'Foo Bar'
+            },
+
+            //監聽屬性（當值有變化，就觸發）
+            watch: {
+                firstName: function (val) {
+                    this.fullName = val + ' ' + this.lastName
+                },
+                lastName: function (val) {
+                    this.fullName = this.firstName + ' ' + val
+                }
+            }
+        })
+    </script>
+
+    <!--優化上面vm2的監聽屬性-->
+
+    <div id="demo2">{{ fullName }}</div>
+
+    <script>
+        var vm3 = new Vue({
+            el: '#demo2',
+            data: {
+                firstName: 'Foo',
+                lastName: 'Bar'
+            },
+            computed: {
+                fullName: function () {
+                    return this.firstName + ' ' + this.lastName
+                }
+            }
+        })
+    </script>
+
+
+    <!--計數屬性的setter（設定值）-->
+
+    <div id="demo3">
+        <input v-model="fullName">
+        <p>now value = {{ fullName }}</p>
+    </div>
+
+    <script>
+        var vm4 = new Vue({
+            el: '#demo3',
+            data: {
+                firstName: 'Foo',
+                lastName: 'Bar'
+            },
+
+            computed: {
+                fullName: {
+                    // getter
+                    get: function () {
+                        return this.firstName + ' ' + this.lastName
+                    },
+                    // setter
+                    set: function (newValue) {
+                        var names = newValue.split(' ')
+                        this.firstName = names[0]
+                        this.lastName = names[names.length - 1]
+                    }
+                }
+            }
+        })
+
+        //這時候再執行vm4.fullName = 'ABC DEF'時就會觸發set
+    </script>
+
+
+    <!--有時仍要用監聽器-->
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+
+    <div id="watch-example">
+        <p>
+            Ask a yes/no question:
+            <input v-model="question">
+        </p>
+        <p>{{ answer }}</p>
+    </div>
+
+    <script>
+
+        //雖然計算屬性大多數比較合適，但有時也要自定義的監聽器。Vue通過watch選項提供一個通用的方法，來因應數據的變化，當數據變化時執行的開銷較大時，這比較好
+
+        var watchExampleVM = new Vue({
+            el: '#watch-example',
+            data: {
+                question: '',
+                answer: 'I cannot give you an answer until you ask a question!'
+            },
+            watch: {
+                // 如果question發生變化，就會執行
+                question: function (newQuestion, oldQuestion) {
+                    this.answer = 'Waiting for you to stop typing...'
+                    this.debouncedGetAnswer()
+                }
+            },
+            created: function () {
+                // `_.debounce` 是一个通过 Lodash 限制操作频率的函数。
+                // 在这个例子中，我们希望限制访问 yesno.wtf/api 的频率
+                // AJAX 请求直到用户输入完毕才会发出。想要了解更多关于
+                // `_.debounce` 函数 (及其近亲 `_.throttle`) 的知识，
+                // 请参考：https://lodash.com/docs#debounce
+                this.debouncedGetAnswer = _.debounce(this.getAnswer, 500)
+            },
+            methods: {
+                getAnswer: function () {
+
+                    //可以輸入帶有?的就會跑過此階段跑去執行下面的喔
+                    if (this.question.indexOf('?') === -1) {
+                        this.answer = 'Questions usually contain a question mark. ;-)'
+                        return
+                    }
+
+
+                    this.answer = 'Thinking...'
+                    var vm = this
+
+                    //新版ajax的寫法（不過上面記得要使用<script ....)
+                    axios.get('https://yesno.wtf/api')
+                        .then(function (response) {
+                            vm.answer = _.capitalize(response.data.answer)
+                        })
+                        .catch(function (error) {
+                            vm.answer = 'Error! Could not reach the API. ' + error
+                        })
+                }
+            }
+        })
+    </script>
+
+
+</body>
+
+</html>
