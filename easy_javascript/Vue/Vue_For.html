@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue For用法</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <!--出自https://cn.vuejs.org/v2/guide/list.html ，僅作練習使用-->
+
+
+    <!--基本用法-->
+
+    <ul id="example-1">
+        <li v-for="item in items">
+            {{ item.message }}
+        </li>
+    </ul>
+
+    <script>
+        var example1 = new Vue({
+            el: '#example-1',
+            data: {
+                items: [
+                    { message: 'Foo' },
+                    { message: 'Bar' }
+                ]
+            }
+        })
+    </script>
+
+
+    <!--對陣列使用-->
+
+    <ul id="example-2">
+        <li v-for="(item, index) in items">
+            {{ parentMessage }} - {{ index }} - {{ item.message }}
+        </li>
+
+        <br>
+
+        <!--也可以用of來取代in-->
+        <li v-for="(i, index) of item">
+            {{ index }} -> {{i}}
+        </li>
+    </ul>
+
+    <script>
+        var example2 = new Vue({
+            el: '#example-2',
+            data: {
+                parentMessage: 'Parent',
+                items: [
+                    { message: 'Foo' },
+                    { message: 'Bar' }
+                ],
+                item: [10, 20, 30]
+            }
+        })
+    </script>
+
+    <!--對一個物件的屬性-->
+
+    <ul id="v-for-object" class="demo">
+        <li v-for="value in object">
+            {{ value }}
+        </li>
+
+        <br>
+
+        <!--加入key值的-->
+        <div v-for="(value, key) in object">
+            {{ key }}: {{ value }}
+        </div>
+
+        <br>
+
+        <!--加入index的-->
+        <div v-for="(value, key, index) in object">
+            {{ index }}. {{ key }}: {{ value }}
+        </div>
+    </ul>
+
+    <script>
+        new Vue({
+            el: '#v-for-object',
+            data: {
+                object: {
+                    firstName: 'John',
+                    lastName: 'Doe',
+                    age: 30
+                }
+            }
+        })
+    </script>
+
+
+    <!---->
+
+    <script>
+        /*
+        变异方法 (mutation method)，顾名思义，会改变被这些方法调用的原始数组。相比之下，也有非变异 (non-mutating method) 方法，
+        例如：filter(), concat() 和 slice() 。这些不会改变原始数组，但总是返回一个新数组。当使用非变异方法时，可以用新数组替换旧数组
+        */
+
+        example1.items = example1.items.filter(function (item) {
+            return item.message.match(/Foo/)
+        })
+
+        //以上就會找到有items.message中有Foo的資料，並變成一個新的集合（不會改變到舊的）
+
+
+        /*
+        由于 JavaScript 的限制，Vue 不能检测以下变动的数组：
+
+        1.当你利用索引直接设置一个项时，例如：vm.items[indexOfItem] = newValue
+        2.当你修改数组的长度时，例如：vm.items.length = newLength
+
+
+        例如：以下皆是不可行的
+        var vm = new Vue({
+            data: {
+                items: ['a', 'b', 'c']
+            }
+        })
+
+        vm.items[1] = 'x' // 不是响应性的
+        vm.items.length = 2 // 不是响应性的
+
+        */
+
+
+        /*
+        解決第一個問題：
+        为了解决第一类问题，以下两种方式都可以实现和 vm.items[indexOfItem] = newValue 相同的效果，同时也将触发状态更新：
+
+        // Vue.set
+        Vue.set(vm.items, indexOfItem, newValue)
+
+        // Array.prototype.splice
+        vm.items.splice(indexOfItem, 1, newValue)
+        */
+
+
+        /*
+        解決第二個問題：
+
+        为了解决第二类问题，你可以使用 splice：
+        vm.items.splice(newLength)
+        */
+
+
+        //-------------------------------------------------------------------------------------------------------------------------
+
+        //还是由于 JavaScript 的限制，Vue 不能检测对象属性的添加或删除
+
+        /*
+        
+        var vm = new Vue({
+            data: {
+                userProfile: {
+                name: 'Anika'
+                }
+            }
+        })
+        
+        1.增加屬性：
+        Vue.set(vm.userProfile, 'age', 27)
+
+        2.有时你可能需要为已有对象赋予多个新属性，比如使用 Object.assign() 或 _.extend()
+        vm.userProfile = Object.assign({}, vm.userProfile, {
+            age: 27,
+            favoriteColor: 'Vue Green'
+        })
+        
+        */
+    </script>
+
+
+
+    <!--過濾的for（上下2個是相同的效果）-->
+
+    <div id="demo">
+        <li v-for="n in evenNumbers">{{ n }}</li>
+    </div>
+
+
+    <script>
+        new Vue({
+            el: '#demo',
+            data: {
+                numbers: [1, 2, 3, 4, 5]
+            },
+            computed: {
+                evenNumbers: function () {
+                    return this.numbers.filter(function (number) {
+                        return number % 2 === 0
+                    })
+                }
+            }
+        })
+    </script>
+
+    <br>
+
+
+    <div id="demo2">
+        <!--在for使用method-->
+        <li v-for="n in even(numbers)">{{ n }}</li>
+    </div>
+
+
+    <script>
+        new Vue({
+            el: '#demo2',
+            data: {
+                numbers: [1, 2, 3, 4, 5]
+            },
+            methods: {
+                even: function (numbers) {
+                    return numbers.filter(function (number) {
+                        return number % 2 === 0
+                    })
+                }
+            }
+        })
+    </script>
+
+    <br>
+
+    <!--取一段範圍的v-For-->
+
+    <div id="dd">
+        <!--要記得要使用v-for一定下面要有宣告才能使用喔-->
+        <span v-for="n in 5">{{ n }} </span>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#dd',
+            data: {
+            }
+        })
+    </script>
+
+    <br>
+
+
+    <!--当它们处于同一节点，v-for 的优先级比 v-if 更高，这意味着 v-if 将分别重复运行于每个 v-for 循环中。-->
+
+    <div id="demo3">
+        <li v-for="todo in todos" v-if="!todo.isComplete">
+            {{ todo }}
+        </li>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#demo3',
+            data: {
+                todos: [
+                    { message: 'do A', isComplete: true },
+                    { message: 'do B', isComplete: true },
+                    { message: 'do C', isComplete: false }
+                ],
+            }
+        })
+    </script>
+
+    <br>
+    <br>
+
+
+    <!--完整例子-->
+
+    <!--<my-component v-for="(item, index) in items" v-bind:item="item" v-bind:index="index" v-bind:key="item.id"></my-component>-->
+
+    <div id="todo-list-example">
+        <!--在submit之前-->
+        <form v-on:submit.prevent="addNewTodo">
+            <label for="new-todo">Add a todo</label>
+            <input v-model="newTodoText" id="new-todo" placeholder="E.g. Feed the cat">
+            <button>Add</button>
+        </form>
+        <ul>
+            <li is="todo-item" v-for="(todo, index) in todos" v-bind:key="todo.id" v-bind:title="todo.title" v-on:remove="todos.splice(index, 1)"></li>
+        </ul>
+    </div>
+
+    <script>
+        //對到 <li is="todo-item"
+        Vue.component('todo-item', {
+            template: '\
+            <li>\
+                {{ title }}\
+                <button v-on:click="$emit(\'remove\')">Remove</button>\
+            </li>\
+            ',
+            props: ['title']
+        })
+
+
+        new Vue({
+            el: '#todo-list-example',
+            data: {
+                newTodoText: '',
+                todos: [
+                    {
+                        id: 1,
+                        title: 'Do the dishes',
+                    },
+                    {
+                        id: 2,
+                        title: 'Take out the trash',
+                    },
+                    {
+                        id: 3,
+                        title: 'Mow the lawn'
+                    }
+                ],
+                nextTodoId: 4
+            },
+            methods: {
+                addNewTodo: function () {
+                    this.todos.push({
+                        id: this.nextTodoId++,
+                        title: this.newTodoText
+                    })
+                    this.newTodoText = ''
+                }
+            }
+        })
+    </script>
+
+
+
+</body>
+
+</html>
