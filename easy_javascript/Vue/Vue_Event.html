@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue Event事件</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <!--出自https://cn.vuejs.org/v2/guide/events.html ，僅作練習使用-->
+
+
+
+    <!--基本使用-->
+
+    <div id="example-1">
+        <button v-on:click="counter += 1">Add 1</button>
+        <p>The button above has been clicked {{ counter }} times.</p>
+    </div>
+
+    <script>
+        var example1 = new Vue({
+            el: '#example-1',
+            data: {
+                counter: 0
+            }
+        })
+    </script>
+
+
+    <div id="example-2">
+        <!-- `greet` 是在下面定义的方法名 -->
+        <button v-on:click="greet">Greet</button>
+    </div>
+
+    <script>
+        var example2 = new Vue({
+            el: '#example-2',
+            data: {
+                name: 'Vue.js'
+            },
+            // 在 `methods` 对象中定义方法
+            methods: {
+                greet: function (event) {
+                    // `this` 在方法里指向当前 Vue 实例
+                    alert('Hello ' + this.name + '!')
+                    // `event` 是原生 DOM 事件
+                    if (event) {
+                        alert(event.target.tagName)
+                    }
+                }
+            }
+        })
+    </script>
+
+
+    <br>
+
+
+    <div id="example-3">
+        <button v-on:click="say('hi')">Say hi</button>
+        <button v-on:click="say('what')">Say what</button>
+    </div>
+
+
+    <script>
+        new Vue({
+            el: '#example-3',
+            methods: {
+                say: function (message) {
+                    alert(message)
+                }
+            }
+        })
+    </script>
+
+
+    <br>
+
+    <!--在onclick中傳入DOM-->
+    <div id="example-4">
+        <button v-on:click="warn('Form cannot be submitted yet.', $event)">
+            Submit
+        </button>
+    </div>
+
+
+    <script>
+        new Vue({
+            el: '#example-4',
+            methods: {
+                warn: function (message, event) {
+                    // 现在我们可以访问原生事件对象
+                    if (event) event.preventDefault()
+                    alert(message)
+                }
+            }
+        })
+    </script>
+
+
+    <br>
+
+
+    <!--事件修飾符-->
+
+
+    <div id="example-5">
+        <!-- 阻止单击事件继续传播 -->
+        <a v-on:click.stop="doThis('阻止點擊事件')">阻止點擊事件</a>
+
+        <!-- 提交事件不再重载页面 -->
+        <form v-on:submit.prevent="doThis('提交事件不再重載頁面')">提交事件不再重載頁面</form>
+
+        <!-- 修饰符可以串联 -->
+        <a v-on:click.stop.prevent="doThis('修符可以串聯')">修符可以串聯</a>
+
+        <!-- 只有修饰符 -->
+        <form v-on:submit.prevent>只有修飾符</form>
+
+        <!-- 添加事件监听器时使用事件捕获模式 -->
+        <!-- 即元素自身触发的事件先在此处理，然后才交由内部元素进行处理 -->
+        <div v-on:click.capture="doThis('元素自身的觸發事件在此處理')">元素自身的觸發事件在此處理</div>
+
+        <!-- 只当在 event.target 是当前元素自身时触发处理函数 -->
+        <!-- 即事件不是从内部元素触发的 -->
+        <div v-on:click.self="doThis('當event.target是當前元素自身時觸發函數')">當event.target是當前元素自身時觸發函數</div>
+
+        <!-- 点击事件将只会触发一次 -->
+        <a v-on:click.once="doThis('只觸發一次')">只觸發一次</a>
+
+        <!-- 滚动事件的默认行为 (即滚动行为) 将会立即触发 -->
+        <!-- 而不会等待 `onScroll` 完成  -->
+        <!-- 这其中包含 `event.preventDefault()` 的情况 -->
+        <div v-on:scroll.passive="doThis('滾動事件會觸發')">滾動事件會觸發</div>
+    </div>
+
+
+    <script>
+        new Vue({
+            el: '#example-5',
+            methods: {
+                doThis: function (message) {
+                    alert(message)
+                }
+            }
+        })
+    </script>
+
+
+
+    <!--按鍵修飾符-->
+
+    <div id="example-6">
+        <!-- 只有在 `keyCode` 是 13  -->
+        <!--
+            js的keycode對應表
+            http://crazy.molerat.net/learner/cpuroom/net/reading.php?filename=http://crazy.molerat.net/learner/cpuroom/net/100052121100.dov
+        -->
+        <input v-on:keyup.13="Key" placeholder="輸入keycode=13，即Enter鍵">
+
+        <!-- 同上 -->
+        <input v-on:keyup.enter="Key" placeholder="輸入enter">
+        <input v-on:keyup.tab="Key" placeholder="輸入tab">
+        <input v-on:keyup.delete="Key" placeholder="輸入delete">
+        <input v-on:keyup.esc="Key" placeholder="輸入esc">
+        <input v-on:keyup.space="Key" placeholder="輸入space">
+        <input v-on:keyup.up="Key" placeholder="輸入↑">
+        <input v-on:keyup.down="Key" placeholder="輸入↓">
+        <input v-on:keyup.left="Key" placeholder="輸入←">
+        <input v-on:keyup.right="Key" placeholder="輸入→">
+
+        <!-- 同上 -->
+        <input v-on:keyup.f1="Key" placeholder="輸入f1">
+
+        <input @keyup.page-down="Key" placeholder="輸入pagedown">
+        <input @keyup.page-up="Key" placeholder="輸入pageup">
+    </div>
+
+    <script>
+        new Vue({
+            el: '#example-6',
+            methods: {
+                Key: function () {
+                    alert('觸發事件啦！')
+                }
+            }
+        })
+
+        // 可以使用 `v-on:keyup.f1`（這樣keyup.112等同於f1）
+        Vue.config.keyCodes.f1 = 112
+    </script>
+
+
+    <br>
+    <br>
+
+
+    <!--系統修飾符-->
+
+    <div id="example-7">
+
+        <!-- Alt + C -->
+        <input @keyup.alt.67="sysKey" placeholder="輸入Alt+C">
+
+        <!-- Ctrl + Click -->
+        <input @click.ctrl="sysKey" placeholder="Click+Ctrl">
+        <input @click.alt="sysKey" placeholder="Click+輸入Alt">
+        <input @click.shift="sysKey" placeholder="Click+shift">
+        <input @click.meta="sysKey" placeholder="Click+Windows 徽标键 (⊞) ； meta 对应 command 键 (⌘)">
+
+        <!--精準控制-->
+        <!-- 即使 Alt 或 Shift 被一同按下时也会触发 -->
+        <button @click.ctrl="sysKey">Ctrl 或 Alt 、 Shift一同被按下都會觸發</button>
+
+        <!-- 有且只有 Ctrl 被按下的时候才触发 -->
+        <button @click.ctrl.exact="sysKey">只有Ctrl被按下才觸發</button>
+
+        <!-- 没有任何系统修饰符被按下的时候才触发 -->
+        <button @click.exact="sysKey">沒任何系統修飾符被按下才觸發</button>
+    </div>
+
+
+    <script>
+        new Vue({
+            el: '#example-7',
+            methods: {
+                sysKey: function () {
+                    alert('觸發事件啦！')
+                }
+            }
+        })
+    </script>
+
+
+    <br>
+
+
+
+    <!--滑鼠控制-->
+
+    <div id="example-8">
+        <button @click.left="mouseClick">用滑鼠左鍵按下去</button>
+        <button @click.right="mouseClick">用滑鼠右鍵按下去</button>
+        <button @click.middle="mouseClick">用滑鼠中間鍵按下去</button>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#example-8',
+            methods: {
+                mouseClick: function () {
+                    alert('滑鼠事件觸發啦！')
+                }
+            }
+        })
+    </script>
+
+
+</body>
+
+</html>
