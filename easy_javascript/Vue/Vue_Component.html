@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue component組件 應用</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <style>
+        .tab-button {
+            padding: 6px 10px;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            background: #f0f0f0;
+            margin-bottom: -1px;
+            margin-right: -1px;
+        }
+
+        .tab-button:hover {
+            background: #e0e0e0;
+        }
+
+        .tab-button.active {
+            background: #e0e0e0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!--出自https://cn.vuejs.org/v2/guide/components.html ，僅作練習使用-->
+
+
+    <!--創建組件(Component)-->
+
+
+    <script>
+        // 定义一个名为 button-counter 的新组件
+        Vue.component('button-counter', {
+            //注意：這邊的data和平常的不一樣，平常的是屬性值。
+            //而Component的data要放的是function，因為Component是可以重複使用的（好多人宣告"不同"隻）=>所以每隻的屬性都要獨立不受其他隻的影響
+            data: function () {
+                return {
+                    count: 0
+                }
+            },
+            //會產生出來的html
+            template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+        })
+    </script>
+
+    <div id="components-demo">
+        <!--下面3隻的count會各自獨立，不受其他隻的影響-->
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+    </div>
+
+    <script>
+        new Vue({ el: '#components-demo' })
+    </script>
+
+
+
+    <!--基本prop應用-->
+
+    <script>
+        Vue.component('blog-post', {
+            //Prop 是你可以在组件上注册的一些自定义特性。当一个值传递给一个 prop 特性的时候，它就变成了那个组件实例的一个属性。
+            //一个组件默认可以拥有任意数量的 prop，任何值都可以传递给任何 prop。
+            props: ['title'],
+            template: '<h3>{{ title }}</h3>'
+        })
+    </script>
+
+    <div id="demo">
+        <blog-post title="My journey with Vue"></blog-post>
+        <blog-post title="Blogging with Vue"></blog-post>
+        <blog-post title="Why Vue is so fun"></blog-post>
+
+
+        <!--傳入-->
+        <blog-post v-for="post in posts" v-bind:key="post.id" v-bind:title="post.title"></blog-post>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#demo',
+            data: {
+                posts: [
+                    { id: 1, title: 'My journey with Vue, id = 1' },
+                    { id: 2, title: 'Blogging with Vue, id = 2' },
+                    { id: 3, title: 'Why Vue is so fun, id = 3' }
+                ]
+            }
+        })
+    </script>
+
+
+    <!--看起来当组件变得越来越复杂的时候，我们的的屬不只需要标题和内容，还需要发布日期、评论等等。为每个相关的信息定义一个 prop 会变得很麻烦-->
+    <!--所以是时候重构一下这个 <blog-post> 组件了，让它变成接受一个单独的 post prop-->
+
+    <script>
+        //现在，不论何时为 post 对象添加一个新的属性，它都会自动地在 <blog-post> 内可用。
+        Vue.component('blog-post2', {
+            props: ['post'],
+            //下面的v-html是可以打html語法的，所以以後要加好幾個欄位，就把content:<div>....</div>之類的把他用好即可
+            template: `
+                <div class="blog-post2">
+                    <h3>{{ post.title }}</h3>
+                    <div v-html="post.content"></div>
+                </div>`
+        })
+    </script>
+
+    <div id="demo1">
+        <blog-post2 v-for="post in posts" v-bind:key="post.id" v-bind:post="post"></blog-post2>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#demo1',
+            data: {
+                posts: [
+                    { id: 1, title: 'A', content: 'this is A' },
+                    { id: 2, title: 'B', content: 'this is B' },
+                    { id: 3, title: 'C', content: 'this is C' },
+                    { id: 4, title: 'D', content: 'this is D' }
+                ]
+            }
+        })
+    </script>
+
+
+    <!--有父級關係的-->
+
+
+    <script>
+        Vue.component('blog-post3', {
+            props: ['post'],
+            //<button v-on:click="$emit('enlarge-text')">Enlarge text</button>
+            //我们可以调用内建的 $emit 方法并传入事件的名字，来向父级组件触发一个事件
+            template: `
+                <div class="blog-post">
+                    <h3>{{ post.title }}</h3>
+                    <button v-on:click="$emit('enlarge-text')">Enlarge text</button>
+                    <div v-html="post.content"></div>
+                </div>`
+        })
+
+
+        //注意：上面的$emit的別一個用法（使用emit的第二個參數，來進行傳值）
+        //<button v-on:click="$emit('enlarge-text', 0.1)">Enlarge text</button>
+        //而在下面裡用$event來收到這個值
+        //<blog-post ... v-on:enlarge-text="postFontSize += $event"></blog-post>
+    </script>
+
+
+    <div id="blog-posts-events-demo">
+        <!--設定style = 字型大小為postFontSize（且是用div包著Component）=>父級-->
+        <!--v-on:enlarge-text="postFontSize += 0.1"進行動作   而enlarge-text就是上面component所設定的動作-->
+        <div :style="{ fontSize: postFontSize + 'em' }">
+            <blog-post3 v-for="post in posts" v-bind:key="post.id" v-bind:post="post" v-on:enlarge-text="postFontSize += 0.1"></blog-post3>
+        </div>
+    </div>
+
+
+    <script>
+        new Vue({
+            el: '#blog-posts-events-demo',
+            data: {
+                posts: [
+                    { id: 1, title: '甲' },
+                    { id: 2, title: '乙' }
+                ],
+                postFontSize: 1
+            }
+        })
+    </script>
+
+
+    <br>
+
+
+
+    <!--Model的處理（這部份要再研究）-->
+
+    <script>
+        Vue.component('custom-input', {
+            props: ['value'],
+            template: `
+                <input v-bind:value="value" v-on:input="$emit('input', $event.target.value)">`
+        })
+    </script>
+
+    <div id="demo2">
+        <custom-input v-model="searchText" v-on:input="alert($event)"></custom-input>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#demo2',
+        })
+    </script>
+
+
+    <br>
+
+
+    <!--動態組件-->
+
+
+    <script src="https://unpkg.com/vue"></script>
+
+    <div id="dynamic-component-demo" class="demo">
+        <button v-for="tab in tabs" v-bind:key="tab" v-bind:class="['tab-button', { active: currentTab === tab }]" v-on:click="currentTab = tab">{{ tab }}</button>
+
+        <!--用is 來使用component，但這邊是一個computed來進行return 決定要用哪一隻component-->
+        <component v-bind:is="currentTabComponent" class="tab"></component>
+    </div>
+
+
+    <script>
+        Vue.component('tab-home', {
+            template: '<div>Home component</div>'
+        })
+        Vue.component('tab-posts', {
+            template: '<div>Posts component</div>'
+        })
+        Vue.component('tab-archive', {
+            template: '<div>Archive component</div>'
+        })
+
+        new Vue({
+            el: '#dynamic-component-demo',
+            data: {
+                currentTab: 'Home',
+                tabs: ['Home', 'Posts', 'Archive']
+            },
+            computed: {
+                currentTabComponent: function () {
+                    return 'tab-' + this.currentTab.toLowerCase()
+                }
+            }
+        })
+    </script>
+
+
+</body>
+
+</html>
