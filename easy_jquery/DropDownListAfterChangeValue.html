@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>連續下拉式選單</title>
+    <meta name='description' content="" />
+    <meta name='keywords' content="" />
+    <meta name="MobileOptimized" content="width">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<script src="js/jquery-1.12.4.min.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<!--
+    頁面的RWD主要用bootstrap3來開發，表單和table也是用bootstrap的元件。
+    日期元件是使用jquery ui的元件，並附加中文語系。
+-->
+
+<body class="page">
+
+<script>
+var flag = false;
+</script>
+
+<script>
+function k(){
+    flag = true;
+}
+
+function b(){
+    if(flag){alert('aaa'); flag=false;}
+}
+</script>
+
+    <div class="form-group">
+        <label for="brand">班級</label>
+        <select name="brand" class="brand form-control" id="brand" onmouseout="b();" onchange="k();">
+            <option value="">請選擇</option>
+            <option value="01">3班</option>
+            <option value="02">4班</option>
+            <option value="03">5班</option>
+        </select>
+    </div>
+
+</body>
+
+</html>
