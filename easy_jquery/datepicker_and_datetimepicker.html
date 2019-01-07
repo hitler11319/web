@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-TW">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>datepicker and datetimepicker</title>
-    <meta name='description' content="" />
-    <meta name='keywords' content="" />
-    <meta name="MobileOptimized" content="width">
-    <meta name="HandheldFriendly" content="true">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/jquery-ui.css" rel="stylesheet">
-    <link href="css/jquery-ui-timepicker-addon.min.css" rel="stylesheet">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="MobileOptimized" content="width" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <link href="css/jquery-ui.css" rel="stylesheet" />
+    <link href="css/jquery-ui-timepicker-addon.min.css" rel="stylesheet" />
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/jquery-ui.js"></script>
     <script src="js/datepicker-zh-TW.js"></script>
@@ -20,95 +19,179 @@
     <script src="js/jquery-ui-timepicker-zh-TW.js"></script>
     <!-- jQuery -->
     <script>
-    window.jQuery || document.write('<script src="js/jquery-1.12.4.min.js">\x3C/script>')
+      window.jQuery ||
+        document.write('<script src="js/jquery-1.12.4.min.js">\x3C/script>');
     </script>
-</head>
+  </head>
 
-<body class="page">
+  <body class="page">
     <div class="form-horizontal">
-        <div class="form-group">
-            <label for="brand" class="control-label col-sm-2">會議時間（大家有空的時間） 開始 結束</label>
-            <div class="col-sm-5">
-                <!--<input type="datetime-local" id="startDate" class="form-control" onchange="checkStrDate()"> -->
-                <input size="20" type="text" class="form-control form_datetime" id="applyStartDate" onchange="checkApplyStrDate()" readonly>
-                <span id="applyStrDate" style="color: red">點擊輸入框即可選擇時間</span>
-            </div>
-            <div class="col-sm-5">
-                <!--<input type="datetime-local" id="endDate" class="form-control" onchange="checkEndDate()">-->
-                <input size="20" type="text" class="form-control form_datetime" id="applyendDate" onchange="checkApplyEndDate()" readonly>
-                <span id="applyEndDate" style="color: red">點擊輸入框即可選擇時間</span>
-            </div>
+      <div class="form-group">
+        <label for="brand" class="control-label col-sm-2"
+          >會議時間（大家有空的時間） 開始 結束</label
+        >
+        <div class="col-sm-5">
+          <!--<input type="datetime-local" id="startDate" class="form-control" onchange="checkStrDate()"> -->
+          <input
+            size="20"
+            type="text"
+            class="form-control form_datetime"
+            id="applyStartDate"
+            onchange="checkApplyStrDate()"
+            readonly
+          />
+          <span id="applyStrDate" style="color: red"
+            >點擊輸入框即可選擇時間</span
+          >
         </div>
-        <script type="text/javascript">
+        <div class="col-sm-5">
+          <!--<input type="datetime-local" id="endDate" class="form-control" onchange="checkEndDate()">-->
+          <input
+            size="20"
+            type="text"
+            class="form-control form_datetime"
+            id="applyendDate"
+            onchange="checkApplyEndDate()"
+            readonly
+          />
+          <span id="applyEndDate" style="color: red"
+            >點擊輸入框即可選擇時間</span
+          >
+        </div>
+      </div>
+      <script type="text/javascript">
         function checkApplyStrDate() {
-            var value = $('#applyStartDate').val()
-            if (!value) {
-                document.getElementById('applyStrDate').innerText = '欄位不得為空'
-            } else {
-                document.getElementById('applyStrDate').innerText = ''
-                //datepicker和datetimepicker後來要新增參數或修改參數可以這樣子寫
-                //這邊是當你輸入開始時間時，結束時間就會去把比開始時間小的日期全設成不能按（以下皆是這樣的原理）
-                $("#applyendDate").datepicker('option', 'minDate', $('#applyStartDate').val());
-            }
-            return document.getElementById('applyStrDate').innerText
+          var value = $("#applyStartDate").val();
+          if (!value) {
+            document.getElementById("applyStrDate").innerText = "欄位不得為空";
+          } else {
+            document.getElementById("applyStrDate").innerText = "";
+            //datepicker和datetimepicker後來要新增參數或修改參數可以這樣子寫
+            //這邊是當你輸入開始時間時，結束時間就會去把比開始時間小的日期全設成不能按（以下皆是這樣的原理）
+            $("#applyendDate").datepicker(
+              "option",
+              "minDate",
+              $("#applyStartDate").val()
+            );
+          }
+          return document.getElementById("applyStrDate").innerText;
         }
 
         function checkApplyEndDate() {
-            var value = $('#applyendDate').val()
-            if (!value) {
-                document.getElementById('applyEndDate').innerText = '欄位不得為空'
-            } else {
-                document.getElementById('applyEndDate').innerText = ''
-                $("#applyStartDate").datepicker('option', 'maxDate', $('#applyendDate').val());
-            }
-            return document.getElementById('applyEndDate').innerText
+          var value = $("#applyendDate").val();
+          if (!value) {
+            document.getElementById("applyEndDate").innerText = "欄位不得為空";
+          } else {
+            document.getElementById("applyEndDate").innerText = "";
+            $("#applyStartDate").datepicker(
+              "option",
+              "maxDate",
+              $("#applyendDate").val()
+            );
+          }
+          return document.getElementById("applyEndDate").innerText;
         }
-        </script>
-        <div class="form-group">
-            <label for="brand" class="control-label col-sm-2">考試時間(開始 結束)</label>
-            <div class="col-sm-5">
-                <!--<input type="datetime-local" id="startDate" class="form-control" onchange="checkStrDate()"> -->
-                <input size="20" type="text" class="form-control form_date" id="startDate" onchange="checkStrDate()" readonly>
-                <span id="validationstrDate" style="color: red">點擊輸入框即可選擇時間</span>
-            </div>
-            <div class="col-sm-5">
-                <!--<input type="datetime-local" id="endDate" class="form-control" onchange="checkEndDate()">-->
-                <input size="20" type="text" class="form-control form_date" id="endDate" onchange="checkEndDate()" readonly>
-                <span id="validationEndDate" style="color: red">點擊輸入框即可選擇時間</span>
-            </div>
+      </script>
+      <div class="form-group">
+        <label for="brand" class="control-label col-sm-2"
+          >考試時間(開始 結束)</label
+        >
+        <div class="col-sm-5">
+          <!--<input type="datetime-local" id="startDate" class="form-control" onchange="checkStrDate()"> -->
+          <input
+            size="20"
+            type="text"
+            class="form-control form_date"
+            id="startDate"
+            onchange="checkStrDate()"
+            readonly
+          />
+          <span id="validationstrDate" style="color: red"
+            >點擊輸入框即可選擇時間</span
+          >
         </div>
-        <script type="text/javascript">
+        <div class="col-sm-5">
+          <!--<input type="datetime-local" id="endDate" class="form-control" onchange="checkEndDate()">-->
+          <input
+            size="20"
+            type="text"
+            class="form-control form_date"
+            id="endDate"
+            onchange="checkEndDate()"
+            readonly
+          />
+          <span id="validationEndDate" style="color: red"
+            >點擊輸入框即可選擇時間</span
+          >
+        </div>
+      </div>
+      <script type="text/javascript">
         function checkStrDate() {
-            var value = $('#startDate').val()
-            if (!value) {
-                document.getElementById('validationstrDate').innerText = '欄位不得為空'
-            } else {
-                document.getElementById('validationstrDate').innerText = ''
-                $("#endDate").datepicker('option', 'minDate', $('#startDate').val());
-            }
-            return document.getElementById('validationstrDate').innerText
+          var value = $("#startDate").val();
+          if (!value) {
+            document.getElementById("validationstrDate").innerText =
+              "欄位不得為空";
+          } else {
+            document.getElementById("validationstrDate").innerText = "";
+            $("#endDate").datepicker(
+              "option",
+              "minDate",
+              $("#startDate").val()
+            );
+          }
+          return document.getElementById("validationstrDate").innerText;
         }
 
         function checkEndDate() {
-            var value = $('#endDate').val()
-            if (!value) {
-                document.getElementById('validationEndDate').innerText = '欄位不得為空'
-            } else {
-                document.getElementById('validationEndDate').innerText = ''
-                $("#startDate").datepicker('option', 'maxDate', $('#endDate').val());
-            }
-            return document.getElementById('validationEndDate').innerText
+          var value = $("#endDate").val();
+          if (!value) {
+            document.getElementById("validationEndDate").innerText =
+              "欄位不得為空";
+          } else {
+            document.getElementById("validationEndDate").innerText = "";
+            $("#startDate").datepicker(
+              "option",
+              "maxDate",
+              $("#endDate").val()
+            );
+          }
+          return document.getElementById("validationEndDate").innerText;
         }
-        </script>
+      </script>
 
-
-
-        <script>
+      <script>
         //設定格式
-        $('.form_datetime').datetimepicker({ format: 'yyyy-mm-dd hh:ii' });
-        $('.form_date').datepicker({ format: 'yyyy-mm-dd' });
-        </script>
-    </div>
-</body>
+        $(".form_datetime").datetimepicker({ format: "yyyy-mm-dd hh:ii" });
+        $(".form_date").datepicker({ format: "yyyy-mm-dd" });
 
+        //加入清除按鈕
+        $(function() {
+          //wrap up the redraw function with our new shiz
+          var dpFunc = $.datepicker._generateHTML; //record the original
+          $.datepicker._generateHTML = function(inst) {
+            var thishtml = $(dpFunc.call($.datepicker, inst)); //call the original
+
+            thishtml = $("<div />").append(thishtml); //add a wrapper div for jQuery context
+
+            //這邊的.ui-datepicker-calendar可以自行調整，去開啟後按F12再往下面看 會有個 datepicker的html標籤，去裡面看結構
+            //可自行改按鈕的位置
+            $(".ui-datepicker-calendar", thishtml).after(
+              $(
+                '<button class="\
+     ui-datepicker-clear ui-state-default ui-priority-primary ui-corner-all\
+     "\>Clear</button>'
+              ).click(function() {
+                inst.input.val("");
+                inst.input.datepicker("hide");
+              })
+            );
+
+            thishtml = thishtml.children(); //remove the wrapper div
+
+            return thishtml; //assume okay to return a jQuery
+          };
+        });
+      </script>
+    </div>
+  </body>
 </html>
