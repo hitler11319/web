@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>JS 進階 Event 介紹</title>
+    <script src="http://oss.sheetjs.com/js-xlsx/xlsx.full.min.js"></script>
+  </head>
+
+  <!--參考網址：http://www.wibibi.com/info.php?tid=384-->
+
+  <!--onunload是要離開時就會觸發-->
+  <body onunload="alert('下次再見囉！');">
+    
+    <script type="text/javascript">
+      //也可由這樣設定
+      window.onunload = SayGoodbye;
+
+      function SayGoodbye() {
+        //用alert是看不出什麼效果的（這部份直接按X看不出結果）
+        alert("bye");
+      }
+    </script>
+
+    <script language="javascript">
+      //onblur是失焦時觸發，即 失去focus（去按其他元素…之類的）
+      function TestOnblur() {
+        alert("test onblur");
+      }
+    </script>
+    <input type="text" onblur="TestOnblur()" />
+
+    <br />
+
+    <script language="javascript">
+      //focus
+      function ShowFocus() {
+        document.getElementById("ShowBox").innerHTML = "欄位已經被 Focus";
+      }
+    </script>
+    請輸入您的名子：<input type="text" onfocus="ShowFocus()" />
+    <span id="ShowBox"></span>
+  </body>
+</html>
