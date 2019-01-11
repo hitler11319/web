@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>JS 換行、空白 取代</title>
+  </head>
+
+  <body>
+
+    <textarea id="text" style="width:300px;height:400px;"></textarea>
+
+    <button type="button" onclick="replaceSpace();">取代換行+空白</button>
+
+    <button type="button" onclick="content();">是否有包含空白</button>
+
+
+    <script>
+        function replaceSpace(){
+            var text = document.getElementById('text').value;
+
+            //取代斷行
+            text = text.replace(/\r\n|\n/g,"");
+
+            //取代空白
+            text = text.replace(/\s+/g, "");
+
+            document.getElementById('text').value = text;
+        }
+
+        function content(){
+            var text = document.getElementById('text').value;
+
+            //JS 的 content（包含）
+            var isContent = text.includes(' ');
+
+            alert(isContent);
+        }
+
+        //字串join
+        var a = ['aaa', 'bbb', 'ccc'];
+        alert(a.join(','));
+    </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
