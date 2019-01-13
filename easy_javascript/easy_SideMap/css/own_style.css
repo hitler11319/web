@@ -1,0 +1,392 @@
+.header {
+    text-align: center;
+    background-color: beige;
+    padding: 50px;
+}
+
+.footer {
+    padding: 40px;
+    background-color: lightyellow;
+    text-align: center;
+    clear: both;
+}
+
+.leftmenu {
+    background-color: aliceblue;
+    width: 230px;
+    float: left;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.content {
+    min-height: 800px;
+    margin-left: 230px;
+}
+
+.toturial .panel-body{
+    min-height: 400px;
+}
+.toturial .checkbox-inline{
+    margin-right: 10px;
+}
+.no-display{
+    display: none;
+}
+.container{
+    min-height: 200px;
+}
+.btn-groud{
+    text-align: center;
+}
+.btn-groud input{
+    font-size: 25px;
+    margin: 15px;
+}
+.qrcode-print{
+    text-align: center;
+}
+.reg-no{
+    font-size: 23px;
+    line-height: 40px;
+    font-weight: bold;
+}
+
+@media (max-width: 767px) {
+    .leftmenu{
+        display: none;
+    }
+    .content{
+        margin-left: 0px;
+    }
+}
+.performDesc{
+    margin-top: 20px;
+}
+.del-icon{
+    padding-top: 2px;
+    float: right;
+}
+
+.primary-table thead{
+    background-color: #337ab7;
+    color: white;
+}
+
+.primary-table .total{
+    text-align: right;
+}
+
+.primary-table .total .title{
+    font-weight: bold;
+}
+
+.primary-table .total .amount{
+    width: 80px;
+    display: inline-block;
+    font-size: 25px;
+}
+.align-right{
+    text-align: right;
+}
+.align-center{
+    text-align: center;
+}
+.atm-table td{
+    width: 20%;
+}
+.atm-table .title{
+    background-color: #5bc0de;
+    color: white;
+}
+
+.reg-detail .title{
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: darkblue;
+    display: inline-block;
+    width: 80px;
+}
+.reg-detail .text{
+    margin-left: 5px;
+}
+
+.form-inline .form-group{
+    margin-right: 5px;
+}
+h1, .h1, h2, .h2, h3, .h3{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.hamburger .hide{
+    display: block !important;
+}
+.hamburger .hidden{
+    display: block !important;
+}
+.hamburger.open .bar1, .hamburger.open .bar4 {
+    display: none !important;
+}
+.mobile-left-menu-hamburger{
+    display: none;
+}
+.login-container{
+    width: 80%;
+    margin: 0 auto;
+}
+.login-page .card-login{
+    margin-left: 0px;
+}
+.account-login{
+    margin-right: 0px;
+}
+.main_contents .ContentsBox {
+    min-height: 400px;
+}
+.form-horizontal .control-label.input-value {
+    text-align: left;
+}
+.main_contents .leftBox p.top_location a{
+    color: #00a0e9;
+}
+.query-form .form-inline input{
+    min-width: 135px;
+    margin: 0 10px;
+}
+.query-form .form-inline select{
+    min-width: 135px;
+    margin: 0 10px;
+}
+.rightBox p.sub_title{
+    padding-bottom: 0px;
+    color: chocolate;
+}
+.detail-table .form-group{
+    margin-bottom: 0px;
+}
+.detail-table #addBtn{
+    float: left;
+}
+.detail-table .form-inline input{
+    min-width: 100px;
+}
+.detail-table .form-inline select{
+    min-width: 100px;
+}
+.detail-table .del{
+    width: 48px;
+}
+.input-form .address-input select{
+    min-width: 150px;
+}
+.input-form .address-input input{
+    width: 100%;
+    margin-top: 10px;
+}
+.perform-detail-table .title {
+    vertical-align: middle;
+    width: 10px;
+    white-space: nowrap;
+}
+.upload{
+    margin-top: 10px;
+    font-size: 16px;
+}
+.perform-detail-table{
+    margin-bottom: 0px;
+}
+.perform-detail-table .help-block{
+    font-size: 13px;
+}
+.upload-file-table > tbody > tr > th, .upload-file-table > tbody > tr > td{
+    padding: 4px;
+    vertical-align: middle;
+}
+.upload-file-table .checkbox input{
+    margin-left: -13px;
+}
+.upload-file-table .th-del, .th-del{
+    width: 10px;
+    white-space: nowrap;
+}
+.upload-file-table{
+    margin-bottom: 0px;
+}
+.header-title{
+    color: #c0ebff;
+    text-align: center;
+    font-size: 30px;
+}
+
+ul.left_sideMenu li {
+    margin-bottom: 2px;
+}
+
+.test-table .test-result{
+    width: 100px;
+    min-width: 100px;
+    white-space: nowrap;
+}
+
+.test-table tr{
+    height: 50px;
+}
+.table-responsive .test-table td{
+    vertical-align: middle;
+}
+.test-table .number{
+    font-weight: bold;
+    font-family: monospace;
+}
+
+.test-table .text-input{
+    min-width: 150px;
+}
+
+.td-no-break{
+    white-space: nowrap;
+    min-width: 100px;
+    width: 100px;
+}
+
+.td-min-no-break{
+    white-space: nowrap;
+    width: 10px;
+}
+
+.table thead tr th{
+    vertical-align: middle;
+}
+.table tbody tr td{
+    vertical-align: middle;
+}
+.item-indent{
+    padding-left: 30px;
+}
+.form-horizontal .control-label {
+    text-align: left;
+}
+.field-desc{
+    color: red;
+}
+.phone-input > div > div{
+    display: inline-block;
+}
+.reg-verify .form-group{
+    margin-bottom: 0px;
+    margin-left: 10px;
+}
+.glyphicon-question-sign{
+    color: cornflowerblue;
+    font-size: 15px;
+    margin-right: 5px;
+    cursor: help;
+}
+.table3 td{
+    width: calc((100% / 4));
+}
+.table3 td.td-min-no-break{
+    white-space: nowrap;
+    width: 10px;
+}
+body{
+    background-color: #F7F4F5;
+}
+
+.process img{
+    width: 100%;
+}
+.cellphone-input input{
+    width: calc(100% - 180px);
+    display: inline-block;
+}
+.note-question select{
+    width: calc(100% - 30px);
+    display: inline-block;
+}
+div > .nav.nav-tabs .active > a{
+    color: white;
+    background-color: darkgrey;
+}
+.event-report .inline-table .title{
+    width: 80px;
+}
+.event-report .inline-table{
+    margin-bottom: 0px;
+}
+.backoffice-account-login{
+    width: 50%;
+}
+.form-group .multi-select{
+    height: 150px;
+}
+.sub_title .checkbox-inline{
+    color: #333;
+    font-size: 14px;
+    margin-left: 10px;
+    line-height: 20px;
+    padding-top: 0px;
+}
+.stepBox ul.step_six li.btn_in::after{
+    height: 0px;
+}
+.stepBox ul.step_six li::after{
+    height: 0px;
+}
+.stepBox ul.step_six{
+    margin-bottom : 0px;
+}
+.stepBox ul.step_five li{  
+    float: left; width: calc(100% / 5); 
+    position: relative;
+    min-height: 212px;
+}
+.stepBox ul.step_four li{  
+    float: left; width: calc(100% / 4); 
+    position: relative;
+    min-height: 212px;
+}
+.stepBox ul.step_three li{  
+    float: left; width: calc(100% / 3); 
+    position: relative;
+    min-height: 212px;
+}
+@media (max-width:650px){
+    .mobile-left-menu-hamburger{
+        display: inline;
+        font-size: 14px;
+        margin: 0 10px;
+    }
+    .left_sideMenu{
+        display: none;
+    }
+    .query-form .form-inline input{
+        min-width: 100px;
+        margin: 0;
+    }
+    .query-form .form-inline select{
+        min-width: 100px;
+        margin: 0;
+    }
+    .cellphone-input input{
+        width: 100%;
+        display: block;
+    }
+    .note-question select{
+        width: 100%;
+        display: block;
+    }
+}
+@media (max-width:750px){
+    .login-page .card-login{
+        display: none;
+    }
+    .login-container{
+        width: 100%;
+    }
+    .login-page .account-login{
+        display: block;
+    }
+}

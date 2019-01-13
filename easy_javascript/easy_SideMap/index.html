@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>簡單SideMap實作應用</title>
+    <meta name='description' content="" />
+    <meta name='keywords' content="" />
+    <meta name="MobileOptimized" content="width">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/jquery-ui.css" rel="stylesheet">
+    <link href="css/own_style.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/jvmobilemenu/jv-jquery-mobile-menu-min.js"></script>
+
+</head>
+
+<body class="page">
+
+    <div class="mobile-nav" id="sideMenu">
+        <div class="infoBox">
+            <p class="user">陳XX 您好</p>
+            <p class="btn1">
+                <a href="#">登出系統</a>
+            </p>
+        </div>
+    </div>
+
+    <header class="HeaderBox">
+        <nav class="Menu ContentsBox clearfixs">
+            <p>這是是Header</p>
+            <a href="index.html"></a>
+        </h1>
+            <div class="TopBox clearfixs">
+                <div class="tools clearfixs">
+                    <div class="user">
+                        <p>陳XX 您好</p>
+                        <p class="btn1">
+                            <a href="index.html">登出系統</a>
+                        </p>
+                    </div>
+                </div>
+
+                <ul class="top_menu clearfixs">
+                        <li>
+                            <h3><a href="javascript:void(0)">最新消息</a></h3>
+                        </li>
+                        <li>
+                            <h3><a href="javascript:void(0)">開發團隊</a></h3>
+                        </li>
+                        <li>
+                            <h3><a href="javascript:void(0)">學習專區</a></h3>
+                        </li>
+                        <li>
+                            <h3><a href="javascript:void(0)">常見問答</a></h3>
+                        </li>
+                    </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main_contents">
+        <section class="ContentsBox clearfixs">
+            <div class="leftBox">
+                <p class="top_location">
+                    <span class="glyphicon glyphicon-menu-hamburger mobile-left-menu-hamburger" aria-hidden="true"></span>
+                    <span class="here no-display"><a href="index.html">Index</a></span>
+                </p>
+
+                <!--使用menu.js-->
+                <ul class="left_sideMenu">
+                    <script src="menu.js"></script>
+                </ul>
+            </div>
+
+            <!--主內容在這裡-->
+            <div class="rightBox">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h2 class="main_title">Index</h2>
+
+                        <h1>這裡是主內容</h1>
+
+                        <h1>其餘都可以用套版，這裡只是單純記錄  簡單的sideMap的js是怎麼寫而已</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="FooterBox">
+        <div class="ContentsBox clearfixs">
+            <a href="index.html"></a>
+        </h4>
+            <div class="info clearfixs">
+                <p>這是Footer</p>
+                <p>螢幕解析度建議：1024x768 瀏覽器建議：IE6.0以上版本</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
