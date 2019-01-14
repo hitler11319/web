@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>表格中的超過長度上限 就顯示捲軸</title>
+
+    <style>
+
+	.table-hidden tbody {
+		overflow-y: auto; /*設定卷軸 auto 是有超過我的高度的時候才會出現卷軸*/
+		height: 80px; /*自己設定*/
+		display: block;  /*表格才要特別加上這個，其他如div等都不用*/
+	}
+
+    /*表格的才要特別再做下面的處理，其他如div等都不用*/
+	.table-hidden tr {
+		width: 100%;
+		display: inline-table;
+	}
+
+	.table-hidden .lastth {
+		width: 400px;
+	}
+
+	/*因為 tbody 多了卷軸 尺寸多了 17px*/
+	.table-hidden tbody .lasttd {
+		width: 383px;
+	}
+    </style>
+  </head>
+
+  <body>
+
+        <!--加上class-->
+		<table class="table-hidden">
+			<thead>
+				<tr>
+				    <th>學號</th>
+				    <th>姓名</th>
+
+                    <!--最後一個因為要放捲軸，所以長度要特別限制-->
+					<th class="lastth">性別</th>
+				</tr>
+			</thead>
+
+			<tbody>
+                                        
+                <tr>
+                    <td>1</td>
+                    <td>王大明</td>
+
+                    <!--最後一個因為要放捲軸，所以長度要特別限制-->
+                    <td class = "lasttd">男</td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>王小明</td>
+
+                    <!--最後一個因為要放捲軸，所以長度要特別限制-->
+                    <td class = "lasttd">男</td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>王大美</td>
+
+                    <!--最後一個因為要放捲軸，所以長度要特別限制-->
+                    <td class = "lasttd">女</td>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>王小美</td>
+
+                    <!--最後一個因為要放捲軸，所以長度要特別限制-->
+                    <td class = "lasttd">女</td>
+                </tr>
+
+                <tr>
+                    <td>5</td>
+                    <td>王xx</td>
+
+                    <!--最後一個因為要放捲軸，所以長度要特別限制-->
+                    <td class = "lasttd">男</td>
+                </tr>
+
+                <tr>
+                    <td>6</td>
+                    <td>王xx</td>
+
+                    <!--最後一個因為要放捲軸，所以長度要特別限制-->
+                    <td class = "lasttd">男</td>
+                </tr>
+
+                <tr>
+                    <td>7</td>
+                    <td>王xx</td>
+
+                    <!--最後一個因為要放捲軸，所以長度要特別限制-->
+                    <td class = "lasttd">男</td>
+                </tr>
+                                        
+            </tbody>
+		</table>
+
+  </body>
+</html>
