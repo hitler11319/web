@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>地址選擇器</title>
+
+    <script src="js/tw-city-selector.js"></script>
+  </head>
+
+  <body>
+    <!--詳細請看 tw-city-selector.js 裡面有參數可以使用，這裡只介紹幾個簡單常用的-->
+
+    <div>
+      <!--這裡設定的class要和下面的el參數中的相同-->
+      <span class="my-selector-a">
+        <select class="county"></select>
+        <select class="district"></select>
+        <script>
+          new TwCitySelector({
+            el: ".my-selector-a", //上面包起來的class（且如果同一個html中要用多個這個，請每個class設不同）
+            elCounty: ".county", //指定上面的select（class要相同）
+            elDistrict: ".district", //指定上面的select（class要相同）
+
+            //給其select class（自己在裡面寫的會被這裡設定的蓋掉，且這裡如果不寫有預設。故不要在上的select中的裡面自己寫）
+            countyClassName: "county form-control",
+            districtClassName: "district form-control",
+            //給其select name（自己在裡面寫的會被這裡設定的蓋掉，且這裡如果不寫有預設。故不要在上的select中的裡面自己寫）
+            countyFiledName: "Address.city",
+            districtFieldName: "Address.area"
+          });
+        </script>
+      </span>
+      <input type="text" name="Address.address" class="form-control" placeholder="地址" />
+    </div>
+
+    <div>
+            <span class="my-selector-b">
+                <label for="model">起飛地點:</label>
+                <!--這裡面寫的會被盍掉-->
+                <select class="county" id="departure" name="city"></select>
+                <script>
+                    new TwCitySelector({
+                        el: ".my-selector-b",
+                        elCounty: ".county", // 在 el 裡查找 dom
+                        bootstrapStyle: true,  //使用bootstrap嗎
+                        showDistrict: false,  //是否要顯示區域（此設定代表只顯示縣市，不用區域）
+                        selectedCounty: "臺北市",  //給預設值
+                        countyFiledName: "departure"
+                    });
+                </script>
+            </span>
+
+            <span class="my-selector-c">
+                <label for="model">降落地點:</label>
+                <select class="county" id="land" name="city"></select>
+                <script>
+                    new TwCitySelector({
+                        el: ".my-selector-c",
+                        elCounty: ".county", // 在 el 裡查找 dom
+                        bootstrapStyle: true,
+                        showDistrict: false,
+                        selectedCounty: "臺中市",
+                        countyFiledName: "land"
+                    });
+                </script>
+            </span>
+        </div>
+
+
+
+
+  </body>
+</html>
