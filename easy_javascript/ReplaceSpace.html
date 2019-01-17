@@ -24,6 +24,12 @@
             //取代空白
             text = text.replace(/\s+/g, "");
 
+            //js的取代只會取代第一個
+            //例如： var str = "123, 456, 789";
+            //則 str.replace(",", "-");   => 123- 456, 789
+            //所以要改用 str.replace(/,/g, "-");  即可   ，  就是用  /要取代的東西/g    來進行取代
+            //但要注意： 不能用/*/g  =>  因為 只要 /* 就視同註解了
+
             document.getElementById('text').value = text;
         }
 
@@ -39,6 +45,19 @@
         //字串join
         var a = ['aaa', 'bbb', 'ccc'];
         alert(a.join(','));
+    </script>
+
+    <script>
+            //js的取代只會取代第一個
+            //例如： var str = "123, 456, 789";
+            //則 str.replace(",", "-");   => 123- 456, 789
+            //所以要改用 str.replace(/,/g, "-");  即可   ，  就是用  /要取代的東西/g    來進行取代
+            //但要注意： 不能用/*/g  =>  因為 只要 /* 就視同註解了
+            var str = "123, 456, 789";
+            var r1 = str.replace(",", "-");
+            var r2 = str.replace(/,/g, "-");
+
+            alert(r1 + "\n" + r2);
     </script>
 
 
