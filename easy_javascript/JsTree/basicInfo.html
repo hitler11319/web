@@ -50,6 +50,8 @@
     </ul>
   </div>
 
+  <br>
+
   <!--空的，因為要在下面建-->
   <div id="jstree2" class="demo"></div>
 
@@ -63,7 +65,7 @@
     //把上面id為jstree2的依照下面的產生出來
     //'plugins':["wholerow","checkbox"]加入複選checkbox
     //core為 核心的部份，其中的參數data就是產生的東西
-    $('#jstree2').jstree({'plugins':["wholerow","checkbox"], 'core' : {
+    $('#jstree2').jstree({ 'plugins' : ["wholerow","checkbox"], 'core' : {
       'data' : [
         {
             //第一個節點
@@ -71,7 +73,7 @@
           //節點內容
           "children" : [
               //狀態一開始 是被選擇的
-            { "text" : "一開始就被勾選著", "state" : { "selected" : true } },
+            { "text" : "一開始就被勾選著", "state" : { "selected" : true }, "id" : "child_1" },
             //圖示
             { "text" : "自定義圖標", "icon" : "image/tree-icon.png" },
             //一開始就是開著的，且有個children
