@@ -2,35 +2,29 @@
 <html>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<body>
 <script>
   function check(){
     //如要看其他用法，請看easy_javascript裡的Map那一隻
     //取到所有有被勾選到的項目之value（當然還可以用在其他input的項目）
     var data = $('input[name = c]:checked').map(function () { return this.value; }).get();
-
     //不只可以用在checkbox，也可以用在別的上
     //例如：var data = $('input[name=yyy]').map(function(){return this.id.replace("aa", "");}).get();
-
     var rtn = "";
     for(var i = 0; i < data.length; i++){
       rtn = rtn + data[i] + " ";
     }
-
     $('#show').text(rtn);
   }
-
   function hide(){
-
     var data = $('#n').val();
-
     if(data != null && data != ""){
       var amount = parseInt(data);
-
       if(data >=1 && data <= 5){
         //隱藏項目，這次的map加上一個參數（加的第一個一定會是index, 會從0開始算）
         $('input[name = c]').map(function (index) {
                 this.hidden = amount >= (index + 1)  //前幾個隱藏，這一串是特別的寫法
-
                 //如果是要顯示的話  this.hidden = amount < (index +1);
         })
       }
