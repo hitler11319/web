@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<!--記得使用style.css和style.min.css時，旁邊要有3張圖（因為css寫的路徑就是旁邊）-->
+<!--分別為32px.png 40px.png throbber.gif-->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style.min.css" />
+
+    <!-- 一定要有jquery 且要 1.9版以後的 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/jstree.js"></script>
+    <script src="js/jstree.min.js"></script>
+
+</head>
+<body>
+
+<!--參考網址：https://www.jstree.com/ -->
+
+  <div id="jstree1" class="demo">
+    <ul>
+      <li>根節點1
+        <ul>
+            <!--設定狀態：被選擇著-->
+          <li data-jstree='{ "selected" : true }'><a href="#"><em>一開始就</em> <strong>被選擇著</strong></a></li>
+          <!--設定圖示-->
+          <li data-jstree='{ "icon" : "image/tree-icon.png" }'>自定義圖標</li>
+            <!--設定一開始就被開啟著-->
+          <li data-jstree='{ "opened" : true }'>一開始就開啟
+              <!--內容-->
+            <ul>
+              <li>另一個節點</li>
+            </ul>
+          </li>
+          <!--使用class的風格，設定圖示-->
+          <li data-jstree='{ "icon" : "glyphicon glyphicon-leaf" }'>自訂義圖標類（bootstrap中設定的）</li>
+        </ul>
+      </li>
+
+      <!--第2個節點-->
+      <li><a href="basicInfo.html" id="root2">根節點2</a></li>
+
+      <!--第3個節點-->
+      <li class="jstree-closed">根節點3
+          <ul>
+              <li>3-1</li>
+          </ul>
+      </li>
+    </ul>
+  </div>
+
+  <!--空的，因為要在下面建-->
+  <div id="jstree2" class="demo"></div>
+
+  <button type="button">把根節點1中id=root2的勾選起來</button>
+
+  <script>
+  $(function () {
+      //把上面id為jstree1的建立起來 (  .jstree()  就是創建)
+    $('#jstree1').jstree();
+
+    //把上面id為jstree2的依照下面的產生出來
+    //'plugins':["wholerow","checkbox"]加入複選checkbox
+    //core為 核心的部份，其中的參數data就是產生的東西
+    $('#jstree2').jstree({'plugins':["wholerow","checkbox"], 'core' : {
+      'data' : [
+        {
+            //第一個節點
+          "text" : "相同但有複選框",
+          //節點內容
+          "children" : [
+              //狀態一開始 是被選擇的
+            { "text" : "一開始就被勾選著", "state" : { "selected" : true } },
+            //圖示
+            { "text" : "自定義圖標", "icon" : "image/tree-icon.png" },
+            //一開始就是開著的，且有個children
+            { "text" : "一開始就開啟著", "state" : { "opened" : true }, "children" : [ "另一個節點", "第2個節點" ] },
+            //使用class的風格，設定圖示
+            { "text" : "自訂義圖標類（bootstrap中設定的）", "icon" : "glyphicon glyphicon-leaf" },
+
+            //disabled
+            { "text" : "Disabled的", "state" : { "disabled" : true }},
+
+            //有icon、又有被選
+            {
+				"text" : "有icon，又有被選",
+				"state" : { "selected" : true },
+				"icon" : "jstree-file"
+			}
+          ]
+        },
+        //第二個節點
+        "其他wholerow選擇"
+      ]
+    }});
+  });
+  </script>
+
+
+  <script>
+        //聽取事件
+        $('#jstree1').on("changed.jstree", function (e, data) {
+            console.log(data.selected);
+        });
+  </script>
+
+  <script>
+      $('button').on('click', function () {
+
+        var jst = $('#jstree1').jstree(true);
+
+        
+        //先把全部都取消選擇
+        jst.deselect_all();
+
+        //第一個節點中id=root2的勾選起來
+        jst.select_node('root2');
+
+        /*
+        下面這幾個都是同樣的效果（也可以不取消全部，沒關系的）
+
+        $('#jstree1').jstree(true).select_node('root2');
+        $('#jstree1').jstree('select_node', 'root2');
+        $.jstree.reference('#jstree1').select_node('root2');
+        
+        */
+    });
+  </script>
+
+  <script>
+      //Ajax的部份
+
+      /*
+        $('#tree').jstree({
+            'core' : {
+                'data' : {
+                    'url' : 'ajax_nodes.html',
+                    'data' : function (node) {
+                        return { 'id' : node.id };
+                    }
+                }
+            }
+        });
+      */
+  </script>
+
+</div>
+
+</body>
+</html>
