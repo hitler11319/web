@@ -29,8 +29,58 @@
                         suppressInfoWindows: false,				//可點選KML圖徵顯示訊息視窗, 若設為true則無法顯示訊息視窗
                         preserveViewport: true,						//疊加KML後將圖面縮放至KML的範圍, 若設為false則取消這個功能
                         zIndex: r                              //圖層的疊加順序（愈小愈上面）
+                    }, 
+                    //function可不加
+                    function() {
+                        //取得圖層創作者、等基本資料
+                        var meta = kmlLayer.getMetadata();
+                        alert(meta);
+
+                        //讀取kml的Request的回傳將態
+                        var status = kmlLayer.getStatus();
+                        alert(status);
+                        if(status == "OK"){alert("good");}
+                        //以下是會出來的狀態
+                        //status.TIMED_OUT
+                        //status.OK
+                        //status.UNKNOWN
+                        //status.LIMITS_EXCEEDED
+                        //status.INVALID_REQUEST
+                        //status.INVALID_DOCUMENT
+                        //status.FETCH_ERROR
+                        //status.DOCUMENT_TOO_LARGE
+                        //status.DOCUMENT_NOT_FOUND
+                        //詳情去https://api.tgos.tw/TGOS_MAP_API/docs/site/web/Reference/webapi  ctrl+F 搜尋TGKmlLayerStatus
+                });
+
+                /*
+                    平常可以  如以下這樣即可
+                    kmlLayer = new TGOS.TGKmlLayer(url, {				//設定KML圖層
+                        map: pMap,									//設定欲疊加的底圖
+                        suppressInfoWindows: false,				//可點選KML圖徵顯示訊息視窗, 若設為true則無法顯示訊息視窗
+                        preserveViewport: true,						//疊加KML後將圖面縮放至KML的範圍, 若設為false則取消這個功能
+                        zIndex: r                              //圖層的疊加順序（愈小愈上面）
                     });
+                */
             }
+
+            //疊加完kml可以自己再設定屬性
+            function setStyle() {
+
+                for(var i = 0; i < kmlLayer.polygons.length; i++) {
+
+                if(kmlLayer.polygons[i].targetPlacemark.name == "北區水資源局"){
+                  kmlLayer.polygons[i].setFillColor("#FFFFFF");
+                }
+
+                else if(kmlLayer.polygons[i].targetPlacemark.name == "中區水資源局"){
+                  kmlLayer.polygons[i].setStrokeColor("#00FF00");
+                }
+                else {
+                  kmlLayer.polygons[i].setStrokeWeight(10);
+                }                 
+            }
+        }
         </script>            
         </head>
         <body style="margin:0px" onload="InitWnd();">
