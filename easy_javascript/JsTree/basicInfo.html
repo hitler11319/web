@@ -13,6 +13,12 @@
     <script src="js/jstree.js"></script>
     <script src="js/jstree.min.js"></script>
 
+    <!--要使用plugins相關功能要引用-->
+    <!--想查看其他plugins的相關功能，請看 https://github.com/vakata/jstree -->
+    <!--要引用的類型，請記得去載入js-->
+    <script src="js/jstree.checkbox.js"></script>
+    <script src="js/jstree.wholerow.js"></script>
+
 </head>
 <body>
 
@@ -65,7 +71,8 @@
     //把上面id為jstree2的依照下面的產生出來
     //'plugins':["wholerow","checkbox"]加入複選checkbox
     //core為 核心的部份，其中的參數data就是產生的東西
-    $('#jstree2').jstree({ 'plugins' : ["wholerow","checkbox"], 'core' : {
+    //要使用plugins的類型，記得去載入js喔
+    $('#jstree2').jstree({ 'plugins':["wholerow","checkbox"], 'core' : {
       'data' : [
         {
             //第一個節點
@@ -145,7 +152,20 @@
             }
         });
       */
-  </script>
+
+      /*
+
+      $('#tree').jstree({
+        'core' : {
+          'data' : {
+            "url" : "//www.jstree.com/fiddle/",
+            "dataType" : "json" // needed only if you do not supply JSON headers
+          }
+        }
+      });
+
+      */
+</script>
 
 </div>
 
