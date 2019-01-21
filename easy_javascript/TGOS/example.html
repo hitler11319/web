@@ -6,7 +6,10 @@
 <!--下載後請將yourID及yourkey取代為您申請所取得的APPID及APIKEY方能正確顯示服務-->
 <script type="text/javascript"> 
             var pMap = null;
-            var kmlLayer = null;
+
+            //儲存kmlLayer的陣列
+            var layerArray = new Array();
+
             function InitWnd() {
                 var pOMap = document.getElementById("TGMap");
                 var mapOptions = {
@@ -24,7 +27,7 @@
 
                 var list = document.getElementById("urlList");
                 var url = list.options[list.selectedIndex].text;	//取得下拉選單的KML網址
-                kmlLayer = new TGOS.TGKmlLayer(url, {				//設定KML圖層
+                var kmlLayer = new TGOS.TGKmlLayer(url, {				//設定KML圖層
                         map: pMap,									//設定欲疊加的底圖
                         suppressInfoWindows: false,				//可點選KML圖徵顯示訊息視窗, 若設為true則無法顯示訊息視窗
                         preserveViewport: true,						//疊加KML後將圖面縮放至KML的範圍, 若設為false則取消這個功能
@@ -32,6 +35,15 @@
                     }, 
                     //function可不加
                     function() {
+
+                        /*
+                            特別注意：如果要使用下方的內容，請一定要變成（第26行的寫法）
+                            var kmlLayer = new TGOS.TGKmlLayer
+                            不要讓kmlLayer變成共有變數 然後 寫成 kmlLayer = new TGOS.TGKmlLayer
+                            因為要讓每個是獨立的
+                        */
+
+
                         //取得圖層創作者、等基本資料
                         var meta = kmlLayer.getMetadata();
                         alert(meta);
@@ -62,6 +74,9 @@
                         zIndex: r                              //圖層的疊加順序（愈小愈上面）
                     });
                 */
+
+                //加入陣列
+                layerArray.push(kmlLayer);
             }
 
             //疊加完kml可以自己再設定屬性
@@ -79,6 +94,14 @@
                 else {
                   kmlLayer.polygons[i].setStrokeWeight(10);
                 }                 
+            }
+
+            //設定Layer的Visible
+            function setVisible(){
+                for(var i = 0; i < layerArray.length; i++){
+                    //設定看不見
+                    layerArray[i].setVisible(false);
+                }
             }
         }
         </script>            
