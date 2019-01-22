@@ -26,6 +26,12 @@
 
   <body class="page">
     <div class="form-horizontal">
+      請輸入時間：（timePicker）
+      <input type="text" class="form-control form_time" readonly />
+
+      <br>
+      <br>
+
       <div class="form-group">
         <label for="brand" class="control-label col-sm-2"
           >會議時間（大家有空的時間） 開始 結束</label
@@ -163,6 +169,9 @@
         //設定格式
         $(".form_datetime").datetimepicker({ format: "yyyy-mm-dd hh:ii" });
         $(".form_date").datepicker({ format: "yyyy-mm-dd" });
+        $('.form_time').timepicker({format: "hh:ii"});
+
+        //如果想要將日期+時間 = datetime的話，只要把 $('#日期').val() + " " + $('#時間').val()  即可
 
         //加入清除按鈕
         $(function() {
