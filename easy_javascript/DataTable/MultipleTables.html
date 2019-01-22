@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>多表格共用一個dataTable的設定</title>
+    <meta name='description' content="" />
+    <meta name='keywords' content="" />
+    <meta name="MobileOptimized" content="width">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--裡面有圖片，所以看用網路上的。或者用下面的，去找其圖片-->
+    <!--<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />-->
+    <link href="css/jquery.dataTables.min.css" rel="stylesheet" />
+
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/jquery.dataTables.min.js"></script>
+</head>
+
+<body>
+
+    <style>
+        div.dataTables_wrapper {
+            margin-bottom: 3em;
+        }
+    </style>
+
+    <!--參考網址： https://datatables.net/examples/index -->
+
+
+    <table class="example">
+        <thead>
+            <th>姓名</th>
+            <th>年紀</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Tom</td>
+                <td>30</td>
+            </tr>
+            <tr>
+                <td>Jack</td>
+                <td>35</td>
+            </tr>
+            <tr>
+                <td>Any</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>John</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td>Jerry</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td>Ken</td>
+                <td>40</td>
+            </tr>
+            <tr>
+                <td>Joe</td>
+                <td>35</td>
+            </tr>
+            <tr>
+                <td>Marry</td>
+                <td>10</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <br>
+    <hr>
+    <br>
+
+    <table class="example">
+        <thead>
+            <th>姓名</th>
+            <th>年紀</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Tom</td>
+                <td>30</td>
+            </tr>
+            <tr>
+                <td>Jack</td>
+                <td>35</td>
+            </tr>
+            <tr>
+                <td>Any</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>John</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td>Jerry</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td>Ken</td>
+                <td>40</td>
+            </tr>
+            <tr>
+                <td>Joe</td>
+                <td>35</td>
+            </tr>
+            <tr>
+                <td>Marry</td>
+                <td>10</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        $(document).ready(function () {
+            //對於是table且class=example的就建立
+            $('table.example').DataTable();
+        });
+    </script>
+
+
+
+</body>
+
+</html>

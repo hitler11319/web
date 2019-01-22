@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>基本DataTable使用</title>
+    <meta name='description' content="" />
+    <meta name='keywords' content="" />
+    <meta name="MobileOptimized" content="width">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--裡面有圖片，所以看用網路上的。或者用下面的，去找其圖片-->
+    <!--<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />-->
+    <link href="css/jquery.dataTables.min.css" rel="stylesheet" />
+
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/jquery.dataTables.min.js"></script>
+</head>
+
+<body>
+
+    <!--參考網址 https://ithelp.ithome.com.tw/articles/10192421 -->
+
+    <!--基本樣式-->
+    <table class="example">
+        <thead>
+            <th>姓名</th>
+            <th>年紀</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Tom</td>
+                <td>30</td>
+            </tr>
+            <tr>
+                <td>Jack</td>
+                <td>35</td>
+            </tr>
+            <tr>
+                <td>Any</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>John</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td>Jerry</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td>Ken</td>
+                <td>40</td>
+            </tr>
+            <tr>
+                <td>Joe</td>
+                <td>35</td>
+            </tr>
+            <tr>
+                <td>Marry</td>
+                <td>10</td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        $(".example").DataTable();
+    </script>
+
+    <br>
+    <hr>
+    <br>
+
+
+    <!--簡單設定-->
+    <table class="example2">
+        <thead>
+            <th>姓名</th>
+            <th>年紀</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Tom</td>
+                <td>30</td>
+            </tr>
+            <tr>
+                <td>Jack</td>
+                <td>35</td>
+            </tr>
+            <tr>
+                <td>Any</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>John</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td>Jerry</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td>Ken</td>
+                <td>40</td>
+            </tr>
+            <tr>
+                <td>Joe</td>
+                <td>35</td>
+            </tr>
+            <tr>
+                <td>Marry</td>
+                <td>10</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        $(".example2").DataTable({
+            "bPaginate": false, // 顯示換頁，預設為true
+            "searching": false, // 顯示搜尋，預設為true
+            "info": false, // 顯示資訊，預設為true
+            "fixedHeader": true, // 標題置頂，預設為false
+        });
+    </script>
+
+
+
+</body>
+
+</html>
