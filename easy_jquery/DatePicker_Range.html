@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>datepicker and datetimepicker的Range設定</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="MobileOptimized" content="width" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <link href="css/jquery-ui.css" rel="stylesheet" />
+    <link href="css/jquery-ui-timepicker-addon.min.css" rel="stylesheet" />
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/datepicker-zh-TW.js"></script>
+    <script src="js/jquery-ui-timepicker-addon.min.js"></script>
+    <script src="js/jquery-ui-timepicker-zh-TW.js"></script>
+
+</head>
+
+<body class="page">
+
+    <div class="form-group">
+        <label for="brand" class="control-label col-sm-2">會議時間（大家有空的時間） 開始 結束</label>
+        <div class="col-sm-5">
+            <!--<input type="datetime-local" id="startDate" class="form-control" onchange="checkStrDate()"> -->
+            <input size="20" type="text" class="form-control form_datetime" id="applyStartDate" onchange="checkApplyStrDate('D', 7)" readonly
+            />
+            <span id="applyStrDate" style="color: red">點擊輸入框即可選擇時間</span>
+        </div>
+        <div class="col-sm-5">
+            <!--<input type="datetime-local" id="endDate" class="form-control" onchange="checkEndDate()">-->
+            <input size="20" type="text" class="form-control form_datetime" id="applyendDate" onchange="checkApplyEndDate('D', -7)" readonly/>
+            <span id="applyEndDate" style="color: red">點擊輸入框即可選擇時間</span>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        //要設定Range => 所以開始時間的話，就是要設定 minDate為自己 且maxDate為自己+值
+        function checkApplyStrDate(type, number) {
+            var value = $("#applyStartDate").val();
+            if (!value) {
+                document.getElementById("applyStrDate").innerText = "欄位不得為空";
+            } else {
+                document.getElementById("applyStrDate").innerText = "";
+
+                //要同時設定maxDate和minDate所以要寫2段
+
+                //設定結束時間
+                $("#applyendDate").datepicker(
+                    "option",
+
+                    //最小值為自己
+                    "minDate",
+                    $("#applyStartDate").val(),
+
+                );
+
+                //設定結束時間
+                $("#applyendDate").datepicker(
+                    "option",
+
+                    //最大值為 自己+值
+                    "maxDate",
+                    DateRange($("#applyStartDate").val(), type, number)
+                );
+            }
+
+            return document.getElementById("applyStrDate").innerText;
+        }
+
+        //要設定Range => 所以開始時間的話，就是要設定 maxDate為自己 且minDate為自己+值（值為負的）
+        function checkApplyEndDate(type, number) {
+            var value = $("#applyendDate").val();
+            if (!value) {
+                document.getElementById("applyEndDate").innerText = "欄位不得為空";
+            } else {
+                document.getElementById("applyEndDate").innerText = "";
+
+                //要同時設定maxDate和minDate所以要寫2段
+
+
+                $("#applyStartDate").datepicker(
+                    "option",
+                    
+                    //最大值為自己
+                    "maxDate",
+                    $("#applyendDate").val(),
+                );
+
+                $("#applyStartDate").datepicker(
+                    "option",
+
+                    //最小值為 自己+值（值為負值）
+                    "minDate",
+                    DateRange($("#applyendDate").val(), type, number)
+                );
+            }
+
+            return document.getElementById("applyEndDate").innerText;
+        }
+    </script>
+
+    <script>
+        //計算range的值
+        function DateRange(orginalValue, type, value){
+
+            var result = "";
+
+            var orginalDate = new Date(orginalValue);
+
+            switch(type){
+                //年
+                case "Y":
+                    //算出來的會是時間戳 => 所以要再new Date()一次
+                    var addYear  = new Date(orginalDate.setFullYear(orginalDate.getFullYear() + value));  //加天數
+                    result = (addYear .getFullYear()) + "/" + (addYear .getMonth()+1) + "/" + addYear .getDate();
+                    break;
+                
+                //月份
+                case "M":
+                    //算出來的會是時間戳 => 所以要再new Date()一次
+                    var addMonth  = new Date(orginalDate.setMonth(orginalDate.getMonth() + value));  //加天數
+                    result = (addMonth .getFullYear()) + "/" + (addMonth .getMonth()+1) + "/" + addMonth .getDate();
+                    break;
+
+                //日
+                case "D":
+                    //算出來的會是時間戳 => 所以要再new Date()一次
+                    var addDate = new Date(orginalDate.setDate(orginalDate.getDate() + value));  //加天數
+                    result = (addDate.getFullYear()) + "/" + (addDate.getMonth()+1) + "/" + addDate.getDate();
+                    break;
+                
+                //其他
+                default:
+                    break;
+            }
+
+            return result;
+        }
+    </script>
+
+    <script>
+        //設定格式
+        $(".form_datetime").datetimepicker({ format: "yyyy-mm-dd hh:ii" });
+        $(".form_date").datepicker({ format: "yyyy-mm-dd" });
+        $('.form_time').timepicker({ format: "hh:ii" });
+    </script>
+    </div>
+</body>
+
+</html>
