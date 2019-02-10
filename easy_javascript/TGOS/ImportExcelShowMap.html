@@ -1,0 +1,355 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <title>KML圖層套疊</title>
+
+    <script src="http://oss.sheetjs.com/js-xlsx/xlsx.full.min.js"></script>
+    <script type="text/javascript" src="http://api.tgos.nat.gov.tw/TGOS_API/tgos?ver=2&AppID=你的APPID&APIKey=你的APIKey" charset="utf-8"></script>
+    <!--下載後請將yourID及yourkey取代為您申請所取得的APPID及APIKEY方能正確顯示服務-->
+
+    <script type="text/javascript">
+
+      //讀取出來的總資料
+      var jsonParseData;
+
+      //當前是第幾張
+      var currentCount = 0;
+
+      //預覽圖，預覽匯入Excel後的結果
+      var pMap = null;
+      var polygon = null;
+
+      function InitWnd() {
+        var pOMap = document.getElementById("TGMap");
+        pMap = new TGOS.TGOnlineMap(pOMap, TGOS.TGCoordSys.EPSG3857);
+      }
+
+      //畫多邊型
+      function DrawPolygon() {
+        if (jsonParseData.length > 0 && currentCount >= 0) {
+          //因為我們匯入完後資料是 東經 北緯,東經 北緯
+          //但Tgos要吃的是 東經,北緯 東經,北緯
+          //所以要轉換
+          var data = jsonParseData[currentCount]["座標資料"]
+            .replace(/ /g, "-")
+            .replace(/,/g, " ")
+            .replace(/-/g, ",");
+
+          //再用空白隔開
+          var cooTextData = data.split(" ");
+
+          //座標型別的資料
+          var cooData = new Array();
+
+          //加入資料
+          for (var i = 0; i < cooTextData.length; i++) {
+            var coo = cooTextData[i].split(",");
+            cooData.push(new TGOS.TGPoint(Number(coo[0]), Number(coo[1])));
+          }
+
+          var path = new TGOS.TGLineString(cooData);
+          var boarder = new TGOS.TGLinearRing(path);
+          var district = new TGOS.TGPolygon([boarder]);
+
+          //畫出一個 polygon
+          polygon = new TGOS.TGFill(pMap, district, {
+            fillColor: "#00FFFF",
+            fillOpacity: 0.2,
+            strokeColor: "#00FF00",
+            strokeWeight: 3,
+            strokeOpacity: 0.2
+          });
+
+          //讓中心點為第一個點
+          pMap.setCenter(cooData[0]);
+
+          pMap.setZoom(19);
+
+          //資料顯示
+          var showDetailData = "<table style='width:100%;'>";
+          showDetailData += "<tr><td>空域名稱</td><td>" + jsonParseData[currentCount]["空域名稱"] + "</td></tr>";
+          showDetailData += "<tr><td>空域說明</td><td>" + jsonParseData[currentCount]["空域說明"] + "</td></tr>";
+
+          $("#excelDetailDiv").html(showDetailData);
+        }
+      }
+    </script>
+  </head>
+
+  <body style="margin:0px" onload="InitWnd();">
+    <div>
+      <h2 class="main_title">上傳Excel</h2>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <input type="file" onchange="importExcel(this)" accept=".xlsx" />
+              <br />
+
+              <h3>預覽：</h3>
+              <div style="height: 480px; width: 100%;" id="TGMap"></div>
+
+              <div id="excelDetailDiv"></div>
+
+              <br />
+
+              <p id="totalNumber"></p>
+              <button type="button" class="btn btn-default" onclick="PreMap();">上一張</button>
+              <button type="button" class="btn btn-success" onclick="NextMap();">下一張</button>
+              <button type="button" class="btn btn-info" onclick="Save();"> 儲存</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var wb; //讀取完成的數據
+      var rABS = false; //是否將文件讀取為二進制字串
+
+      //import
+      function importExcel(obj) {
+        //傳入檔案
+
+        //如果傳入的不是檔案，出去
+        if (!obj.files) {
+          return;
+        }
+
+        const IMPORTFILE_MAXSIZE = 2 * 1024; //自訂傳入的文件大小
+        var suffix = obj.files[0].name.split(".")[1]; //找出副檔名
+
+        //如果不是excel
+        if (suffix != "xlsx") {
+          alert("你傳上來的檔案格式不對");
+          return;
+        }
+        if (obj.files[0].size / 1024 > IMPORTFILE_MAXSIZE) {
+          alert("傳入的檔案請小於2M");
+          return;
+        }
+
+        var f = obj.files[0]; //檔案本身
+
+        //開始讀檔
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var data = e.target.result;
+          if (rABS) {
+            wb = XLSX.read(btoa(fixdata(data)), {
+              //手動轉換
+              type: "base64"
+            });
+          } else {
+            wb = XLSX.read(data, {
+              type: "binary"
+            });
+          }
+
+          //wb.SheetNames[0]是Sheets中第一個Sheet的名字
+          //wb.Sheets[Sheet名]得到此Sheet名的資料
+
+          var jsonData = JSON.stringify(
+            XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]])
+          );
+
+          //得到總JSON資料
+          jsonParseData = JSON.parse(jsonData);
+
+          //取到所有資料
+          for (var k = 0; k < jsonParseData.length; k++) {
+            //開始做自己想要處理的事
+
+            //先處理座標（最麻煩的）=>目前先只支援多邊型、圓型
+            if (
+              jsonParseData[k]["座標類型"] === "多邊型" ||
+              jsonParseData[k]["座標類型"] === "圓型" ||
+              jsonParseData[k]["座標類型"] === "圓形" ||
+              jsonParseData[k]["座標類型"] === "多邊形"
+            ) {
+              //最後要變成的座標文字字串(這邊都是先以多邊型為主)
+              var cooResult = "POLYGON((";
+
+              //取得他是使用何種方法實作(有經緯度、度分秒、TWD97)
+              var mathodNo = parseInt(jsonParseData[k]["座標點類別"]);
+
+              //多邊型的處理
+              if (jsonParseData[k]["座標類型"] === "多邊型" || jsonParseData[k]["座標類型"] === "多邊形") {
+
+                //取得全部座標（記得最後要把第一筆的再做一次並放在最後面）
+                var coo = jsonParseData[k]["座標資料"].split(";");
+
+                //把資料都轉換並放進去（但為何這次要<= coo.length，是因為要讓第一筆可以跑2次
+                //所以裡面的資料來都會用mod來取（%） => 這樣就可以達到第一筆跑2次的結果了
+                for (var i = 0; i <= coo.length; i++) {
+                  //再分割出經緯度（緯度=0；經度=1） ，而其中用 i % coo.length 是用mod的型式（為了讓第一筆跑2次）
+                  var c = coo[i % coo.length].split(",");
+
+                  //將得到的座標寫成座標格式並加入（呼叫下方的實作func）=>要改方法就改這即可
+                  cooResult += ToDo(mathodNo, c);
+
+                  //如果不是最後一筆要記得加逗號
+                  if (i !== coo.length) { cooResult += ","; }
+                }
+              } else {
+                //圓型的處理
+
+                //半徑資料（公尺）
+                var r = parseInt(jsonParseData[k]["半徑"]);
+
+                //取得圓心資料度分秒（0=緯度  1=經度）
+                var circleCenterPoint = jsonParseData[k]["座標資料"].split(",");
+
+                //得到圓心的經緯度（格式： "經度 緯度"） => 所要要再記得用 " "隔開（這裡就是實作最下面那3個方法，如果要改就改函式即可）
+                var DDCircleCenterPoint = ToDo( mathodNo, circleCenterPoint).split(" ");
+
+                //將經緯度轉成二分位帶座標（要用於算圓邊上的點座標）
+                var TT = new TGOS.TGTransformation();
+                TT.wgs84totwd97(Number(DDCircleCenterPoint[0]), Number(DDCircleCenterPoint[1]));
+
+                //將得到的二分位帶座標取出（經緯度）
+                var e = TT.transResult.x;
+                var n = TT.transResult.y;
+
+                //要用公式算出圓邊上的點（共會有31個點，不超第一個重複的那次）
+                //每12度為一個點0-360（60度=1/6，故12度=1/30）
+                //公式為： 圓心(x0, y0) 半徑r 角度a 跑的從0~360度就是i（但我們只要31個點=> 所以拿 0 12 24 36 48這樣子拿）
+                //圓上一點x座標 = x0 - r * Math.sin(Math.PI * (i - 90) / 180)
+                //圓上一點y座標 = y0 - r - 10 + r * Math.cos(Math.PI * (i - 90) / 180)
+
+                //從0到30 => 0度到360度（為31個點），但最後一次會重複，故用<=31再用mod 31來取值
+                for (var i = 0; i <= 31; i++) {
+                  //取得到的二分位帶座標
+                  var x = e - r * Math.sin( (Math.PI * ((i % 31) * 11.61290322580645 - 90)) / 180 );
+                  var y = n - r - 10 + r * Math.cos( (Math.PI * ((i % 31) * 11.61290322580645 - 90)) / 180 );
+
+                  //把二分位帶再轉回經緯度
+                  var TT2 = new TGOS.TGTransformation();
+                  TT2.twd97towgs84(x, y);
+
+                  //將資料填回去
+                  cooResult += TT2.transResult.x + " " + TT2.transResult.y;
+
+                  //如果不是最後一筆要記得加逗號
+                  if (i !== 31) { cooResult += ",";}
+                }
+              }
+            }
+          }
+
+          //顯示總筆數
+          $("#totalNumber").html("總筆數： " + jsonParseData.length.toString());
+
+          //PO完結果之後，要顯示第一筆給他看
+          DrawPolygon();
+        };
+
+        //看文件是不是二進制的來做事
+        if (rABS) {
+          //不用轉二進位
+          reader.readAsArrayBuffer(f);
+        } else {
+          //轉成二進位
+          reader.readAsBinaryString(f);
+        }
+      }
+
+      function fixdata(data) {
+        //文件轉成BinaryString
+        var o = "",
+          l = 0,
+          w = 10240;
+        for (; l < data.byteLength / w; ++l)
+          o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)) );
+
+        o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
+
+        return o;
+      }
+    </script>
+
+    <script>
+      //把度分秒轉成經緯度(i = 緯度度 e =緯度分 s=緯度秒 r = 經度度 o= 經度分 h=經度秒)
+      function transactionDD(i, e, s, r, o, h) {
+        //緯度
+        var n = e + s / 60;
+        var u = i + n / 60;
+
+        //經度
+        var t = o + h / 60;
+        var f = r + t / 60;
+
+        //傳回  經度 緯度
+        return ((parseInt(f * 1e5) / 1e5).toString() + " " + (parseInt(u * 1e5) / 1e5).toString() );
+      }
+    </script>
+
+    <script>
+      //這裡是實作的作法（相關座標轉換）
+
+      //保持原本經緯度（WGS84）
+      function WGS84(c) {
+        return c[1] + " " + c[0];
+      }
+
+      //使用二分位帶轉成經緯度
+      function SecondTo(c) {
+        //用TGOS的經緯度轉換（所以必需要先有TGOS）
+        var TT = new TGOS.TGTransformation();
+        TT.twd97towgs84(Number(c[1]), Number(c[0]));
+
+        //轉換出來的結果
+        return TT.transResult.x.toString() + " " + TT.transResult.y.toString();
+      }
+
+      //用度分秒轉經緯度（再呼叫上上隻func來完成轉換）
+      function DMSto(c) {
+        //把上面的度分秒都先轉成字串
+        var e = c[1].replace("°", " ").replace("’", " ").replace("”", " ").split(" "); //經度 分 秒
+        var n = c[0].replace("°", " ").replace("’", " ").replace("”", " ").split(" "); //緯度 分 秒
+
+        //轉換出來的結果（呼叫上上隻func）
+        return transactionDD( parseFloat(n[0]),parseFloat(n[1]),parseFloat(n[2]),parseFloat(e[0]),parseFloat(e[1]),parseFloat(e[2]));
+      }
+    </script>
+
+    <script>
+      //依據他所想要的方法，決定實作的方式
+      function ToDo(mathodNo, c) {
+        //經緯度轉經緯度
+        if (mathodNo == 2) {
+          return WGS84(c);
+        }
+
+        //二分位帶座標轉經緯度
+        if (mathodNo == 3) {
+          return SecondTo(c);
+        }
+
+        //其餘先用1號（即 度分秒轉經緯度）
+        return DMSto(c);
+      }
+    </script>
+
+    <!--跟Excel匯入有關的預覽Method-->
+    <script>
+      //上一張
+      function PreMap() {
+      	currentCount--;
+      	if (currentCount < 0) { currentCount = jsonParseData.length - 1; }
+
+      	//顯示
+      	DrawPolygon();
+      }
+
+      //下一張
+      function NextMap() {
+      	currentCount++;
+      	if (currentCount >= jsonParseData.length) { currentCount = 0; }
+
+      	//顯示
+      	DrawPolygon();
+      }
+    </script>
+  </body>
+</html>
