@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>將html變成PDF</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.1/jspdf.debug.js"></script>
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+
+    <script src="html2canvas.js"></script>
+    <script src="html2pdf.js"></script>
+</head>
+
+<body>
+
+    <h1>
+        this is Title
+    </h1>
+    <p>
+        this is content
+    </p>
+    <button id="exportPDF">
+        Export PDF
+    </button>
+
+    <script>
+
+        /*
+            目前只能支援ASCII，不支援Unicode(不要打中文字)
+            目前只能支援ASCII，不支援Unicode(不要打中文字)
+            目前只能支援ASCII，不支援Unicode(不要打中文字)
+            目前只能支援ASCII，不支援Unicode(不要打中文字)
+            目前只能支援ASCII，不支援Unicode(不要打中文字)
+            目前只能支援ASCII，不支援Unicode(不要打中文字)
+        */
+
+        /*
+            參考網圵： https://rawgit.com/MrRio/jsPDF/master/docs/index.html
+            參考網圵： https://ithelp.ithome.com.tw/articles/10187922
+            參考網圵： https://jsfiddle.net/wellwind/wpxnhpfs/
+        */
+
+
+        //會下載下來的  ， 參考網圵： https://stackoverflow.com/questions/50044883/latest-version-of-html2canvas-does-not-work-in-chrome-firefox 中間
+        document.getElementById('exportPDF').addEventListener('click', function () {
+
+            var doc = new jsPDF();
+            //目標是body內的
+            html2canvas(document.body, {
+                useCORS: true
+            }).then(function (canvas) {
+                    var image = canvas.toDataURL("image/png");
+                    doc.addImage(image, 'JPEG', 0, 0, canvas.width, canvas.height);
+                    doc.save('test.pdf');
+            }).catch(function (err) { console.log(err); });
+        });
+
+
+
+
+        //另種(用IFrame呈現的) => 參考網圵： https://github.com/MrRio/jsPDF/tree/master/examples/html2pdf
+
+        //參數設定(要再研空即可)
+        var pdf = new jsPDF('p', 'pt', 'letter');
+        //拿body的資料
+        pdf.html(document.body, {
+            callback: function (pdf) {
+                var iframe = document.createElement('iframe');
+                iframe.setAttribute('style', 'position:fixed;right:0; top:0; bottom:0; height:100%; width:500px');
+                document.body.appendChild(iframe);
+                iframe.src = pdf.output('datauristring');
+            }
+        });
+
+
+
+    </script>
+
+</body>
+
+</html>
