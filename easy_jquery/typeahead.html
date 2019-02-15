@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>在Input輸入關鍵字，下面會出現可以寫的列表</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--引用這一個-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>
+
+</head>
+
+<body>
+
+    <!--參考網圵： https://ithelp.ithome.com.tw/articles/10193715-->
+
+    <input type="text" class="example" />
+
+
+    <script>
+        //這裡是寫一個func
+        //用途：用於將關鍵字進行比對，並回傳列表
+        //這邊照寫即可
+        var substringMatcher = function (strs) {
+            return function findMatches(q, cb) {
+                var matches, substringRegex;
+
+                //要回傳的列表陣列
+                matches = [];
+
+                //使用正規化來match
+                substrRegex = new RegExp(q, "i");
+
+                //跑過所有去比較
+                $.each(strs, function (i, str) {
+                    if (substrRegex.test(str)) {
+                        matches.push(str);
+                    }
+                });
+
+                //回傳
+                cb(matches);
+            }
+        };
+
+
+        //所要出現的列表資料
+        var states = ["Tom", "Mike", "Jack", "Bob", "Marry", "Amy", "John", "Job"];
+
+        $(".example").typeahead({
+            highlight: true,  // 標註關鍵字
+            minLength: 1  // 最小關鍵字長度
+        },
+            {
+                name: "YourName",  //這裡的可以自訂，不影響
+                source: substringMatcher(states) // 建議列表資料
+            });
+    </script>
+
+</body>
+
+</html>
