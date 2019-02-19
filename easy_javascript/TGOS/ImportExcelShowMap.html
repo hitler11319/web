@@ -105,7 +105,7 @@
 
     <script>
       var wb; //讀取完成的數據
-      var rABS = false; //是否將文件讀取為二進制字串
+      var rABS = true; //是否將文件讀取為二進制字串(要設為true，因為false的話IE會說不支援此函式)
 
       //import
       function importExcel(obj) {
@@ -250,6 +250,7 @@
           reader.readAsArrayBuffer(f);
         } else {
           //轉成二進位
+          //IE不支援readAsBinaryString這個函式
           reader.readAsBinaryString(f);
         }
       }
