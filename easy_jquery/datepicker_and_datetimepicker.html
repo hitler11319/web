@@ -29,8 +29,8 @@
       請輸入時間：（timePicker）
       <input type="text" class="form-control form_time" readonly />
 
-      <br>
-      <br>
+      <br />
+      <br />
 
       <div class="form-group">
         <label for="brand" class="control-label col-sm-2"
@@ -169,7 +169,7 @@
         //設定格式
         $(".form_datetime").datetimepicker({ format: "yyyy-mm-dd hh:ii" });
         $(".form_date").datepicker({ format: "yyyy-mm-dd" });
-        $('.form_time').timepicker({format: "hh:ii"});
+        $(".form_time").timepicker({ format: "hh:ii" });
 
         //如果想要將日期+時間 = datetime的話，只要把 $('#日期').val() + " " + $('#時間').val()  即可
 
@@ -199,6 +199,22 @@
 
             return thishtml; //assume okay to return a jQuery
           };
+        });
+      </script>
+
+
+      <!--進行相關進階設定-->
+      <input type="text" class="form-control form_dateTest" readonly />
+
+      <script>
+        $(".form_dateTest").datepicker({
+          format: "yyyy-mm-dd",
+          //可以切換年份
+          changeYear: true,
+          //年限在1690-2030
+          yearRange: "1960:2030",
+          //可以切換月份
+          changeMonth: true
         });
       </script>
     </div>
