@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>網圵保護(用密碼)</title>
+  </head>
+
+  <!--
+        js參考網圵： http://mirlab.org/jang/books/javascript/
+
+      參考網圵： http://mirlab.org/jang/books/javascript/password.asp?title=11-1%20%BA%F4%A7}%ABO%C5@
+    -->
+
+  <body>
+    <h2>以密碼保護的網頁：簡單的兩段式密碼保護</h2>
+    <hr />
+
+    <script>
+      function password() {
+        username = "";
+        passwd = "";
+
+        while (
+          username == "" // Get the user's name
+        )
+          username = prompt("請輸入大名：", "");
+        if (username != "Hong") {
+          alert("你不是我的主人，不准進入！");
+          return;
+        }
+
+        while (
+          passwd == "" // Get the password
+        )
+          passwd = prompt(
+            username + "，您好！\n" + "請輸入密碼：",
+            username + "的密碼"
+          );
+        if (passwd != "123456789") alert("密碼錯誤，不准進入！");
+        else
+          myWin = open(
+            "ContentProtection.html",
+            "displayWindow",
+            "width=600,height=200,status=yes,toolbar=yes,location=yes,resizable=yes,menubar=yes,scrollbars=yes"
+          );
+      }
+    </script>
+
+    <a href="javascript:password()">秘密檔案</a>
+
+    <hr />
+  </body>
+</html>

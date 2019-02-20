@@ -1,0 +1,45 @@
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>把JS加密(用xorEncode 與 escape() 進行編碼)，速行保護</title>
+</head>
+
+<!--
+    js參考網圵： http://mirlab.org/jang/books/javascript/
+    參考網圵： http://mirlab.org/jang/books/javascript/jsCodeHiding.asp?title=11-3%20%B5{%A6%A1%A4%BA%AEe%ABO%C5@
+-->
+
+<body>
+<h2>保護網頁內容：以 escape() 來加密</h2>
+<hr>
+
+
+    <script>
+        //xorEncode.html裡中的加解密函式，下方要解回來
+      function xorEncode(inputStr, keyStr) {
+        var outputStr = "";
+        var j = 0;
+        for (var i = 0; i < inputStr.length; i++) {
+          encoded = inputStr.charCodeAt(i) ^ keyStr.charCodeAt(j++);
+          if (j == keyStr.length) j -= keyStr.length;
+          outputStr += String.fromCharCode(encoded);
+        }
+        return outputStr;
+      }
+    </script>
+
+<script>
+//裡面的亂碼就是那個算平方的函式(請看XOREncode.html裡的內容)
+var keyStr = "編碼與解碼";
+var code = "%u7DC8%u789C%u8227%u89C3%u789C%u7DC8%u789C%u8227%u89C3%u789C%u7DC8%u789C%u8261%u8996%u78D2%u7D8B%u78C8%u826E%u898C%u78D2%u7DC8%u78CF%u8276%u8996%u78DD%u7D9A%u78D9%u822F%u899B%u7895%u7D93%u78B6%u820E%u89C3%u789C%u7DC8%u789C%u8227%u89C3%u789C%u7DC8%u789C%u8227%u89C3%u789C%u7D9A%u78D9%u8273%u8996%u78CE%u7D86%u7894%u827F%u89C9%u78C4%u7DC1%u7887%u820D%u89C3%u789C%u7DC8%u789C%u8227%u89C3%u789C%u7DC8%u789C%u8227%u89C3%u789C%u7D95%u78B6%u8227%u89C3%u789C%u7DC8%u789C%u8227%u89C3%u789C";
+eval(xorEncode(unescape(code), keyStr));
+</script>
+
+<script>
+    //來運算一次吧
+    var d = square(5);
+    alert(d);
+</script>
+
+</body>
+</html>

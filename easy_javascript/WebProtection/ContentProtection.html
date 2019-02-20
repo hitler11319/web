@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>保護網站內容</title>
+  </head>
+
+  <!--
+    js參考網圵： http://mirlab.org/jang/books/javascript/
+
+    參考網圵：http://mirlab.org/jang/books/javascript/webContentProtection.asp?title=11-2%20%BA%F4%AD%B6%A4%BA%AEe%ABO%C5@
+
+    解說：
+    onMouseover="window.status='';return true;" ===> 不顯示狀態列
+    onContextMenu="window.event.returnValue=false" ===> 鎖右鍵
+    onSelectStart="window.event.returnValue=false" ===> 鎖全選
+    onDragStart="window.event.returnValue=false" ===> 鎖拖曳
+
+-->
+
+  <body
+    onMouseover="window.status='';return true;"
+    onDragStart="window.event.returnValue=false"
+    onContextMenu="window.event.returnValue=false"
+    onSelectStart="event.returnValue=false"
+  >
+    <h2>不能反白的網頁</h2>
+    <hr />
+    <img src="../Roulette/f.jpg" />
+    本頁內文無法反白！
+    <p>圖片也無法抓取！</p>
+    <p>
+      狀態列不顯示任何訊息！
+      <a href="http://www.google.com.tw">Google搜尋</a>
+    </p>
+  </body>
+</html>
