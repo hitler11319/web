@@ -4,11 +4,14 @@
     <title>KML圖層套疊</title>
 
     <script src="http://oss.sheetjs.com/js-xlsx/xlsx.full.min.js"></script>
-    <script type="text/javascript" src="http://api.tgos.nat.gov.tw/TGOS_API/tgos?ver=2&AppID=你的APPID&APIKey=你的APIKey" charset="utf-8"></script>
+    <script
+      type="text/javascript"
+      src="http://api.tgos.nat.gov.tw/TGOS_API/tgos?ver=2&AppID=你的APPID&APIKey=你的APIKey"
+      charset="utf-8"
+    ></script>
     <!--下載後請將yourID及yourkey取代為您申請所取得的APPID及APIKEY方能正確顯示服務-->
 
     <script type="text/javascript">
-
       //讀取出來的總資料
       var jsonParseData;
 
@@ -67,8 +70,14 @@
 
           //資料顯示
           var showDetailData = "<table style='width:100%;'>";
-          showDetailData += "<tr><td>空域名稱</td><td>" + jsonParseData[currentCount]["空域名稱"] + "</td></tr>";
-          showDetailData += "<tr><td>空域說明</td><td>" + jsonParseData[currentCount]["空域說明"] + "</td></tr>";
+          showDetailData +=
+            "<tr><td>空域名稱</td><td>" +
+            jsonParseData[currentCount]["空域名稱"] +
+            "</td></tr>";
+          showDetailData +=
+            "<tr><td>空域說明</td><td>" +
+            jsonParseData[currentCount]["空域說明"] +
+            "</td></tr>";
           showDetailData += "</table>";
 
           $("#excelDetailDiv").html(showDetailData);
@@ -95,8 +104,16 @@
               <br />
 
               <p id="totalNumber"></p>
-              <button type="button" class="btn btn-default" onclick="PreMap();">上一張</button>
-              <button type="button" class="btn btn-success" onclick="NextMap();">下一張</button>
+              <button type="button" class="btn btn-default" onclick="PreMap();">
+                上一張
+              </button>
+              <button
+                type="button"
+                class="btn btn-success"
+                onclick="NextMap();"
+              >
+                下一張
+              </button>
             </div>
           </div>
         </div>
@@ -174,10 +191,14 @@
               var mathodNo = parseInt(jsonParseData[k]["座標點類別"]);
 
               //多邊型的處理
-              if (jsonParseData[k]["座標類型"] === "多邊型" || jsonParseData[k]["座標類型"] === "多邊形") {
-
-                //取得全部座標（記得最後要把第一筆的再做一次並放在最後面）
-                var coo = jsonParseData[k]["座標資料"].split(";");
+              if (
+                jsonParseData[k]["座標類型"] === "多邊型" ||
+                jsonParseData[k]["座標類型"] === "多邊形"
+              ) {
+                //取得全部座標（記得最後要把第一筆的再做一次並放在最後面） =>先去掉斷行符號
+                var coo = jsonParseData[k]["座標資料"]
+                  .replace(/\r\n|\n/g, "")
+                  .split(";");
 
                 //把資料都轉換並放進去（但為何這次要<= coo.length，是因為要讓第一筆可以跑2次
                 //所以裡面的資料來都會用mod來取（%） => 這樣就可以達到第一筆跑2次的結果了
@@ -189,7 +210,9 @@
                   cooResult += ToDo(mathodNo, c);
 
                   //如果不是最後一筆要記得加逗號
-                  if (i !== coo.length) { cooResult += ","; }
+                  if (i !== coo.length) {
+                    cooResult += ",";
+                  }
                 }
               } else {
                 //圓型的處理
@@ -197,15 +220,23 @@
                 //半徑資料（公尺）
                 var r = parseInt(jsonParseData[k]["半徑"]);
 
-                //取得圓心資料度分秒（0=緯度  1=經度）
-                var circleCenterPoint = jsonParseData[k]["座標資料"].split(",");
+                //取得圓心資料度分秒（0=緯度  1=經度）  =>先去掉斷行符號
+                var circleCenterPoint = jsonParseData[k]["座標資料"]
+                  .replace(/\r\n|\n/g, "")
+                  .split(",");
 
                 //得到圓心的經緯度（格式： "經度 緯度"） => 所要要再記得用 " "隔開（這裡就是實作最下面那3個方法，如果要改就改函式即可）
-                var DDCircleCenterPoint = ToDo( mathodNo, circleCenterPoint).split(" ");
+                var DDCircleCenterPoint = ToDo(
+                  mathodNo,
+                  circleCenterPoint
+                ).split(" ");
 
                 //將經緯度轉成二分位帶座標（要用於算圓邊上的點座標）
                 var TT = new TGOS.TGTransformation();
-                TT.wgs84totwd97(Number(DDCircleCenterPoint[0]), Number(DDCircleCenterPoint[1]));
+                TT.wgs84totwd97(
+                  Number(DDCircleCenterPoint[0]),
+                  Number(DDCircleCenterPoint[1])
+                );
 
                 //將得到的二分位帶座標取出（經緯度）
                 var e = TT.transResult.x;
@@ -220,8 +251,20 @@
                 //從0到30 => 0度到360度（為31個點），但最後一次會重複，故用<=31再用mod 31來取值
                 for (var i = 0; i <= 31; i++) {
                   //取得到的二分位帶座標
-                  var x = e - r * Math.sin( (Math.PI * ((i % 31) * 11.61290322580645 - 90)) / 180 );
-                  var y = n - r - 10 + r * Math.cos( (Math.PI * ((i % 31) * 11.61290322580645 - 90)) / 180 );
+                  var x =
+                    e -
+                    r *
+                      Math.sin(
+                        (Math.PI * ((i % 31) * 11.61290322580645 - 90)) / 180
+                      );
+                  var y =
+                    n -
+                    r -
+                    10 +
+                    r *
+                      Math.cos(
+                        (Math.PI * ((i % 31) * 11.61290322580645 - 90)) / 180
+                      );
 
                   //把二分位帶再轉回經緯度
                   var TT2 = new TGOS.TGTransformation();
@@ -231,10 +274,15 @@
                   cooResult += TT2.transResult.x + " " + TT2.transResult.y;
 
                   //如果不是最後一筆要記得加逗號
-                  if (i !== 31) { cooResult += ",";}
+                  if (i !== 31) {
+                    cooResult += ",";
+                  }
                 }
               }
             }
+
+            //將值塞回去（要先把開頭所加的 POLYGON((   去掉）
+            jsonParseData[k]["座標資料"] = cooResult.replace("POLYGON((", "");
           }
 
           //顯示總筆數
@@ -261,7 +309,10 @@
           l = 0,
           w = 10240;
         for (; l < data.byteLength / w; ++l)
-          o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)) );
+          o += String.fromCharCode.apply(
+            null,
+            new Uint8Array(data.slice(l * w, l * w + w))
+          );
 
         o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
 
@@ -281,7 +332,11 @@
         var f = r + t / 60;
 
         //傳回  經度 緯度
-        return ((parseInt(f * 1e5) / 1e5).toString() + " " + (parseInt(u * 1e5) / 1e5).toString() );
+        return (
+          (parseInt(f * 1e5) / 1e5).toString() +
+          " " +
+          (parseInt(u * 1e5) / 1e5).toString()
+        );
       }
     </script>
 
@@ -306,11 +361,58 @@
       //用度分秒轉經緯度（再呼叫上上隻func來完成轉換）
       function DMSto(c) {
         //把上面的度分秒都先轉成字串
-        var e = c[1].replace("°", " ").replace("’", " ").replace("”", " ").split(" "); //經度 分 秒
-        var n = c[0].replace("°", " ").replace("’", " ").replace("”", " ").split(" "); //緯度 分 秒
+        var e = c[1]
+          .replace("°", " ")
+          .replace("’", " ")
+          .replace("”", " ")
+          .split(" "); //經度 分 秒
+        var n = c[0]
+          .replace("°", " ")
+          .replace("’", " ")
+          .replace("”", " ")
+          .split(" "); //緯度 分 秒
 
         //轉換出來的結果（呼叫上上隻func）
-        return transactionDD( parseFloat(n[0]),parseFloat(n[1]),parseFloat(n[2]),parseFloat(e[0]),parseFloat(e[1]),parseFloat(e[2]));
+        return transactionDD(
+          parseFloat(n[0]),
+          parseFloat(n[1]),
+          parseFloat(n[2]),
+          parseFloat(e[0]),
+          parseFloat(e[1]),
+          parseFloat(e[2])
+        );
+      }
+
+      //第二種的度分秒轉經緯度(給的值是 243523.00 1213455.23 這種)
+      function DMS2to(c) {
+        //先拿取小數前的位數(要防呆)
+        var eData = c[1].split(".");
+        var nData = c[0].split(".");
+
+        //如果位數不足，則自動當作是後面補零
+        eData[0] = padRight(eData[0], 7);
+        nData[0] = padRight(nData[0], 6);
+
+        var e;
+        var n;
+
+        //如果原本有小數點的把它加回去
+        if (eData.length > 1) {
+          e = eData[0] + "." + eData[1];
+        }
+        if (nData.length > 1) {
+          n = nData[0] + "." + nData[1];
+        }
+
+        //轉換出來的結果（呼叫上上隻func）
+        return transactionDD(
+          parseFloat(n.substring(0, 2)),
+          parseFloat(n.substring(2, 4)),
+          parseFloat(n.substring(4)),
+          parseFloat(e.substring(0, 3)),
+          parseFloat(e.substring(3, 5)),
+          parseFloat(e.substring(5))
+        );
       }
     </script>
 
@@ -327,8 +429,35 @@
           return SecondTo(c);
         }
 
+        //度分秒轉經緯度 格式2
+        if (mathodNo == 4) {
+          return DMS2to(c);
+        }
+
         //其餘先用1號（即 度分秒轉經緯度）
         return DMSto(c);
+      }
+    </script>
+
+    <script>
+      /* 左邊補0 */
+      function padRight(str, len) {
+        str = "" + str;
+        if (str.length >= len) {
+          return str;
+        } else {
+          return padRight("0" + str, len);
+        }
+      }
+
+      /* 右邊補0 */
+      function padRight(str, len) {
+        str = "" + str;
+        if (str.length >= len) {
+          return str;
+        } else {
+          return padRight(str + "0", len);
+        }
       }
     </script>
 
@@ -336,20 +465,24 @@
     <script>
       //上一張
       function PreMap() {
-      	currentCount--;
-      	if (currentCount < 0) { currentCount = jsonParseData.length - 1; }
+        currentCount--;
+        if (currentCount < 0) {
+          currentCount = jsonParseData.length - 1;
+        }
 
-      	//顯示
-      	DrawPolygon();
+        //顯示
+        DrawPolygon();
       }
 
       //下一張
       function NextMap() {
-      	currentCount++;
-      	if (currentCount >= jsonParseData.length) { currentCount = 0; }
+        currentCount++;
+        if (currentCount >= jsonParseData.length) {
+          currentCount = 0;
+        }
 
-      	//顯示
-      	DrawPolygon();
+        //顯示
+        DrawPolygon();
       }
     </script>
   </body>
