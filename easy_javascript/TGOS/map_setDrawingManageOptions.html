@@ -15,9 +15,6 @@
             pMap = new TGOS.TGOnlineMap(pOMap, TGOS.TGCoordSys.EPSG3857); //宣告TGOnlineMap地圖物件並設定坐標系統
             var defaultOptions = {
                 mapTypeControl: false
-                //drawingModes:[TGOS.TGOverlayType.ENVELOPE, TGOS.TGOverlayType.POLYGON, TGOS.TGOverlayType.CIRCLE, TGOS.TGOverlayType.MARKER, TGOS.TGOverlayType.LABEL, TGOS.TGOverlayType.EDIT]
-                //如果有設定上面這個，那 "編輯" 按鈕會自動消失
-                //所以記得要在尾端加上 TGOS.TGOverlayType.EDIT 喔
             };
 
             pMap.setOptions(defaultOptions);
@@ -27,7 +24,10 @@
             dm.setOptions({
                 drawingControl: true,
                 drawingControlOptions: {
-                    position: TGOS.TGControlPosition.BOTTOM_RIGHT
+                    position: TGOS.TGControlPosition.BOTTOM_RIGHT,
+                    //drawingModes:[TGOS.TGOverlayType.ENVELOPE, TGOS.TGOverlayType.POLYGON, TGOS.TGOverlayType.CIRCLE, TGOS.TGOverlayType.MARKER, TGOS.TGOverlayType.LABEL, TGOS.TGOverlayType.EDIT]
+                    //如果有設定上面這個，那 "編輯" 按鈕會自動消失
+                    //所以記得要在尾端加上 TGOS.TGOverlayType.EDIT 喔
                 },
 
                 //標記
@@ -84,6 +84,16 @@
             });
         }
 
+        //更改繪圖管理器的畫面按鈕(基本上就是重設一次選項即可)
+        function Setting(){
+            dm.setOptions({ 
+                drawingControl: true, 
+                drawingControlOptions: {
+                    position: TGOS.TGControlPosition.BOTTOM_RIGHT,   //這個一定要加喔
+                    drawingModes:[TGOS.TGOverlayType.EDIT]
+                }
+            });
+        }
 
     </script>
 </head>
@@ -92,6 +102,7 @@
     <div id="TGMap" style="height: 480px; width: 720px">
     </div>
     <input type="text" value="大家好" id="LabelText" onchange="changeLabelText();" />
+    <button type="button" onclick="Setting();">重設 下面的按鈕選項</button>
     <!--用來存放地圖的DIV物件-->
 </body>
 
