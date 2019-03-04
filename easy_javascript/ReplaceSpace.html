@@ -36,8 +36,12 @@
         function content(){
             var text = document.getElementById('text').value;
 
-            //JS 的 content（包含）
+            //JS 的 content（包含），得到的是true false => IE的有些版本不支援includes
             var isContent = text.includes(' ');
+
+            //較能支援的寫法 =>得到的是數字
+            var num = text.indexOf(' ');
+            if(num >= 0){alert("有包含");}else{alert("沒包含");}
 
             alert(isContent);
         }
