@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>下拉式選單的CRUD</title>
+    <script src="http://oss.sheetjs.com/js-xlsx/xlsx.full.min.js"></script>
+</head>
+
+<!--參考網址：http://www.programmer-club.com.tw/ShowSameTitleN/javascript/3276.html-->
+
+<body>
+
+    <select name="mySelect" id="mySelect">
+        <option value="">請選擇</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+    </select>
+
+    <br>
+    <br>
+
+    <table>
+        <tr>
+            <th>參數</th>
+            <th>操作</th>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td>
+                <button type="button" onclick="CurrentSelect();">Alert出當前選到的選項</button>
+            </td>
+        </tr>
+
+        <script>
+            //取到當前被選到的選項
+            function CurrentSelect() {
+                var objSelect = document.getElementById('mySelect');
+                //objSelect.selectedIndex 是當前被選到的選項的序號(從0開始，例如：選第二個選項 => 1)
+                //如果什麼都還沒勾 => 第一個選項，即是0
+                var value = objSelect.options[objSelect.selectedIndex].value;
+                var name = objSelect.options[objSelect.selectedIndex].text;
+                alert(value + " = " + name);
+            }
+        </script>
+
+
+        <tr>
+            <td>
+                值：
+                <input type="text" id="addValue" /> 文字：
+                <input type="text" id="addText" />
+            </td>
+            <td>
+                <button type="button" onclick="AddOption(document.getElementById('addValue').value, document.getElementById('addText').value);">新增</button>
+            </td>
+        </tr>
+
+        <script>
+            //新增選項
+            function AddOption(val, text) {
+                var objSelect = document.getElementById('mySelect');
+
+                //新增選項類別
+                var objOption = new Option(val, text);
+                //新增至尾巴 => 其實就是 把陣列尾端新增一個選項即可
+                //objSelect.options.length的話，例如有5個選項(index = 0-4)，所以要新增就是 option[5]要有選項即可
+                objSelect.options[objSelect.options.length] = objOption;
+            }
+        </script>
+
+        <tr>
+            <td>
+                值：
+                <input type="text" id="insertValue" /> 文字：
+                <input type="text" id="insertText" /> 位置(從0開始)：
+                <input type="text" id="insertPosition" />
+            </td>
+            <td>
+                <button type="button" onclick="InsertOption(document.getElementById('insertValue').value, document.getElementById('insertText').value, document.getElementById('insertPosition').value);">插入</button>
+            </td>
+        </tr>
+
+        <script>
+            //插入選項
+            function InsertOption(val, text, pos) {
+                var objSelect = document.getElementById('mySelect');
+
+                //如果pos超出陣列大小 => 視同新增
+                if (pos < 0 || pos >= objSelect.options.length) {
+                    AddOption(val, text);
+                } else {
+                    //新增選項類別
+                    var objOption = new Option(val, text);
+
+                    //插入
+                    objSelect.add(objOption, pos);
+                }
+            }
+        </script>
+
+        <tr>
+            <td>
+                值：
+                <input type="text" id="updateValue" /> 文字：
+                <input type="text" id="updatetText" /> 位置(從0開始)：
+                <input type="text" id="updatePosition" />
+            </td>
+            <td>
+                <button type="button" onclick="UpdateOption(document.getElementById('updateValue').value, document.getElementById('updatetText').value, document.getElementById('updatePosition').value);">更新</button>
+            </td>
+        </tr>
+
+        <script>
+            //更新選項
+            function UpdateOption(val, text, pos) {
+                var objSelect = document.getElementById('mySelect');
+
+                //如果pos超出陣列大小 => 視同新增
+                if (pos < 0 || pos >= objSelect.options.length) {
+                    AddOption(val, text);
+                } else {
+                    //新增選項類別
+                    var objOption = new Option(val, text);
+
+                    //更新 => 直接把陣列的資料改變
+                    objSelect.options[pos] = objOption;
+                }
+            }
+        </script>
+
+        <tr>
+            <td></td>
+            <td>
+                <button type="button" onclick="DeleteSelectedOption();">刪除被選到的</button>
+            </td>
+        </tr>
+
+        <script>
+            //刪除被選到的
+            function DeleteSelectedOption() {
+                var objSelect = document.getElementById('mySelect');
+
+                if (objSelect.options.length > 0) {
+                    //把被選到的刪掉 => 如果沒選 ，會是第一個 (因為objSelect.selectedIndex的特性)
+                    //以下2個都是一樣的效果
+                    objSelect.remove(objSelect.selectedIndex);
+                    //objSelect.options[objSelect.selectedIndex] = null;
+                }
+            }
+        </script>
+
+        <tr>
+            <td></td>
+            <td>
+                <button type="button" onclick="DeleteLastOption();">刪除最後一個選項</button>
+            </td>
+        </tr>
+
+        <script>
+            //刪除最後一個
+            function DeleteLastOption() {
+                var objSelect = document.getElementById('mySelect');
+
+                if (objSelect.options.length > 0) {
+                    //有2種方法：
+                    //一、直接改變長度
+                    objSelect.options.length = objSelect.options.length - 1;
+
+                    //二、算出最後一筆的index，再使用Delete
+                    //var len = objSelect.options.length - 1;
+                    //objSelect.options[len] = null;
+                }
+            }
+        </script>
+
+
+        <tr>
+            <td></td>
+            <td>
+                <button type="button" onclick="ReSet();">重置(選項為： 請選擇、1、2、3)</button>
+            </td>
+        </tr>
+
+        <script>
+            //重置
+            function ReSet(){
+                var objSelect = document.getElementById('mySelect');
+
+                var result = "<option value=''>請選擇</option>";
+
+                for(var i = 1; i <= 3; i++){result += "<option value='" + i.toString() + "'>" + i.toString() + "</option>";}
+
+                objSelect.innerHTML = result;
+                //在JQUERY中就使用 .html(result);
+            }
+        </script>
+
+    </table>
+
+</body>
+
+</html>
