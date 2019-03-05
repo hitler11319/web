@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>先執行驗證，成功才會送出</title>
+    <script src="http://oss.sheetjs.com/js-xlsx/xlsx.full.min.js"></script>
+</head>
+
+
+<body>
+
+    <form mathod="post">
+        帳號:
+        <input type="text" id="account" name="account" /> 密碼:
+        <input type="text" id="passwd" name="passwd" />
+
+        <!--一定要把type寫成button，如果寫成submit的話那就是執行onclick完後再submit-->
+        <button type="button" onclick="VaildForm();">送出</button>
+
+        <!--基於以上原則，有很多在form表單送出前才要執行的話，可以寫以下(type="submit" ，而onclick裡寫的是要執行的事)-->
+        <button type="submit" onclick="document.getElementById('account').value = '123';">先把帳號變成123再送出</button>
+    </form>
+
+
+    <script>
+        //驗證
+        function VaildForm() {
+            var errorText = "";
+
+            if (document.getElementById('account').value == '') { errorText += "沒輸入帳號 \n"; }
+            if (document.getElementById('passwd').value == '') { errorText += "沒輸入密碼 \n"; }
+
+            if (errorText == "") {
+                //document.forms會列出此body中的所有form標籤的列表，而這邊只有一個，所以直接取0即可
+                // .submit() 是執行submit  => 也可以加入function 。 例如 $('#FormA').submit(function(){加入驗證或者其他});  這樣的型式
+                document.forms[0].submit();
+            } else {
+                alert(errorText);
+            }
+        }
+    </script>
+
+</body>
+
+</html>
