@@ -16,8 +16,12 @@
   <!-- Button to Open the Modal -->
   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Open modal</button>
 
+    <!--用JQuery控制開關-->
+  <button type="button" class="btn btn-primary" onclick="$('#myModal').modal('show');">打開 modal</button>
+  <button type="button" class="btn btn-primary" onclick="$('#myModal').modal('hide');">關閉 modal</button>
+
   <!-- The Modal -->
-  <div class="modal" id="myModal">
+  <div class="modal" id="myModal" role="model">
     <div class="modal-dialog">  <!-- class="modal-dialog modal-sm" 會有動畫出現dialog, 而不是直接出現 --> <!-- class="modal-dialog modal-lg" 是比較大的dialog -->
       <div class="modal-content">
       
@@ -34,8 +38,11 @@
         
         <!-- Modal footer -->
         <div class="modal-footer">
+          <!--有data-dismiss="modal"的是按完後，Model會關閉的-->
         	<button type="button" class="btn btn-info" data-dismiss="modal">Ok</button>
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+          <button type="button" class="btn btn-danger">按下後不會關掉Model</button>
         </div>
         
       </div>
