@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>datepicker and datetimepicker</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="MobileOptimized" content="width" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="../css/bootstrap.css" rel="stylesheet" />
+    <link href="../css/jquery-ui.css" rel="stylesheet" />
+    <link href="jquery-clockpicker.min.css" rel="stylesheet" />
+
+    <script src="../js/jquery-1.12.4.min.js"></script>
+    <script src="../js/jquery-ui.js"></script>
+    <script src="jquery-clockpicker.min.js"></script>
+</head>
+
+<body>
+
+    <!--最基本型-->
+    <div class="input-group clockpicker">
+        <input type="text" class="form-control" value="09:30">
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-time"></span>
+        </span>
+    </div>
+    <script type="text/javascript">
+        $('.clockpicker').clockpicker();
+        //預設下方的文字是 "完成"
+    </script>
+
+
+    <br>
+
+    <!--調整位置、文字對齊、是否選完就關閉、下方文字-->
+    <!--用JS控制-->
+    <div class="input-group clockpicker2">
+        <input type="text" class="form-control" value="18:00">
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-time"></span>
+        </span>
+    </div>
+    <script type="text/javascript">
+        $('.clockpicker2').clockpicker({
+            placement: 'bottom',  //跳出來的視窗位置下
+            align: 'left',     //靠左對齊
+            donetext: '確定完成？'   //下方有個Done的按鈕
+        });
+    </script>
+
+
+    <br>
+
+    <!--預設當前時間 + 有按鈕可以選擇要調時or分-->
+    <input class="form-control" id="single-input" value="" placeholder="Now">
+    <button type="button" id="check-hours">選時</button>
+    <button type="button" id="check-minutes">選分</button>
+
+    <script type="text/javascript">
+        var input = $('#single-input').clockpicker({
+            placement: 'bottom',
+            align: 'left',
+            autoclose: true,    //下方不會有個 "完成" 的按鈕
+            //目前效果失效
+            default: 'now'  //預設now => 也可以設別的 例如： 'default' : '11:20'
+        });
+
+        // Manually toggle to the minutes view
+        $('#check-minutes').click(function (e) {
+            // Have to stop propagation here
+            e.stopPropagation();
+            input.clockpicker('show').clockpicker('toggleView', 'minutes');
+        });
+
+        //設時的話，按完後  分的也會出來
+        $('#check-hours').click(function (e) {
+            // Have to stop propagation here
+            e.stopPropagation();
+            input.clockpicker('show').clockpicker('toggleView', 'hours');
+        });
+    </script>
+
+    <br>
+
+    <!--各個事件的控制-->
+    <input class="form-control" id="single-input2" value="" placeholder="Now">
+    <script type="text/javascript">
+        var input2 = $('#single-input2').clockpicker({
+            donetext: '已完成',
+            init: function () {
+                console.log("colorpicker initiated");
+            },
+            beforeShow: function () {
+                console.log("before show");
+            },
+            afterShow: function () {
+                console.log("after show");
+            },
+            beforeHide: function () {
+                console.log("before hide");
+            },
+            afterHide: function () {
+                console.log("after hide");
+            },
+            beforeHourSelect: function () {
+                console.log("before hour selected");
+            },
+            afterHourSelect: function () {
+                console.log("after hour selected");
+            },
+            beforeDone: function () {
+                console.log("before done");
+            },
+            afterDone: function () {
+                console.log("after done");
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>
