@@ -1,0 +1,54 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<title>TGOS MAP API for Web 地標定位</title>
+<script type="text/javascript" src="https://api.tgos.tw/TGOS_API/tgos?ver=2&AppID=yourID&APIKey=yourkey" charset="utf-8"></script>
+<!--下載後請將yourID及yourkey取代為您申請所取得的APPID及APIKEY方能正確顯示服務-->
+<script type="text/javascript"> 
+var pMap = null;
+function InitWnd() {
+	var pOMap = document.getElementById("TGMap");
+	var mapOptions = {
+		disableDefaultUI: true
+	};
+	pMap = new TGOS.TGOnlineMap(pOMap, TGOS.TGCoordSys.EPSG3857, mapOptions);	//宣告TGOnlineMap地圖物件並設定坐標系統
+}
+var markers = new Array();
+function locate() {
+	if (markers.length > 0) {		//假設地圖上已存在查詢後得到的標記點, 則先行移除
+		for (var i = 0; i < markers.length; i++) {
+			markers[i].setMap(null);
+		}
+		markers = [];		
+	}
+	
+	var PName = document.getElementById('PoiName').value;	//由文字輸入框取得POI的名稱
+	var LService = new TGOS.TGLocateService();				//宣告一個新的定位服務
+	var request = {		//設定定位所需的參數, 範例使用poi
+		poi: PName
+	};
+	LService.locateWGS84(request, function(result, status){	//進行定位查詢, 並指定回傳資訊為TWD97坐標系統
+		if (status == TGOS.TGLocatorStatus.ZERO_RESULTS) {		//若查無該POI則跳出警告訊息並退出
+			alert('查無此地標點');
+		}
+		else {
+			for (var i = 0; i < result.length; i++) {					//取得所有符合查詢文字的POI
+				var geometry = result[i].geometry.location;			//利用geometry.location取得點位(TGPoint)
+				var tip = result[i].poiName;							//取得POI完整名稱
+				var marker = new TGOS.TGMarker(pMap, geometry, tip);	//以TGMarker表示POI位置
+				markers.push(marker);
+				
+				var env = result[i].geometry.viewport;		//以geometry.viewport取得系統建議的視域範圍(TGEnvelope)
+				if (i == 0)
+					LService.fitBounds(pMap, env);			//將地圖畫面縮放至第一個查詢結果的視域範圍
+			}
+		}
+	});
+}
+</script>            
+</head>
+<body style="margin:0px" onload="InitWnd();">
+	<div id="TGMap" style="width:640px; height:480px; border: 1px solid #C0C0C0;"></div>
+	輸入地標名稱:<input type="text" id="PoiName" value="內政部資訊中心" size=20/>
+	<input type="button" value="地標定位" onclick="locate();"/>
+</html>  
