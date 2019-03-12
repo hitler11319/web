@@ -1,0 +1,6 @@
+admin.js
+charts.js
+forms.js
+full-calendar.js
+smartChat.js
+vector-map.js
