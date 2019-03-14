@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Toast 提示文字 應用</title>
+    <meta name='description' content="" />
+    <meta name='keywords' content="" />
+    <meta name="MobileOptimized" content="width">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--<script src="js/jquery-1.12.4.min.js"></script>-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="sweetalert.min.js"></script>
+
+    <!--<script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>-->
+</head>
+
+<!-- 參考網圵： https://sweetalert.js.org/guides/  -->
+
+<body>
+
+    <!--基本形-->
+    <button onclick="BasicAlert();">基本形</button>
+
+    <script>
+        function BasicAlert() {
+            //預設的按鈕 為 "OK"
+            swal("Hello world!");
+        }   
+    </script>
+
+    <button onclick="BasicAlert2();">基本形2</button>
+
+    <script>
+        function BasicAlert2() {
+            //預設的按鈕 為 "OK"
+            //如果輸入2個參數，則 第一個是標題(字大)，第二個是內文(字小)
+            swal("這是標題", "這是文字");
+        }   
+    </script>
+
+    <button onclick="BasicAlert3();">基本形3</button>
+
+    <script>
+        function BasicAlert3() {
+            //預設的按鈕 為 "OK"
+            //如果輸入3個參數，則 第一個是標題(字大)，第二個是內文(字小)，第3個是圖示效果
+            //第3個參數  可以 寫  "warning"、 "error" 、 "success" 、 "info"  4個選其一
+            swal("這是標題", "這是文字", "success");
+        }   
+    </script>
+
+    <br>
+    <br>
+
+
+    <!--設定選項-->
+    <button onclick="SettingOption1();">自訂選項範例1</button>
+
+    <script>
+        function SettingOption1() {
+            swal({
+                title: "標題1",
+                text: "標題2",
+                icon: "success",  //圖示效果
+            });
+        }   
+    </script>
+
+    <button onclick="SettingOption2();">自訂選項範例2</button>
+
+    <script>
+        function SettingOption2() {
+            swal({
+                title: "標題1",
+                text: "標題2",
+                icon: "success",  //圖示效果
+                button: "快按我！",  //按鈕的文字(不寫預設是 OK)
+            });
+
+            /*
+                上面的這個，等同於下面：
+                swal("Good job!", "You clicked the button!", "success", {
+                    button: "Aww yiss!",
+                });
+            */
+
+        }   
+    </script>
+
+    <br>
+    <br>
+
+    <!-- Using promises-->
+    <button onclick="UsingPromises();">Using promises</button>
+
+    <script>
+        function UsingPromises() {
+            //按下去後，會再跳出一隻
+            swal("點擊按鈕 或 點在model 外")
+                .then((value) => {
+                    swal(`回傳的value值是 : ${value}`);
+                });
+        }   
+    </script>
+
+    <!-- Using promises 進階 -->
+    <button onclick="UsingPromisesAdvanced();">Using promises 進階</button>
+
+    <script>
+        function UsingPromisesAdvanced() {
+            //這要做的是一個危險警告的alert
+            swal({
+                title: "你確定要執行嗎?",
+                text: "如果執行可以會有風險影響到你的電腦喔",
+                icon: "warning",  //設為 危險的圖示
+                buttons: true,    //看清楚  不是 button 是 buttons ，如果是 button屬性 => 設置button的文字；如果是 buttons 且設為true的話
+                //會多出一個 "取消" 的按鈕
+                //也可以透過下一個例子來設定
+                dangerMode: true, //如果為true => 自動focus在 "取消" 的按鈕上  ， 並且原本藍色的按鈕 會變成 紅色的按鈕
+            })
+                .then((willDelete) => {
+                    //按 確定 => true ； 按 取消 => null
+                    console.log(willDelete);
+                    if (willDelete) {
+                        swal("可惜！你的檔案被損毀了", {
+                            icon: "success",
+                        });
+                    } else {
+                        swal("你的檔案安全了");
+                    }
+                });
+        }   
+    </script>
+
+    <br>
+    <br>
+
+    <!--設多個按鈕-->
+    <button onclick="TwoButtonAlert();">設2個按鈕</button>
+
+    <script>
+        function TwoButtonAlert() {
+            swal("你會選擇哪一個?", {
+                buttons: ["A", "B"],  //這個陣列最多只能設2個(A在左 B在右)
+            }).then((value) => {
+                //結果  按下A => null  ； 按下B => true
+                console.log(value);
+                swal("你按下了" + value);
+            });
+        }   
+    </script>
+
+
+    <button onclick="ButtonAdvancedAlert1();">按鈕進階設定1</button>
+
+    <script>
+        function ButtonAdvancedAlert1() {
+            //在buttons屬性中，放入陣列  。但又想讓按鈕是預設 => 輸入true
+            swal("你確定要這麼做?", {
+                buttons: ["還是算了!", true],
+            });
+        }   
+    </script>
+
+    <button onclick="ButtonAdvancedAlert2();">按鈕進階設定2</button>
+
+    <script>
+        function ButtonAdvancedAlert2() {
+            swal("地上有1000000000元，要撿嗎?", {
+                //下面的設置是 有3個按鈕  前面的(cancel catch defeat是物件，可以設定text和value)，而 寫true就是預設
+                buttons: {
+                    cancel: "不要撿!",   //value = null
+                    catch: {
+                        text: "撿起來!",  //value = catch
+                        value: "catch",
+                    },
+                    defeat: true,        //value = defeat
+                },
+            })
+                .then((value) => {
+                    console.log(value);
+                    switch (value) {
+                        case "defeat":
+                            swal("預設的答案就是不撿喔 哈哈");
+                            break;
+
+                        case "catch":
+                            swal("賺到1000000000元了", "", "success");
+                            break;
+
+                        default:
+                            swal("好可惜！沒賺到錢");
+                    }
+                });
+        }   
+    </script>
+
+    <br>
+    <br>
+
+    <!--加入Ajax-->
+    <button onclick="AjaxAlert();">加上Ajax</button>
+
+    <script>
+        function AjaxAlert() {
+            swal({
+                text: '選擇一個電影，例如："La La Land".',
+                content: "input",   //將中間的內文 變成 一個inpu
+                button: {
+                    text: "尋找!",
+                    closeModal: false,  //沒有關閉鈕
+                },
+            })
+                .then(name => {
+                    console.log(name);
+                    if (!name) throw null;   //如果沒輸入就跳例外
+
+                    //反之 去ajax查資料(但是因為 沒架成http，故不能使用ajax的部份 => 和 MyTemplates裡的那隻相同)
+                    return fetch("https://itunes.apple.com/search?term=" + name.toString() + "&entity=movie");
+                })
+                .then(results => {
+                    //把上面取到的資料轉成json
+                    console.log(results.json());
+                    return results.json();
+                })
+                .then(json => {
+                    //取到轉json後的 第一筆資料
+                    const movie = json.results[0];
+                    console.log(movie);
+
+                    //如果沒資料 => 找不到電影
+                    if (!movie) {
+                        return swal("找不到電影!");
+                    }
+
+                    //反之有的話，取詳細資料
+                    const name = movie.trackName;
+                    const imageURL = movie.artworkUrl100;
+
+                    swal({
+                        title: "Top result:",
+                        text: name,
+                        icon: imageURL,  //icon也可以設成 圖片網圵
+                    });
+                })
+                .catch(err => {
+                    //例外處理(就是上面那邊會跳例外)
+                    console.log(err);
+                    if (err) {
+                        swal("喔不", "找資訊的時候發生錯誤", "error");
+                    } else {
+                        //結束查找+關閉
+                        swal.stopLoading();
+                        swal.close();
+                    }
+                });
+        }   
+    </script>
+
+    <!--input的部份-->
+    <button onclick="InputAlert();">有輸入框的</button>
+
+    <script>
+        function InputAlert() {
+            swal("寫你喜歡的東西吧:", {
+                content: "input",
+            })
+                .then((value) => {
+                    swal("你喜歡的東西是: " + value.toString());
+                });
+        }   
+    </script>
+
+    <script>
+        /*
+            剩下一些基本的都是要和 React.js 做結合，故這部份無法做
+        */
+    </script>
+
+</body>
+
+</html>

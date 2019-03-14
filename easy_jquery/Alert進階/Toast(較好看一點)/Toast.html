@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Toast 提示文字 應用</title>
+    <meta name='description' content="" />
+    <meta name='keywords' content="" />
+    <meta name="MobileOptimized" content="width">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link type="text/css" rel="stylesheet" href="jquery.toast.css">
+
+    <!--<script src="js/jquery-1.12.4.min.js"></script>-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.toast.js"></script>
+</head>
+
+<!-- 參考網圵： http://www.htmleaf.com/jQuery/Lightbox-Dialog/201606053560.html  -->
+
+<body>
+
+    <!--基本形-->
+    <button onclick="BasicToast();">基本形</button>
+
+    <script>
+        function BasicToast() {
+            // 讀秒後自動消失
+            $.toast("基本形");
+
+            // 沒有讀秒的(因為有加上hideAfter的屬性)
+            $.toast({
+                text: "基本形",
+                hideAfter: false  //目前設為false和true沒發現啥差別(要再研究)
+            });
+        }   
+    </script>
+
+    <br>
+    <br>
+
+
+    <!--加入html標籤的-->
+    <button onclick="HtmlLabelToast();">加入html標籤的</button>
+
+    <script>
+        function HtmlLabelToast() {
+            // 讀秒後自動消失
+            $.toast("加入html標籤的 \n <a href='#'>google</a>");
+
+            // 沒有讀秒的(因為有加上hideAfter的屬性)
+            $.toast({
+                text: "加入html標籤的 \n <a href='#'>google</a>",
+                hideAfter: false  //目前設為false和true沒發現啥差別(要再研究)
+            });
+        }   
+    </script>
+
+    <br>
+    <br>
+
+
+    <!--使用js陣列的-->
+    <button onclick="ArrayToast();">使用js陣列的</button>
+
+    <script>
+        //用陣列 => 呈現會變成 li 清單的樣式
+        function ArrayToast() {
+
+            var data = ["Ubuntu : One of it's kind", "Sublime Text : Productivity unleashed", "HeidiSQL : Just love it", "Github : Just Lovely"]
+
+            // 讀秒後自動消失
+            $.toast(data);
+
+            // 沒有讀秒的(因為有加上hideAfter的屬性)
+            $.toast({
+                text: data,
+                hideAfter: false  //目前設為false和true沒發現啥差別(要再研究)
+            });
+        }   
+    </script>
+
+    <br>
+    <br>
+
+
+    <!--自定義動畫-->
+    <button onclick="FlashToast(0);">自定義動畫(plain)</button>
+    <button onclick="FlashToast(1);">自定義動畫(fade)</button>
+    <button onclick="FlashToast(2);">自定義動畫(slide)</button>
+
+    <script>
+        function FlashToast(index) {
+
+            var option = ["plain", 'fade', 'slide'];
+
+            $.toast({
+                text: "自定義動畫的(" + option[index] + ") <a href='#'>google</a>",
+                showHideTransition: option[index]  //選擇動畫方式，有 plain 、 fade 、 slide 可以選
+            });
+        }   
+    </script>
+
+    <br>
+    <br>
+
+
+    <!--自定義樣式-->
+    <button onclick="StyleToast();">自定義樣式</button>
+
+    <script>
+        function StyleToast(index) {
+            $.toast({
+                text: "......",
+                showHideTransition: 'slide',
+                bgColor: 'blue',
+                textColor: '#eee',
+                allowToastClose: false,
+                hideAfter: 5000,
+                stack: 15,
+                textAlign: 'left',
+                position: 'top-right'
+            });
+
+            /*
+                text：消息提示框的内容。
+                showHideTransition：消息提示框的動畫效果。可取值：plain，fade，slide。
+                bgColor：背景颜色。 (可以打 blue 或者 #eee  這種方式)
+                textColor：文字颜色。(可以打 blue 或者 #eee  這種方式)
+                allowToastClose：是否顯示關閉按鈕。
+                hideAfter：設置為false提示框不自动關閉。如不是false 代表 設一個 數字 代碼 幾毫秒後消失
+                stack：消息栈。 (目前不知為何)
+                textAlign：文字對齊：left, right, center。
+                position：消息提示框的位置：bottom-left 、 bottom-right 、 bottom-center 、 top-left 、 top-right 、 top-center 、 mid-center。
+            */
+        }   
+    </script>
+
+    <br>
+    <br>
+
+
+    <!--更新訊息框-->
+    <button onclick="UpdateToast();">更新訊息框</button>
+
+    <script>
+        function UpdateToast() {
+            var myToast = $.toast({
+                text: '等3秒後，會更新',
+                hideAfter: false,
+                bgColor: '#E01A31'
+            });
+
+            window.setTimeout(function () {
+                myToast.update({
+                    text: '<strong>過3秒了！！</strong>',
+                    bgColor: '#23B65D'
+                });
+            }, 3000);
+        }   
+    </script>
+
+    <br>
+    <br>
+
+
+    <script>
+        //重置消息框(傳入的toast為toast物件。例如： var a = $.toast("111");  => 則傳入a)
+        function ReSetToast(toast) {
+            toast.reset();
+        }
+
+        //全部重置
+        function AllReSetToast() {
+            $.toast().reset('all');
+        }
+    </script>
+
+
+</body>
+
+</html>
