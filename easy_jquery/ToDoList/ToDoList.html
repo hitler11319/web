@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=" utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>To Do List 簡單模版應用</title>
+    <!--<link href="../../../MyTemplates/css/bootstrap.min.css" rel="stylesheet" />-->
+    <link href="../../../MyTemplates/css/admin.css" rel="stylesheet" />
+    <!--如果變更了 路徑 => 請記得 admin.css裡的 fa-xxxx都要改路徑喔-->
+    <!--裡面就函有 bootstrap.min.css 的內容了，所以不用再載入-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+</head>
+
+<body>
+
+    <!--要Header中有 放大、刪除…那些功能的話 要用這個包起來-->
+    <!--要載入admin.js-->
+    <section id="widget-grid" class="">
+
+    <!--按下完成後，會跑去下方的-->
+    <!--而且項目是可以搬移的-->
+    <!--JS在第190行-->
+    <div class="jarviswidget jarviswidget-color-blue" data-widget-editbutton="false" data-widget-colorbutton="false" id="todolist1">
+
+        <!--可以自行設定要哪些-->
+        <!-- widget options:
+        usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+        data-widget-colorbutton="false"
+        data-widget-editbutton="false"
+        data-widget-togglebutton="false"
+        data-widget-deletebutton="false"
+        data-widget-fullscreenbutton="false"
+        data-widget-custombutton="false"
+        data-widget-collapsed="true"
+        data-widget-sortable="false"
+
+        -->
+
+        <header>
+            <span class="widget-icon">
+                <i class="fa fa-check txt-color-white"></i>
+            </span>
+            <h2> ToDo's </h2>
+            <!-- <div class="widget-toolbar">
+            add: non-hidden - to disable auto hide
+
+            </div>-->
+        </header>
+
+        <!-- widget div-->
+        <div>
+            <!-- widget edit box -->
+            <div class="jarviswidget-editbox">
+                <div>
+                    <label>Title:</label>
+                    <input type="text" />
+                </div>
+            </div>
+            <!-- end widget edit box -->
+
+            <div class="widget-body no-padding smart-form">
+                <h5 class="todo-group-title">
+                    <i class="fa fa-warning"></i> 危急工作 (
+                    <small class="num-of-tasks">1</small>)</h5>
+                <ul id="sortable1" class="todo">
+                    <li>
+                        <span class="handle">
+                            <label class="checkbox">
+                                <input type="checkbox" name="checkbox-inline">
+                                <i></i>
+                            </label>
+                        </span>
+                        <p>
+                            <span class="badge pull-left bg-color-red" style="color: black;">危急</span>
+                            <strong>Ticket #17643</strong> - 處理Bug問題 [
+                            <a href="javascript:void(0);" class="font-xs">More Details</a>]
+                            <span class="text-muted">Bug快解決 </span>
+                            <span class="date">Jan 1, 2014</span>
+                        </p>
+                    </li>
+                </ul>
+                <h5 class="todo-group-title">
+                    <i class="fa fa-exclamation"></i> 重要工作 (
+                    <small class="num-of-tasks">3</small>)</h5>
+                <ul id="sortable2" class="todo">
+                    <li>
+                        <span class="handle">
+                            <label class="checkbox">
+                                <input type="checkbox" name="checkbox-inline">
+                                <i></i>
+                            </label>
+                        </span>
+                        <p>
+                            <span class="badge pull-left bg-color-yellow" style="color: black;">重要</span>
+                            <strong>Ticket #1347</strong> - Bug修正
+                            <small>(bug fix)</small> [
+                            <a href="javascript:void(0);" class="font-xs">More Details</a>]
+                            <span class="date">Nov 22, 2013</span>
+                        </p>
+                    </li>
+                    <li>
+                        <span class="handle">
+                            <label class="checkbox">
+                                <input type="checkbox" name="checkbox-inline">
+                                <i></i>
+                            </label>
+                        </span>
+                        <p>
+                            <span class="badge pull-left bg-color-yellow" style="color: black;">重要</span>
+                            <strong>Ticket #1314</strong> - Code Review
+                            <a href="javascript:void(0);" class="font-xs">#6134</a>
+                            <small>(code review)</small>
+                            <span class="date">Nov 22, 2013</span>
+                        </p>
+                    </li>
+                    <li>
+                        <span class="handle">
+                            <label class="checkbox">
+                                <input type="checkbox" name="checkbox-inline">
+                                <i></i>
+                            </label>
+                        </span>
+                        <p>
+                            <span class="badge pull-left bg-color-yellow" style="color: black;">重要</span>
+                            <strong>Ticket #17643</strong> - 任務相關 [
+                            <a href="javascript:void(0);" class="font-xs">More Details</a>]
+                            <span class="text-muted">相關任務工作分配 </span>
+                            <span class="date">Jan 1, 2014</span>
+                        </p>
+                    </li>
+                </ul>
+
+                <h5 class="todo-group-title">
+                    <i class="fa fa-check"></i> 完成事項 (
+                    <small class="num-of-tasks">1</small>)</h5>
+                <ul id="sortable3" class="todo">
+                    <li class="complete">
+                        <span class="handle" style="display:none">
+                            <label class="checkbox state-disabled">
+                                <input type="checkbox" name="checkbox-inline" checked="checked" disabled="disabled">
+                                <i></i>
+                            </label>
+                        </span>
+                        <p>
+                            <span class="badge pull-left bg-color-green" style="color: black;">完成</span>
+                            <strong>Ticket #17643</strong> - 頁面處理 [
+                            <a href="javascript:void(0);" class="font-xs">More Details</a>]
+                            <span class="text-muted">頁面處理 </span>
+                            <span class="date">Jan 1, 2014</span>
+                        </p>
+                    </li>
+                </ul>
+
+                <!-- end content -->
+            </div>
+
+        </div>
+        <!-- end widget div -->
+    </div>
+
+
+    <br>
+
+    <!--勾選完，只加入刪除鍵-->
+    <!--自己擴充的  JS 在第366行-->
+    <div class="jarviswidget jarviswidget-color-blue" data-widget-editbutton="false" data-widget-colorbutton="false" id="todolist2">
+
+        <header>
+            <span class="widget-icon">
+                <i class="fa fa-check txt-color-white"></i>
+            </span>
+            <h2> ToDo's 2</h2>
+        </header>
+
+        <div>
+            <div class="jarviswidget-editbox">
+                <div>
+                    <label>Title:</label>
+                    <input type="text" />
+                </div>
+            </div>
+
+            <div class="widget-body no-padding smart-form">
+                <h5 class="todo-group-title">
+                    <i class="fa fa-warning"></i> 危急工作 (
+                    <small class="num-of-tasks">1</small>)</h5>
+                <ul id="deleteLine1" class="todo">
+                    <li>
+                        <span class="handle">
+                            <label class="checkbox">
+                                <input type="checkbox" name="checkbox-inline">
+                                <i></i>
+                            </label>
+                        </span>
+                        <p>
+                            <span class="badge pull-left bg-color-red" style="color: black;">危急</span>
+                            <strong>Ticket #17643</strong> - 處理Bug問題 [
+                            <a href="javascript:void(0);" class="font-xs">More Details</a>]
+                            <span class="text-muted">Bug快解決 </span>
+                            <span class="date">Jan 1, 2014</span>
+                        </p>
+                    </li>
+                </ul>
+                <h5 class="todo-group-title">
+                    <i class="fa fa-exclamation"></i> 重要工作 (
+                    <small class="num-of-tasks">3</small>)</h5>
+                <ul id="deleteLine2" class="todo">
+                    <li>
+                        <span class="handle">
+                            <label class="checkbox">
+                                <input type="checkbox" name="checkbox-inline">
+                                <i></i>
+                            </label>
+                        </span>
+                        <p>
+                            <span class="badge pull-left bg-color-yellow" style="color: black;">重要</span>
+                            <strong>Ticket #1347</strong> - Bug修正
+                            <small>(bug fix)</small> [
+                            <a href="javascript:void(0);" class="font-xs">More Details</a>]
+                            <span class="date">Nov 22, 2013</span>
+                        </p>
+                    </li>
+                    <li>
+                        <span class="handle">
+                            <label class="checkbox">
+                                <input type="checkbox" name="checkbox-inline">
+                                <i></i>
+                            </label>
+                        </span>
+                        <p>
+                            <span class="badge pull-left bg-color-yellow" style="color: black;">重要</span>
+                            <strong>Ticket #1314</strong> - Code Review
+                            <a href="javascript:void(0);" class="font-xs">#6134</a>
+                            <small>(code review)</small>
+                            <span class="date">Nov 22, 2013</span>
+                        </p>
+                    </li>
+                    <li>
+                        <span class="handle">
+                            <label class="checkbox">
+                                <input type="checkbox" name="checkbox-inline">
+                                <i></i>
+                            </label>
+                        </span>
+                        <p>
+                            <span class="badge pull-left bg-color-yellow" style="color: black;">重要</span>
+                            <strong>Ticket #17643</strong> - 任務相關 [
+                            <a href="javascript:void(0);" class="font-xs">More Details</a>]
+                            <span class="text-muted">相關任務工作分配 </span>
+                            <span class="date">Jan 1, 2014</span>
+                        </p>
+                    </li>
+                </ul>
+
+                <h5 class="todo-group-title">
+                    <i class="fa fa-check"></i> 完成事項</h5>
+                <ul id="deleteLine3" class="todo">
+                    <li class="complete">
+                        <span class="handle" style="display:none">
+                            <label class="checkbox state-disabled">
+                                <input type="checkbox" name="checkbox-inline" checked="checked" disabled="disabled">
+                                <i></i>
+                            </label>
+                        </span>
+                        <p>
+                            <span class="badge pull-left bg-color-green" style="color: black;">完成</span>
+                            <strong>Ticket #17643</strong> - 頁面處理 [
+                            <a href="javascript:void(0);" class="font-xs">More Details</a>]
+                            <span class="text-muted">頁面處理 </span>
+                            <span class="date">Jan 1, 2014</span>
+                        </p>
+                    </li>
+                </ul>
+
+                <!-- end content -->
+            </div>
+
+        </div>
+        <!-- end widget div -->
+    </div>
+
+
+    </section>
+
+
+    <!--
+        如上面所說，用data-action擊結函式的部份，那admin就要最後載入，放最下面的部份。
+        不然吃不到函式
+
+        但其實也是可以自己寫函式即可。(寫在這一頁中)
+    -->
+
+    <script src="../../../MyTemplates/js/admin.js"></script>
+
+    <!--admin.js 裡面就函有 bootstrap.min.js 的內容了，所以不用再載入-->
+
+
+    <!--基於以上部份，所以 admin.js 要用到的其他js的部份， 就要放的比他下面。不然會爆錯-->
+    <script data-pace-options='{ "restartOnRequestAfter": true }' src="../../../MyTemplates/js/plugin/pace/pace.min.js"></script>
+
+
+    <!--載入完 以上後，加上下面這些-->
+    <!-- DO NOT REMOVE : GLOBAL FUNCTIONS! -->
+    <script>
+        $(document).ready(function () {
+            pageSetUp();
+            drawBreadCrumb();
+        });
+    </script>
+
+
+    <script>
+        //Todo相關功能
+        /*
+                * TODO: add a way to add more todo's to list
+                */
+
+        // initialize sortable(初使化)，使項目可以搬移
+        $(function () {
+            $("#sortable1, #sortable2, #sortable3").sortable({
+                handle: '.handle',
+                connectWith: ".todo",
+                update: countTasks
+            }).disableSelection();
+        });
+
+
+        // check and uncheck(確認勾選)
+        //這邊選擇做成Function是因為，要讓它註冊onclick事件。因為這邊會新產生一筆，但它還未被註冊過
+        //而下面的 ToDoList2 就是用原來的(因為它不會搬移 => 不會產生新的 => 不用重新註冊一次事件)
+        function HandleCheck(ele) {
+            var $this = ele.parent().parent().parent();
+
+            if (ele.parents('ul')[0].id.indexOf('sortable') >= 0) {
+                if (ele.prop('checked')) {
+                    $this.addClass("complete");
+
+                    //會有回復的(下面全註解)，如果不想讓他可以復原(把第二個註解拿掉)
+                    //$(this).attr("disabled", true);
+                    //$(this).parent().hide();
+
+                    //移動(處理+動畫)
+                    $this.slideUp(400, function () {
+                        //複製到 完成
+                        $this.clone().prependTo("#sortable3").effect("highlight", {}, 800);
+                        //自己Remove
+                        $this.remove();
+                        //重算數量
+                        countTasks();
+                    });
+
+                    //註冊事件
+                    $("body").on("click", '.todo .checkbox > input[type="checkbox"]', function () { HandleCheck($(this)); });
+
+
+                } else {
+                    // insert undo code here...
+                    //復原回去
+                    $this.removeClass("complete");
+
+                    var statusList = ["危急", "重要", "完成"];
+
+                    for (var i = 0; i < statusList.length; i++) {
+                        if ($this.find('span')[1].innerHTML.indexOf(statusList[i]) >= 0) {
+                            //移動(處理+動畫)
+                            $this.slideUp(400, function () {
+                                //複製到 完成
+                                $this.clone().prependTo("#sortable" + (i + 1).toString()).effect("highlight", {}, 800);
+                                //自己Remove
+                                $this.remove();
+                                //重算數量
+                                countTasks();
+                            });
+
+                            //註冊事件
+                            $("body").on("click", '.todo .checkbox > input[type="checkbox"]', function () { HandleCheck($(this)); });
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        // check and uncheck(確認勾選)
+        //註冊事件
+        $('.todo .checkbox > input[type="checkbox"]').click(function () {
+            HandleCheck($(this));
+        });
+
+        // 算工作數糧
+        function countTasks() {
+
+            $('#todolist1').find('.todo-group-title').each(function () {
+                var $this = $(this);
+                $this.find(".num-of-tasks").text($this.next().find("li").size());
+            });
+
+        }
+
+    </script>
+
+
+    <script>
+        //只加上刪除線的做法
+        // check and uncheck(確認勾選)
+
+        // initialize sortable(初使化)，使項目可以搬移
+        $(function () {
+            $("#deleteLine1, #deleteLine2, #deleteLine3").sortable({
+                handle: '.handle',
+                connectWith: ".todo",
+                update: countTasks2
+            }).disableSelection();
+        });
+
+
+        $('.todo .checkbox > input[type="checkbox"]').click(function () {
+            var $this = $(this).parent().parent().parent();
+
+            if ($(this).parents('ul')[0].id.indexOf('deleteLine') >= 0) {
+                if ($(this).prop('checked')) {
+                    $this.addClass("complete");
+                } else {
+                    $this.removeClass("complete");
+                }
+
+                countTasks2();
+            }
+        });
+
+        // 算工作數量(配合上面的算數量)
+        function countTasks2() {
+
+            $('#todolist2').find('.todo-group-title').each(function () {
+                var $this = $(this);
+                var totalCount = $this.next().find("li").length;  //全部數量
+                var completeCount = $this.next().find(".complete").length;  //做完數量
+                $this.find(".num-of-tasks").text((totalCount - completeCount).toString());
+            });
+
+        }
+    </script>
+
+
+</body>
+
+</html>
