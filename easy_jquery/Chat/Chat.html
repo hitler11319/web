@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=" utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>聊天室基本應用(有些功能還未健全)</title>
+    <!--<link href="../../../MyTemplates/css/bootstrap.min.css" rel="stylesheet" />-->
+    <link href="../../../MyTemplates/css/admin.css" rel="stylesheet" />
+    <!--如果變更了 路徑 => 請記得 admin.css裡的 fa-xxxx都要改路徑喔  用ctrl+G找第5行 font-awesome.min.css 這裡面-->
+    <!--裡面就函有 bootstrap.min.css 的內容了，所以不用再載入-->
+    <!--已將admin.css裡面的分段好了，依照txt的部份就可以自由將不想要的部份給註解掉-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+</head>
+
+<body>
+    <!--和MyTemplate一樣，是一個列表清單。而按下去右下角會出現 對話框-->
+                    <ul>
+                        <li class="chat-users top-menu-invisible">
+                            <!--這邊是要引用 admin.js smartChat.js-->
+                            <!--按下去後，右下角會有聊天室視窗  因為 data-html="true" 這個 -->
+                            <!--data-chat-status="busy" 控制 他前面的 顏色 在線、忙……等-->
+                            <!--data-chat-alertshow 暫且不知道是幹麼的-->
+                            <!-- rel="popover-hover"代表滑過事件 => data-content 是他所要呈現的資料  -->
+                            <div class="display-users">
+                                <dl>
+                                    <dt>
+                                        <a href="#" class="usr" data-chat-id="cha1" data-chat-fname="王" data-chat-lname="大明" data-chat-status="busy" data-chat-alertmsg="Sadi Orlaf is in a meeting."
+                                            data-chat-alertshow="true" rel="popover-hover" data-placement="right" data-html="true"
+                                            data-content="
+												<div class='usr-card'>
+													<img src='../../../MyTemplates/img/avatars/5.png' alt='王大明'>
+													<div class='usr-card-content'>
+														<h3>王大明</h3>
+														<p>Marketing Executive</p>
+													</div>
+												</div>
+											">
+                                            <i></i>王大明
+                                        </a>
+                                    </dt>
+                                    <dt>
+                                        <a href="#" class="usr" data-chat-id="cha2" data-chat-fname="王" data-chat-lname="小明" data-chat-status="online" data-chat-alertmsg=""
+                                            data-chat-alertshow="false" rel="popover-hover" data-placement="right" data-html="true"
+                                            data-content="
+												<div class='usr-card'>
+                                                    <img src='../../../MyTemplates/img/avatars/1.png' alt='王小明'>
+													<div class='usr-card-content'>
+														<h3>王小明</h3>
+														<p>Sales Administrator</p>
+													</div>
+												</div>
+											">
+                                            <i></i>王小明
+                                        </a>
+                                    </dt>
+                                    <dt>
+                                        <a href="#" class="usr" data-chat-id="cha3" data-chat-fname="王" data-chat-lname="中明" data-chat-status="online"
+                                            rel="popover-hover" data-placement="right" data-html="true" data-content="
+												<div class='usr-card'>
+                                                    <img src='../../../MyTemplates/img/avatars/3.png' alt='王中明'>
+													<div class='usr-card-content'>
+														<h3>王中明</h3>
+														<p>Sales Admin</p>
+													</div>
+												</div>
+											">
+                                            <i></i>王中明
+                                        </a>
+                                    </dt>
+                                    <dt>
+                                        <a href="#" class="usr" data-chat-id="cha4" data-chat-fname="王" data-chat-lname="大大明" data-chat-status="away"
+                                            rel="popover-hover" data-placement="right" data-html="true" data-content="
+												<div class='usr-card'>
+                                                    <img src='../../../MyTemplates/img/avatars/4.png' alt='王大大明'>
+													<div class='usr-card-content'>
+														<h3>王大大明</h3>
+														<p>Sales Director</p>
+													</div>
+												</div>
+											">
+                                            <i></i>王大大明
+                                        </a>
+                                    </dt>
+                                    <dt>
+                                        <a href="#" class="usr offline" data-chat-id="cha5" data-chat-fname="王" data-chat-lname="小小明" data-chat-status="incognito"
+                                            rel="popover-hover" data-placement="right" data-html="true" data-content="
+												<div class='usr-card'>
+                                                    <img src='../../../MyTemplates/img/avatars/female.png' alt='王小小明'>
+													<div class='usr-card-content'>
+														<h3>王小小明</h3>
+														<p>Support Admin <small><i class='fa fa-music'></i> Playing Beethoven Classics</small></p>
+													</div>
+												</div>
+											">
+                                            <i></i>王小小明 (offline)
+                                        </a>
+                                    </dt>
+                                    <dt>
+                                        <a href="#" class="usr offline" data-chat-id="cha6" data-chat-fname="王" data-chat-lname="中中明" data-chat-status="incognito"
+                                            rel="popover-hover" data-placement="right" data-html="true" data-content="
+												<div class='usr-card'>
+                                                    <img src='../../../MyTemplates/img/avatars/male.png' alt='王中中明'>
+													<div class='usr-card-content'>
+														<h3>王中中明</h3>
+														<p>Sales Director</p>
+													</div>
+												</div>
+											">
+                                            <i></i>王中中明 (offline)
+                                        </a>
+                                    </dt>
+                                </dl>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+
+
+
+            <!--要加入這個 上面的header 才會有 收合、關閉……等功能(詳請看ToDoList那裡的)-->
+            <!--要載入admin.js-->
+            <!--聊天室 範例 -->
+            <section id="widget-grid" class="">
+            <div class="row">
+
+                    <article class="col-sm-12 col-md-12 col-lg-6">
+        
+                        <!-- new widget -->
+                        <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1" data-widget-editbutton="false" data-widget-fullscreenbutton="false">
+        
+            <header role="heading">
+
+                    <!--主內容-->
+                    <span class="widget-icon"> <i class="fa fa-comments txt-color-white"></i> </span>
+                    <h2> 聊天室</h2>
+                    <div class="widget-toolbar">
+                        <!-- add: non-hidden - to disable auto hide -->
+
+                        <div class="btn-group">
+                            <button class="btn dropdown-toggle btn-xs btn-success" data-toggle="dropdown" id="status">
+                                狀態 <i class="fa fa-caret-down"></i>
+                            </button>
+                            <ul class="dropdown-menu pull-right js-status-update">
+                                <li>
+                                    <a href="javascript:changeStatus('在線(Online)', 'green');"><i class="fa fa-circle txt-color-green"></i> 在線(Online)</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:changeStatus('忙錄(Busy)', 'red');"><i class="fa fa-circle txt-color-red"></i> 忙錄(Busy)</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:changeStatus('暫離(Away)', 'orange');"><i class="fa fa-circle txt-color-orange"></i> 暫離(Away)</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="javascript:changeStatus('未上線(Log Off)', 'gray');"><i class="fa fa-power-off"></i> 未上線(Log Off)</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- widget div-->
+                <div>
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <div>
+                            <label>標題:</label>
+                            <input type="text" />
+                        </div>
+                    </div>
+                    <!-- end widget edit box -->
+
+                    <!--上線狀態(可以選人)-->
+                    <div class="widget-body widget-hide-overflow no-padding">
+                        <div id="chat-container">
+                            <span class="chat-list-open-close"><i class="fa fa-user"></i><b>!</b></span>
+
+                            <div class="chat-list-body custom-scroll">
+                                <ul id="chat-users">
+                                    <li>
+                                        <a href="javascript:void(0);"><img src="../../../MyTemplates/img/avatars/5.png" alt="">Robin Berry <span class="badge badge-inverse">23</span><span class="state"><i class="fa fa-circle txt-color-green pull-right"></i></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);"><img src="../../../MyTemplates/img/avatars/male.png" alt="">Mark Zeukartech <span class="state"><i class="last-online pull-right">2hrs</i></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);"><img src="../../../MyTemplates/img/avatars/1.png" alt="">Belmain Dolson <span class="state"><i class="last-online pull-right">45m</i></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);"><img src="../../../MyTemplates/img/avatars/4.png" alt="">Sadi Orlaf <span class="state"><i class="fa fa-circle txt-color-green pull-right"></i></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);"><img src="../../../MyTemplates/img/avatars/3.png" alt="">Markus <span class="state"><i class="last-online pull-right">2m</i></span> </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);"><img src="../../../MyTemplates/img/avatars/sunny.png" alt="">Sunny <span class="state"><i class="last-online pull-right">2m</i></span> </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="chat-list-footer">
+                                <div class="control-group">
+                                    <form class="smart-form">
+                                        <section>
+                                            <label class="input">
+                                                <input type="text" id="filter-chat-list" placeholder="Filter">
+                                            </label>
+                                        </section>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 聊天 Body (CHAT BODY) -->
+                        <div id="chat-body" class="chat-body custom-scroll">
+                            <ul id="chatBody">
+                                <li class="message">
+                                    <img src="../../../MyTemplates/img/avatars/5.png" class="online" alt="">
+                                    <div class="message-text">
+                                        <time>
+                                            2019-01-13
+                                        </time> <a href="javascript:void(0);" class="username">Sadi Orlaf</a>嘿，你有沒有見過新的董事會成員？如果你問我，他有點......無論如何，這裡是你要求的報告。我要和Lisa和Andrew一起推出，你想加入嗎？
+                                        <p class="chat-file row">
+                                            <b class="pull-left col-sm-6"> <!--<i class="fa fa-spinner fa-spin"></i>--> <i class="fa fa-file"></i> 附件.xls </b>
+                                            <span class="col-sm-6 pull-right"> <a href="javascript:void(0);" class="btn btn-xs btn-default">取消</a> <a href="javascript:void(0);" class="btn btn-xs btn-success">儲存</a> </span>
+                                        </p>
+                                        <p class="chat-file row">
+                                            <b class="pull-left col-sm-6"> <i class="fa fa-ok txt-color-green"></i> 文件.doc </b>
+                                            <span class="col-sm-6 pull-right"> <a href="javascript:void(0);" class="btn btn-xs btn-primary">開啟</a> </span>
+                                        </p>
+                                    </div>
+                                </li>
+                                <li class="message">
+                                    <img src="../../../MyTemplates/img/avatars/sunny.png" class="online" alt="">
+                                    <div class="message-text">
+                                        <time>
+                                            2019-01-13
+                                        </time> <a href="javascript:void(0);" class="username">John Doe</a>哈哈！是的，我知道你的意思。謝謝你的文件 Sadi! <i class="fa fa-smile-o txt-color-orange"></i>
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                        <!--聊天 CHAT FOOTER -->
+                        <div class="chat-footer">
+
+                            <!-- 寫訊息的地方 CHAT TEXTAREA -->
+                            <div class="textarea-div">
+
+                                <div class="typearea">
+                                    <textarea placeholder="寫下你的想法吧" id="textarea-expand" class="custom-scroll" onkeypress="IsEnter(event);" onkeyup="AfterEnter(event);"></textarea>
+                                </div>
+
+                            </div>
+
+                            <!-- 送出 CHAT REPLY/SEND -->
+                            <span class="textarea-controls">
+                                <button class="btn btn-sm btn-primary pull-right" onclick="Send();">
+                                    送出
+                                </button> <span class="pull-right smart-form" style="margin-top: 3px; margin-right: 10px;">
+                                    <label class="checkbox pull-right">
+                                        <input type="checkbox" name="subscription" id="subscription">
+                                        <i></i>輸入<strong> ENTER </strong>就送出
+                                    </label>
+                                </span> <a href="javascript:void(0);" class="pull-left"><i class="fa fa-camera fa-fw fa-lg"></i></a>
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </article>
+            </div>
+        </section>
+
+
+    <script src="../../../MyTemplates/js/admin.js"></script>
+
+    <!--admin.js 裡面就函有 bootstrap.min.js 的內容了，所以不用再載入-->
+    <!--admin.js 和 下方這些多個整合在一起的js 之後再一起整理了-->
+
+
+    <!--基於以上部份，所以 admin.js 要用到的其他js的部份， 就要放的比他下面。不然會爆錯-->
+    <script data-pace-options='{ "restartOnRequestAfter": true }' src="../../../MyTemplates/js/plugin/pace/pace.min.js"></script>
+
+    <!--聊天室功能-->
+    <script src="../../../MyTemplates/js/smartChat.js"></script>
+
+    <!--聊天室功能-->
+    <script src="../../../MyTemplates/js/smartwidgets/jarvis.widget.min.js"></script>
+
+
+    <!--載入完 以上後，加上下面這些-->
+    <!-- DO NOT REMOVE : GLOBAL FUNCTIONS! -->
+    <script>
+        $(document).ready(function () {
+            pageSetUp();
+            drawBreadCrumb();
+        });
+    </script>
+
+    <script>
+        //聊天室用到的
+        /*
+             * CHAT
+             */
+             $(document).ready(function () {
+
+            $.filter_input = $('#filter-chat-list');
+            $.chat_users_container = $('#chat-container > .chat-list-body')
+            $.chat_users = $('#chat-users')
+            $.chat_list_btn = $('#chat-container > .chat-list-open-close');
+            $.chat_body = $('#chat-body');
+
+            /*
+            * LIST FILTER (CHAT)
+            */
+
+            // custom css expression for a case-insensitive contains()
+            jQuery.expr[':'].Contains = function (a, i, m) {
+                return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+            };
+
+            function listFilter(list) {// header is any element, list is an unordered list
+                // create and add the filter form to the header
+
+                $.filter_input.change(function () {
+                    var filter = $(this).val();
+                    if (filter) {
+                        // this finds all links in a list that contain the input,
+                        // and hide the ones not containing the input while showing the ones that do
+                        $.chat_users.find("a:not(:Contains(" + filter + "))").parent().slideUp();
+                        $.chat_users.find("a:Contains(" + filter + ")").parent().slideDown();
+                    } else {
+                        $.chat_users.find("li").slideDown();
+                    }
+                    return false;
+                }).keyup(function () {
+                    // fire the above change event after every letter
+                    $(this).change();
+
+                });
+
+            }
+
+            // on dom ready
+            listFilter($.chat_users);
+
+            // open chat list
+            $.chat_list_btn.click(function () {
+                $(this).parent('#chat-container').toggleClass('open');
+            })
+
+            $.chat_body.animate({
+                scrollTop: $.chat_body[0].scrollHeight
+            }, 500);
+
+});
+
+
+    </script>
+
+    <script>
+        //我自己擴充的
+        //送出
+        function Send(){
+            var originalData = $('#chatBody').html();
+
+            var newData = "<li class='message'>" +
+                                    "<img src='../../../MyTemplates/img/avatars/sunny.png' class='online' alt=''>" +
+                                    "<div class='message-text'>" +
+                                    "<time>" + "剛剛" + "</time>" +
+                                    "<a href='javascript:void(0);' class='username'>John Doe</a>" + $('#textarea-expand').val() +
+                                    "</div></li>";
+
+            var result = originalData + newData;
+
+            $('#chatBody').html(result);
+            $('#textarea-expand').val("");
+        }
+
+        //判斷 如果有勾選 "輸入Enter就送出" + 他所輸入的是Enter =>Send()
+        function IsEnter(event){
+            var x = event.which || event.keyCode;
+
+            //輸入Enter
+            if(x == 13){
+                //而且有勾選 "輸入Enter就送出"
+                if(document.getElementById('subscription').checked){
+                    Send();
+                }
+            }
+        }
+
+        //上面的函式會先執行，故 如果輸入Enter後 會變成 TextArea會多出一個斷行。故要拿掉
+        function AfterEnter(event){
+            var x = event.which || event.keyCode;
+
+            //輸入Enter
+            if(x == 13){
+                //而且有勾選 "輸入Enter就送出"
+                if(document.getElementById('subscription').checked){
+                    $('#textarea-expand').val("");
+                }
+            }
+        }
+
+        //變更狀態(在線、離線、忙……)
+        function changeStatus(showText, color){
+            $('#status').html(showText + " <i class='fa fa-caret-down'></i>");
+            document.getElementById('status').style.backgroundColor = color;
+        }
+    </script>
+
+</body>
+
+</html>
