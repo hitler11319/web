@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>TGOS MAP API for Web 套疊圖片影像檔</title>
+    <script type="text/javascript" src="https://api.tgos.tw/TGOS_API/tgos?ver=2&AppID=yourID&APIKey=yourkey" charset="utf-8"></script>
+    <!--下載後請將yourID及yourkey取代為您申請所取得的APPID及APIKEY方能正確顯示服務-->
+    <script type="text/javascript">
+        var pMap = null;
+
+        //襖使化圖
+        function InitWnd() {
+            var pOMap = document.getElementById("TGMap");
+            pMap = new TGOS.TGOnlineMap(pOMap, TGOS.TGCoordSys.EPSG3857);
+            pMap.setCenter(new TGOS.TGPoint(121, 25));
+            pMap.setZoom(8);
+        }
+
+        var GOL = new TGOS.TGGroundOverlay();  //新增一個TGGroundOverlay物件
+        var image = new TGOS.TGImage();  //新增一個TGImage物件, 準備將此影像疊加
+
+        function SetImage() {
+            var url = document.getElementById('textbox').value;  //設定影像來源位址(網圵)
+            image.setUrl(url);
+            GOL.setImage(image);
+            GOL.setBounds(new TGOS.TGEnvelope(121, 25, 122 , 24)); 
+            //以TGEnvelope物件定義套疊影像的範圍(用一個正方形來呈現圖的範圍)
+            //這邊只輸入2個座標 => 分別為 左上 + 右下 的座標點 
+            //左上經度, 左上緯度, 右下經度, 右下緯度
+            GOL.setOpacity(0.8);  //設定套疊影像的透明度
+            GOL.setMap(pMap);  //設定要套疊影像的地圖
+        }
+
+        function opacity() {
+            var opa = Number(document.getElementById("opabox").value);
+            GOL.setOpacity(opa);
+        }
+    </script>
+</head>
+
+<body style="margin: 0px" onload="InitWnd();">
+    <div id="TGMap" style="width: 600px; height:400px; border:1px solid #C0C0C0;">
+    </div>
+    <input type="text" id="textbox" size="10" value="https://api.tgos.tw/TGOS_API/images/taipeichungshan.png" />
+    <input type="button" value="套疊圖片影像" onclick="SetImage();" />
+    </br>
+    <input type="text" id="opabox" size="10" value="0.8" />
+    <input type="button" value="設定透明度" onclick="opacity();" /> 請輸入0~1之數值(不包含0和1)
+</body>
+
+</html>
