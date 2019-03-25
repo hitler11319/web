@@ -47,6 +47,7 @@
 
             var doc = new jsPDF();
             //目標是body內的
+            //當然也可以放document.GetElementById => 但好像不能用Jquery，都只能用document開頭的
             html2canvas(document.body, {
                 useCORS: true
             }).then(function (canvas) {
