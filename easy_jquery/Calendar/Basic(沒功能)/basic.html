@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>基本行事曆 (只能看，沒有功能)</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="jquery-ui-1.10.4.custom.min.css">
+<link rel="stylesheet" href="font-awesome.min.css">
+<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+<!--<link rel="stylesheet" href="jquery-ui.css">-->
+<link rel="stylesheet" href="fullcalendar.css">
+<link rel="stylesheet" href="fullcalendar.print.css">
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="fullcalendar.min.js"></script>
+
+<!--html to PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.1/jspdf.debug.js"></script>
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+<script src="html2pdf.js"></script>
+<script src="html2canvas.js"></script>
+
+</head>
+<body>
+
+<div class="page-content">
+    <div style="height: 670px;width:100%;" class="row">
+        <div class="col-lg-12">
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="row">                 
+                        <div class="col-lg-12">
+                            <button id="btn_pdf" class="btn btn-sm btn-info"><i class="fa fa-2x fa-file-pdf-o"></i></button>
+                            <button id="btn_print" class="btn btn-sm btn-info" onclick=" window.print();"><i class="fa fa-2x fa-print"></i></button>
+                            <hr />
+                            <div id="calendar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //建立 只能看的行事曆
+    //這邊可以移去寫成一包JS包使用
+
+    $(function () {
+    $(document).ready(function() {
+
+        /* initialize the external events
+         -----------------------------------------------------------------*/
+
+        var eventDrag = function(el){
+            // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+            // it doesn't need to have a start or end
+            var eventObject = {
+                title: $.trim(el.text()) // use the element's text as the event title
+            };
+
+            // store the Event Object in the DOM element so we can get to it later
+            el.data('eventObject', eventObject);
+
+            // make the event draggable using jQuery UI
+            el.draggable({
+                zIndex: 999,
+                revert: true,      // will cause the event to go back to its
+                revertDuration: 0  //  original position after the drag
+            });
+        }
+
+        $('#external-events div.external-event').each(function() {
+            eventDrag($(this));
+        });
+
+
+        /* initialize the calendar
+         -----------------------------------------------------------------*/
+
+        $('#calendar').fullCalendar({
+            //上面的按鈕文字
+            buttonText: {
+                today: '今天',
+                month: '月視圖',
+                week: '周視圖',
+                day: '日視圖'
+            },
+            allDayText: "全天",
+            timeFormat: 'HH:mm',
+            axisFormat: 'HH:mm',
+            currentTimezone: 'Asia/Taiwan',  
+            weekMode: "variable",
+            //columnFormat: {
+            //    month: 'dddd',
+            //    week: 'dddd M-d',
+            //    day: 'dddd M-d'
+            //},
+            //上表的標題，依據是 月視、周視、日視 而變化的格式
+            titleFormat: {
+                month: 'yyyy年 MMMM月',
+                week: "[yyyy年] MMMM月d日 { '&#8212;' [yyyy年] MMMM月d日}",
+                day: 'yyyy年 MMMM月d日 dddd'
+            },
+            monthNames: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+            firstDay: 1,
+            //預設一開始進來是哪種視圖
+            defaultView:'month',
+            theme:true,
+            weekends:true, //show week(要秀假日嗎)
+            dayNames: ["星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
+            header: {
+                //左邊(前一月、下一段、今天)
+                left: 'prev,next, today',
+                //中間(標題)
+                center: 'title',
+                //右邊(視圖選擇)
+                right: 'month,agendaWeek,agendaDay'
+            },
+            //裡面網圵記得改(這邊不實作)
+            // events: 'home/CalenderDayOff/', //事件数据源 
+            //events:
+                // your event source
+                //{
+                //url: 'CalendarDayOff',
+                    //type: 'POST',
+                    //data: {
+                    //    custom_param1: 'something',
+                    //    custom_param2: 'somethingelse'
+                    //}, 
+                    //success: function (doc) {
+                        //console.log(doc);                    
+                    //},     
+                  
+                    //error: function () {
+                        //alert('有小錯誤');
+                    //},
+                    //editable: true,
+                    //color: 'lightblue',   // a non-ajax option
+                    //textColor: 'black' // a non-ajax option
+                //},
+          
+            handleWindowResize:false,
+            editable: true,
+            droppable: true, // this allows things to be dropped onto the calendar !!!
+            drop: function(date, allDay) { // this function is called when something is dropped
+
+                // retrieve the dropped element's stored Event Object
+                var originalEventObject = $(this).data('eventObject');
+
+                // we need to copy it, so that multiple events don't have a reference to the same object
+                var copiedEventObject = $.extend({}, originalEventObject);
+
+                // assign it the date that was reported
+                copiedEventObject.start = date;
+                copiedEventObject.allDay = allDay;
+
+                // render the event on the calendar
+                // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+                $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+                // is the "remove after drop" checkbox checked?
+                if ($('#drop-remove').is(':checked')) {
+                    // if so, remove the element from the "Draggable Events" list
+                    $(this).remove();
+                }
+
+            },
+            dayClick: function (date, allDay, jsEvent, view) {
+                console.log(date);
+                var selDate = $.fullCalendar.formatDate(date, 'yyyy-MM-dd');//格式化日期 
+                console.log(selDate);
+                //$.fancybox({//调用fancybox弹出层 
+                //    'type': 'ajax',
+                //    'href': 'event.php?action=add&date=' + selDate
+                //}); 
+                }
+        });
+
+        var addEvent = function (name) {
+            name = name.length == 0 ? "Untitled Event" : name;
+            var html = $('<div class="external-event label label-default">' + name + '</div>');
+            $('#event-box').append(html);
+            eventDrag(html);
+        }
+
+        $('#event-add').on('click', function () {
+            var name = $('#event-name').val();
+            addEvent(name);
+        });
+
+    });
+
+  //  $("td.fc-header-left").append('<span id="btn_pdf" class="cal-button"><input type="hidden"id= "zz_pdf" value= "" />' + AEFC.translate("Pdf") + '</span > ');
+
+
+    //變成PDF
+    $("#btn_pdf").click(function () {
+
+        var doc = new jsPDF();
+
+        //#AEFC is my div for FullCalendar
+        html2canvas(document.getElementById('calendar'), {
+            useCORS: true
+        }).then(function (canvas) {
+                var imgData = canvas.toDataURL("image/jpeg");
+                doc.addImage(imgData, 'JPEG', 15, 40, 180, 160);
+                doc.save("Calendar.pdf");
+            }).catch(function(err){console.log(err);})           
+        });
+    }); // $("#AE_btn_pdf").click(function ()
+
+    $(".page-content").css("padding-bottom", "120px");
+
+   
+   //下載
+    function download(strData, strFileName, strMimeType) {
+        var D = document,
+            A = arguments,
+            a = D.createElement("a"),
+            d = A[0],
+            n = A[1],
+            t = A[2] || "text/plain";
+
+        //build download link:
+        a.href = "data:" + strMimeType + "," + escape(strData);
+
+        if (window.MSBlobBuilder) {
+            var bb = new MSBlobBuilder();
+            bb.append(strData);
+            return navigator.msSaveBlob(bb, strFileName);
+        } /* end if(window.MSBlobBuilder) */
+
+        if ('download' in a) {
+            a.setAttribute("download", n);
+            a.innerHTML = "downloading...";
+            D.body.appendChild(a);
+            setTimeout(function () {
+                var e = D.createEvent("MouseEvents");
+                e.initMouseEvent("click", true, false, window, 0, 0, 0, 0, 0, false, false,
+                    false, false, 0, null);
+                a.dispatchEvent(e);
+                D.body.removeChild(a);
+            }, 66);
+            return true;
+        } /* end if('download' in a) */
+
+        //do iframe dataURL download:
+        var f = D.createElement("iframe");
+        D.body.appendChild(f);
+        f.src = "data:" + (A[2] ? A[2] : "application/octet-stream") + (window.btoa ? ";base64"
+            : "") + "," + (window.btoa ? window.btoa : escape)(strData);
+        setTimeout(function () {
+            D.body.removeChild(f);
+        }, 333);
+        return true;
+    } /* end download() */
+</script>
+
+
+</body>
+</html>
