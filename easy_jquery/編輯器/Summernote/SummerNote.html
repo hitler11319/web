@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=" utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Summer Note 簡單應用</title>
+    <!--<link href="../../MyTemplates/css/bootstrap.min.css" rel="stylesheet" />-->
+    <link href="../../../../MyTemplates/css/admin.css" rel="stylesheet" />
+    <!--如果變更了 路徑 => 請記得 admin.css裡的 fa-xxxx都要改路徑喔-->
+    <!--裡面就函有 bootstrap.min.css 的內容了，所以不用再載入-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+</head>
+
+<body>
+
+
+        <!--
+            輸入Html語法 變成 網頁內容
+
+            => 按下 上方工具列中的 </> 鈕 即可觸發
+        -->
+
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+
+        <div class="row">
+
+            <article class="col-sm-12 col-md-12 col-lg-12">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-blue" id="wid-id-0" data-widget-editbutton="false" data-widget-fullscreenbutton="false">
+                    <!-- widget options:
+                    usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                    data-widget-colorbutton="false"
+                    data-widget-editbutton="false"
+                    data-widget-togglebutton="false"
+                    data-widget-deletebutton="false"
+                    data-widget-fullscreenbutton="false"
+                    data-widget-custombutton="false"
+                    data-widget-collapsed="true"
+                    data-widget-sortable="false"
+
+                    -->
+                    <header>
+                        <span class="widget-icon">
+                            <i class="fa fa-pencil"></i>
+                        </span>
+                        <h2>Summernote (Lightweight)</h2>
+
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- 這裡是工貝列出現的地方 -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <!--主要出現編輯器的地方-->
+                            <div class="summernote" id="summernote"></div>
+
+                            <!--編輯器下方的Footer-->
+                            <div class="widget-footer smart-form">
+
+                                <div class="btn-group">
+
+                                    <button class="btn btn-sm btn-primary" type="button" onclick="Cancel('summernote', 180, false, 2);">
+                                        <i class="fa fa-times"></i> 取消
+                                    </button>
+
+                                </div>
+
+                                <div class="btn-group">
+
+                                        <button class="btn btn-sm btn-info" type="button" onclick="Edit('summernote', 180, 2);">
+                                            <i class="fa fa-check"></i> 編輯
+                                        </button>
+    
+                                    </div>
+
+                                <div class="btn-group">
+
+                                    <button class="btn btn-sm btn-success" type="button" onclick="Save('summernote');">
+                                        <i class="fa fa-check"></i> 儲存
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget well" id="wid-id-1">
+                    <!-- widget options:
+                    usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                    data-widget-colorbutton="false"
+                    data-widget-editbutton="false"
+                    data-widget-togglebutton="false"
+                    data-widget-deletebutton="false"
+                    data-widget-fullscreenbutton="false"
+                    data-widget-custombutton="false"
+                    data-widget-collapsed="true"
+                    data-widget-sortable="false"
+
+                    -->
+                    <header>
+                        <span class="widget-icon">
+                            <i class="fa fa-pencil"></i>
+                        </span>
+                        <h2>範例 </h2>
+
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body">
+
+                            <h3>Summernote 範例</h3>
+                            <p>
+                                <button id="edit" class="btn btn-primary" onclick="Edit('click2edit', 60, 0);" type="button">編輯</button>
+                                <button id="save" class="btn btn-primary" onclick="Save('click2edit');" type="button">儲存</button>
+                            </p>
+
+                            <p></p>
+
+                            <div class="click2edit" id="click2edit">
+                                <!--很特殊喔 <pre>  和 <code> 標籤-->
+                                <pre><code class="javascript">var edit = function() { $('.click2edit').summernote() };</code></pre>
+                            </div>
+
+                            <h5>文件:</h5>
+                            <p class="alert alert-info">
+                                Full API for Summernote.js, including keybored shortcuts, PHP Examples, Django installation, and Rails (gem) integration
+                                can be found
+                                <a href="http://hackerwins.github.io/summernote/features.html#api">here</a>
+                            </p>
+                        </div>
+                        <!-- end widget content -->
+                        <!-- end widget div -->
+                    </div>
+
+                </div>
+                <!-- end widget -->
+
+            </article>
+            <!-- WIDGET END -->
+
+        </div>
+        <!-- end row -->
+
+    </section>
+    <!-- end widget grid -->
+
+
+    <!--
+        如上面所說，用data-action擊結函式的部份，那admin就要最後載入，放最下面的部份。
+        不然吃不到函式
+        但其實也是可以自己寫函式即可。(寫在這一頁中)
+    -->
+
+    <script src="../../../../MyTemplates/js/admin.js"></script>
+
+    <!--admin.js 裡面就函有 bootstrap.min.js 的內容了，所以不用再載入-->
+
+
+    <!--基於以上部份，所以 admin.js 要用到的其他js的部份， 就要放的比他下面。不然會爆錯-->
+    <script data-pace-options='{ "restartOnRequestAfter": true }' src="../../../../MyTemplates/js/plugin/pace/pace.min.js"></script>
+
+    <!--SummerNote-->
+    <script src="../../../../MyTemplates/js/plugin/summernote/summernote.min.js"></script>
+
+
+
+    <!--載入完 以上後，加上下面這些-->
+    <!-- DO NOT REMOVE : GLOBAL FUNCTIONS! -->
+    <script>
+        $(document).ready(function () {
+            pageSetUp();
+            drawBreadCrumb();
+        });
+    </script>
+
+
+    <script>
+        //初使化SummerNote ，或者不初使化 直接用 如果 第143行-146行 (第二個例子)
+        function InitSummerNote(id, height, isFocus, tabSize) {
+
+            $('#' + id.toString()).summernote({
+                height: height,
+                focus: isFocus,
+                tabsize: tabSize
+            });
+        }
+    </script>
+
+
+    <script>
+            //SummerNote相關 ，有些是我擴充的
+
+            //儲存
+            function Save(id) {
+                var aHTML = $('#' + id.toString()).code();  //save Html
+                $('#' + id.toString()).destroy();
+            }
+
+            //編輯
+            function Edit(id, height, tabSize) {
+                $('#' + id.toString()).summernote({
+                    focus: true,
+                    height: height,
+                    tabsize: tabSize
+                });
+            }
+
+            //取消(即內容不見)
+            function Cancel(id) {
+                $('#' + id.toString()).html("");
+
+                //執行 初使化
+                InitSummerNote(id, 180, false, 2);
+            }
+    </script>
+
+    <script>
+        //執行 初使化
+        InitSummerNote('summernote', 180, false, 2);
+    </script>
+
+
+</body>
+
+</html>
