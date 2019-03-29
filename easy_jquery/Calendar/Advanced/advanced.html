@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=" utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>行事曆 進階版</title>
+    <!--<link href="../../../../MyTemplates/css/bootstrap.min.css" rel="stylesheet" />-->
+    <link href="../../../../MyTemplates/css/admin.css" rel="stylesheet" />
+    <!--如果變更了 路徑 => 請記得 admin.css裡的 fa-xxxx都要改路徑喔-->
+    <!--裡面就函有 bootstrap.min.css 的內容了，所以不用再載入-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+    <!--html to PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.1/jspdf.debug.js"></script>
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+    <script src="../Basic(沒功能)/html2pdf.js"></script>
+    <script src="../Basic(沒功能)/html2canvas.js"></script>
+
+
+    <!--datePicker相關-->
+    <link href="../../css/jquery-ui-timepicker-addon.min.css" rel="stylesheet" />
+
+
+  </head>
+
+  <body>
+    <div id="content">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-3">
+          <!-- new widget -->
+          <div class="jarviswidget jarviswidget-color-blueDark">
+            <header>
+              <h2>加入事件</h2>
+            </header>
+
+            <div>
+              <div class="widget-body">
+                <form id="add-event-form">
+                  <fieldset>
+                    <div class="form-group">
+                      <label>選擇事件圖示</label>
+                      <div
+                        class="btn-group btn-group-sm btn-group-justified"
+                        data-toggle="buttons"
+                      >
+                        <label class="btn btn-default active">
+                          <input
+                            type="radio"
+                            name="iconselect"
+                            id="icon-1"
+                            value="fa-info"
+                            checked
+                          />
+                          <i class="fa fa-info text-muted"></i>
+                        </label>
+                        <label class="btn btn-default">
+                          <input
+                            type="radio"
+                            name="iconselect"
+                            id="icon-2"
+                            value="fa-warning"
+                          />
+                          <i class="fa fa-warning text-muted"></i>
+                        </label>
+                        <label class="btn btn-default">
+                          <input
+                            type="radio"
+                            name="iconselect"
+                            id="icon-3"
+                            value="fa-check"
+                          />
+                          <i class="fa fa-check text-muted"></i>
+                        </label>
+                        <label class="btn btn-default">
+                          <input
+                            type="radio"
+                            name="iconselect"
+                            id="icon-4"
+                            value="fa-user"
+                          />
+                          <i class="fa fa-user text-muted"></i>
+                        </label>
+                        <label class="btn btn-default">
+                          <input
+                            type="radio"
+                            name="iconselect"
+                            id="icon-5"
+                            value="fa-lock"
+                          />
+                          <i class="fa fa-lock text-muted"></i>
+                        </label>
+                        <label class="btn btn-default">
+                          <input
+                            type="radio"
+                            name="iconselect"
+                            id="icon-6"
+                            value="fa-clock-o"
+                          />
+                          <i class="fa fa-clock-o text-muted"></i>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>事件標題</label>
+                      <input
+                        class="form-control"
+                        id="title"
+                        name="title"
+                        maxlength="40"
+                        type="text"
+                        placeholder="事件標題"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>事件描述</label>
+                      <textarea
+                        class="form-control"
+                        placeholder="事件描述"
+                        rows="3"
+                        maxlength="40"
+                        id="description"
+                      ></textarea>
+                      <p class="note">事件描述最多40個字元</p>
+                    </div>
+
+                    <div class="form-group">
+                      <p style="color:red;">
+                        要直接加上行事曆上的才要填開始、結束時間
+                      </p>
+                    </div>
+
+                    <div class="form-group">
+                      <label>開始時間</label>
+                      <input
+                        size="20"
+                        type="text"
+                        class="form-control form_datetime"
+                        id="applyStartDate"
+                        onchange="checkApplyStrDate()"
+                        readonly
+                      />
+                      <span id="applyStrDate" style="color: red"
+                        >點擊輸入框即可選擇時間</span
+                      >
+                    </div>
+
+                    <div class="form-group">
+                      <label>結束時間</label>
+                      <input
+                        size="20"
+                        type="text"
+                        class="form-control form_datetime"
+                        id="applyendDate"
+                        onchange="checkApplyEndDate()"
+                        readonly
+                      />
+                      <span id="applyEndDate" style="color: red"
+                        >點擊輸入框即可選擇時間</span
+                      >
+                    </div>
+
+                    <div class="form-group">
+                      <label>選擇事件顏色</label>
+                      <div
+                        class="btn-group btn-group-justified btn-select-tick"
+                        data-toggle="buttons"
+                      >
+                        <label class="btn bg-color-darken active">
+                          <input
+                            type="radio"
+                            name="priority"
+                            id="option1"
+                            value="bg-color-darken txt-color-white"
+                            checked
+                          />
+                          <i class="fa fa-check txt-color-white"></i>
+                        </label>
+                        <label class="btn bg-color-blue">
+                          <input
+                            type="radio"
+                            name="priority"
+                            id="option2"
+                            value="bg-color-blue txt-color-white"
+                          />
+                          <i class="fa fa-check txt-color-white"></i>
+                        </label>
+                        <label class="btn bg-color-orange">
+                          <input
+                            type="radio"
+                            name="priority"
+                            id="option3"
+                            value="bg-color-orange txt-color-white"
+                          />
+                          <i class="fa fa-check txt-color-white"></i>
+                        </label>
+                        <label class="btn bg-color-greenLight">
+                          <input
+                            type="radio"
+                            name="priority"
+                            id="option4"
+                            value="bg-color-greenLight txt-color-white"
+                          />
+                          <i class="fa fa-check txt-color-white"></i>
+                        </label>
+                        <label class="btn bg-color-blueLight">
+                          <input
+                            type="radio"
+                            name="priority"
+                            id="option5"
+                            value="bg-color-blueLight txt-color-white"
+                          />
+                          <i class="fa fa-check txt-color-white"></i>
+                        </label>
+                        <label class="btn bg-color-red">
+                          <input
+                            type="radio"
+                            name="priority"
+                            id="option6"
+                            value="bg-color-red txt-color-white"
+                          />
+                          <i class="fa fa-check txt-color-white"></i>
+                        </label>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <div class="form-actions">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <button
+                          class="btn btn-success"
+                          type="button"
+                          id="add-event"
+                        >
+                          加入事件至下方框(不用輸入日期，一次一天)
+                        </button>
+
+                        <br><hr>
+
+                        <button
+                          class="btn btn-info"
+                          type="button"
+                          onclick="AddEventToCalendar();"
+                        >
+                          加入事件至行事曆(要輸入日期，可連續天)
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+                <!-- end content -->
+              </div>
+            </div>
+            <!-- end widget div -->
+          </div>
+          <!-- end widget -->
+
+          <div class="well well-sm" id="event-container">
+            <form>
+              <fieldset>
+                <legend>
+                  事件搬移
+                </legend>
+                <ul id="external-events" class="list-unstyled">
+                  <li>
+                    <span
+                      class="bg-color-darken txt-color-white"
+                      data-description="Currently busy"
+                      data-icon="fa-time"
+                      >辦公室會議</span
+                    >
+                  </li>
+                  <li>
+                    <span
+                      class="bg-color-blue txt-color-white"
+                      data-description="No Description"
+                      data-icon="fa-pie"
+                      >午休</span
+                    >
+                  </li>
+                  <li>
+                    <span
+                      class="bg-color-red txt-color-white"
+                      data-description="Urgent Tasks"
+                      data-icon="fa-alert"
+                      >緊急</span
+                    >
+                  </li>
+                </ul>
+                <div class="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      id="drop-remove"
+                      class="checkbox style-0"
+                      checked="checked"
+                    />
+                    <span>搬完即刪除？</span>
+                  </label>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+
+          <!--操作按鈕-->
+          <div class="well well-sm" id="event-container">
+            <legend>
+              操作
+            </legend>
+            <button class="btn btn-info" onclick="Print();">列印</button>
+            <button class="btn btn-success" id="btn_pdf" onclick="PrintPDF();">
+              轉成PDF
+            </button>
+            <button class="btn btn-warning" id="reset" onclick="ReSet();">
+              回到預設行事曆
+            </button>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-9">
+          <!-- new widget -->
+          <div class="jarviswidget jarviswidget-color-blueDark">
+            <!-- widget options:
+                            usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+            
+                            data-widget-colorbutton="false"
+                            data-widget-editbutton="false"
+                            data-widget-togglebutton="false"
+                            data-widget-deletebutton="false"
+                            data-widget-fullscreenbutton="false"
+                            data-widget-custombutton="false"
+                            data-widget-collapsed="true"
+                            data-widget-sortable="false"
+            
+                            -->
+            <header>
+              <span class="widget-icon">
+                <i class="fa fa-calendar"></i>
+              </span>
+              <h2>我的行事曆</h2>
+              <div class="widget-toolbar">
+                <!-- add: non-hidden - to disable auto hide -->
+                <div class="btn-group">
+                  <button
+                    class="btn dropdown-toggle btn-xs btn-default"
+                    data-toggle="dropdown"
+                  >
+                    月視圖
+                    <i class="fa fa-caret-down"></i>
+                  </button>
+                  <ul class="dropdown-menu js-status-update pull-right">
+                    <li>
+                      <a href="javascript:void(0);" id="mt">月視圖</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0);" id="ag">周視圖</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0);" id="td">今天</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </header>
+
+            <!-- widget div-->
+            <div>
+              <div class="widget-body no-padding">
+                <!-- content goes here -->
+                <div class="widget-body-toolbar" id="beforeCalendar">
+                  <div id="calendar-buttons">
+                    <div class="btn-group">
+                      <a
+                        href="javascript:void(0)"
+                        class="btn btn-default btn-xs"
+                        id="btn-prev"
+                      >
+                        <i class="fa fa-chevron-left"></i>
+                      </a>
+                      <a
+                        href="javascript:void(0)"
+                        class="btn btn-default btn-xs"
+                        id="btn-next"
+                      >
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div id="calendar"></div>
+                <!-- end content -->
+              </div>
+            </div>
+            <!-- end widget div -->
+          </div>
+          <!-- end widget -->
+        </div>
+      </div>
+    </div>
+
+    <!--
+        如上面所說，用data-action擊結函式的部份，那admin就要最後載入，放最下面的部份。
+        不然吃不到函式
+        但其實也是可以自己寫函式即可。(寫在這一頁中)
+    -->
+
+    <script src="../../../../MyTemplates/js/admin.js"></script>
+
+    <!--admin.js 裡面就函有 bootstrap.min.js 的內容了，所以不用再載入-->
+
+    <!--基於以上部份，所以 admin.js 要用到的其他js的部份， 就要放的比他下面。不然會爆錯-->
+
+    <!--行事曆功能-->
+    <script src="../../../../MyTemplates/js/full-calendar.js"></script>
+
+    <!--datePicker相關-->
+    <script src="../../js/jquery-ui.js"></script>
+    <script src="../../js/datepicker-zh-TW.js"></script>
+    <script src="../../js/jquery-ui-timepicker-addon.min.js"></script>
+    <script src="../../js/jquery-ui-timepicker-zh-TW.js"></script>
+
+
+    <!--載入完 以上後，加上下面這些-->
+    <!-- DO NOT REMOVE : GLOBAL FUNCTIONS! -->
+    <script>
+      $(document).ready(function() {
+        pageSetUp();
+        drawBreadCrumb();
+      });
+    </script>
+
+    <script>
+      //相關變數
+
+      var calEventList = new Array(); //行事曆的eventList(要取值也可以從這邊得到，所以不怕Post出去後得不到)
+
+      //年月日
+      var date = new Date();
+      var d = date.getDate();
+      var m = date.getMonth();
+      var y = date.getFullYear();
+
+      //設定行事曆的相關配置
+      var hdr = {
+        left: "title", //左邊 ： 標題
+        center: "month,agendaWeek,agendaDay", //中間： 月視、週視、月視
+        right: "prev,today,next" //右邊： 前一個、今天、下一個
+      };
+
+      //當前視圖
+      var currentView = "month";
+
+      //當前的id號碼(用來綁定事件的)
+      var currentId = 7;
+
+      /*
+        注意事項：
+        1.要取值可以直接拿calEventList的資料
+        2.因為一次只能一天，所以記得自己要先統整好 (可以有 一個Event 橫跨幾天的)
+        3.日期都是Date()，如要轉字串請自己用 date.getDate()  date.getMonth() data.getFullYear() 來取
+      */
+    </script>
+
+    <script>
+      //我自己擴充的
+      //加入刪除鈕
+      function SetRemoveBtn() {
+        //有這inner的就是在 大行事曆中 的各個事件
+        $(".fc-event-inner").map(function(index, ele) {
+          //把所有的事件都加上 刪除鈕
+          var btnHtml =
+            "<br><span onclick='RemoveEvent(this);' style='color:red;'>刪除</span>";
+
+          if (
+            $(ele)
+              .html()
+              .indexOf("刪除") < 0
+          ) {
+            $(ele).html($(ele).html() + btnHtml);
+          }
+        });
+      }
+
+      //將資料 塞入 事件列表中
+      function initEvent() {
+        //可以寫成迴圈，但這邊的資料是原先的 。所以才寫死
+        calEventList.push({
+          id: 0,
+          title: "All Day Event",
+          start: new Date(y, m, 1),
+          description: "long description",
+          className: ["event", "bg-color-greenLight"],
+          icon: "fa-check"
+        });
+
+        calEventList.push({
+          id: 1,
+          title: "Long Event",
+          start: new Date(y, m, d - 5),
+          end: new Date(y, m, d - 3),
+          className: ["event", "bg-color-red"],
+          icon: "fa-lock"
+        });
+
+        calEventList.push({
+          id: 2,
+          title: "Repeating Event",
+          start: new Date(y, m, d - 3, 16, 0),
+          allDay: false,
+          className: ["event", "bg-color-blue"],
+          icon: "fa-clock-o"
+        });
+
+        calEventList.push({
+          id: 3,
+          title: "Meeting",
+          start: new Date(y, m, d, 10, 30),
+          allDay: false,
+          className: ["event", "bg-color-darken"]
+        });
+
+        calEventList.push({
+          id: 4,
+          title: "Lunch",
+          start: new Date(y, m, d, 12, 0),
+          end: new Date(y, m, d, 14, 0),
+          allDay: false,
+          className: ["event", "bg-color-darken"]
+        });
+
+        calEventList.push({
+          id: 5,
+          title: "Birthday Party",
+          start: new Date(y, m, d + 1, 19, 0),
+          end: new Date(y, m, d + 1, 22, 30),
+          allDay: false,
+          className: ["event", "bg-color-darken"]
+        });
+
+        calEventList.push({
+          id: 6,
+          title: "Smartadmin Open Day",
+          start: new Date(y, m, 28),
+          end: new Date(y, m, 29),
+          className: ["event", "bg-color-darken"]
+        });
+      }
+
+      //初使化行事曆
+      function InitCalendar() {
+        //不先砍掉再重建的話，直接重設還是會拿回預設的EventList => 所以才會這麼做
+        //先砍掉
+        $("#calendar").remove();
+
+        //再重建
+        $("#beforeCalendar").after("<div id='calendar'></div>");
+
+        //再重設一次(拿新的參數值)
+        $("#calendar").fullCalendar({
+          //設定Header
+          header: hdr,
+          //設定button文字(所以可以放<i>)
+          buttonText: {
+            prev: '<i class="fa fa-chevron-left"></i>',
+            next: '<i class="fa fa-chevron-right"></i>'
+          },
+          defaultView: currentView, //預設視圖
+          editable: true, //允許修改
+          droppable: true, // 允許搬移
+
+          //初使化事件，一開始就在行事曆上的
+          //如果之後是從資料庫來，就在這邊把值填上
+          //用 initEvent() 可以設定
+          events: calEventList,
+
+          //搬移的動作
+          drop: function(date, allDay) {
+            // this function is called when something is dropped
+
+            // retrieve the dropped element's stored Event Object
+            var originalEventObject = $(this).data("eventObject");
+
+            // we need to copy it, so that multiple events don't have a reference to the same object
+            var copiedEventObject = $.extend({}, originalEventObject);
+
+            // assign it the date that was reported
+            copiedEventObject.start = new Date(date);
+            copiedEventObject.allDay = allDay;
+            copiedEventObject.id = currentId;
+
+            // 將事件中的redner出來
+            // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+            $("#calendar").fullCalendar("renderEvent", copiedEventObject, true);
+
+            //加入至 事件陣列中
+            AddEventToList(copiedEventObject);
+
+            //是否選後即刪除
+            // is the "選後即刪除" checkbox checked?
+            if ($("#drop-remove").is(":checked")) {
+              // if so, remove the element from the "Draggable Events" list
+              $(this).remove();
+            }
+
+            //加入刪除鈕
+            SetRemoveBtn();
+          },
+
+          //事件搬移時觸發 (這邊會得到的是 和原本start的日期差)
+          eventDrop: function(event, dateDiff) {
+            //這邊event.start取到的都很怪 => 所以交給update來處理
+
+            UpdateStartTime(event, dateDiff);
+          },
+
+          //選擇
+          select: function(start, end, allDay) {
+            var title = prompt("Event Title:");
+            if (title) {
+              var newObj = {
+                id: currentId,
+                title: title,
+                start: start,
+                end: end,
+                allDay: allDay
+              };
+
+              $("#calendar").fullCalendar("renderEvent", newObj, true);
+
+              AddEventToList(newObj);
+            }
+            calendar.fullCalendar("unselect");
+
+            //加入刪除鈕
+            SetRemoveBtn();
+          },
+
+          //按下 空白 的日期欄
+          dayClick: function(date, event, view) {
+            var title = prompt("事件標題:");
+            if (title) {
+              var description = prompt("事件描述");
+
+              var newObj = {
+                id: currentId,
+                title: title,
+                start: date,
+                description: description,
+                end: date,
+                allDay: true
+              };
+
+              $("#calendar").fullCalendar("renderEvent", newObj, true);
+
+              AddEventToList(newObj);
+            }
+          },
+
+          //事件按下去
+          eventClick: function(event, element, view) {
+            console.log(event);
+            console.log(element);
+          },
+
+          //移動原本的，會觸發的事件
+          //還有一開始建置時會觸發
+          eventRender: function(event, element, icon) {
+            if (!event.description == "") {
+              element
+                .find(".fc-event-title")
+                .append(
+                  "<br/><span class='ultra-light'>" +
+                    event.description +
+                    "</span>"
+                );
+            }
+            if (!event.icon == "") {
+              element
+                .find(".fc-event-title")
+                .append(
+                  "<i class='air air-top-right fa " + event.icon + " '></i>"
+                );
+            }
+
+            if (event.id >= 0) {
+              element
+                .find(".fc-event-title")
+                .append(
+                  "<br/><span class='fc-event-id' style='display:none;'>" +
+                    event.id +
+                    "</span>"
+                );
+            }
+
+            //加入刪除鈕
+            SetRemoveBtn();
+          },
+
+          //視窗放大縮小
+          windowResize: function(event, ui) {
+            $("#calendar").fullCalendar("render");
+
+            //加入刪除鈕
+            SetRemoveBtn();
+          }
+        });
+
+        /* 隱藏預設按鈕 */
+        $(".fc-header-right, .fc-header-center").hide();
+
+        //前一個
+        $("#calendar-buttons #btn-prev").click(function() {
+          $(".fc-button-prev").click();
+
+          //加入刪除鈕
+          SetRemoveBtn();
+          return false;
+        });
+
+        //下一個
+        $("#calendar-buttons #btn-next").click(function() {
+          $(".fc-button-next").click();
+
+          //加入刪除鈕
+          SetRemoveBtn();
+          return false;
+        });
+
+        //今天
+        $("#calendar-buttons #btn-today").click(function() {
+          $(".fc-button-today").click();
+
+          //加入刪除鈕
+          SetRemoveBtn();
+          return false;
+        });
+
+        //月視
+        $("#mt").click(function() {
+          $("#calendar").fullCalendar("changeView", "month");
+
+          currentView = "month";
+
+          //加入刪除鈕
+          SetRemoveBtn();
+        });
+
+        //週視
+        $("#ag").click(function() {
+          $("#calendar").fullCalendar("changeView", "agendaWeek");
+
+          currentView = "agendaWeek";
+
+          //加入刪除鈕
+          SetRemoveBtn();
+        });
+
+        //日視
+        $("#td").click(function() {
+          $("#calendar").fullCalendar("changeView", "agendaDay");
+
+          currentView = "agendaDay";
+
+          //加入刪除鈕
+          SetRemoveBtn();
+        });
+
+        //加入刪除鈕
+        SetRemoveBtn();
+      }
+
+      //加入事件
+      function AddEventToList(event) {
+        calEventList.push(event);
+
+        currentId += 1;
+
+        InitCalendar();
+      }
+
+      //刪除事件
+      function RemoveEventFromList(id) {
+        for (var i = 0; i < calEventList.length; i++) {
+          if (calEventList[i].id == id) {
+            //從第i個位置 拿掉1個
+            calEventList.splice(i, 1);
+          }
+        }
+
+        InitCalendar();
+      }
+
+      //按下刪除按鈕後，觸發的事件
+      function RemoveEvent(ele) {
+        //用id來刪
+        var id = $(ele)
+          .parent()
+          .find(".fc-event-id")
+          .html();
+
+        //刪除框框
+        $(ele)
+          .parent()
+          .parent()
+          .remove();
+
+        //從陣列中刪除
+        RemoveEventFromList(id);
+      }
+
+      //移動在行事曆上的，更新時間
+      function UpdateStartTime(event, dateDiff) {
+        //更新StartTime => 因為除了一個預設的Long Event是2天外，其餘都是一天
+        //而且這裡的功能多是For 一天的，所以多天的就不考慮了
+
+        var dayDiff = dateDiff._days;
+        var secondDiff = dateDiff._milliseconds;
+
+        for (var i = 0; i < calEventList.length; i++) {
+          if (calEventList[i].id == event.id) {
+            var s = calEventList[i].start;
+            s.setDate(s.getDate() + dayDiff); //天數 (用setDate這種的原值d也會跟著變)
+            s.setTime(s.getTime() + secondDiff); //秒數
+            calEventList[i].start = s;
+
+            //如果他有end
+            if (calEventList[i].end) {
+              var e = calEventList[i].end;
+              e.setDate(e.getDate() + dayDiff); //天數 (用setDate這種的原值d也會跟著變)
+              e.setTime(e.getTime() + secondDiff); //秒數
+              calEventList[i].start = s;
+            }
+          }
+        }
+
+        InitCalendar();
+      }
+    
+      
+      //按下按鈕，直接加入至行事曆中(支援連續多天)
+      function AddEventToCalendar(){
+        var title = $("#title").val(),
+          priority = $("input:radio[name=priority]:checked").val(),
+          description = $("#description").val(),
+          icon = $("input:radio[name=iconselect]:checked").val(),
+          start = $('#applyStartDate').val(),
+          end = $('#applyendDate').val();
+
+          var alertText = "";
+          if(title == ""){alertText += "你沒輸入標題 \n ";}
+          if(start == ""){alertText += "你沒輸入開始時間 \n ";}
+          if(end == ""){alertText += "你沒輸入結束時間 \n ";}
+
+          if(alertText != ""){
+            alert(alertText);
+            return false;
+          }else{
+            var event = {
+              id: currentId,
+              title: title,
+              description: description,
+              start: new Date(start),
+              end: new Date(end),
+              className: ["event", priority.length === 0 ? "label label-default" : priority],
+              icon: icon.length === 0 ? " " : icon
+            };
+
+            AddEventToList(event);
+          }
+      }
+
+    </script>
+
+    <script>
+      /*  行事曆相關功能 js */
+
+      //將 事件列表放入，因為這邊是寫死的
+      //所以才看起來很長。但如果從資料庫得到的就可以改寫
+      initEvent();
+
+      //初使化搬移
+      var initDrag = function(e) {
+        // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+        // it doesn't need to have a start or end
+
+        var eventObject = {
+          id: currentId,
+          title: $.trim(e.children().text()), // use the element's text as the event title
+          description: $.trim(e.children("span").attr("data-description")),
+          icon: $.trim(e.children("span").attr("data-icon")),
+          className: $.trim(e.children("span").attr("class")) // use the element's children as the event class
+        };
+        // store the Event Object in the DOM element so we can get to it later
+        e.data("eventObject", eventObject);
+
+        // make the event draggable using jQuery UI
+        e.draggable({
+          zIndex: 999,
+          revert: true, // will cause the event to go back to its
+          revertDuration: 0 //  original position after the drag
+        });
+      };
+
+      //加入事件  那隻的動作(會產生出一個框框)
+      var addEvent = function(title, priority, description, icon) {
+        title = title.length === 0 ? "Untitled Event" : title;
+        description = description.length === 0 ? "No Description" : description;
+        icon = icon.length === 0 ? " " : icon;
+        priority = priority.length === 0 ? "label label-default" : priority;
+
+        var html = $(
+          '<li><span class="' +
+            priority +
+            '" data-description="' +
+            description +
+            '" data-icon="' +
+            icon +
+            '">' +
+            title +
+            "</span>" +
+            "</li>"
+        )
+          .prependTo("ul#external-events")
+          .hide()
+          .fadeIn();
+
+        $("#event-container").effect("highlight", 800);
+
+        //初使化搬移
+        initDrag(html);
+      };
+
+      /* 初使化額外事件
+             -----------------------------------------------------------------*/
+
+      $("#external-events > li").each(function() {
+        //初化化搬移
+        initDrag($(this));
+      });
+
+      //加入事件
+      $("#add-event").click(function() {
+        //一些標題、圖非取值
+        var title = $("#title").val(),
+          priority = $("input:radio[name=priority]:checked").val(),
+          description = $("#description").val(),
+          icon = $("input:radio[name=iconselect]:checked").val();
+
+        //產生出 框框
+        addEvent(title, priority, description, icon);
+      });
+
+      /* 初使化 the calendar
+             -----------------------------------------------------------------*/
+      InitCalendar();
+    </script>
+
+    <script>
+      //自己加入的 => 操作按鈕的部份
+
+      //變成PDF
+      function PrintPDF() {
+        var doc = new jsPDF();
+
+        //#AEFC is my div for FullCalendar
+        html2canvas(document.getElementById("calendar"), {
+          useCORS: true
+        })
+          .then(function(canvas) {
+            var imgData = canvas.toDataURL("image/jpeg");
+            doc.addImage(imgData, "JPEG", 15, 40, 240, 200);
+            doc.save("Calendar.pdf");
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+      }
+
+      //列印
+      function Print() {
+        var h_value = document.head.innerHTML;
+        var value = $("#calendar").html();
+        var printPage = window.open("", "Printing...", "");
+        printPage.document.open();
+        printPage.document.write("<HTML><head>");
+        printPage.document.write(h_value);
+        printPage.document.write(
+          "</head><BODY onload='window.print();window.close();return false;'>"
+        );
+        printPage.document.write(value);
+        printPage.document.close("</BODY></HTML>");
+      }
+
+      //回到預設
+      function ReSet() {
+        calEventList = new Array();
+        initEvent();
+        InitCalendar();
+      }
+    </script>
+
+    <!--dateTimePicker設定-->
+    <script>
+      //設定格式
+      $(".form_datetime").datetimepicker({ format: "yyyy-mm-dd hh:ii" });
+
+      //加入清除按鈕
+      $(function() {
+        //wrap up the redraw function with our new shiz
+        var dpFunc = $.datepicker._generateHTML; //record the original
+        $.datepicker._generateHTML = function(inst) {
+          var thishtml = $(dpFunc.call($.datepicker, inst)); //call the original
+
+          thishtml = $("<div />").append(thishtml); //add a wrapper div for jQuery context
+
+          //這邊的.ui-datepicker-calendar可以自行調整，去開啟後按F12再往下面看 會有個 datepicker的html標籤，去裡面看結構
+          //可自行改按鈕的位置
+          $(".ui-datepicker-calendar", thishtml).after(
+            $(
+              '<button class="\
+     ui-datepicker-clear ui-state-default ui-priority-primary ui-corner-all\
+     "\>Clear</button>'
+            ).click(function() {
+              inst.input.val("");
+              inst.input.datepicker("hide");
+            })
+          );
+
+          thishtml = thishtml.children(); //remove the wrapper div
+
+          return thishtml; //assume okay to return a jQuery
+        };
+      });
+    </script>
+
+    <!--dateTimePicker相關函式-->
+    <script type="text/javascript">
+      function checkApplyStrDate() {
+        var value = $("#applyStartDate").val();
+        if (!value) {
+          document.getElementById("applyStrDate").innerText = "欄位不得為空";
+        } else {
+          document.getElementById("applyStrDate").innerText = "";
+          //datepicker和datetimepicker後來要新增參數或修改參數可以這樣子寫
+          //這邊是當你輸入開始時間時，結束時間就會去把比開始時間小的日期全設成不能按（以下皆是這樣的原理）
+          $("#applyendDate").datepicker(
+            "option",
+            "minDate",
+            $("#applyStartDate").val()
+          );
+        }
+        return document.getElementById("applyStrDate").innerText;
+      }
+
+      function checkApplyEndDate() {
+        var value = $("#applyendDate").val();
+        if (!value) {
+          document.getElementById("applyEndDate").innerText = "欄位不得為空";
+        } else {
+          document.getElementById("applyEndDate").innerText = "";
+          $("#applyStartDate").datepicker(
+            "option",
+            "maxDate",
+            $("#applyendDate").val()
+          );
+        }
+        return document.getElementById("applyEndDate").innerText;
+      }
+    </script>
+  </body>
+</html>
