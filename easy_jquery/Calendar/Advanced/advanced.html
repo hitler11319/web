@@ -716,63 +716,6 @@
         /* 隱藏預設按鈕 */
         $(".fc-header-right, .fc-header-center").hide();
 
-        //前一個
-        $("#calendar-buttons #btn-prev").click(function() {
-          $(".fc-button-prev").click();
-
-          //加入刪除鈕
-          SetRemoveBtn();
-          return false;
-        });
-
-        //下一個
-        $("#calendar-buttons #btn-next").click(function() {
-          $(".fc-button-next").click();
-
-          //加入刪除鈕
-          SetRemoveBtn();
-          return false;
-        });
-
-        //今天
-        $("#calendar-buttons #btn-today").click(function() {
-          $(".fc-button-today").click();
-
-          //加入刪除鈕
-          SetRemoveBtn();
-          return false;
-        });
-
-        //月視
-        $("#mt").click(function() {
-          $("#calendar").fullCalendar("changeView", "month");
-
-          currentView = "month";
-
-          //加入刪除鈕
-          SetRemoveBtn();
-        });
-
-        //週視
-        $("#ag").click(function() {
-          $("#calendar").fullCalendar("changeView", "agendaWeek");
-
-          currentView = "agendaWeek";
-
-          //加入刪除鈕
-          SetRemoveBtn();
-        });
-
-        //日視
-        $("#td").click(function() {
-          $("#calendar").fullCalendar("changeView", "agendaDay");
-
-          currentView = "agendaDay";
-
-          //加入刪除鈕
-          SetRemoveBtn();
-        });
-
         //加入刪除鈕
         SetRemoveBtn();
       }
@@ -961,6 +904,68 @@
       /* 初使化 the calendar
              -----------------------------------------------------------------*/
       InitCalendar();
+
+
+      //下面這些的不用放在InitCalendar中，是因為他們在 <div id="calendar"></div> 的上面
+      //所以不會被重刷行事曆給影響到 => 不必再宣告一次
+
+      //前一個
+      $("#calendar-buttons #btn-prev").click(function() {
+          $(".fc-button-prev").click();
+
+          //加入刪除鈕
+          SetRemoveBtn();
+          return false;
+        });
+
+        //下一個
+        $("#calendar-buttons #btn-next").click(function() {
+          $(".fc-button-next").click();
+
+          //加入刪除鈕
+          SetRemoveBtn();
+          return false;
+        });
+
+        //今天
+        $("#calendar-buttons #btn-today").click(function() {
+          $(".fc-button-today").click();
+
+          //加入刪除鈕
+          SetRemoveBtn();
+          return false;
+        });
+
+        //月視
+        $("#mt").click(function() {
+          $("#calendar").fullCalendar("changeView", "month");
+
+          currentView = "month";
+
+          //加入刪除鈕
+          SetRemoveBtn();
+        });
+
+        //週視
+        $("#ag").click(function() {
+          $("#calendar").fullCalendar("changeView", "agendaWeek");
+
+          currentView = "agendaWeek";
+
+          //加入刪除鈕
+          SetRemoveBtn();
+        });
+
+        //日視
+        $("#td").click(function() {
+          $("#calendar").fullCalendar("changeView", "agendaDay");
+
+          currentView = "agendaDay";
+
+          //加入刪除鈕
+          SetRemoveBtn();
+        });
+
     </script>
 
     <script>
