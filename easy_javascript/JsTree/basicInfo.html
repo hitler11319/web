@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
-<head>
-
-<!--記得使用style.css和style.min.css時，旁邊要有3張圖（因為css寫的路徑就是旁邊）-->
-<!--分別為32px.png 40px.png throbber.gif-->
+  <head>
+    <!--記得使用style.css和style.min.css時，旁邊要有3張圖（因為css寫的路徑就是旁邊）-->
+    <!--分別為32px.png 40px.png throbber.gif-->
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/style.min.css" />
@@ -18,113 +17,130 @@
     <!--要引用的類型，請記得去載入js-->
     <script src="js/jstree.checkbox.js"></script>
     <script src="js/jstree.wholerow.js"></script>
+    <script src="js/jstree.search.js"></script>
+  </head>
+  <body>
+    <!--參考網址：https://www.jstree.com/ -->
 
-</head>
-<body>
-
-<!--參考網址：https://www.jstree.com/ -->
-
-  <div id="jstree1" class="demo">
-    <ul>
-      <li>根節點1
-        <ul>
-            <!--設定狀態：被選擇著-->
-          <li data-jstree='{ "selected" : true }'><a href="#"><em>一開始就</em> <strong>被選擇著</strong></a></li>
-          <!--設定圖示-->
-          <li data-jstree='{ "icon" : "image/tree-icon.png" }'>自定義圖標</li>
-            <!--設定一開始就被開啟著-->
-          <li data-jstree='{ "opened" : true }'>一開始就開啟
-              <!--內容-->
-            <ul>
-              <li>另一個節點</li>
-            </ul>
-          </li>
-          <!--使用class的風格，設定圖示-->
-          <li data-jstree='{ "icon" : "glyphicon glyphicon-leaf" }'>自訂義圖標類（bootstrap中設定的）</li>
-        </ul>
-      </li>
-
-      <!--第2個節點-->
-      <li><a href="basicInfo.html" id="root2">根節點2</a></li>
-
-      <!--第3個節點-->
-      <li class="jstree-closed">根節點3
+    <div id="jstree1" class="demo">
+      <ul>
+        <li>
+          根節點1
           <ul>
-              <li>3-1</li>
+            <!--設定狀態：被選擇著-->
+            <li data-jstree='{ "selected" : true }'>
+              <a href="#"><em>一開始就</em> <strong>被選擇著</strong></a>
+            </li>
+            <!--設定圖示-->
+            <li data-jstree='{ "icon" : "image/tree-icon.png" }'>自定義圖標</li>
+            <!--設定一開始就被開啟著-->
+            <li data-jstree='{ "opened" : true }'>
+              一開始就開啟
+              <!--內容-->
+              <ul>
+                <li>另一個節點</li>
+              </ul>
+            </li>
+            <!--使用class的風格，設定圖示-->
+            <li data-jstree='{ "icon" : "glyphicon glyphicon-leaf" }'>
+              自訂義圖標類（bootstrap中設定的）
+            </li>
           </ul>
-      </li>
-    </ul>
-  </div>
+        </li>
 
-  <br>
+        <!--第2個節點-->
+        <li><a href="basicInfo.html" id="root2">根節點2</a></li>
 
-  <!--空的，因為要在下面建-->
-  <div id="jstree2" class="demo"></div>
+        <!--第3個節點-->
+        <li class="jstree-closed">
+          根節點3
+          <ul>
+            <li>3-1</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
 
-  <button type="button">把根節點1中id=root2的勾選起來</button>
+    <br />
 
-  <script>
-  $(function () {
-      //把上面id為jstree1的建立起來 (  .jstree()  就是創建)
-    $('#jstree1').jstree();
+    <!--空的，因為要在下面建-->
+    <div id="jstree2" class="demo"></div>
 
-    //把上面id為jstree2的依照下面的產生出來
-    //'plugins':["wholerow","checkbox"]加入複選checkbox
-    //core為 核心的部份，其中的參數data就是產生的東西
-    //要使用plugins的類型，記得去載入js喔
-    $('#jstree2').jstree({ 'plugins':["wholerow","checkbox"], 'core' : {
-      'data' : [
-        {
-            //第一個節點
-          "text" : "相同但有複選框",
-          //節點內容
-          "children" : [
-              //狀態一開始 是被選擇的
-            { "text" : "一開始就被勾選著", "state" : { "selected" : true }, "id" : "child_1" },
-            //圖示
-            { "text" : "自定義圖標", "icon" : "image/tree-icon.png" },
-            //一開始就是開著的，且有個children
-            { "text" : "一開始就開啟著", "state" : { "opened" : true }, "children" : [ "另一個節點", "第2個節點" ] },
-            //使用class的風格，設定圖示
-            { "text" : "自訂義圖標類（bootstrap中設定的）", "icon" : "glyphicon glyphicon-leaf" },
+    <button type="button">把根節點1中id=root2的勾選起來</button>
 
-            //disabled
-            { "text" : "Disabled的", "state" : { "disabled" : true }},
+    <script>
+      $(function() {
+        //把上面id為jstree1的建立起來 (  .jstree()  就是創建)
+        $("#jstree1").jstree();
 
-            //有icon、又有被選
-            {
-				"text" : "有icon，又有被選",
-				"state" : { "selected" : true },
-				"icon" : "jstree-file"
-			}
-          ]
-        },
-        //第二個節點
-        "其他wholerow選擇"
-      ]
-    }});
-  });
-  </script>
+        //把上面id為jstree2的依照下面的產生出來
+        //'plugins':["wholerow","checkbox"]加入複選checkbox
+        //core為 核心的部份，其中的參數data就是產生的東西
+        //要使用plugins的類型，記得去載入js喔
+        $("#jstree2").jstree({
+          plugins: ["wholerow", "checkbox"],
+          core: {
+            data: [
+              {
+                //第一個節點
+                text: "相同但有複選框",
+                //節點內容
+                children: [
+                  //狀態一開始 是被選擇的
+                  {
+                    text: "一開始就被勾選著",
+                    state: { selected: true },
+                    id: "child_1"
+                  },
+                  //圖示
+                  { text: "自定義圖標", icon: "image/tree-icon.png" },
+                  //一開始就是開著的，且有個children
+                  {
+                    text: "一開始就開啟著",
+                    state: { opened: true },
+                    children: ["另一個節點", "第2個節點"]
+                  },
+                  //使用class的風格，設定圖示
+                  {
+                    text: "自訂義圖標類（bootstrap中設定的）",
+                    icon: "glyphicon glyphicon-leaf"
+                  },
 
+                  //disabled
+                  { text: "Disabled的", state: { disabled: true } },
 
-  <script>
-        //聽取事件
-        $('#jstree1').on("changed.jstree", function (e, data) {
-            console.log(data.selected);
+                  //有icon、又有被選
+                  {
+                    text: "有icon，又有被選",
+                    state: { selected: true },
+                    icon: "jstree-file"
+                  }
+                ]
+              },
+              //第二個節點
+              "其他wholerow選擇"
+            ]
+          }
         });
-  </script>
+      });
+    </script>
 
-  <script>
-      $('button').on('click', function () {
+    <script>
+      //聽取事件
+      $("#jstree1").on("changed.jstree", function(e, data) {
+        console.log(data.selected);
+      });
+    </script>
 
-        var jst = $('#jstree1').jstree(true);
+    <script>
+      $("button").on("click", function() {
+        var jst = $("#jstree1").jstree(true);
 
-        
         //先把全部都取消選擇
         jst.deselect_all();
 
         //第一個節點中id=root2的勾選起來
-        jst.select_node('root2');
+        jst.select_node("root2");
 
         /*
         下面這幾個都是同樣的效果（也可以不取消全部，沒關系的）
@@ -134,10 +150,10 @@
         $.jstree.reference('#jstree1').select_node('root2');
         
         */
-    });
-  </script>
+      });
+    </script>
 
-  <script>
+    <script>
       //Ajax的部份
 
       /*
@@ -165,9 +181,184 @@
       });
 
       */
-</script>
+    </script>
 
-</div>
+    <!--上以是基本款-->
 
-</body>
+    <br>
+    <br>
+
+    <!--有搜尋功能 + 儲存 -->
+    <ul style="list-style-type: none;">
+      <li>
+        <div class="input-icon right">
+          <i class="fa fa-search"></i>
+          <input
+            id="inputSearchMenu"
+            type="text"
+            value=""
+            placeholder="搜尋"
+            class="form-control input-sm mbm"
+          />
+        </div>
+
+        <br />
+      </li>
+
+      <li>
+        <span
+          onclick="AllOpen();"
+          style="cursor:pointer;"
+          class="btn btn-xs btn-info"
+        >
+          <i class="fa fa-expand"></i>展開全部
+        </span>
+        <span
+          onclick="AllClose();"
+          style="cursor:pointer;"
+          class="btn btn-xs btn-info"
+        >
+          <i class="fa fa-compress"></i>全部縮合
+        </span>
+      </li>
+
+      <li id="li_filterMenu">
+        <div id="myMenu">
+          <ul id="myMenu_ul">
+            <li id="m1_1">
+              <a href="#"
+                ><i class="fa fa-tag"></i
+                ><span class="menu-title">遊戲</span></a
+              >
+
+              <ul>
+                <li id="m2_2" pid="m1_1">
+                  <a href="#"><i class="fa fa-tag"></i><span>MOBA</span></a>
+                  <ul>
+                    <li id="m3_3" name="m3_3" pid="m2_2">LOL</li>
+                    <li id="m3_4" name="m3_4" pid="m2_2">DOTA2</li>
+                    <li id="m3_5" name="m3_5" pid="m2_2">爆雪英霸</li>
+                  </ul>
+                </li>
+                <li id="m2_6" pid="m1_1">
+                  <a href="#"><i class="fa fa-tag"></i><span>FPS</span></a>
+                  <ul>
+                    <li id="m3_7" name="m3_7" pid="m2_6">CS</li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
+            <li id="m1_8">
+              <a href="#"
+                ><i class="fa fa-tag"></i
+                ><span class="menu-title">電影</span></a
+              >
+              <ul>
+                <li id="m2_9" pid="m1_8">
+                  <a href="#"><i class="fa fa-tag"></i><span>文學</span></a>
+                </li>
+              </ul>
+            </li>
+
+            <li id="m1_10">
+              <a href="#"
+                ><i class="fa fa-tag"></i
+                ><span class="menu-title">小說</span></a
+              >
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+
+    <button type="button" onclick="Save();">按我顯示你所選的id值</button>
+
+    <script>
+      //相關動作
+
+      //建置樹
+      $("#myMenu").jstree({
+        core: {
+          themes: {
+            name: "default",
+            dots: false,
+            icons: true
+          }
+        },
+        plugins: ["search", "themes", "ui", "checkbox", "wholerow"]
+      });
+
+      //搜尋
+      var to = false;
+      $("#inputSearchMenu").keyup(function() {
+        if (to) {
+          clearTimeout(to);
+        }
+        to = setTimeout(function() {
+          var v = $("#inputSearchMenu").val();
+          $("#myMenu")
+            .jstree(true)
+            .search(v);
+        }, 200);
+      });
+
+      //全開
+      function AllOpen() {
+        $("#myMenu").jstree("open_all");
+      }
+
+      //全關
+      function AllClose() {
+        $("#myMenu").jstree("close_all");
+      }
+
+      //儲存成值
+      function Save(){
+        var m2coll = [];
+			  var m3coll = [];
+
+      //一定要先全開才行
+      $("#myMenu").jstree("open_all");
+
+      // $("#myMenu li")找所有的li
+			$("#myMenu li").each(function (i, element) { //also includes the ones below 'undetermined' parent
+        //如果有被選到(有aria-selected = true) ，再用 id 去判別他是屬於哪一個(第幾層)
+				if ($(this).attr("aria-selected") == "true" && $(this).attr("id").substring(0, 3) === 'm3_') {
+					m3coll.push($(this).attr('id').replace("m3_", ""));
+				}
+
+				if ($(this).attr("aria-selected") == "true" && $(this).attr("id").substring(0, 3) === 'm2_') {
+					m2coll.push($(this).attr('id').replace("m2_", ""));
+				}
+
+			});
+			console.log(m2coll.join(","));
+			console.log(m3coll.join(","));
+			alert("m2 = " + m2coll + "\n m3 = " + m3coll);
+      }
+
+
+      //給預設值
+      //也可用上面第二種的方式給預設值
+      var m2 = [6, 9];
+      var m3 = [7];
+
+      //m2的部份
+      for (var i = 0; i < m2.length; i++) {
+				var thisID = '#m2_' + m2[i];
+
+        //勾選起來
+				$('#myMenu').jstree("select_node", thisID, true);
+			}
+
+      //m3的部份
+      for (var i = 0; i < m3.length; i++) {
+				var thisID = '#m3_' + m3[i];
+
+        //勾選起來
+				$('#myMenu').jstree("select_node", thisID, true);
+			}
+    </script>
+  </body>
 </html>
