@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=" utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>DropZone 拖曳式 上傳檔案(還有許多要研究的)</title>
+    <!--<link href="../../../MyTemplates/css/bootstrap.min.css" rel="stylesheet" />-->
+    <link href="../../../MyTemplates/css/admin.css" rel="stylesheet" />
+    <!--如果變更了 路徑 => 請記得 admin.css裡的 fa-xxxx都要改路徑喔-->
+    <!--裡面就函有 bootstrap.min.css 的內容了，所以不用再載入-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+</head>
+
+<body>
+
+    <!-- 參考網圵： http://wxb.github.io/dropzonejs.com.zh-CN/dropzonezh-CN/ -->
+
+    <section id="widget-grid" class="">
+
+        <!-- row -->
+        <div class="row">
+
+            <!-- NEW WIDGET START -->
+            <article class="col-sm-12">
+
+                <p class="alert alert-warning">
+                    <i class="fa fa-warning fa-fw fa-lg"></i><strong>注意!</strong>
+                    您在上傳此演示時可能會收到錯誤消息。 一旦正確配置後端部分，錯誤將消退。
+                </p>
+                <p>
+                    <span class="label label-warning">
+                        瀏覽器需求
+                    </span> &nbsp; 這裝置所需的瀏覽器為 最新的 Chrome, Firefox, Safari, Opera &amp; Internet Explorer 10.
+                </p>
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-0" data-widget-editbutton="false">
+                    <!-- widget options:
+                    usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                    data-widget-colorbutton="false"
+                    data-widget-editbutton="false"
+                    data-widget-togglebutton="false"
+                    data-widget-deletebutton="false"
+                    data-widget-fullscreenbutton="false"
+                    data-widget-custombutton="false"
+                    data-widget-collapsed="true"
+                    data-widget-sortable="false"
+
+                    -->
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-cloud"></i> </span>
+                        <h2>My Dropzone! </h2>
+
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+
+                        </div>
+                        <div class="widget-body">
+
+                            <!--表單回傳-->
+                            <!--class要設為 dropzone 他才會幫你建置-->
+                            <form action="upload.php" class="dropzone" id="mydropzone" enctype="multipart/form-data"></form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </div>
+
+
+        <div class="row">
+
+            <div class="col-sm-12 col-md-12">
+                <div class="well">
+                    <h1>Dropzone 問題集</h1>
+                    <hr class="simple">
+                    <h3>在Create Dropzone時發生 "Dropzone already attached." 錯誤</h3>
+                    <p>
+                        這問題來自於 autoDiscover feature of Dropzone.
+                    </p>
+
+                    <p>
+                        當Dropzone啟動時，它會掃描整個文檔，並查找具有 <code>
+                            dropzone
+                        </code>
+                        該類的元素。然後，它會為找到的每個元素創建一個Dropzone實例。如果您以後自己創建一個Dropzone實例，您將創建第二個Dropzone，導致此錯誤。
+                    </p>
+
+                    <p>
+                        所以你可以:
+                    </p>
+
+                    <ol>
+                        <li>
+                            Turn off autoDiscover globally like this: <code>
+                                Dropzone.autoDiscover = false;
+                            </code>
+                            , or
+                        </li>
+                        <li>
+                            Turn off autoDiscover of specific elements like this: <code>
+                                Dropzone.options.myAwesomeDropzone = false;
+                            </code>
+                        </li>
+                    </ol>
+
+                    <blockquote>
+                        <p>
+                            在大多數情況下，您不必以編程方式創建Dropzone實例！建議啟用 <strong>autoDiscover</strong> ，並在配置 <code>init</code>選項中配置Dropzone
+                        </p>
+                    </blockquote>
+                    <br>
+
+                    <h3>為什麼大檔案無法上傳?</h3>
+                    <p>
+                        Dropzone中 有一個選項 <code>maxFileSize</code>，默認為 <code>256</code>
+                        (MB)。增加此值以上傳大於此值的文件。如果您的文件上傳正常但未存儲在服務器上，那麼這取決於您的服務器配置。大多數服務器也限製文件上載大小。請查看相應的文檔。
+                    </p>
+                    <br>
+
+                    <h3>How to get notified when all files finished uploading?</h3>
+                    <p>
+                        At the moment there isn't a single event to do that, but you can listen to the <code>
+                            complete
+                        </code>
+                        event, which fires every time a file completed uploading, and see if there are still files in the queue or being processed.
+                    </p>
+                    <br>
+
+                    <h3>為什麼某些檔案沒有出現縮圖?</h3>
+                    <p>
+                        Dropzone中 有一個選項 <code>maxThumbnailFilesize</code>，默認為 <code>10</code>
+                        (MB) ，以防止瀏覽器縮小太大的圖像。增加此項以創建更大文件的縮略圖。
+                    </p>
+                    <br>
+
+                    <h3>How to get notified when all files finished uploading?</h3>
+                    <p>
+                        At the moment there isn't a single event to do that, but you can listen to the <code>
+                            complete
+                        </code>
+                        event, which fires every time a file completed uploading, and see if there are still files in the queue or being processed.
+                    </p>
+                    <pre><span class="nx">Dropzone</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">myDrop</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="nx">init</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">"complete"</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">filesQueue</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">filesProcessing</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="c1">// File finished uploading, and there aren't any left in the queue.</span>
+                    <span class="p">}</span>
+                    <span class="p">});</span>
+                    <span class="p">}</span>
+<span class="p">};</span>
+</pre>
+                    <br>
+
+                    <h3>如何顯示服務器返回的錯誤？</h3>
+                    <p>
+                        通常，您必須在服務器上進行一些驗證，以檢查文件是否確實有效。如果您希望Dropzone顯示服務器上遇到的任何錯誤，您只需發送回適當的 <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4" target="_blank">HTTP status code</a> ，範圍為400 - 500。
+                    </p>
+                    <p>
+                        Dropzone將知道文件上傳無效，並將返回的文本顯示為錯誤消息。
+                    </p>
+                    <p>
+                        在大多數框架中，當您向客戶端發回錯誤時，會自動生成這些錯誤代碼。在PHP（例如）中，您可以使用<code>header</code>命令進行設置。
+                    </p>
+
+                    <br>
+
+                    <h3>How to add a button to remove each file preview?</h3>
+
+                    <p>
+                        Starting with Dropzone version 3.5.0, there is an option that will handle all this for you: <code>
+                            addRemoveLinks
+                        </code>
+                        . This will add an <code>
+                            &lt;a class="dz-remove"&gt;Remove file&lt;/a&gt;
+                        </code>
+                        element to the file preview that will remove the file, and it will change to <em>Cancel upload</em> if the file is currently being uploaded (this will trigger a confirmation dialog).
+                    </p>
+
+                    <p>
+                        You can change those sentences with the <code>
+                            dictRemoveFile
+                        </code>
+                        , <code>
+                            dictCancelUpload
+                        </code>
+                        and <code>
+                            dictCancelUploadConfirmation
+                        </code>
+                        options.
+                    </p>
+
+                    <p>
+                        If you still want to create the button yourself, you can do so like this:
+                    </p>
+                    <pre><span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"/target-url"</span> <span class="na">id=</span><span class="s">"my-dropzone"</span> <span class="na">class=</span><span class="s">"dropzone"</span><span class="nt">&gt;&lt;/form&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+                    <span class="c1">// myDropzone is the configuration for the element that has an id attribute</span>
+                    <span class="c1">// with the value my-dropzone (or myDropzone)</span>
+                    <span class="nx">Dropzone</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">myDropzone</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="nx">init</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">"addedfile"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="c1">// Create the remove button</span>
+                    <span class="kd">var</span> <span class="nx">removeButton</span> <span class="o">=</span> <span class="nx">Dropzone</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">"&lt;button&gt;Remove file&lt;/button&gt;"</span><span class="p">);</span>
+        
+                    <span class="c1">// Capture the Dropzone instance as closure.</span>
+                    <span class="kd">var</span> <span class="nx">_this</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+                    <span class="c1">// Listen to the click event</span>
+                    <span class="nx">removeButton</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"click"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="c1">// Make sure the button click doesn't submit the form:</span>
+                    <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+                    <span class="nx">e</span><span class="p">.</span><span class="nx">stopPropagation</span><span class="p">();</span>
+                    <span class="c1">// Remove the file preview.</span>
+                    <span class="nx">_this</span><span class="p">.</span><span class="nx">removeFile</span><span class="p">(</span><span class="nx">file</span><span class="p">);</span>
+                    <span class="c1">// If you want to the delete the file on the server as well,</span>
+                    <span class="c1">// you can do the AJAX request here.</span>
+                    <span class="p">});</span>
+                    <span class="c1">// Add the button to the file preview element.</span>
+                    <span class="nx">file</span><span class="p">.</span><span class="nx">previewElement</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">removeButton</span><span class="p">);</span>
+                    <span class="p">});</span>
+                    <span class="p">}</span>
+                    <span class="p">};</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre>
+
+                    <br>
+
+                    <h3>如果表單內不只上傳檔案，還有其他input呢?</h3>
+
+                    <p>
+                        如果你的 Dropzone element 是 <code>
+                            &lt;form&gt;
+                        </code>
+                        所有 input 是 <code>hide</code>的都會一起被傳到後面去
+                    </p>
+
+
+                    <pre><span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"/"</span> <span class="na">class=</span><span class="s">"dropzone"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"hidden"</span> <span class="na">name=</span><span class="s">"additionaldata"</span> <span class="na">value=</span><span class="s">"1"</span> <span class="nt">/&gt;</span>
+                    <span class="c">&lt;!-- If you want control over the fallback form, just add it here: --&gt;</span>
+                    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"fallback"</span><span class="nt">&gt;</span> <span class="c">&lt;!-- This div will be removed if the fallback is not necessary --&gt;</span>
+                    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"file"</span> <span class="na">name=</span><span class="s">"youfilename"</span> <span class="nt">/&gt;</span>
+                    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</pre>
+                    <br>
+
+                    <h3>I want to display additional information after a file uploaded.</h3>
+
+                    <p>
+                        To use the information sent back from the server, use the <code>
+                            success
+                        </code>
+                        event, like this:
+                    </p>
+
+
+                    <pre><span class="nx">Dropzone</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">myDropzone</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="nx">init</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">"success"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="nx">responseText</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="c1">// Handle the responseText here. For example, add the text to the preview element:</span>
+                    <span class="nx">file</span><span class="p">.</span><span class="nx">previewTemplate</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span><span class="nx">responseText</span><span class="p">));</span>
+                    <span class="p">});</span>
+                    <span class="p">}</span>
+<span class="p">};</span>
+</pre>
+                    <br>
+                    <h3>How to show files already stored on server</h3>
+
+                    <p>
+                        Although there's no builtin functionality to do that, you can use Dropzone's default event handlers to your advantage.
+                    </p>
+
+                    <p>
+                        The concept is, to create a <em>mock</em> file, and call the event handlers <code>
+                            addedfile
+                        </code>
+                        and <code>
+                            thumbnail
+                        </code>
+                        to draw the preview.
+                    </p>
+
+
+                    <pre><span class="c1">// Create the mock file:</span>
+<span class="kd">var</span> <span class="nx">mockFile</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">"Filename"</span><span class="p">,</span> <span class="nx">size</span><span class="o">:</span> <span class="mi">12345</span> <span class="p">};</span>
+<span class="c1">// Call the default addedfile event handler</span>
+<span class="nx">myDropzone</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s2">"addedfile"</span><span class="p">,</span> <span class="nx">mockFile</span><span class="p">);</span>
+<span class="c1">// And optionally show the thumbnail of the file:</span>
+<span class="nx">myDropzone</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s2">"thumbnail"</span><span class="p">,</span> <span class="nx">mockFile</span><span class="p">,</span> <span class="s2">"/image/url"</span><span class="p">);</span>
+<span class="c1">// If you use the maxFiles option, make sure you adjust it to the</span>
+<span class="c1">// correct amount:</span>
+<span class="kd">var</span> <span class="nx">existingFileCount</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// The number of files already uploaded</span>
+<span class="nx">myDropzone</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">maxFiles</span> <span class="o">=</span> <span class="nx">myDropzone</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">maxFiles</span> <span class="o">-</span> <span class="nx">existingFileCount</span><span class="p">;</span>
+</pre>
+                    <br>
+                    <h3>
+                        Use own <code>
+                            confirm
+                        </code> implementation
+                    </h3>
+
+                    <p>
+                        If you are unhappy with the way Dropzone asks a user if she wants to cancel or remove a file, and want to use some other way (e.g.: bootstrap's modal), you can simply overwrite the <code>
+                            Dropzone.confirm
+                        </code>
+                        function.
+                    </p>
+                    <pre><span class="c1">// accepted and rejected are functions to be called whenever the user response</span>
+<span class="c1">// has been received.</span>
+<span class="c1">// rejected is not mandatory! So make sure to check if it exists before</span>
+<span class="c1">// calling it. Do nothing if it doesn't.</span>
+<span class="nx">Dropzone</span><span class="p">.</span><span class="nx">confirm</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">question</span><span class="p">,</span> <span class="nx">accepted</span><span class="p">,</span> <span class="nx">rejected</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="c1">// Do your thing, ask the user for confirmation or rejection, and call</span>
+                    <span class="c1">// accepted() if the user accepts, or rejected() otherwise. Make</span>
+                    <span class="c1">// sure that rejected is actually defined!</span>
+<span class="p">};</span>
+</pre>
+
+                    <br>
+                    <h3>How can I limit the number of files</h3>
+
+                    <p>
+                        You're in luck! Starting with <code>
+                            3.7.0
+                        </code>
+                        Dropzone supports the <code>
+                            maxFiles
+                        </code>
+                        option. Simply set it to the desired quantity and you're good to go. If you don't want the rejected files to be viewed, simply register for the <code>
+                            maxfilesexceeded
+                        </code>
+                        event, and remove the file immediately:
+                    </p>
+                    <pre><span class="nx">myDropzone</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">"maxfilesexceeded"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">removeFile</span><span class="p">(</span><span class="nx">file</span><span class="p">);</span> <span class="p">});</span>
+</pre>
+
+
+
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- end row -->
+
+    </section>
+
+
+    <!--
+        如上面所說，用data-action擊結函式的部份，那admin就要最後載入，放最下面的部份。
+        不然吃不到函式
+        但其實也是可以自己寫函式即可。(寫在這一頁中)
+    -->
+
+    <script src="../../../MyTemplates/js/admin.js"></script>
+
+    <!--admin.js 裡面就函有 bootstrap.min.js 的內容了，所以不用再載入-->
+
+
+    <!--基於以上部份，所以 admin.js 要用到的其他js的部份， 就要放的比他下面。不然會爆錯-->
+    <script data-pace-options='{ "restartOnRequestAfter": true }' src="../../../MyTemplates/js/plugin/pace/pace.min.js"></script>
+
+
+
+    <!--載入完 以上後，加上下面這些-->
+    <!-- DO NOT REMOVE : GLOBAL FUNCTIONS! -->
+    <script>
+        $(document).ready(function () {
+            pageSetUp();
+            drawBreadCrumb();
+        });
+    </script>
+
+<!--DroneZone 的 js-->
+<!--記得要改裡面的 upload.php 的路徑 換成 你要的路徑(上傳檔案的Controller之類的)-->
+<script src="../../../MyTemplates/js/plugin/dropzone/dropzone.min.js"></script>
+    
+<script type="text/javascript">
+
+    // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+    $(document).ready(function () {
+
+        //設定 drone zone
+        Dropzone.autoDiscover = false;
+
+        //這要放的比 下面 的 初使化 還來得早
+        //設定 全部上傳完成  (第137 - 144 和 158 - 175 行的內容)
+        //Dropzone.options.上面產生的那隻id
+        Dropzone.options.mydropzone  = {
+                    init: function() {
+
+                    //設定  全部上傳完成
+                    this.on("complete", function() {
+                        //佇列中的數量 和 正在上傳的數量 為 0 => 完成
+                        if (this.filesQueue.length == 0 && this.filesProcessing.length == 0) {
+                            // File finished uploading, and there aren't any left in the queue.
+                            alert("全部上傳完成");
+                        }
+                    });
+
+
+                    //加入刪除按鈕  以 刪除 文件預覽 (第 187 - 245 行 的內容)
+                    this.on("addedfile", function(file) {
+                        // Create the remove button
+                        var removeButton = Dropzone.createElement("<button class='btn btn-warning dropzoneRemoveBtn'>Remove file</button>");
+        
+                        // Capture the Dropzone instance as closure.
+                        var _this = this;
+
+                        // Listen to the click event
+                        removeButton.addEventListener("click", function(e) {
+                            // Make sure the button click doesn't submit the form:
+                            e.preventDefault();
+                            e.stopPropagation();
+                            // Remove the file preview.
+                            _this.removeFile(file);
+                            // If you want to the delete the file on the server as well,
+                            // you can do the AJAX request here.
+                        });
+
+                        // Add the button to the file preview element.
+                        file.previewElement.appendChild(removeButton);
+                    });
+
+
+                    //上傳成功後，自訂行為 (第268 - 187 行)
+                    this.on("success", function(file, responseText) {
+                        // Handle the responseText here. For example, add the text to the preview element:
+                        file.previewTemplate.appendChild(document.createTextNode(responseText));
+                    });
+
+
+                    //限制文件上傳數量(當一超過就刪除) (第 339 - 354 行)
+                    //這裡的mydropzone是form 的 id  由上面產生完後的
+                    this.on("maxfilesexceeded", function(file) { this.removeFile(file); });
+                }
+        };
+
+        //第146行
+        Dropzone.options.maxThumbnailFilesize = 30;  //30MB
+
+        //自訂confirm
+        //第 317 - 340 行
+        // accepted and rejected are functions to be called whenever the user response
+        // has been received.
+        // rejected is not mandatory! So make sure to check if it exists before
+        // calling it. Do nothing if it doesn't.
+        Dropzone.confirm = function(question, accepted, rejected) {
+                    // Do your thing, ask the user for confirmation or rejection, and call
+                    // accepted() if the user accepts, or rejected() otherwise. Make
+                    // sure that rejected is actually defined!
+        };
+
+        //表單的id
+        $("#mydropzone").dropzone({
+            url: "/file/post",
+            addRemoveLinks: true,  //是否會產生刪除檔案的<a>
+            dictRemoveFile : "刪除檔案",  //如果上面的為true ，這裡顯示其 <a>顯示的文字
+            dictCancelUpload : "取消上傳", //如果上面的為true，當還在上傳中時，<a>顯示的文字會是這個
+            maxFilesize: 1,  //最大檔案容量 (MB)
+            maxFiles : 3,  //最大傳幾筆檔案
+            uploadMultiple : true,  //是否 多筆上傳
+            dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i> Drop files <span class="font-xs">to upload</span></span><span>&nbsp&nbsp<h4 class="display-inline"> (Or Click)</h4></span>',
+            dictResponseError: '',   //錯誤訊息 (這邊因為擋到 按鈕 所以 才改成 空字串)  
+            acceptedFiles: "image/*",   //限制副檔名
+            //判斷副檔名那些的動作
+            accept: function(file, done) {
+                var fileName = file.name;
+                var extestionNameList = [".jpg", ".png", ".gif"];   //副檔名列表(前面英文名字有拼錯，請自行更正)
+                var result = false;
+
+                for(var i = 0; i < extestionNameList.length; i++){
+                    if(fileName.IndexOf(extestionNameList[i]) > 0){
+                        result = true;
+                    }
+                }
+
+                if(result == false){
+                    alert("這不是符合的副檔名");
+                    return false;
+                }
+            }
+        });      
+
+        //呼叫下面的函式
+        ShowAlreadyServerFile(Dropzone);
+
+    })
+
+
+    //秀出已經在Server上的檔案
+    //這裡是不會成功的，要改一些東西
+    //第 286 - 314 行
+    function ShowAlreadyServerFile(myDropzone){
+        // Create the mock file:
+        var mockFile = { name: "Filename", size: 12345 };
+        // Call the default addedfile event handler
+        myDropzone.emit("addedfile", mockFile);
+        // And optionally show the thumbnail of the file:
+        myDropzone.emit("thumbnail", mockFile, "/image/url");
+        // If you use the maxFiles option, make sure you adjust it to the
+        // correct amount:
+        var existingFileCount = 1; // The number of files already uploaded
+        myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
+    }
+</script>
+
+
+
+</body>
+
+</html>
