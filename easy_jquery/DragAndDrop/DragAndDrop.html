@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>JS 的Drop 及 Drag 的簡單應用</title>
+
+    <!--設定這個是為了避免讓使用者在拖曳該元素時選取到裡面的內容-->
+    <style type="text/css">
+        [draggable="true"] {
+            /*
+                To prevent user selecting inside the drag source
+            */
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+    </style>
+
+    <style type="text/css">
+        [data-role="drag-drop-container"] {
+            height: 400px;
+            width:50%;
+            border: 2px solid #CCC;
+            flex: 1;
+        }
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<!--參考網圵： https://pjchender.blogspot.com/2017/08/html5-drag-and-drop-api.html-->
+
+<body>
+
+        <!--可以接收被搬移的物件加上 data-role="drag-drop-container" -->
+        <div id="container1" data-role="drag-drop-container">
+            <!--可以被搬移的物件加上 draggable="true"-->
+            <h1 id="drag-source1" style="color:red;" draggable="true">請搬移我</h1>
+            <h1 id="drag-source2" style="color:blue;" draggable="true">請搬移我2</h1>
+        </div>
+        <div id="container2" data-role="drag-drop-container">
+            <h1 id="drag-source3" style="color:orange;" draggable="true">請搬移我3</h1>
+        </div>
+
+
+    <script>
+        //全部 可以搬移的物件 註冊事件
+        function DraggableElementAddEvent() {
+            $("[draggable=true]").map(function (index, ele) {
+                //最後一個參數的dragStart是下面的函式
+                ele.addEventListener('dragstart', dragStart);
+            });
+        }
+
+        //全部 可以接受搬移物件 註冊事件
+        function DropContainerElementAddEvent() {
+            $("[data-role=drag-drop-container]").map(function (index, ele) {
+                //最後面的參數都是 下面的函式
+                ele.addEventListener('drop', dropped);
+                ele.addEventListener('dragenter', cancelDefault);
+                ele.addEventListener('dragover', cancelDefault);
+            });
+        }
+
+        //執行上面2個函式
+        function InitDragAndDrop() {
+            DraggableElementAddEvent();
+            DropContainerElementAddEvent();
+        }
+    </script>
+
+    <script>
+        //相關 上面註冊的函式
+
+        //開始搬移的動作
+        function dragStart(e) {
+            // text/plain => 類型/名稱(可自取)
+            e.dataTransfer.setData('text/plain', e.target.id);  //加入資料(可多筆)
+            e.dataTransfer.setData('text/parent', $(e.target).parent().attr('id'));
+        }
+
+        //搬到 可接受搬移物件 的上空時
+        function dropped(e) {
+            cancelDefault(e);
+            var id = e.dataTransfer.getData('text/plain');  //收取資料
+            var parentID = e.dataTransfer.getData('text/parent');
+
+            //不知為何 [draggable=true] 屬性的也是可以接收搬移物件的，導致 可以移去 => 所以加以判斷
+            if($(e.target).attr("data-role") == "drag-drop-container"){
+                e.target.appendChild(document.getElementById(id));  //當前的e是可接受搬移物件的div 把剛才那個id的物件加入至div裡
+            }
+
+            /*
+                如果今天是寫神魔那種的話，就把這裡改成交換物件
+                1.用取到的id去取其parent
+                2.把2方的內容物交換即可
+            */
+        }
+
+        //預設寫法
+        function cancelDefault(e) {
+            e.preventDefault()
+            e.stopPropagation()
+            return false
+        }
+    </script>
+
+
+    <script>
+        //執行初使化
+        InitDragAndDrop();
+    </script>
+
+</body>
+
+</html>
