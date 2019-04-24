@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=" utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>圖片範圍選取(取值的部份還未知)</title>
+    <!--<link href="../../../MyTemplates/css/bootstrap.min.css" rel="stylesheet" />-->
+    <link href="../../../MyTemplates/css/admin.css" rel="stylesheet" />
+    <!--如果變更了 路徑 => 請記得 admin.css裡的 fa-xxxx都要改路徑喔  用ctrl+G找第5行 font-awesome.min.css 這裡面-->
+    <!--裡面就函有 bootstrap.min.css 的內容了，所以不用再載入-->
+    <!--已將admin.css裡面的分段好了，依照txt的部份就可以自由將不想要的部份給註解掉-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+</head>
+
+<body>
+
+    <!--圖片範圍選取，取值的部份還未知。故先 存取原圖 + 他所選的範圍 即可-->
+    <!--這邊我也不太熟，基本上都是舊有的。沒有自己再擴充-->
+
+    <section id="widget-grid" class="">
+
+            <!-- row -->
+            <div class="row">
+    
+                <!-- NEW WIDGET START -->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    
+                    <div class="alert alert-danger hidden-lg hidden-md hidden-sm">
+                        <b>Please note:</b>
+                        This plugin is non-responsive
+                    </div>
+    
+                    <!-- Widget ID (each widget will need unique ID)-->
+    
+                    <div class="jarviswidget jarviswidget-sortable" id="wid-id-0" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false" role="widget" style="">
+                        <!-- widget options:
+                        usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+    
+                        data-widget-colorbutton="false"
+                        data-widget-editbutton="false"
+                        data-widget-togglebutton="false"
+                        data-widget-deletebutton="false"
+                        data-widget-fullscreenbutton="false"
+                        data-widget-custombutton="false"
+                        data-widget-collapsed="true"
+                        data-widget-sortable="false"
+    
+                        -->
+                        <header role="heading">
+                            <span class="widget-icon"> <i class="fa fa-file-image-o txt-color-darken"></i> </span>
+                            <h2 class="hidden-xs hidden-sm">jcrop </h2>
+    
+                            <ul class="nav nav-tabs pull-right in" id="myTab">
+    
+                                <!--tab頁籤的概念，裡面的超連結就是連到其所要呈現的-->
+                                <li class="active">
+                                    <a data-toggle="tab" href="#s1"><i class="fa fa-crop text-success"></i> <span class="hidden-mobile hidden-tablet">API</span></a>
+                                </li>
+    
+                                <li>
+                                    <a data-toggle="tab" href="#s2"><i class="fa fa-crop text-primary"></i> <span class="hidden-mobile hidden-tablet">Default</span></a>
+                                </li>
+    
+                                <li>
+                                    <a data-toggle="tab" href="#s3"><i class="fa fa-crop text-warning"></i> <span class="hidden-mobile hidden-tablet">Basic</span></a>
+                                </li>
+    
+                                <li>
+                                    <a data-toggle="tab" href="#s4"><i class="fa fa-crop text-danger"></i> <span class="hidden-mobile hidden-tablet">Aspect Ratio</span></a>
+                                </li>
+    
+                                <li>
+                                    <a data-toggle="tab" href="#s5"><i class="fa fa-crop txt-color-purple"></i> <span class="hidden-mobile hidden-tablet">Animations</span></a>
+                                </li>
+    
+                                <li>
+                                    <a data-toggle="tab" href="#s6"><i class="fa fa-crop txt-color-pink"></i> <span class="hidden-mobile hidden-tablet">Styling</span></a>
+                                </li>
+    
+                            </ul>
+    
+                            <span class="jarviswidget-loader"><i class="fa fa-refresh fa-spin"></i></span>
+                        </header>
+    
+                        <!-- widget div-->
+                        <div role="content">
+                            <!-- widget edit box -->
+    
+                            <div class="widget-body">
+                                <!-- content -->
+                                <div id="myTabContent" class="tab-content">
+    
+                                    <!-- new tab: API interface -->
+                                    <!--API的部份-->
+                                    <div class="tab-pane fade active in" id="s1">
+    
+                                        <h4 class="margin-bottom-10">API Interface — real-time API example</h4>
+    
+                                        <div class="alert alert-info">
+                                            Jcrop現在包含一個著色模式，有助於構建更好的透明Jcrop實例。 實驗著色器不如Jcrop的默認著色方法強大，只應在需要此功能時使用。
+                                            <br>
+                                            觀看Jcrop的文件: <a href="http://deepliquid.com/content/Jcrop.html" target="_blank">http://deepliquid.com/content/Jcrop.html</a>
+                                        </div>
+    
+                                        <img src="../../../MyTemplates/img/superbox/superbox-full-8.jpg" id="target-5" alt="[Jcrop Example]" class="pull-left" />
+    
+                                        <div class="pull-left padding-gutter padding-top-0 padding-bottom-0">
+    
+                                            <fieldset>
+    
+                                                <legend>
+                                                    Option Toggles
+                                                </legend>
+    
+                                                <!--這些的選項，全都在APICorrping中的函式有設定-->
+                                                <span class="requiresjcrop">
+                                                    <button id="setSelect" class="btn btn-default btn-sm">
+                                                        setSelect(隨機範圍，會直接跳去)
+                                                    </button>
+                                                    <button id="animateTo" class="btn btn-default btn-sm">
+                                                        animateTo(隨機範圍，會有動畫滑過去)
+                                                    </button>
+
+                                                    <br>
+                                                    <br>
+
+                                                    <button id="release" class="btn btn-default btn-sm">
+                                                        Release(取消範圍)
+                                                    </button>
+                                                    <button id="disable" class="btn btn-default btn-sm">
+                                                        Disable(不啟用)
+                                                    </button>
+                                                </span>
+
+                                                <button id="enable" class="btn btn-default btn-sm" style="display:none;">
+                                                    Re-Enable(重新啟用)
+                                                </button>
+
+                                                <button id="unhook" class="btn btn-default btn-sm">
+                                                    Destroy!(結束)
+                                                </button>
+
+                                                <button id="rehook" class="btn btn-default btn-sm" style="display:none;">
+                                                    Attach Jcrop(附加Jcrop)
+                                                </button>
+                                            </fieldset>
+    
+                                            <fieldset class="optdual requiresjcrop">
+                                                <legend>
+                                                    Option Toggles
+                                                </legend>
+                                                <div class="optlist offset">
+                                                    <label class="margin-top-0">
+                                                        <input type="checkbox" class="checkbox style-0" id="ar_lock">
+                                                        <span>Aspect ratio(固定預設的寬高比)</span>
+                                                    </label>
+
+                                                    <br>
+    
+                                                    <label class="">
+                                                        <input type="checkbox" class="checkbox style-0" id="size_lock">
+                                                        <span>minSize/maxSize setting(有預設 最大最小的 設定)</span>
+                                                    </label>
+                                                </div>
+                                                <div class="optlist">
+                                                    <label class="margin-top-0">
+                                                        <input type="checkbox" class="checkbox style-0" id="can_click">
+                                                        <span>Allow new selections (允許新的選取範圍，如果沒有的話就是能拿現在的拖拉移動)</span>
+                                                    </label>
+
+                                                    <br>
+    
+                                                    <label class="">
+                                                        <input type="checkbox" class="checkbox style-0" id="can_move">
+                                                        <span>Selection can be moved (選取範圍可以移動)</span>
+                                                    </label>
+
+                                                    <br>
+    
+                                                    <label class="">
+                                                        <input type="checkbox" class="checkbox style-0" id="can_size">
+                                                        <span>Resizable selection (可以自由調整選取範圍)</span>
+                                                    </label>  
+                                                </div>
+                                            </fieldset>
+    
+                                            <fieldset class="requiresjcrop">
+                                                <legend>
+                                                    切換圖片
+                                                </legend>
+                                                <div class="btn-group">
+                                                    <button class="btn btn-default" id="img1">
+                                                        圖片1
+                                                    </button>
+                                                    <button class="btn btn-default active" id="img2">
+                                                        圖片2
+                                                    </button>
+                                                    <button class="btn btn-default" id="img3">
+                                                        圖片3(有帶動畫，和其他設定)
+                                                    </button>
+                                                </div>
+                                            </fieldset>
+    
+                                        </div>
+    
+                                    </div>
+
+                                    <!--Default的部份-->
+                                    <div class="tab-pane fade" id="s2">   
+                                        <h4 class="margin-bottom-10">Default Behaviour (預設，沒有帶任何參數下就是這樣子)</h4> 
+                                        <img src="../../../MyTemplates/img/superbox/superbox-full-11.jpg" id="target" alt="[Jcrop Example]" />  
+                                    </div>
+                                    
+
+                                    <!--Basic的部份(選取完，可以看到你所選取的範圍資料)-->
+                                    <div class="tab-pane fade" id="s3">
+    
+                                        <h4 class="margin-bottom-10">Basic Handler — basic form integration (選取完，可以看到你所選取的範圍資料)</h4>
+    
+                                        <div class="alert alert-info">
+                                                這裡我們已經綁定了幾個表單值以及簡單的事件處理程序調用。
+                                                結果是表單值實時更新為使用Jcrop的<em> onChange </em>處理程序更改選擇。
+                                        </div>
+    
+                                        <img src="../../../MyTemplates/img/superbox/superbox-full-10.jpg" id="target-2" alt="[Jcrop Example]" />
+    
+                                        <!--表單處理-->
+                                        <!-- This is the form that our event handler fills -->
+                                        <form id="coords"
+                                              class="coords margin-top-10"
+                                              onsubmit="return false;"
+                                              action="">
+    
+                                            <div class="inline-labels">
+                                                <label>
+                                                    X1(左的座標)
+                                                    <input type="text" size="4" id="x1" name="x1" />
+                                                </label>
+                                                <label>
+                                                    Y1(上的座標)
+                                                    <input type="text" size="4" id="y1" name="y1" />
+                                                </label>
+                                                <label>
+                                                    X2(右的座標)
+                                                    <input type="text" size="4" id="x2" name="x2" />
+                                                </label>
+                                                <label>
+                                                    Y2(下的座標)
+                                                    <input type="text" size="4" id="y2" name="y2" />
+                                                </label>
+                                                <label>
+                                                    W(寬度 = X2 -X1)
+                                                    <input type="text" size="4" id="w" name="w" />
+                                                </label>
+                                                <label>
+                                                    H(高度 = Y2 - Y1)
+                                                    <input type="text" size="4" id="h" name="h" />
+                                                </label>
+                                            </div>
+                                        </form>  
+                                    </div>
+
+
+                                    <!--Aspect ratio 跟Default很像，但是會用預設的長寬比(目前沒看出來差在哪) -->
+                                    <div class="tab-pane fade" id="s4">
+    
+                                        <h4 class="margin-bottom-10">Aspect Ratio w/ Preview Pane — nice visual example</h4>
+    
+                                        <div class="alert alert-info">
+                                            顯然是最直觀的演示，預覽窗格已經完成完全在Jcrop之外，帶有一個簡單的jQuery風格的回調。
+                                            這種類型的界面可用於創建縮略圖或者頭像。 onChange事件處理程序用於更新在預覽窗格中查看。
+                                        </div>
+    
+                                        <img src="../../../MyTemplates/img/superbox/superbox-full-9.jpg" id="target-3" alt="[Jcrop Example]" />
+    
+                                        <div id="preview-pane">
+                                            <div class="preview-container">
+                                                <img src="../../../MyTemplates/img/superbox/superbox-full-9.jpg" class="jcrop-preview" id="target-3a" alt="Preview" />
+                                            </div>
+                                        </div>
+    
+                                    </div>
+                                    
+
+                                    <!--Animation有動畫的(還可以設一堆)-->
+                                    <div class="tab-pane fade" id="s5">
+    
+                                        <h4 class="margin-bottom-10">Animation/Transitions — animation/fading demo</h4>
+    
+                                        <div class="alert alert-info">
+                                            Jcrop現在包括一個便於構建的著色模式更好的透明Jcrop實例。 
+                                            實驗著色器較少比Jcrop的默認著色方法強大
+                                        </div>
+    
+                                        <div class="row">
+    
+                                            <div class="col-sm-12 col-md-12 col-lg-12">
+    
+                                                <img src="../../../MyTemplates/img/superbox/superbox-full-23.jpg" id="target-4" alt="Jcrop Image" class="pull-left" />
+    
+                                                <!--選項是在下方的函式中新加的-->                                              
+    
+                                                <div id="interface" class="pull-left padding-gutter padding-top-0 padding-bottom-0">
+    
+                                                    <p>目前看不出效果</p>
+                                                    <fieldset>
+                                                        <div class="optlist">
+                                                            <label class="margin-top-0">
+                                                                <input type="checkbox" class="checkbox style-0" id="fadetog">
+                                                                <span>Enable fading (bgFade: true) => 啟用褪去</span>
+                                                            </label>
+
+                                                            <br>
+
+                                                            <label class="margin-top-0">
+                                                                <input type="checkbox" class="checkbox style-0" id="shadetog">
+                                                                <span>Use experimental shader (shade: true) => 啟用陰影</span>
+                                                            </label>
+                                                        </div>           
+                                                    </fieldset>   
+                                                </div>
+                                            </div>
+    
+                                        </div>
+    
+                                    </div>
+
+                                    <!--Style的部份(調整 選取範圍外 的明亮度)-->
+                                    <div class="tab-pane fade padding-10 no-padding-bottom" id="s6">   
+                                        <h4 class="margin-bottom-10">Styling Example — style Jcrop dynamically with CSS (調整選取範圍外的明亮度)</h4>   
+                                        <img src="../../../MyTemplates/img/superbox/superbox-full-16.jpg" id="target-6" alt="[Jcrop Example]" />
+    
+                                        <div class="pull-left pull-left padding-gutter padding-top-0 padding-bottom-0">
+                                            <fieldset>
+                                                <legend>
+                                                    Manipulate classes(調整選取範圍外的明亮度)
+                                                </legend>
+                                                <div class="btn-group" id="buttonbar">
+                                                    <button class="btn btn-default active" data-setclass="jcrop-light" id="radio1">
+                                                        jcrop-light(亮)
+                                                    </button>
+                                                    <button class="btn btn-default" data-setclass="jcrop-dark" id="radio2">
+                                                        jcrop-dark(暗)
+                                                    </button>
+                                                    <button class="btn btn-default" data-setclass="jcrop-normal" id="radio3">
+                                                        normal(正常)
+                                                    </button>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+    
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    
+
+
+
+    <script src="../../../MyTemplates/js/admin.js"></script>
+
+    <!--admin.js 裡面就函有 bootstrap.min.js 的內容了，所以不用再載入-->
+    <!--admin.js 和 下方這些多個整合在一起的js 之後再一起整理了-->
+
+
+    <!--基於以上部份，所以 admin.js 要用到的其他js的部份， 就要放的比他下面。不然會爆錯-->
+    <script data-pace-options='{ "restartOnRequestAfter": true }'
+        src="../../../MyTemplates/js/plugin/pace/pace.min.js"></script>
+
+    <!--選取圖片要用的-->
+    <script src="../../../MyTemplates/js/plugin/jcrop/jquery.Jcrop.min.js"></script>
+    <script src="../../../MyTemplates/js/plugin/jcrop/jquery.color.min.js"></script>
+
+
+    <!--載入完 以上後，加上下面這些-->
+    <!-- DO NOT REMOVE : GLOBAL FUNCTIONS! -->
+    <script>
+        $(document).ready(function () {
+            pageSetUp();
+            drawBreadCrumb();
+        });
+    </script>
+
+    <script>
+        //一些基本參數設置
+        var picBasePath = "../../../MyTemplates/img/superbox/";  //圖片基本路徑
+    </script>
+
+    <script>
+        //相關的函式 及 建置
+
+        //API 的部份(綜合功能)
+        function ApiCropping(id) {
+            // The variable jcrop_api will hold a reference to the
+            // Jcrop API once Jcrop is instantiated.
+            var jcrop_api;
+
+            // The function is pretty simple
+            var initJcrop = function () {
+                // Hide any interface elements that require Jcrop
+                // (This is for the local user interface portion.)
+                $('.requiresjcrop').hide();
+
+                // Invoke Jcrop in typical fashion
+                $('#' + id).Jcrop({
+                    //releaseCheck是下面設定的函式
+                    //onRelease是取消選取範圍
+                    onRelease: releaseCheck
+                }, function () {
+
+                    jcrop_api = this;
+                    //設定選取範圍(這裡是當作初使化使用)
+                    jcrop_api.animateTo([100, 100, 400, 300]);
+
+                    //預設checkbox勾選
+                    $('#can_click,#can_move,#can_size').attr('checked', 'checked');
+                    $('#ar_lock,#size_lock,#bg_swap').attr('checked', false);
+                    $('.requiresjcrop').show();
+                });
+
+            };
+
+            //上面的函式(初使化)
+            initJcrop();
+
+            //隨機範圍
+            function getRandom() {
+                var dim = jcrop_api.getBounds();
+                return [Math.round(Math.random() * dim[0]), Math.round(Math.random() * dim[1]), Math.round(Math.random() * dim[0]), Math.round(Math.random() * dim[1])];
+            };
+
+            // This function is bound to the onRelease handler...
+            // In certain circumstances (such as if you set minSize
+            // and aspectRatio together), you can inadvertently lose
+            // the selection. This callback re-enables creating selections
+            // in such a case. Although the need to do this is based on a
+            // buggy behavior, it's recommended that you in some way trap
+            // the onRelease callback if you use allowSelect: false
+            function releaseCheck() {
+                jcrop_api.setOptions({
+                    allowSelect: true
+                });
+                $('#can_click').attr('checked', false);
+            };
+
+            //下方的按鈕
+            $('#setSelect').click(function (e) {
+                jcrop_api.setSelect(getRandom());
+            });
+            $('#animateTo').click(function (e) {
+                jcrop_api.animateTo(getRandom());
+            });
+            $('#release').click(function (e) {
+                jcrop_api.release();
+            });
+            $('#disable').click(function (e) {
+                jcrop_api.disable();
+                $('#enable').show();
+                $('.requiresjcrop').hide();
+            });
+            $('#enable').click(function (e) {
+                jcrop_api.enable();
+                $('#enable').hide();
+                $('.requiresjcrop').show();
+            });
+            $('#rehook').click(function (e) {
+                $('#rehook,#enable').hide();
+                initJcrop();
+                $('#unhook,.requiresjcrop').show();
+                return false;
+            });
+            $('#unhook').click(function (e) {
+                jcrop_api.destroy();
+                $('#unhook,#enable,.requiresjcrop').hide();
+                $('#rehook').show();
+                return false;
+            });
+
+
+            //圖片切換
+            $('#img1').click(function (e) {
+                $(this).addClass('active').closest('.btn-group').find('button.active').not(this).removeClass('active');
+
+                jcrop_api.setImage(picBasePath + 'superbox-full-8.jpg');
+                jcrop_api.setOptions({
+                    bgOpacity: .6
+                });
+                return false;
+            });
+            $('#img2').click(function (e) {
+                $(this).addClass('active').closest('.btn-group').find('button.active').not(this).removeClass('active');
+
+                jcrop_api.setImage(picBasePath + 'superbox-full-24.jpg');
+                jcrop_api.setOptions({
+                    bgOpacity: .8
+                });
+                return false;
+            });
+
+            $('#img3').click(function (e) {
+                $(this).addClass('active').closest('.btn-group').find('button.active').not(this).removeClass('active');
+
+                jcrop_api.setImage(picBasePath + 'superbox-full-20.jpg', function () {
+                    this.setOptions({
+                        bgOpacity: 1,  //顏色透明度1 = 全部
+                        outerImage: picBasePath + 'superbox-full-20-bw.jpg'
+                    });
+
+                    //一開始預設選取範圍 隨機 且用 animate形式
+                    this.animateTo(getRandom());
+                });
+                return false;
+            });
+
+            //下方的checkbox
+            $('#can_click').change(function (e) {
+                jcrop_api.setOptions({
+                    allowSelect: !!this.checked
+                });
+                jcrop_api.focus();
+            });
+            $('#can_move').change(function (e) {
+                jcrop_api.setOptions({
+                    allowMove: !!this.checked
+                });
+                jcrop_api.focus();
+            });
+            $('#can_size').change(function (e) {
+                jcrop_api.setOptions({
+                    allowResize: !!this.checked
+                });
+                jcrop_api.focus();
+            });
+            $('#ar_lock').change(function (e) {
+                jcrop_api.setOptions(this.checked ? {
+                    //自己設定的長寬比
+                    aspectRatio: 4 / 3
+                } : {
+                        //沒勾選就沒設
+                        aspectRatio: 0
+                    });
+                jcrop_api.focus();
+            });
+            $('#size_lock').change(function (e) {
+                jcrop_api.setOptions(this.checked ? {
+                    //自己設定的最大最小
+                    minSize: [100, 100],
+                    maxSize: [250, 250]
+                } : {
+                        //沒勾選就沒設
+                        minSize: [0, 0],
+                        maxSize: [0, 0]
+                    });
+                jcrop_api.focus();
+            });
+
+        }
+
+        //Default的部份(基本畫範圍)
+        function DefaultCropping(id) {
+            $('#' + id).Jcrop();
+        }
+
+        //Basic的部份(畫完後，會顯示區域範圍的x y)
+        function BasicCropping(id) {
+            var jcrop_api;
+
+            $('#' + id).Jcrop({
+                onChange: showCoords,  //變化 => 顯示
+                onSelect: showCoords,  //被選到
+                onRelease: clearCoords //取消選取範圍 
+            }, function () {
+                jcrop_api = this;
+            });
+
+            //改變值，也會改變圖
+            $('#coords').on('change', 'input', function (e) {
+                var x1 = $('#x1').val(), x2 = $('#x2').val(), y1 = $('#y1').val(), y2 = $('#y2').val();
+                jcrop_api.setSelect([x1, y1, x2, y2]);
+            });
+
+            // Simple event handler, called from onChange and onSelect
+            // event handlers, as per the Jcrop invocation above
+            function showCoords(c) {
+                $('#x1').val(c.x);
+                $('#y1').val(c.y);
+                $('#x2').val(c.x2);
+                $('#y2').val(c.y2);
+                $('#w').val(c.w);
+                $('#h').val(c.h);
+            };
+
+            function clearCoords() {
+                $('#coords input').val('');
+            };
+
+        }
+
+        //Aspect_ratio的部份(跟Default差不多，但會有預設的選取範圍長高比)
+        //Aspect ratio的中文是 "寬高比"
+        function Aspect_ratioCroppint(id) {
+            // Create variables (in this scope) to hold the API and image size
+            var jcrop_api, boundx, boundy,
+
+                // Grab some information about the preview pane
+                $preview = $('#preview-pane'), $pcnt = $('#preview-pane .preview-container'), $pimg = $('#preview-pane .preview-container img'), 
+                xsize = $pcnt.width(), ysize = $pcnt.height();
+
+            console.log('init', [xsize, ysize]);
+            $('#' + id).Jcrop({
+                onChange: updatePreview,
+                onSelect: updatePreview,
+                //設定長寬比
+                aspectRatio: xsize / ysize
+            }, function () {
+                // Use the API to get the real image size
+                var bounds = this.getBounds();
+                boundx = bounds[0];
+                boundy = bounds[1];
+                // Store the API in the jcrop_api variable
+                jcrop_api = this;
+
+                // Move the preview into the jcrop container for css positioning
+                $preview.appendTo(jcrop_api.ui.holder);
+            });
+
+            function updatePreview(c) {
+                if (parseInt(c.w) > 0) {
+                    var rx = xsize / c.w;
+                    var ry = ysize / c.h;
+
+                    $pimg.css({
+                        width: Math.round(rx * boundx) + 'px',
+                        height: Math.round(ry * boundy) + 'px',
+                        marginLeft: '-' + Math.round(rx * c.x) + 'px',
+                        marginTop: '-' + Math.round(ry * c.y) + 'px'
+                    });
+                }
+            };
+
+        }
+    
+        //Animation的部份(比api小一點的功能，基本上的都有)
+        function AnimationCropping(id){
+            var jcrop_api;
+
+            $('#' + id).Jcrop({
+                bgFade: true,
+                bgOpacity: 1,
+                //一進入就有選取範圍
+                setSelect: [60, 70, 540, 330]
+            }, function () {
+                jcrop_api = this;
+            });
+
+            //2個checkbox
+            $('#fadetog').change(function () {
+                jcrop_api.setOptions({
+                    bgFade: this.checked
+                });
+            }).attr('checked', 'checked');
+
+            $('#shadetog').change(function () {
+                if (this.checked)
+                    $('#shadetxt').slideDown();
+                else
+                    $('#shadetxt').slideUp();
+                jcrop_api.setOptions({
+                    shade: this.checked
+                });
+            }).attr('checked', false);
+
+            // Define page sections
+            var sections = {
+                bgc_buttons: 'Change bgColor(改變背景色)',
+                bgo_buttons: 'Change bgOpacity(改變背景透明度)',
+                anim_buttons: '預設選取範圍 列表'
+            };
+
+            //選取範圍 陣列 下面產生要用
+            // Define animation buttons
+            var ac = {
+                anim1: [217, 122, 382, 284],
+                anim2: [20, 20, 580, 380],
+                anim3: [24, 24, 176, 376],
+                anim4: [347, 165, 550, 355],
+                anim5: [136, 55, 472, 183]
+            };
+
+            //透明度的陣列，下面產生要用
+            // Define bgOpacity buttons
+            var bgo = {
+                No: 1,
+                Low: .75,
+                Mid: .5,
+                High: .25,
+                Full: 0
+            };
+
+            //顏色陣列，下面產生要用
+            // Define bgColor buttons
+            var bgc = {
+                R: '#900',
+                B: '#4BB6F0',
+                Y: '#F0B207',
+                G: '#46B81C',
+                W: 'white',
+                K: 'black'
+            };
+
+            //開始產生
+            //標頭
+            for (i in sections) insertSection(i, sections[i]);
+
+            var a_count = 1;
+
+            // 產生 預設 選取範圍 按鈕
+            for (i in ac) {
+                $('#anim_buttons .btn-group').append(create_btn("預設" + a_count.toString()).click(animHandler(ac[i])), ' ');
+                a_count++;
+            }
+
+            //加入 取消選取範圍
+            $('#anim_buttons .btn-group').append(create_btn('Bye!').click(function (e) {
+                $(e.target).addClass('active');
+                jcrop_api.animateTo([300, 200, 300, 200], function () {
+                    this.release();
+                    $(e.target).closest('.btn-group').find('.active').removeClass('active');
+                });
+                return false;
+            }));
+
+            // 加入 改變 背景透明度 按鈕
+            for (i in bgo) {
+                $('#bgo_buttons .btn-group').append(create_btn(i).click(setoptHandler('bgOpacity', bgo[i])), ' ');
+            }
+            // 加入 改變 背景色 按鈕
+            for (i in bgc) {
+                $('#bgc_buttons .btn-group').append(create_btn(i).css({
+                    background: bgc[i],
+                    color: ((i == 'K') || (i == 'R')) ? 'white' : 'black'
+                }).click(setoptHandler('bgColor', bgc[i])), ' ');
+            }
+
+            $('#bgo_buttons .btn:first,#bgc_buttons .btn:last').addClass('active');
+            $('#interface').show();
+
+            //上面 產生用到的函式
+            function insertSection(k, v) {
+                $('#interface').prepend($('<fieldset></fieldset>').attr('id', k).append($('<legend></legend>').append(v), '<div class="btn-toolbar"><div class="btn-group"></div></div>'));
+            };
+
+            function create_btn(c) {
+                var $o = $('<button />').addClass('btn btn-default btn-small');
+                if (c)
+                    $o.append(c);
+                return $o;
+            }
+
+            // Handler for option-setting buttons
+            function setoptHandler(k, v) {
+                return function (e) {
+                    $(e.target).closest('.btn-group').find('.active').removeClass('active');
+                    $(e.target).addClass('active');
+                    var opt = {};
+                    opt[k] = v;
+                    jcrop_api.setOptions(opt);
+                    return false;
+                };
+            };
+
+            // Handler for animation buttons
+            function animHandler(v) {
+                return function (e) {
+                    $(e.target).addClass('active');
+                    jcrop_api.animateTo(v, function () {
+                        $(e.target).closest('.btn-group').find('.active').removeClass('active');
+                    });
+                    return false;
+                };
+            };
+        }
+    
+        //Style的部份(可以調畫完範圍後，範圍外的明亮度)
+        function StyleCropping(id){
+            var api;
+
+            $('#' + id).Jcrop({
+                // start off with jcrop-light class
+                bgOpacity: 0.5,
+                //背景色
+                bgColor: 'white',
+                //新增class
+                addClass: 'jcrop-light'
+            }, function () {
+                api = this;
+                api.setSelect([130, 65, 130 + 350, 65 + 285]);
+                api.setOptions({
+                    bgFade: true
+                });
+                api.ui.selection.addClass('jcrop-selection');
+            });
+
+            $('#buttonbar').on('click', 'button', function (e) {
+                var $t = $(this), $g = $t.closest('.btn-group');
+                $g.find('button.active').removeClass('active');
+                $t.addClass('active');
+                $g.find('[data-setclass]').each(function () {
+                    var $th = $(this), c = $th.data('setclass'), a = $th.hasClass('active');
+                    if (a) {
+                        api.ui.holder.addClass(c);
+                        switch (c) {
+
+                            case 'jcrop-light':
+                                api.setOptions({
+                                    bgColor: 'white',
+                                    bgOpacity: 0.5
+                                });
+                                break;
+
+                            case 'jcrop-dark':
+                                api.setOptions({
+                                    bgColor: 'black',
+                                    bgOpacity: 0.4
+                                });
+                                break;
+
+                            case 'jcrop-normal':
+                                api.setOptions({
+                                    bgColor: $.Jcrop.defaults.bgColor,
+                                    bgOpacity: $.Jcrop.defaults.bgOpacity
+                                });
+                                break;
+                        }
+                    } else
+                        api.ui.holder.removeClass(c);
+                });
+            });
+
+        }
+    </script>
+
+    <script>
+        //建置上面的動作
+        ApiCropping("target-5");
+        DefaultCropping("target");
+        BasicCropping("target-2");
+        Aspect_ratioCroppint("target-3");
+        AnimationCropping("target-4");
+        StyleCropping("target-6");
+    </script>
+
+</body>
+
+</html>
