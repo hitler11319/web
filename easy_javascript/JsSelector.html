@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JS 自己的選擇器(類型Jquery的)</title>
+</head>
+<body>
+
+<script>
+	function ShowInnerHtml(list){
+    	var result = "";
+        for(var i = 0; i < list.length; i++){
+        	result += list[i].innerHTML;
+        }
+        return result;
+    }
+</script>
+
+<p>This </p>
+<p>is </p>
+<p class="a">an </p>
+<p class="a b">Apple </p>
+<p>?</p>
+
+<input type="text" name="aaa" value="aaa" readonly />
+
+<h1 id="demo"></h1>
+<h1 id="demo2"></h1>
+<h1 id="demo3"></h1>
+<h1 id="demo4"></h1>
+
+<script>
+//裡面就類似Jquery的選擇器
+//Jquery的選擇器 介紹 https://ithelp.ithome.com.tw/articles/10095237
+var myNodelist = document.querySelectorAll("p");
+document.getElementById("demo").innerHTML = ShowInnerHtml(myNodelist);
+
+var myNodelist2 = document.querySelectorAll(".a");
+document.getElementById("demo2").innerHTML = ShowInnerHtml(myNodelist2);
+
+//有class a或者 class b的
+var myNodelist3 = document.querySelectorAll(".a, .b");
+document.getElementById("demo3").innerHTML = ShowInnerHtml(myNodelist3);
+
+//class為a 且 為b的
+var myNodelist4 = document.querySelectorAll(".a.b");
+document.getElementById("demo4").innerHTML = ShowInnerHtml(myNodelist4);
+
+var myNodelist5 = document.querySelectorAll("input[name=aaa]");
+document.write(myNodelist5[0].value);
+</script>
+
+</body>
+</html>
