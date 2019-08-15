@@ -1,0 +1,149 @@
+    
+<!DOCTYPE html>
+<html>
+<head>
+<title>Knockout 的 Bind 綁定外觀 和 文字 基本介紹</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!--載入knockout.js-->
+<script src="js/knockout-3.5.0.js"></script>
+
+<!--下面要用到的css-->
+<style>
+    .r {
+        color: red;
+    }
+
+    .g{
+        color: green;
+    }
+</style>
+
+</head>
+<body>
+
+    <!--參考網圵：https://knockoutjs.com/documentation/introduction.html-->
+    <!--參考網圵：https://knockoutjs.com/documentation/visible-binding.html-->
+    <!--參考網圵：https://knockoutjs.com/documentation/text-binding.html-->
+    <!--參考網圵：https://knockoutjs.com/documentation/html-binding.html-->
+    <!--參考網圵：https://knockoutjs.com/documentation/css-binding.html-->
+    <!--參考網圵：https://knockoutjs.com/documentation/style-binding.html-->
+    <!--參考網圵：https://knockoutjs.com/documentation/attr-binding.html-->
+
+    <!--綁定 Enable => 讓按鈕是否可以使用-->
+    <!-- data-bind屬性就是裡面你要綁定的東西，像這次是使用enable。而後面的就是其值 -->
+    <button data-bind="enable: myItems().length < 1" onclick="EnableOrNotEnable();">啟用/停用</button>
+
+    <br>
+
+    <!--綁定visable(即show和hidden)-->
+    <div>
+        <div data-bind="visible: shouldShowMessage()">請按按鈕來看其顯示或隱藏</div>
+        <button type="button" onclick="ShowOrHidden();">顯示/隱藏</button>
+    </div>
+
+    <br>
+
+    <!--綁定顯示文字的部份-->
+    <p>Today's message is: <span data-bind="text: myMessage()" onclick="changeText();"></span> 按下後面的文字，會變成隨機的文字</p>
+
+    <!--函式型(以下2個的結果相同)-->
+    <p>The item is <span data-bind="text: price() > 50 ? 'expensive' : 'affordable'"></span></p> 
+    <p>The item is <span data-bind="text: priceRating()"></span></p>
+
+    <br>
+
+    <!--綁定html語法-->
+    <div data-bind="html: details"></div>
+
+    <br>
+
+    <!--綁定css用class-->
+    <p data-bind="class: classStatus()">這是用class控制的css樣式</p>
+
+    <!--綁定css(當currentStatus < 0 ， 使用 r class，其餘沒事)-->
+    <p data-bind="css: { r: currentStatus() < 0}">綁定css</p>
+
+    <!--綁定style-->
+    <p data-bind="style: { color: currentStatus() < 0 ? 'red' : 'green'}">綁定style</p>
+
+    <!--綁定attr(屬性)-->
+    <a data-bind="attr: { href: url, title: details }">這是綁定attr的</a>
+
+
+
+
+    <!--Model設定-->
+    <script>
+        //上面的myItems()就是在這邊設定
+        //Knockout是使用Model再載入至裡面，所以你會看到都是先進行Model
+        var viewModel = {
+            shouldShowMessage: ko.observable(true), // Message initially visible (其中的observable是指會持續觀查它，所以當其值變化上面也會變)
+            //如果寫成 shouldShowMessage: true => 則shouldShowMessage變化，上面也不會變
+            myItems: ko.observableArray([]),  //宣告空的陣列物件
+            myMessage: ko.observable("hello"),  //宣告hello字串物件
+            price: ko.observable(49.5),  //宣告浮點數的
+            details: ko.observable("<h3>綁定html語法</h3>"),
+            currentStatus: ko.observable(-40),
+            url: ko.observable("year-end.html"),
+            //priceRating: function(){
+                //return this.price() > 50 ? "expensive" : "affordable"; 
+            //}
+        };
+
+        //寫入函式型的(第52行)
+        //也可以寫成第89-91行的樣子
+        viewModel.priceRating = ko.pureComputed(function() {
+            return this.price() > 50 ? "expensive" : "affordable";
+        }, viewModel);
+
+        //寫入函式型的(第62行用的)
+        viewModel.classStatus = ko.pureComputed(function(){
+            return this.currentStatus() > 0 ? "g" : "r";
+        }, viewModel);
+
+        //因為上面的data-bind不是原生的html屬性，所以要將viewModel載入以激活它
+        ko.applyBindings(viewModel);
+    </script>
+
+
+    <script>
+        //相關函式寫在這邊
+        //目前觀察，用陣列的話，對它push和清空不用加()，加了會錯(但取值是2種都可以)；而一般的，都要用()
+
+        //第35行用到
+        function EnableOrNotEnable(){
+            //在console中看到的 viewModel.myItems會是一個f()，但用viewModel.myItems()才看得到其裡面陣列的資料
+            if(viewModel.myItems.length < 1){
+                //加1個值，讓它的長度 = 1
+                viewModel.myItems.push("some value");
+            }else{
+                //把陣列清空
+                viewModel.myItems.length = 0;
+            }
+        }
+
+        //第42行用到
+        function ShowOrHidden(){
+            //要取得其值會要用函式的樣式 -> 即你所看到的 viewModel.shouldShowMessage()
+            if(viewModel.shouldShowMessage()){
+                //改變其值(變成false => 隱藏)
+                viewModel.shouldShowMessage(false); // ... now it's hidden
+            }else{
+                //改變其值(變成true => 顯示)
+                viewModel.shouldShowMessage(true); // ... now it's visible again
+            }
+        }
+
+        //第48行用到
+        function changeText(){
+            var randomText = ["aaa", "bbb", "ccc", "ddd", "hello", "<h1>123</h1>", "<h2>123</h2>", "<h3>123</h3>"];
+            var text = randomText[Math.floor(Math.random()*8)];
+            viewModel.myMessage(text);
+
+            //注意：如果是 viewModel.myMessage("<h3>123</h3>"); 不會顯示html上的，而是呈現 <h3>123</h3> 這串文字
+        }
+    </script>
+
+</body>
+</html>

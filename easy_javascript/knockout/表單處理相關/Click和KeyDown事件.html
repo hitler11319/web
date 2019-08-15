@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout 的 Click Bind(綁定) 和 keydown等事件</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--載入knockout.js-->
+    <script src="../js/knockout-3.5.0.js"></script>
+  </head>
+
+  <!--使用keydown那些的事件-->
+  <body data-bind="event: {'keydown' : myFunction}">
+    <!--參考網圵：https://knockoutjs.com/documentation/click-binding.html-->
+    <!--參考網圵：https://stackoverflow.com/questions/18897529/using-keypress-event-in-knockout-js-->
+
+    <!--範例一：基本型-->
+    <div>
+      你按了 <span data-bind="text: numberOfClicks"></span> 次
+      <button data-bind="click: incrementClickCounter">按我</button>
+    </div>
+
+    <br>
+    <!--------------------------------------------------------------------------------------------------------------------->
+
+    <!--範例二、有刪除功能的-->
+    <ul data-bind="foreach: places">
+            <li>
+                <!--$data就是指資料自己本身(例如：倫敦、德國、東京)-->
+                <span data-bind="text: $data"></span>
+                <!--這在foreach.html時說過，要刪除都是呼叫$parent來實作的-->
+                <button data-bind="click: $parent.removePlace">刪除</button>
+            </li>
+        </ul>
+
+    <br>
+    <!--------------------------------------------------------------------------------------------------------------------->
+
+    <!--按下Shift…等相關事件-->
+    <button data-bind="click: myFunction">Click me</button>
+
+    <br>
+    <!------------------------------------------------------------------------------------------------------------------------->
+
+    <!--範例四：阻止冒泡事件(就是父親也有click，而你也有。所以當你按下此時，會先執行它的click再執行父親的click事件。但照理來說是不用執行父親的事件。故用此-->
+    <!-- 在後 面加上 clickBubble: false 即可 -->
+    <div data-bind="click: myFunction">
+      <button data-bind="click: myFunction, clickBubble: false">
+          可以按下我
+      </button>
+  </div>
+
+  <br>
+  <!----------------------------------------------------------------------------------------------------------------------------->
+
+  <!--
+    Knockout將使用jQuery（如果存在）來處理UI事件，例如click。要禁用此行為並指示Knockout始終使用本機事件處理：
+    ko.options.useOnlyNativeEvents = true;
+  -->
+
+
+  <!--
+    Knockout將使用jQuery（如果存在）來處理UI事件。要禁用此行為並指示Knockout始終使用本機事件處理
+    ko.options.useOnlyNativeEvents = true;
+  -->
+
+
+
+    <script>
+      function MyViewModel() {
+        var self = this;
+
+        //範例一
+        self.numberOfClicks = ko.observable(0);
+        self.incrementClickCounter = function() {
+            var previousCount = self.numberOfClicks();
+            self.numberOfClicks(previousCount + 1);
+        }
+
+        //範例二
+        self.places = ko.observableArray(["倫敦", "德國", "東京"]);
+
+        // The current item will be passed as the first parameter, so we know which place to remove
+        self.removePlace = function(place) {
+          self.places.remove(place);
+        };
+
+        //範例三
+        self.myFunction= function(data, event) {
+            if (event.shiftKey) {
+                //因為是click事件，所以要按著Shift和按下這按鈕才會觸發到這裡
+                //do something different when user has shift key down
+                alert("你按了Shift鍵");
+            } else {
+                //do normal action
+                alert("你可以試著壓住Shift並按下按鈕");
+            }
+        }
+      }
+
+      ko.applyBindings(new MyViewModel());
+    </script>
+  </body>
+</html>

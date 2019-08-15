@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout 的 Subscribe</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--載入knockout.js-->
+    <script src="js/knockout-3.5.0.js"></script>
+  </head>
+
+  <body>
+    <!--參考網圵：https://knockoutjs.com/documentation/observables.html-->
+
+    <!--
+        這個平常程式會幫你做完，但你要手動使用也是可以的。
+        這是屬於比較高級的部份，但平常不太會需要用到，故能不用就不看吧
+    -->
+
+    <input type="text" data-bind="value: personName" />
+
+    <script>
+      var old = "";
+      var viewModel = {
+        personName: ko.observable("")
+      };
+
+      //手動去訂閱，當它的值改變完後，就會出現下面的這一段
+      viewModel.personName.subscribe(function(newValue) {
+        alert("old: " + old + "\nnew: " + newValue);
+      });
+
+      //更改前，就會進入這一個(用 beforeChange)
+      viewModel.personName.subscribe(
+        function(oldValue) {
+          old = oldValue;
+          alert("old: " + oldValue);
+        },
+        null,
+        "beforeChange"
+      );
+
+      /*
+        在Knockout 3.5中添加了這種用於處理observable的高級技術。
+        有時，您只需知道觀察到達特定值的時間，而不是對可觀察到的每個變化作出反應。這就是ko.when容易的事情
+        這個會在你的變化完後(即上面的那個old: new: alert完後，才會做下面的事)
+      */
+      ko.when(
+        function() {
+          return viewModel.personName() !== undefined && viewModel.personName() != "";
+        },
+        function(result) {
+          alert("your value is not undefined or null or empty value");
+        }
+      );
+
+      ko.applyBindings(viewModel);
+    </script>
+  </body>
+</html>

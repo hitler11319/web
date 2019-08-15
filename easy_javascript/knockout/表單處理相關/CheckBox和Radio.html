@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout 的 CheckBox 和 Radio</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--載入knockout.js-->
+    <script src="../js/knockout-3.5.0.js"></script>
+    <script src="../js/json2.js"></script>
+  </head>
+
+  <body>
+    <!--參考網圵：https://knockoutjs.com/documentation/checked-binding.html-->
+
+    <!--範例一：CheckBox 用 true/false 控制勾選-->
+    <input type="checkbox" data-bind="checked: wantsSpam" />請勾選
+
+    <br>
+    <!---------------------------------------------------------------------------------------->
+
+    <!--範例二：CheckBox 用 陣列控制勾選(即陣列中有其value值的話，它就會呈現勾選狀態)-->
+    <!--因為陣列中只有cherry和almond這2個值 -> 故他們2個會被勾選，而msg不會被勾選-->
+    <div>
+        <div><input type="checkbox" value="cherry" data-bind="checked: spamFlavors" /> Cherry</div>
+        <div><input type="checkbox" value="almond" data-bind="checked: spamFlavors" /> Almond</div>
+        <div><input type="checkbox" value="msg" data-bind="checked: spamFlavors" /> Monosodium Glutamate</div>
+    </div>
+
+    <br>
+    <!--------------------------------------------------------------------------------------------->
+
+    <!--範例三：Radio不能用true/false控制和陣列控制 ， 只能用 字串控制-->
+    <input type="radio" name="check" value="yes" data-bind="checked: check" />是
+    <input type="radio" name="check" value="no" data-bind="checked: check"  />否
+
+    <br>
+    <!------------------------------------------------------------------------------------------------->
+
+    <!--範例四： 用ForEach去跑，並介紹checkedValue參數-->
+    <!--
+        如果您的綁定還包括checkedValue，則定義checked綁定使用的值而不是元素的value屬性
+    -->
+
+    <!-- ko foreach: items -->
+    <input type="checkbox" data-bind="checkedValue: $data, checked: $root.chosenItems" />
+    <span data-bind="text: itemName"></span>
+<!-- /ko -->
+
+    你當前所勾的選項：
+    <!-- ko foreach: chosenItems -->
+        <li data-bind="text: itemName"></li>
+    <!-- /ko -->
+
+    <script>
+      var viewModel = {
+          //範例一
+        wantsSpam: ko.observable(true), // Initially checked
+
+        //範例二
+        spamFlavors: ko.observableArray(["cherry","almond"]),
+
+        //範例三
+        check:ko.observable("no"),
+
+        //範例四
+        items: ko.observableArray([
+            { itemName: 'Choice 1' },
+            { itemName: 'Choice 2' }
+        ]),
+        chosenItems: ko.observableArray([])  //所勾選的項目在這(會存的是 { itemName: 'Choice 1' } 這個Object)
+      };
+
+      ko.applyBindings(viewModel);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout 的 Let 小應用</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--載入knockout.js-->
+    <script src="js/knockout-3.5.0.js"></script>
+  </head>
+  <body>
+    <!--參考網圵：https://knockoutjs.com/documentation/let-binding.html-->
+
+    <!--Let的用法類似Using和With，但是它可強吧-->
+    <!--let在所有後代元素中都可用，無論上下文如何變化-->
+
+    <!--ko let: {inventory: {suppliers: suppliers, bins: bins}, calculatedDisplay: someCalculation}-->
+    <div data-bind="foreach: {data: inventory.suppliers, as: 'supplier'}">
+            <div data-bind="foreach: {data: inventory.bins, as: 'bin'}">
+                <span data-bind="text: calculatedDisplay(supplier, bin)">
+            </div>
+        </div>
+    <!--/ko-->
+     
+    <script type="text/javascript">
+        ko.applyBindings({
+            suppliers: ["A", "B", "C"],
+            bins: [0, 1, 2],
+            someCalculation: function (supplier, bin) {
+                return supplier + bin.toString();
+            }
+        });
+    </script>
+
+  </body>
+</html>

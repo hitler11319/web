@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout 的 IF介紹(Ifnot就只是否定的if，故不介紹)</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--載入knockout.js-->
+    <script src="js/knockout-3.5.0.js"></script>
+  </head>
+  <body>
+    <!--參考網圵：https://knockoutjs.com/documentation/if-binding.html-->
+
+    <!--在綁定外觀和文字.html中用的都是不會改變的，但這邊用到了input-->
+    <!--在 check: displayMessage 中 一開始代表是預設值，而之後的改變會直接改變displayMessage的值-->
+    <label><input type="checkbox" data-bind="checked: displayMessage" />顯示消息</label>
+    <!--如果這displayMessage是true的話，其這個div才會出現及執行(所以如果這div裡面有別的程式，那displayMessage是false的話，就不會先執行到它)-->
+    <div data-bind="if: displayMessage">這是訊息</div>
+
+    <br />
+    <!------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <ul data-bind="foreach: planets">
+      <li>
+        Planet: <b data-bind="text: name"> </b>
+        <!--如果capital不是null的話，才會出現下面的資料-->
+        <div data-bind="if: capital">
+          Capital: <b data-bind="text: capital.cityName"> </b>
+        </div>
+      </li>
+    </ul>
+
+    <br>
+    <!----------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!--沒有容器下使用if-->
+    <ul>
+            <li>This item always appears</li>
+            <!-- ko if: someExpressionGoesHere -->
+                <li>這個是someExpressionGoesHere為true時才會出現的</li>
+            <!-- /ko -->
+        </ul>
+
+    <script>
+      var viewModel = {
+        displayMessage: ko.observable(false),
+        planets: [
+          { name: "Mercury", capital: null },
+          { name: "Earth", capital: { cityName: "Barnsley" } }
+        ],
+        someExpressionGoesHere : ko.observable(true)
+      };
+
+      //因為上面的data-bind不是原生的html屬性，所以要將viewModel載入以激活它
+      ko.applyBindings(viewModel);
+    </script>
+  </body>
+</html>

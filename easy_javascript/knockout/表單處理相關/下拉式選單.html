@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout 的 下拉式選單</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--載入knockout.js-->
+    <script src="../js/knockout-3.5.0.js"></script>
+    <script src="../js/json2.js"></script>
+  </head>
+
+  <body>
+    <!--參考網圵：https://knockoutjs.com/documentation/options-binding.html-->
+    <!--參考網圵：https://knockoutjs.com/documentation/selectedOptions-binding.html-->
+
+    <!--範例一：最基本的下拉式選單-->
+    <!--把選項陣列直接丟進裡面就幫我們做完了-->
+    <p>
+      選擇國家:
+      <select data-bind="options: availableCountries"></select>
+    </p>
+
+    <br />
+    <!----------------------------------------------------------------------------------------->
+
+    <!--範例二：複選下拉式選單-->
+    <p>
+      選你想要去的國家(複選):
+      <select
+        data-bind="options: availableCountries"
+        size="5"
+        multiple="true"
+      ></select>
+    </p>
+
+    <br />
+    <!--------------------------------------------------------------------------------------------->
+
+    <!--範例三：表示任意JavaScript對象的下拉列表，而不僅僅是字符串(在Value.html中有用到一些)-->
+    <p>
+      <!--有不懂的選項參數，請看value.html-->
+      你的國家:
+      <select
+        data-bind="options: availableCountries2,
+                               optionsText: 'countryName',
+                               value: selectedCountry,
+                               optionsCaption: '選一個...'"
+      ></select>
+    </p>
+
+    <!--
+            上面的 optionsText: 'countryName' 可以進階一點，改成函式
+            例如：
+
+            optionsText : function(item){return item.countryName + '(' + item.countryPopulation.toString() + ')';}
+        -->
+
+    <div data-bind="visible: selectedCountry">
+      <!-- Appears when you select something -->
+      你選的國家歡迎程度
+      <!--如果有選到(selectedCountry有值，則傳回它的歡迎程度，否則顯示 不知道)-->
+      <span
+        data-bind="text: selectedCountry() ? selectedCountry().countryPopulation : '不知道'"
+      ></span
+      >.
+    </div>
+
+    <br />
+    <!---------------------------------------------------------------------------------------------------------------------->
+
+    <!--範例四：對生成的選項進行後處理(詳給有哪些動作請看文件)-->
+
+    <!--這邊有個參數叫optionsAfterRender -> 代表當此選項生成完時要做哪些事-->
+    <select
+      size="4"
+      data-bind="
+    options: myItems,
+    optionsText: 'name',
+    optionsValue: 'id',
+    optionsAfterRender: setOptionDisable"
+    >
+    </select>
+
+    <br />
+    <!------------------------------------------------------------------------------------------------------------------------------>
+
+    <!--範例五：selectedOptions-->
+    <!--
+        在selectedOptions其中在多選擇列表元素被當前選定的結合控制。這旨在與<select>元素和options綁定結合使用。
+        當用戶選擇或取消選擇多選列表中的項時，會在視圖模型上向數組添加或刪除相應的值。
+        同樣，假設它是視圖模型上的可觀察數組，那麼無論何時向此數組添加或刪除（例如，通過push或splice）項目，UI中的相應項目都將被選中或取消選擇。這是一種雙向綁定。
+        注意：要控制選擇哪種元素在單選擇下拉列表，你可以使用的value結合來代替。
+    -->
+
+    <p>
+      選你想去的國家:
+      <select
+        data-bind="options: availableCountries, selectedOptions: chosenCountries"
+        size="5"
+        multiple="true"
+      ></select>
+    </p>
+
+    <script type="text/javascript">
+      //宣告物件
+      function Country(name, population) {
+        this.countryName = name;
+        this.countryPopulation = population;
+      }
+
+      var viewModel = {
+        //範例一+範例2
+        // 這裡就是選項
+        availableCountries: ko.observableArray(["France", "Germany", "Spain"]),
+
+        //範例三
+        availableCountries2: ko.observableArray([
+          new Country("UK", 65000000),
+          new Country("USA", 320000000),
+          new Country("Sweden", 29000000)
+        ]),
+        selectedCountry: ko.observable(), //所選到的國家陣列(會存 {countryName: "UK", "countryPopulation" : 65000000} 這種物件)
+
+        //範例四
+        myItems: [
+          { name: "Item 1", id: 1, disable: ko.observable(false) },
+          { name: "Item 2", id: 2, disable: ko.observable(true) },
+          { name: "Item 3", id: 3, disable: ko.observable(true) },
+          { name: "Item 4", id: 4, disable: ko.observable(false) }
+        ],
+
+        //生成完要做的動作
+        setOptionDisable: function(option, item) {
+          //option是選項本身element，而item是物件(即上面的資料)
+          //applyBindingsToNode是對這個節點要做哪些事情
+          //下面這一段的意思就是，依照資料所看的是否要啟用disable
+          ko.applyBindingsToNode(option, { disable: item.disable }, item);
+        },
+
+        //範例五
+        hosenCountries: ko.observableArray(["Germany", "France"])
+      };
+
+      ko.applyBindings(viewModel);
+    </script>
+  </body>
+</html>

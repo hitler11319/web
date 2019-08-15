@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout 的 Submit</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--載入knockout.js-->
+    <script src="../js/knockout-3.5.0.js"></script>
+  </head>
+
+  <body>
+    <!--參考網圵：https://knockoutjs.com/documentation/submit-binding.html-->
+
+    <form data-bind="submit: doSomething">
+      ... form contents go here ...
+      <input type="text" name="a" id="a" >
+      <input type="text" name="b" id="b" >
+      <input type="checkbox" name="sea" id="sea" checked >海邊
+      <input type="checkbox" name="mountain" id="mountain" checked >山上
+      <input type="radio" name="isSuccess" id="yes">是
+      <input type="radio" name="isSuccess" id="no" checked >否
+      <button type="submit">Submit</button>
+    </form>
+
+    <script type="text/javascript">
+      var viewModel = {
+        doSomething: function(formElement) {
+            //formElement會是所有form表單裡物件的陣列，所有會有7個(因為button也是一個)，接下來就可以對裡的的做事啦
+            console.log(formElement);
+            //使用jQuery Validation等庫觸發UI級驗證 (就是有jqval.js這一支相關的話，就可以用這個)
+            //但目前沒有，所以會是錯的
+            if ($(formElement).valid()) { 
+                /* do something */
+                console.log(formElement);
+            }
+        }
+      };
+
+      ko.applyBindings(viewModel);
+    </script>
+  </body>
+</html>

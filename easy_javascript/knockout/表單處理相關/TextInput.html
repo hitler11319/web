@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout 的 TextInput</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--載入knockout.js-->
+    <script src="../js/knockout-3.5.0.js"></script>
+    <script src="../js/json2.js"></script>
+  </head>
+
+  <body>
+    <!--參考網圵：https://knockoutjs.com/documentation/textinput-binding.html-->
+
+    <!--
+        該textInput綁定鏈接文本框（<input>）或文本區域（<textarea>）與視圖模型屬性，提供視圖模型屬性和元素的值之間的雙向更新。
+        與value綁定不同，textInput它為DOM提供所有類型用戶輸入的即時更新，包括自動完成，拖放和剪貼板事件。
+    -->
+
+    <p>Login name: <input data-bind="textInput: userName" /></p>
+    <p>
+      Password: <input type="password" data-bind="textInput: userPassword" />
+    </p>
+
+    ViewModel:
+    <pre data-bind="text: ko.toJSON($root, null, 2)"></pre>
+
+    <script>
+      ko.applyBindings({
+        userName: ko.observable(""), // Initially blank
+        userPassword: ko.observable("abc") // Prepopulate
+      });
+    </script>
+  </body>
+</html>

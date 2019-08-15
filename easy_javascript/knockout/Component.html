@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout 的 Component 的 介紹</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--載入knockout.js-->
+    <script src="js/knockout-3.5.0.js"></script>
+  </head>
+  <body>
+    <!--參考網圵：https://knockoutjs.com/documentation/component-binding.html-->
+
+    <h4>沒傳參數</h4>
+    <div data-bind='component: "message-editor"'></div>
+
+    <h4>有傳參數(改值後，點一下別處就會變動長度了)</h4>
+    <div
+      data-bind='component: {
+    name: "message-editor",
+    params: { initialText: "Hello, world!" }
+}'
+    ></div>
+
+    <!--
+        更快寫法：
+        寫成
+        <message-editor params="initialText: 'Hello, world!'"></special-offer>
+    -->
+
+    <!--其餘的內容就看參考網圵上的，基本上就是長這個樣子-->
+
+    <script>
+      ko.components.register("message-editor", {
+        viewModel: function(params) {
+        //第一個沒傳參數的，那params會變成nudefined的，所以才要做下面的處理
+          //傳入到下面 template的值
+          this.text = ko.observable(params && params.initialText ? params.initialText : "");
+        },
+        //模板
+        template:
+          'Message: <input data-bind="value: text" /> ' +
+          '(length: <span data-bind="text: text().length"></span>)'
+      });
+
+      ko.applyBindings();
+    </script>
+  </body>
+</html>

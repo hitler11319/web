@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout 的 Event 事件(Click篇有講到一點而已)</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--載入knockout.js-->
+    <script src="../js/knockout-3.5.0.js"></script>
+  </head>
+
+  <body>
+
+    <!--參考網圵：https://knockoutjs.com/documentation/event-binding.html-->
+
+    <!--範例一：基本-->
+    <div>
+        <div data-bind="event: { mouseover: enableDetails, mouseout: disableDetails }">
+            滑鼠離開我
+        </div>
+        <div data-bind="visible: detailsEnabled">
+            詳細
+        </div>
+    </div>
+
+    <br>
+    <!--------------------------------------------------------------------------------------------------------------------->
+
+    <!--範例二：-->
+    <ul data-bind="foreach: places">
+        <!--要觸發自已本身的刪除或其他動作都是加上 $parent.xxxxx-->
+        <li data-bind="text: $data, event: { mouseover: $parent.logMouseOver }"> </li>
+    </ul>
+    <p>上一個滑鼠現在的地點為: <span data-bind="text: lastInterest"> </span></p>
+
+    <!---------------------------------------------------------------------------------------------------------------------->
+
+    <!--
+        防止冒泡事件，何為冒泡事件請去看Click和KeyDown事件.html中有說明
+        使用方式： 後面加上 mouseoverBubble: false
+    -->
+     
+    <script type="text/javascript">
+
+        function MyViewModel() {
+         var self = this;
+
+        //範例一
+        self.detailsEnabled = ko.observable(false);
+        self.enableDetails = function(){self.detailsEnabled(true);}
+        self.disableDetails = function(){self.detailsEnabled(false);}
+
+
+        //範例二
+         self.lastInterest = ko.observable();
+         self.places = ko.observableArray(['倫敦', '德國', '東京']);
+ 
+         // The current item will be passed as the first parameter, so we know which place was hovered over
+         self.logMouseOver = function(place) {
+             self.lastInterest(place);
+         }
+     }
+
+     ko.applyBindings(new MyViewModel());
+    </script>
+
+  </body>
+</html>

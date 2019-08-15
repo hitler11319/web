@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout 的 自定義函式</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--載入knockout.js-->
+    <script src="js/knockout-3.5.0.js"></script>
+  </head>
+  <body>
+    <!--參考網圵：https://knockoutjs.com/documentation/fn.html-->
+
+    <!--
+        有分幾種的函式類型(不是強制要建的，也可以直接寫原本的那種)，如果要的話，請看文件做更詳細
+    -->
+
+    <script>
+      //創建自定義函式
+      //filterByProperty是自己取的名稱
+      //後面的參數是自定義的(propName是屬性名稱, matchValue是要尋找的值)
+      ko.observableArray.fn.filterByProperty = function(propName, matchValue) {
+        //回傳的是ko.pureComputed()函式類型
+        return ko.pureComputed(function() {
+          var allItems = this(), //當前這個陣列的本身
+            matchingItems = []; //要傳回的值
+          for (var i = 0; i < allItems.length; i++) {
+            var current = allItems[i];
+            //如果他的屬性值和你要找的值相同 -> 相入matchingItems陣列中
+            if (ko.unwrap(current[propName]) === matchValue)
+              matchingItems.push(current);
+          }
+          //回傳
+          return matchingItems;
+        }, this);
+      };
+    </script>
+
+    <h3>所有任務 (<span data-bind="text: tasks().length"> </span>)</h3>
+    <ul data-bind="foreach: tasks">
+      <li>
+        <label>
+          <input type="checkbox" data-bind="checked: done" />
+          <span data-bind="text: title"> </span>
+        </label>
+      </li>
+    </ul>
+
+    <h3>已完成任務 (<span data-bind="text: doneTasks().length"> </span>)</h3>
+    <ul data-bind="foreach: doneTasks">
+      <li data-bind="text: title"></li>
+    </ul>
+
+    <script>
+        //給下面的呼叫
+      function Task(title, done) {
+        this.title = ko.observable(title);
+        this.done = ko.observable(done);
+      }
+
+      function AppViewModel() {
+          //特別
+          //特別
+          //是可以儲存 利用函式 把它變成一個Object
+        this.tasks = ko.observableArray([
+          new Task("找到新的桌面背景", true),
+          new Task("把閃亮的貼紙放在筆記本上", false),
+          new Task("在辦公室要求更多的雷鬼​​音樂", true)
+        ]);
+
+        // 使用上方的函式 去找其 done屬性的值為 true的
+        this.doneTasks = this.tasks.filterByProperty("done", true);
+
+        /*
+            這邊的函式等同於
+            this.doneTasks = ko.pureComputed(function() {
+                var all = this.tasks(), done = [];
+                for (var i = 0; i < all.length; i++)
+                    if (all[i].done())
+                    done.push(all[i]);
+                    return done;
+                }, this);
+        */
+      }
+
+      ko.applyBindings(new AppViewModel());
+    </script>
+  </body>
+</html>

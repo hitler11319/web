@@ -1,0 +1,151 @@
+    
+<!DOCTYPE html>
+<html>
+<head>
+<title>Knockout ForEach簡單應用</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="js/jquery.color.js"></script>
+
+<!--載入knockout.js-->
+<script src="js/knockout-3.5.0.js"></script>
+
+</head>
+<body>
+
+    <!--
+        注意：不可以一個html裡面激活2個(含)以上
+        注意：不可以一個html裡面激活2個(含)以上
+        注意：不可以一個html裡面激活2個(含)以上
+        注意：不可以一個html裡面激活2個(含)以上
+        注意：不可以一個html裡面激活2個(含)以上
+    -->
+
+    <!--參考網圵：https://knockoutjs.com/documentation/foreach-binding.html-->
+
+    <!--最基本的寫法-->
+    <table>
+        <thead>
+            <tr><th>First name</th>
+                <th>Last name</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: people">
+            <tr>
+                <td data-bind="text: firstName"></td>
+                <td data-bind="text: lastName"></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <br>
+    <!-------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+
+    <!--動態改變UI(透過陣列的改變，前面就會直接的呈現)-->
+    <!--裡面中的 $就是代表此筆資料 => 故 $index就是其是第幾個資料；$data為此筆的資料內容；$parent為其父親(因為陣列包陣列)；$root為其根節點)-->
+    <h4>People</h4>
+    <ul data-bind="foreach: people">
+        <li>
+            第 <span data-bind="text: $index">  </span>位:
+            <span data-bind="text: lastName"> </span>
+            <!--可以寫成  <span data-bind="text: $data.lastName"> </span> -->
+            <span> </span>
+            <span data-bind="text: firstName"> </span>
+            <!--可以寫成  <span data-bind="text: $data.firstName"> </span> -->
+            <a href="#" data-bind="click: $parent.removePerson">刪除</a>
+        </li>
+    </ul>
+    <!--綁定click的事件-->
+    <button data-bind="click: addPerson">新增</button>
+
+    <br>
+    <!------------------------------------------------------------------------------------------------------------------------------------------------------------>
+
+    <!--使用As(命名)-->
+    <!--因為categories裡的資料被命名為category -> 所以 下面的內容都只要輸入category即是它本身-->
+    <!--後面加上的 noChildContext:true 是  只設置當前項的名稱  與之後的東西都無關-->
+    <ul data-bind="foreach: { data: categories, as: 'category', noChildContext: true }">
+        <span data-bind="text: category.name"></span>:
+        <ul data-bind="foreach: { data: category.items, as: 'item', noChildContext: true }">
+            <li>
+                <span data-bind="text: item"></span>
+            </li>
+        </ul>
+    </ul>
+
+    <br>
+    <!-------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!--沒有實體容器時，所使用的方法-->
+    <!-- 就是用像是 php 那種的寫法(用 ko 互頭結尾) ，這寫法 叫做 虛擬元素語法 -->
+    <ul>
+            <li style="color: red;">Header item</li>
+            <!-- ko foreach: myItems -->
+                <li>Item <span data-bind="text: $data"></span></li>
+            <!-- /ko -->
+        </ul>
+
+
+    <br>
+    <!--------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!--隱藏被銷毀的項目請自行看參考網站的第6點-->
+
+    <!-------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!--對生成的DOM元素進行後處理或動畫處理-->
+    <!--可以使用以下幾個 afterRender/ afterAdd/ beforeRemove/ beforeMove/ afterMove -->
+    <!--這邊先拿afterAdd的範例，其他的就自行再研究-->
+    <ul id="test" data-bind="foreach: { data: myItems, afterAdd: yellowFadeIn }">
+        <li data-bind="text: $data"></li>
+    </ul>
+         
+    <button data-bind="click: addItem()">加入</button>
+
+
+
+    <script>
+        function AppViewModel() {
+            var self = this;
+ 
+            self.people = ko.observableArray([
+                { firstName: 'Bert', lastName: 'Bertington' },
+                { firstName: 'Charles', lastName: 'Charlesforth' },
+                { firstName: 'Denise', lastName: 'Dentiste' }
+            ]);
+
+            self.categories= ko.observableArray([
+                { name: 'Fruit', items: [ 'Apple', 'Orange', 'Banana' ] },
+                { name: 'Vegetables', items: [ 'Celery', 'Corn', 'Spinach' ] }
+            ]);
+
+            self.myItems = ko.observableArray(['A', 'B', 'C', 'D']);
+
+            //函式也可以這樣子寫的
+            //element為元素本身，index為其為第幾個，data為此本身資料
+            self.yellowFadeIn =  function(element, index, data) {
+                //$(element).filter("li") 找其裡面的所有li給他附加動畫
+                $(element).filter("li")
+                    .animate({ backgroundColor: 'yellow' }, 2000)
+                    .animate({ backgroundColor: 'white' }, 8000);
+            }
+
+            self.addItem = function() { this.myItems.push('New item'); }
+ 
+            //新增人
+            self.addPerson = function() {
+                self.people.push({firstName : new Date(), lastName : ""});
+            };
+ 
+            //刪除人
+            self.removePerson = function() {
+                self.people.remove(this);
+            }
+        }
+ 
+        ko.applyBindings(new AppViewModel());
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout 的 JSON的保存和加載</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--載入knockout.js-->
+    <script src="js/knockout-3.5.0.js"></script>
+    <script src="js/json2.js"></script>
+  </head>
+  <body>
+    <!--參考網圵：https://knockoutjs.com/documentation/let-binding.html-->
+
+    <!--
+        加載 JSON：
+
+        方法一：
+            $.getJSON("/some/url", function(data) { })
+
+        方法二：
+            var data = "aaa";
+            $.post("/some/url", data, function(returnedData) {})
+    -->
+
+    <!------------------------------------------------------------------------------------------------------------------->
+
+    <!--將Model轉成JS和轉成JSON的類型-->
+
+    <script>
+      var viewModel = {
+        firstName: ko.observable("Bert"),
+        lastName: ko.observable("Smith"),
+        pets: ko.observableArray(["Cat", "Dog", "Fish"]),
+        type: "Customer"
+      };
+      viewModel.hasALotOfPets = ko.computed(function() {
+        return this.pets().length > 2;
+      }, viewModel);
+    </script>
+
+    <script>
+      //轉成JSON(要引用json2.js)
+      var jsonData = ko.toJSON(viewModel);
+      document.write(jsonData);
+
+      // Result: jsonData is now a string equal to the following value
+      // '{"firstName":"Bert","lastName":"Smith","pets":["Cat","Dog","Fish"],"type":"Customer","hasALotOfPets":true}'
+    </script>
+
+    <script>
+      //轉成JS樣式(就上面看到的樣子)
+      var plainJs = ko.toJS(viewModel);
+      document.write(plainJs);  //會出現是Object
+
+      // Result: plainJS is now a plain JavaScript object in which nothing is observable. It's just data.
+      // The object is equivalent to the following:
+      //   {
+      //      firstName: "Bert",
+      //      lastName: "Smith",
+      //      pets: ["Cat","Dog","Fish"],
+      //      type: "Customer",
+      //      hasALotOfPets: true
+      //   }
+    </script>
+  </body>
+</html>

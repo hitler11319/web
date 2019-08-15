@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout 的 HasFocus</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--載入knockout.js-->
+    <script src="../js/knockout-3.5.0.js"></script>
+  </head>
+
+  <body>
+    <!--參考網圵：https://knockoutjs.com/documentation/hasfocus-binding.html-->
+
+    <!--範例一-->
+    <input data-bind="hasFocus: isSelected" />
+    <button data-bind="click: setIsSelected">Focus</button>
+    <span data-bind="visible: isSelected">The textbox has focus</span>
+
+    <!---------------------------------------------------------------------------------------------------->
+
+    <!--範例二-->
+    <p>
+      姓名:
+      <b data-bind="visible: !editing(), text: name, click: edit">&nbsp;</b>
+      <input data-bind="visible: editing, value: name, hasFocus: editing" />
+    </p>
+    <p><em>單擊名稱進行編輯; 單擊其他地方以應用更改。</em></p>
+
+    <script>
+      ko.applyBindings({
+          //範例一
+        isSelected: ko.observable(false),
+        setIsSelected: function() {
+          this.isSelected(true);
+        },
+
+        //範例二
+        name : ko.observable("Bert Bertingto"),
+        editing : ko.observable(false),
+        edit : function() { this.editing(true); }
+      });
+    </script>
+  </body>
+</html>

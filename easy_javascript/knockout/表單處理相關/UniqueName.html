@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout 的 UniqueName</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--載入knockout.js-->
+    <script src="../js/knockout-3.5.0.js"></script>
+    <script src="../js/json2.js"></script>
+  </head>
+
+  <body>
+    <!--參考網圵：https://knockoutjs.com/documentation/uniqueName-binding.html-->
+
+    <!--
+        uniqueName結合確保了相關聯的DOM元素具有一個非空的name屬性。如果DOM元素沒有name屬性，則此綁定將其賦予一個並將其設置為某個唯一的字符串值。
+    -->
+
+    <!--
+        您不需要經常使用它。它僅在少數情況下有用，例如：
+
+        1.其他技術可能依賴於某些元素具有名稱的假設，即使在使用KO時名稱可能無關緊要。
+        例如，jQuery Validation目前僅驗證具有名稱的元素。要在Knockout UI中使用它，有時需要應用uniqueName綁定以避免混淆jQuery驗證。
+
+        2.如果沒有name屬性，IE 6不允許檢查單選按鈕。
+        大多數情況下，這是無關緊要的，因為您的單選按鈕元素將具有名稱屬性，以將它們放入互斥組。
+        但是，如果您沒有添加name屬性，因為在您的情況下不需要，KO將在內部使用uniqueName這些元素以確保可以檢查它們。
+    -->
+
+    <input data-bind="value: someModelProperty, uniqueName: true" />
+
+
+    <script>
+      ko.applyBindings({
+        someModelProperty: ko.observable("aaa")
+      });
+    </script>
+  </body>
+</html>

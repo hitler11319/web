@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout 的 自訂義綁定</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--載入knockout.js-->
+    <script src="js/knockout-3.5.0.js"></script>
+  </head>
+  <body>
+    <!--參考網圵：https://knockoutjs.com/documentation/custom-bindings.html-->
+
+    <!--使用 ko.bindingHandlers 這個來新增 -->
+    <!--
+        格式為：
+        ko.bindingHandlers.yourBindingName = {
+            init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {},
+            update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {}
+        };
+
+        使用： <div data-bind="yourBindingName: someValue"> </div>
+    -->
+
+    <!--範例1-->
+    <script>
+        ko.bindingHandlers.slideVisible = {
+        init: function(element, valueAccessor) {
+        var value = ko.unwrap(valueAccessor()); // Get the current value of the current property we're bound to
+        $(element).toggle(value); // jQuery will hide/show the element depending on whether "value" or true or false
+    },
+        update: function(element, valueAccessor, allBindings) {
+        // 首先獲取我們最新數據
+        var value = valueAccessor();
+ 
+        // 接下來, 無論我們得到的 model property is observable, 得到其最新的值
+        var valueUnwrapped = ko.unwrap(value);
+ 
+        // 看是否還有其他的屬性要取值(如這邊的slideDuration，就是在下面的時候一起給的值)
+        var duration = allBindings.get('slideDuration') || 400; // 400ms 當作預設值
+ 
+        // Now manipulate the DOM element
+        if (valueUnwrapped == true)
+            $(element).slideDown(duration); // Make the element visible
+        else
+            $(element).slideUp(duration);   // Make the element invisible
+    }
+};
+    </script>
+
+<!-- slideDuration:600就是上面這個範例中，他所要用到的參數 -->
+<div data-bind="slideVisible: giftWrap, slideDuration:600">選個選項</div>
+<label><input type="checkbox" data-bind="checked: giftWrap" /> Gift wrap</label>
+
+
+<br>
+<br>
+<!----------------------------------------------------------------------------------------------------------------------------->
+<!--範例2-->
+
+<script>
+    ko.bindingHandlers.hasFocus = {
+    init: function(element, valueAccessor) {
+        $(element).focus(function() {
+            var value = valueAccessor();
+            value(true);
+        });
+        $(element).blur(function() {
+            var value = valueAccessor();
+            value(false);
+        });
+    },
+    update: function(element, valueAccessor) {
+        var value = valueAccessor();
+        if (ko.unwrap(value))
+            element.focus();
+        else
+            element.blur();
+    }
+};
+</script>
+
+<p>Name: <input data-bind="hasFocus: editingName" /></p>
+<div data-bind="visible: editingName">你已編輯名稱</div>
+<button data-bind="enable: !editingName(), click:function() { editingName(true) }">修改</button>
+
+
+ 
+<script type="text/javascript">
+    var viewModel = {
+        giftWrap: ko.observable(true),
+        editingName: ko.observable()
+    };
+    ko.applyBindings(viewModel);
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout 的 Template的介紹</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--載入knockout.js-->
+    <script src="js/knockout-3.5.0.js"></script>
+  </head>
+  <body>
+    <!--參考網圵：https://knockoutjs.com/documentation/template-binding.html-->
+
+    <!--最基本的-->
+    基本模版:
+    <div data-bind="template: { name: 'person-template', data: buyer }"></div>
+    <div data-bind="template: { name: 'person-template', data: seller }"></div>
+
+    <script type="text/html" id="person-template">
+      <h3 data-bind="text: name"></h3>
+      <p>Credits: <span data-bind="text: credits"></span></p>
+    </script>
+
+    <br />
+    <!------------------------------------------------------------------------------------------------------------------->
+
+    <!--結合ForEach一起使用-->
+    結合ForEach一起使用的
+    <div
+      data-bind="template: { name: 'person-template', foreach: people }"
+    ></div>
+
+    <br>
+    <!---------------------------------------------------------------------------------------------------------------------->
+
+    <!--使用“afterRender”，“afterAdd”和“beforeRemove”-->
+    <!--類似ForEach.html的一樣，完成這個DOM的建立後可以做相關的處理-->
+    <div data-bind='template: { name: "person-template",
+                            data: seller,
+                            afterRender: myPostProcessingLogic }'> </div>
+
+
+    <br>
+    <!------------------------------------------------------------------------------------------------------------------------->
+
+    <!--動態選擇模版(如果有2個以上，這邊懶得建第二個所以都拿第一個來用)-->
+    <!--其中的displayMode就是決定你所要用的template-->
+    <ul data-bind='template: { name: displayMode, foreach: employees }'> </ul>
+
+    <!------------------------------------------------------------------------------------------------------------------------->
+
+    <!--剩下有幾點就請自行看參考網站-->
+
+
+
+    <script type="text/javascript">
+      function MyViewModel() {
+        this.buyer = { name: "Franklin", credits: 250 };
+        this.seller = { name: "Mario", credits: 5800 };
+        this.people = [
+          { name: "Hello", credits: 4900 },
+          { name: "KKK", credits: 10000 }
+        ];
+
+
+        //這邊參數的elements即是建立的DOM本身
+        this.myPostProcessingLogic = function(elements){
+            console.log(elements);  //包含5個值 分別有3個text(即是空白斷行啦，自己跑出來的。和上面的 h3 和 p ，所以要把前面的濾掉)
+            for(var i = 0; i < elements.length; i++){
+
+                //如果是斷行的那個，就不要做(是斷行的那個 它有個屬性叫nodeName會是 #text)
+                if(elements[i].nodeName != "#text"){
+                    $(elements[i]).before("<span style='color:red;'>這個是新產生的</span>");
+                }
+            }
+        }
+
+        this.employees = ko.observableArray([
+            { name: "Kari", active: ko.observable(true) },
+            { name: "Brynn", active: ko.observable(false) },
+            { name: "Nora", active: ko.observable(false) }
+        ]);
+
+        this.displayMode = function(employee) {
+            //因為懶得再建一個模版，所以就都用person-template
+            return employee.active() ? "person-template" : "person-template";
+        }
+      }
+      ko.applyBindings(new MyViewModel());
+    </script>
+  </body>
+</html>
