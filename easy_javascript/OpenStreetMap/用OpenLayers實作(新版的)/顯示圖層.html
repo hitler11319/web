@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>顯示圖層</title>
+
+    <!--使用OpenLayer，故要載入其css和js檔-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css"
+    />
+    <!--<link rel="stylesheet" href="css/ol.css" />-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+    <!--<script src="js/ol.js"></script>-->
+
+    <!--如果客戶端是比較舊的平台，例如：IE 或者是 Android 4.x，需要另外引用底下的 Lib-->
+    <!--<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList"></script>-->
+  </head>
+
+  <body>
+    <!--參考網圵： https://blog.csdn.net/qq_35732147/article/details/81663019-->
+    <!--參考網圵： https://www.cnblogs.com/zhoushangwu/p/9448972.html-->
+
+    <div>
+        <button type="button" onclick="ClearPic();">清除全部圖層</button>
+    </div>
+    <div id="map"></div>
+
+    <script>
+      //初使化地圖
+      var map = new ol.Map({
+        target: "map",
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
+        ],
+        view: new ol.View({
+          //加入這個 就不用) -> 每個以後都改用這個，就會直接是得到經緯度了
+          //如果不是用4326的話，預設是3857 那就每個點座標都要加上 ol.proj.fromLonLat([經度, 緯度])
+          projection: "EPSG:4326",
+          center: [121, 23],
+          zoom: 8,
+          minZoom: 2
+        })
+      });
+
+      //顯示點
+      var pointFeature = new ol.Feature(
+        new ol.geom.Point([121, 23])
+      );
+
+        //线要素
+        var lineFeature = new ol.Feature(
+            new ol.geom.LineString(
+                [
+                [120, 24],
+                [121, 24]
+                ]
+            )
+        );
+        //多边形要素
+        var polygonFeature = new ol.Feature(
+            new ol.geom.Polygon(
+                [
+                    [
+                    [120, 23], 
+                    [121, 24], 
+                    [122, 25], 
+                    [121, 23.5], 
+                    [120, 23], 
+                    ]
+                ]
+            )
+        );
+
+      //顯示長方形(正方形也是類型)
+      var boxFeature = new ol.Feature(
+        new ol.geom.Polygon([
+        [[119, 23], [119, 25], [120, 25], [120, 23], [119, 23]]
+        ])
+      );
+
+
+      /*
+        以上我都不設定其樣式，讓它都用一樣的樣式
+        如果之後要不同設定的話
+        每個Feature都設一個自己的source，然後再用vectorLayer去調設定，再新增
+        例如： 我現在有個新的東西，他要用不同的樣式，則
+        var newpointFeature = new ol.Feature(
+            new ol.geom.Point([121, 24]))
+        );
+
+        var source2 = new ol.source.Vector({features: [newpointFeature]});
+        var vectorLayer2 = {你的樣式設定}
+        map.addLayer(vectorLayer2);
+      */
+
+
+
+      //实例化一个矢量图层Vector作为绘制层
+      var source = new ol.source.Vector({
+        features: [
+          //上面宣告的變數
+          pointFeature,
+          lineFeature,
+          polygonFeature,
+          boxFeature
+        ],
+        wrapX: false
+      });
+
+      var vectorLayer = new ol.layer.Vector({
+        source: source,
+        style: new ol.style.Style({
+          fill: new ol.style.Fill({
+            //填充
+            color: "rgba(255, 255, 255, 0.2)"
+          }),
+          stroke: new ol.style.Stroke({
+            //線框線
+            color: "#ffcc33",
+            width: 2
+          }),
+          image: new ol.style.Circle({
+            //点样式
+            radius: 7,
+            fill: new ol.style.Fill({
+              color: "#ffcc33"
+            })
+          })
+        })
+      });
+
+      //将绘制层添加到地图容器中
+      map.addLayer(vectorLayer);
+    </script>
+
+    <script>
+        //清除全部的圖層
+        function ClearPic(){
+            if(source){
+                source.clear();
+            }
+        }
+    </script>
+  </body>
+</html>

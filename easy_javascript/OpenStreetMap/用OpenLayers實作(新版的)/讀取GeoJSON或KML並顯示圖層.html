@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>讀取GeoJSON並顯示圖層</title>
+
+    <!--使用OpenLayer，故要載入其css和js檔-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css"
+    />
+    <!--<link rel="stylesheet" href="css/ol.css" />-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+    <!--<script src="js/ol.js"></script>-->
+
+    <!--如果客戶端是比較舊的平台，例如：IE 或者是 Android 4.x，需要另外引用底下的 Lib-->
+    <!--<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList"></script>-->
+  </head>
+
+  <body>
+    <!--參考網圵： https://openlayers.org/en/latest/examples/geojson.html-->
+
+    <div>
+      <button type="button" onclick="ClearPic();">清除全部圖層</button>
+    </div>
+    <div id="map"></div>
+
+    <script>
+      //得到的GeoJSON資料
+      var geojsonObject = {
+        type: "FeatureCollection",
+        crs: {
+          type: "name",
+          properties: {
+            name: "EPSG:4326"
+          }
+        },
+        features: [
+          {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [120, 25]
+            }
+          },
+          {
+            type: "Feature",
+            geometry: {
+              type: "LineString",
+              coordinates: [[121, 20], [121, 21]]
+            }
+          },
+          {
+            type: "Feature",
+            geometry: {
+              type: "Polygon",
+              coordinates: [[[120, 22], [121, 23], [122, 23], [120, 22]]]
+            }
+          },
+          {
+            type: "Feature",
+            geometry: {
+              type: "MultiLineString",
+              coordinates: [[[121.4, 23], [121.4, 24]], [[122, 23], [122, 24]]]
+            }
+          },
+          {
+            type: "Feature",
+            geometry: {
+              type: "GeometryCollection",
+              geometries: [
+                {
+                  type: "LineString",
+                  coordinates: [[119, 24], [119, 25]]
+                },
+                {
+                  type: "Point",
+                  coordinates: [119, 23]
+                },
+                {
+                  type: "Polygon",
+                  coordinates: [
+                    [[122, 24], [123, 25], [122.4, 24.5], [122, 24]]
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      };
+
+      /*
+        載入GeoJSON的3種方式
+        1.用網圵的(API)或讀檔的 ： (還要再測試才知道)
+            var vectorSource = new ol.source.Vector({
+                projection: 'EPSG:4326',
+                url: 'data/countries.geojson',
+                format: new ol.format.GeoJSON()
+            });
+
+        2.像上面一面有資料的：
+            var vectorSource = new ol.source.Vector({
+                features: new ol.format.GeoJSON().readFeatures(geojsonObject, {
+                    featureProjection: "EPSG:4326"
+                })
+            });
+        
+
+          *****如果是kml的話，把 ol.format.GeoJSON() 改成 ol.format.KML() 即可 ******* 
+          (但目前不知道有沒有像GeoJSON有第二種的)
+
+
+          ^^^^^^^在 熱點圖(介紹Layers).html中 有用到 讀取KML  ， 所以也可以參考那邊的
+
+      */
+
+      //將GeoJSON資料載入至向量Source
+      var vectorSource = new ol.source.Vector({
+        features: new ol.format.GeoJSON().readFeatures(geojsonObject, {
+          featureProjection: "EPSG:4326"
+        })
+      }); 
+
+      //這邊是加入圖層(可以不用寫這段)
+      //圓形的
+      vectorSource.addFeature(
+        new ol.Feature(new ol.geom.Circle([121, 24], 500))
+      );
+
+      //化成Layer
+      var vectorLayer = new ol.layer.Vector({
+        source: vectorSource
+        //,style: styleFunction  可以設定他們各自Geometry Type的style，可看參考網站(但他那邊都有引用，所以他只寫 Style，要改成 ol.style 這種的)
+      });
+
+      //初使化地圖
+      var map = new ol.Map({
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          }),
+          vectorLayer
+        ],
+        target: "map",
+        view: new ol.View({
+          projection: "EPSG:4326",
+          center: [120, 23],
+          zoom: 7
+        })
+      });
+    </script>
+
+
+<script>
+    //清除全部的圖層
+    function ClearPic(){
+        if(vectorSource){
+          vectorSource.clear();
+        }
+    }
+</script>
+
+
+
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>View視圖介紹</title>
+
+    <!--使用OpenLayer，故要載入其css和js檔-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css"
+    />
+    <!--<link rel="stylesheet" href="css/ol.css" />-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+    <!--<script src="js/ol.js"></script>-->
+
+    <!--如果客戶端是比較舊的平台，例如：IE 或者是 Android 4.x，需要另外引用底下的 Lib-->
+    <!--<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList"></script>-->
+  </head>
+
+  <body>
+    <!--參考網圵： https://ithelp.ithome.com.tw/articles/10201835-->
+
+    <div id="map"></div>
+
+    <script>
+      var map = new ol.Map({
+        target: "map",
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM() //取到OSM圖層做為來源
+          })
+        ]
+      });
+
+      map.setView(
+        new ol.View({
+          // 這個地圖的投影法是 WGS84 / Spherical Mercator(橫麥卡托) / Google Maps
+          projection: "EPSG:3857",
+          // 初始化地圖中心地點
+          center: ol.proj.fromLonLat([120.625763, 23.992247]),  //用OSM圖層 + EPSG:3857 的要用ol.proj.fromLonLat(可能吧！不確定，但沒加就是會跑不出來)
+          // 初始化視圖縮放等級
+          zoom: 10,
+          // 限制視圖最小縮放等級。預設 0
+          minZoom: 1,
+          // 限制視圖最大縮放等級。預設 28
+          maxZoom: 18
+        })
+      ); 
+
+      /*
+        WGS84 = EPSG:3857
+        TWD97/TM2 zone 119 = EPSG:3825 (澎湖地區)
+        TWD97/TM2 zone 121 = EPSG:3826 (台灣本島)
+        TWD67/TM2 zone 119 = EPSG:3827 (澎湖地區)
+        TWD67/TM2 zone 121 = EPSG:3828 (台灣本島)
+      */
+    </script>
+  </body>
+</html>

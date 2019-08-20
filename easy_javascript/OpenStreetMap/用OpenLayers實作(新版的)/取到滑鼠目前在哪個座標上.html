@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>取到滑鼠目前在哪個座標上</title>
+
+    <!--使用OpenLayer，故要載入其css和js檔-->
+    <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css">
+    <!--<link rel="stylesheet" href="css/ol.css">-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+    <!--<script src="js/ol.js"></script>-->
+
+    <!--如果客戶端是比較舊的平台，例如：IE 或者是 Android 4.x，需要另外引用底下的 Lib-->
+    <!--<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList"></script>-->
+
+</head>
+
+<body>
+
+    <!--參考網圵： https://blog.csdn.net/SmileCoffin/article/details/54964747-->
+
+    <!--當在地圖上按下去時，要alert當前的座標點-->
+    <div id="map" onclick="AlertCoordinates();">
+            <div id="myposition"></div>
+        </div>
+
+        <script type="text/javascript">
+            window.onload = function () {
+                //初始化鼠标位置控件
+                var mousePositionControl = new ol.control.MousePosition({
+                    //样式类名称
+                    className: 'mosuePosition',
+                    //投影坐标格式，显示小数点后边多少位
+                    coordinateFormat: ol.coordinate.createStringXY(8),
+                    //指定投影
+                    projection: 'EPSG:4326', //4326 => 經緯度 ； 3857 => 二分位帶座標點
+                    //目标容器
+                    target:document.getElementById('myposition')
+                });
+     
+                //初始化地图容器
+                var map = new ol.Map({
+                    target:'map',
+                    layers:[
+                        new ol.layer.Tile({
+                            source:new ol.source.OSM()
+                        }),
+                    ],
+                    view:new ol.View({
+                        center:ol.proj.fromLonLat([120,24]),
+                        zoom:3
+                    })
+                });
+     
+                //将鼠标位置坐标控件加入到map中
+                map.addControl(mousePositionControl);
+            }
+        </script>
+
+        <script>
+            //依據他按下的位置Alert出來
+            function AlertCoordinates(){
+                //拿得是上面設定的那個className
+                alert(document.getElementsByClassName('mosuePosition')[0].innerHTML);
+            }
+        </script>
+
+</body>
+
+</html>

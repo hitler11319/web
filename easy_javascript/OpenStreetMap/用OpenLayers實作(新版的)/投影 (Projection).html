@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>投影(Projection)介紹</title>
+
+    <!--使用OpenLayer，故要載入其css和js檔-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css"
+    />
+    <!--<link rel="stylesheet" href="css/ol.css" />-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+    <!--<script src="js/ol.js"></script>-->
+
+    <!--如果客戶端是比較舊的平台，例如：IE 或者是 Android 4.x，需要另外引用底下的 Lib-->
+    <!--<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList"></script>-->
+
+    <!--要自訂投影的話要載入-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.5.0/proj4.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.5.0/proj4-src.js"></script>
+  </head>
+
+  <body>
+    <!--參考網圵： https://ithelp.ithome.com.tw/articles/10202978-->
+
+    <!--
+        有提到台灣最常使用的投影法，除去 WGS84 還有 TWD97、TWD67，兩種又各有 119 / 121 經線共計四種投影法。
+        雖然 OpenLayers 沒有提供這四種的投影定義，但我們可以利用 Proj4js 來做客製化定義後，在利用 ol.proj 來做轉換。
+    -->
+
+    <div id="map"></div>
+
+    <script>
+    //自定義我們的其他那些投影模式
+      proj4.defs(
+        "EPSG:3825",
+        "+proj=tmerc +lat_0=0 +lon_0=119 +k=0.9999 +x_0=250000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+      );
+      proj4.defs(
+        "EPSG:3826",
+        "+proj=tmerc +lat_0=0 +lon_0=121 +k=0.9999 +x_0=250000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+      );
+      proj4.defs(
+        "EPSG:3827",
+        "+proj=tmerc +lat_0=0 +lon_0=119 +k=0.9999 +x_0=250000 +y_0=0 +ellps=aust_SA +units=m +no_defs"
+      );
+      proj4.defs(
+        "EPSG:3828",
+        "+proj=tmerc +lat_0=0 +lon_0=121 +k=0.9999 +x_0=250000 +y_0=0 +ellps=aust_SA +units=m +no_defs"
+      );
+
+      ol.proj.proj4.register(proj4);
+
+      var map = new ol.Map({
+        target: "map",
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
+        ],
+        view: new ol.View({
+          projection: "EPSG:3826",
+          center: [248170.826, 2652129.977], //用OSM圖層+ EPSG:3857的要用ol.proj.fromLonLat，但他不是用EPSG:3857投影所以不用
+          zoom: 16
+        })
+      });
+    </script>
+  </body>
+</html>

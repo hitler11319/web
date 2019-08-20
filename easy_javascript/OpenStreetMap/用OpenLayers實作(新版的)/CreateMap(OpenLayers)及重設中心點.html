@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>創一個Open StreamMap 的基本地圖</title>
+
+    <!--使用OpenLayer，故要載入其css和js檔-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css"
+    />
+    <!--<link rel="stylesheet" href="css/ol.css">-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+    <!--<script src="js/ol.js"></script>-->
+
+    <!--如果客戶端是比較舊的平台，例如：IE 或者是 Android 4.x，需要另外引用底下的 Lib-->
+    <!--<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList"></script>-->
+  </head>
+
+  <body>
+    <!--這2篇較舊，所以他的OpenLayer版本較舊，寫法也不一樣了-->
+    <!--參考網圵： https://aechen1202.pixnet.net/blog/post/206602363-openstreetmap%E9%96%8B%E6%94%BE%E8%A1%97%E5%9C%96-->
+    <!--參考網圵： http://newsletter.ascc.sinica.edu.tw/news/read_news.php?nid=2230-->
+
+    <!--<div id="testMap"></div>
+
+    <script>
+            //初使化的動作
+            function InitMap() {
+            //宣告哪一個div成為容器
+            var map = new OpenLayers.Map("testMap");
+            //載入OSM
+            var mapnik = new OpenLayers.Layer.OSM();
+            //使用WGS84座標系統
+            var fromProjection = new OpenLayers.Projection("EPSG:4326"); // Transform from WGS 1984
+            //SMP(要查一下)
+            var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+            //經度,緯度
+            var position = new OpenLayers.LonLat(121.564101, 25.033493).transform(fromProjection, toProjection);
+            //放大比例
+            var zoom = 15;
+
+            //設定Marker點
+            var markers = new OpenLayers.Layer.Markers("Markers");
+            //此地圖加上marker
+            map.addLayer(markers);
+            //marker載入座標點
+            markers.addMarker(new OpenLayers.Marker(position));
+            //地圖加入OSM圖層
+            map.addLayer(mapnik);
+            //地圖設定中心點和放大比例
+            map.setCenter(position, zoom);
+            }
+            
+            </script>-->
+
+    <!------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <!--較新的-->
+    <!--參考網圵： https://ithelp.ithome.com.tw/articles/10201829?sc=iThelpR-->
+
+    <div id="testMap"></div>
+
+    <script type="text/javascript">
+      var map = new ol.Map({
+        target: "testMap", //這裡的testMap就是上面的div的id
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM() //取到OSM圖層做為來源
+          })
+        ],
+        view: new ol.View({
+          //用OSM圖層 + EPSG:3857 的要用ol.proj.fromLonLat(可能吧！不確定，但沒加就是會跑不出來)
+          center: ol.proj.fromLonLat([120.6718112, 24.1502971]), //經度, 緯度  加入ol.proj.fromLonLat() 的是因為用 3857(用二分位帶座標點的) ，如果今天是4326就不用了
+          zoom: 10 //縮放大小
+        })
+      });
+    </script>
+
+    <script>
+      //如果要設定中心點，可以用
+      //上面設定完，會被加在map.values_的屬性裡面
+      //所以要使用view相關的function，就要先取到view
+      map.values_.view.setCenter(ol.proj.fromLonLat([122.6718112, 25.1502971]));
+    </script>
+  </body>
+</html>

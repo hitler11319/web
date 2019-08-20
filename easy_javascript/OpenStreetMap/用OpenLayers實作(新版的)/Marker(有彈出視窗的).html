@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Marker(有彈出視窗的)</title>
+
+    <!--使用OpenLayer，故要載入其css和js檔-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css"
+    />
+    <!--<link rel="stylesheet" href="css/ol.css" />-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+    <!--<script src="js/ol.js"></script>-->
+
+    <!--如果客戶端是比較舊的平台，例如：IE 或者是 Android 4.x，需要另外引用底下的 Lib-->
+    <!--<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList"></script>-->
+
+
+    <!--下面彈跳視窗的樣式-->
+    <style>
+        .ol-popup {
+            position: absolute;
+            background-color: #eeeeee;
+            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            min-width: 280px;
+        }
+
+        .ol-popup:after,
+        .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popup:after {
+            border-top-color: #eeeeee;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+
+        .ol-popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+        }
+
+        .ol-popup-closer:after {
+            content: "✖";
+        }
+    </style>
+    </style>
+
+  </head>
+
+  <body>
+    <!--參考網圵： https://www.itread01.com/content/1547234765.html-->
+    <!--參考網圵： https://www.itread01.com/content/1542719643.html-->
+
+    <div id="map"></div>
+
+    <!--顯示的彈跳視窗-->
+    <div id="popup" class="ol-popup">
+      <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+      <div id="popup-content"></div>
+    </div>
+
+    <script>
+      //上面那些物件的參數，設為全域的
+      var container = document.getElementById("popup");
+      var content = document.getElementById("popup-content");
+      var popupCloser = document.getElementById("popup-closer");
+    </script>
+
+    <script>
+      //樣式的函式
+      //建立標籤的樣式
+      function createLabelStyle(feature) {
+        //返回一個樣式
+        return new ol.style.Style({
+          //把點的樣式換成ICON圖示
+          image: new ol.style.Icon({
+            //控制標註圖片和文字之間的距離
+            anchor: [0.5, 60],
+            //標註樣式的起點位置
+            anchorOrigin: "top-right",
+            //X方向單位：分數
+            anchorXUnits: "fraction",
+            //Y方向單位：畫素
+            anchorYUnits: "pixels",
+            //偏移起點位置的方向
+            offsetOrigin: "top-right",
+            //透明度
+            opacity: 0.75,
+            //圖片路徑
+            src: "https://openlayers.org/en/v5.3.0/examples/data/icon.png"
+          }),
+          //文字樣式
+          text: new ol.style.Text({
+            //對齊方式
+            textAlign: "center",
+            //文字基線
+            textBaseline: "middle",
+            //字型樣式
+            font: "normal 14px 微軟雅黑",
+            //文字內容
+            text: feature.get("name"),
+            //填充樣式
+            fill: new ol.style.Fill({
+              color: "#aa3300"
+            }),
+            //筆觸
+            stroke: new ol.style.Stroke({
+              color: "#ffcc33",
+              width: 2
+            })
+          })
+        });
+      }
+
+      //清除所有marker
+      function clearPic() {
+        if (source) {
+          source.clear();
+        }
+      }
+    </script>
+
+    <script>
+      //初使化地圖
+      var map = new ol.Map({
+        target: "map",
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
+        ],
+        view: new ol.View({
+          //加入這個 就不用) -> 每個以後都改用這個，就會直接是得到經緯度了
+          //如果不是用4326的話，預設是3857 那就每個點座標都要加上 ol.proj.fromLonLat([經度, 緯度])
+          projection: "EPSG:4326",
+          center: [121, 23],
+          zoom: 8,
+          minZoom: 2
+        })
+      });
+
+      //顯示點
+      var pointFeature = new ol.Feature({
+        geometry: new ol.geom.Point([121, 23]),
+        name: "測試點點"
+      });
+
+      //設定點的樣式
+      pointFeature.setStyle(createLabelStyle(pointFeature));
+
+      //实例化一个矢量图层Vector作为绘制层
+      var source = new ol.source.Vector({
+        features: [
+          //上面宣告的變數
+          pointFeature
+        ],
+        wrapX: false
+      });
+
+      //建立向量層
+      var vectorLayer = new ol.layer.Vector({
+        source: source
+      });
+
+      //新增進map層
+      map.addLayer(vectorLayer);
+
+      //初使化彈出視窗
+      var overlay = new ol.Overlay({
+        //設定彈出框的容器
+        element: container,
+        //是否自動平移，即假如標記在螢幕邊緣，彈出時自動平移地圖使彈出框完全可見
+        autoPan: true
+      });
+
+      //監聽map被按下去的事件(觸發彈跳視窗核心部份)
+      map.on("click", function(e) {
+        //在點選時獲取畫素區域
+        var pixel = map.getEventPixel(e.originalEvent);
+
+        console.log(e.coordinate);
+
+        map.forEachFeatureAtPixel(pixel, function(feature) {
+          //coodinate存放了點選時的座標資訊
+          var coordinate = e.coordinate;
+          //設定彈出框內容，可以HTML自定義
+          content.innerHTML = "<p>你點選的座標為：" + coordinate + "</p><a href='https://www.google.com.tw'>點我進google</a>";
+          //設定overlay的顯示位置
+          overlay.setPosition(coordinate);
+          //顯示overlay
+          map.addOverlay(overlay);
+        });
+      });
+
+      //彈跳視窗上面的X按鈕功能
+      popupCloser.addEventListener('click',function(){
+        overlay.setPosition(undefined);
+    });
+    </script>
+  </body>
+</html>

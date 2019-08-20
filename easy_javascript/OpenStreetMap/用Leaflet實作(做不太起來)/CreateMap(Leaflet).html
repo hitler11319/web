@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>創一個Open StreamMap 的基本地圖</title>
+
+    <!--使用leaflet，故要載入其css和js檔-->
+    <!--<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>-->
+    <link rel="css/leaflet.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>-->
+    <script src="js/leaflet.js"></script>
+    <style>
+            html, body{
+                width: 100%;
+                height: 100%;
+            }
+            #map{
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+
+</head>
+
+<body>
+
+    <!--參考網圵： https://noob.tw/openstreetmap/-->
+
+    <div id="Mymap"></div>
+
+    <script>
+        //使用L.map(呈現地圖的div之id名稱).setView([緯度, 經度], 縮放大小)
+        var map = L.map('Mymap').setView([24.8, 121.5], 5);
+
+        //載入OSM的地圖圖層(照著寫，頂多改寫maxZoom，而addTo(map)中的map是我們上面的變數)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	        attribution: '<a href="https://www.openstreetmap.org/">OSM</a>',
+	        maxZoom: 18,
+        }).addTo(map);
+
+        //--------------------------------------------------------------------------------------
+
+        //建立Market點(  L.marker([緯度, 經度]) )
+        var marker = L.marker([24.7, 122]);
+        //上面的marker變數.addTo(載入至哪張地圖的變數)
+        marker.addTo(map);
+
+        //-----------------------------------------------------------------------------------------
+
+        //載入GeoJSON檔(不能直接讀檔，要用Ajax傳的)。這邊就不示範了
+        //比較可惜的是，Leaflet 無法直接讀取 GeoJSON 檔案，必須先透過 Ajax 等方式下載下來才行
+
+        /*
+            以下就是範例程式碼(讀取到YOURFILE.json檔)：
+
+            $.getJSON('YOURFILE.json', function(r){
+                L.geoJSON(r, {color: '#333'}).addTo(map);
+            });
+        */
+    </script>
+
+
+</body>
+
+</html>

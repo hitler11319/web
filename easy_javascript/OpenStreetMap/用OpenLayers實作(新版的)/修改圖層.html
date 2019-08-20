@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>修改圖層</title>
+
+    <!--使用OpenLayer，故要載入其css和js檔-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css"
+    />
+    <!--<link rel="stylesheet" href="css/ol.css" />-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+    <!--<script src="js/ol.js"></script>-->
+
+    <!--如果客戶端是比較舊的平台，例如：IE 或者是 Android 4.x，需要另外引用底下的 Lib-->
+    <!--<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList"></script>-->
+  </head>
+
+  <body>
+    <!--參考網圵： https://blog.csdn.net/qq_35732147/article/details/81180129-->
+
+    <div>
+        <button type="button" onclick="ClearPic();">清除全部圖層</button>
+        <p>修改方式： 1.先點選你要修改的圖層 2.按住你想修改的地方並移動到你想要移到的地方 3.放開滑鼠即可修改</p>
+    </div>
+    <div id="map"></div>
+
+    <!--秀出資料-->
+    <script>
+      //初使化地圖
+      var map = new ol.Map({
+        target: "map",
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
+        ],
+        view: new ol.View({
+            //加入這個 就不用ol.proj.fromLonLat() -> 每個以後都改用這個，就會直接是得到經緯度了
+            //如果不是用4326的話，預設是3857 那就每個點座標都要加上 ol.proj.fromLonLat([經度, 緯度])
+            projection: "EPSG:4326",
+          center: [121, 23],
+          zoom: 8,
+          minZoom: 2
+        })
+      });
+
+      //顯示點
+      var pointFeature = new ol.Feature(
+        new ol.geom.Point([121, 23])
+      );
+
+        //线要素
+        var lineFeature = new ol.Feature(
+            new ol.geom.LineString(
+                [
+                [120, 24],
+                [121, 24]
+                ]
+            )
+        );
+        //多边形要素
+        var polygonFeature = new ol.Feature(
+            new ol.geom.Polygon(
+                [
+                    [
+                    [120, 23], 
+                    [121, 24], 
+                    [122, 25], 
+                    [121, 23.5], 
+                    [120, 23], 
+                    ]
+                ]
+            )
+        );
+
+
+      //实例化一个矢量图层Vector作为绘制层
+      var source = new ol.source.Vector({
+        features: [
+          //上面宣告的變數
+          pointFeature,
+          lineFeature,
+          polygonFeature
+        ],
+        wrapX: false
+      });
+
+      var vectorLayer = new ol.layer.Vector({
+        source: source,
+        style: new ol.style.Style({
+          fill: new ol.style.Fill({
+            //填充
+            color: "rgba(255, 255, 255, 0.2)"
+          }),
+          stroke: new ol.style.Stroke({
+            //線框線
+            color: "#ffcc33",
+            width: 2
+          }),
+          image: new ol.style.Circle({
+            //点样式
+            radius: 7,
+            fill: new ol.style.Fill({
+              color: "#ffcc33"
+            })
+          })
+        })
+      });
+
+      //将绘制层添加到地图容器中
+      map.addLayer(vectorLayer);
+    </script>
+
+    <script>
+        //清除全部的圖層
+        function ClearPic(){
+            if(source){
+                source.clear();
+            }
+        }
+    </script>
+
+    <!--修改圖層主程式碼-->
+    <script>
+        //修改圖層主程式碼(直接複製再改變數名稱就可以用了)
+        //定義修改幾何圖形的功能控件
+        var Modify = {
+            init: function(){
+                //初使化一個交互選擇控件，並加到地圖中
+                this.select = new ol.interaction.Select();
+                map.addInteraction(this.select);
+                //初使化一個交互編輯控件，並加到地圖中
+                this.modify = new ol.interaction.Modify({
+                    features: this.select.getFeatures()           //選中的圖層
+                });
+                map.addInteraction(this.modify);
+                //设置激活状态变更的处理
+                this.setEvents();
+            },
+            setEvents: function(){
+                var selectedFeatures = this.select.getFeatures();       //選中的圖層
+                //加入選中的圖層變化事件
+                this.select.on("change:active", function(){
+                    //遍历选择要素集，返回当前第一个要素（即移除的要素）
+                    var removeCoordinate = selectedFeatures.forEach(selectedFeatures.remove, selectedFeatures);
+                    console.log(removeCoordinate);
+                });
+            },
+            setActive: function(active){
+                this.select.setActive(active);                  //激活选择要素控件
+                this.modify.setActive(active);                  //激活修改要素控件
+            }
+        };
+
+        Modify.init();                          //初始化几何图形修改控件
+        Modify.setActive(true);                 //激活几何图形修改控件
+
+        /*
+            特別註記：
+            如果當使用者按下修改時，先點到一個點。
+            可以用 Modify.select.map_.focus_ 得到 他選的點 之座標點(會是一個陣列，0=經度；1=緯度)
+            當他移動完時，再次用 Modify.select.map_.focus_ 得到的就是新的值了
+
+            你一開始一定會有原始圖形的座標陣列，所以接下來就是看何時觸發使得到舊的值+新的值
+            再去原陣列，把那個值的直接改成新的值(如果像多邊型的頭尾相同，2個都要同時改 => 找到與舊的值相同的都改成新的值)
+        */
+
+    </script>
+  </body>
+</html>
