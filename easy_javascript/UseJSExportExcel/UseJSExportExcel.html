@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>用JS將Table轉成Excel並匯出</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="MobileOptimized" content="width" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="jquery.table2excel.js"></script>
+  </head>
+
+  <body>
+    <!--參考網址 https://ithelp.ithome.com.tw/articles/10192421 -->
+
+    <table id="example">
+      <thead>
+        <th>姓名</th>
+        <th>年紀</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Tom</td>
+          <td>30</td>
+        </tr>
+        <tr>
+          <td>Jack</td>
+          <td>35</td>
+        </tr>
+        <tr>
+          <td>Any</td>
+          <td>20</td>
+        </tr>
+        <tr>
+          <td>John</td>
+          <td>15</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button onclick="ExportExcel('example');">匯出</button>
+
+    <script>
+      //匯出Excel
+      function ExportExcel(id) {
+        $("#" + id).table2excel({
+          // exclude CSS class
+          exclude: ".noExl",
+          name: "員工表", //Sheet name
+          filename: "test", //do not include extension
+          fileext: ".xlsx", // file extension(目前好像只有xls的)
+          preserveColors: true, //確定是否保留背景和字體顏色。默認值：false
+          exclude_img: true,   //是否排除圖像，默認值：true。
+          exclude_links: true, //是否排除超連結，默認值：true。
+          exclude_inputs: true //是否排除輸入框，默認值：true。
+        });
+      }
+    </script>
+  </body>
+</html>
