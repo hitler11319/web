@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vue Router的路由懶加載</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+    <!--要使用Vue Router就要加上這個-->
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  </head>
+  <body>
+    <!--參考網圵：https://router.vuejs.org/zh/guide/advanced/lazy-loading.html#%E6%8A%8A%E7%BB%84%E4%BB%B6%E6%8C%89%E7%BB%84%E5%88%86%E5%9D%97-->
+
+    <script>
+        /*
+            注意：這是適用CLI的，所以在這邊執行絕對會爆錯
+
+            const Foo = () => import('./Foo.vue');
+
+            const router = new VueRouter({
+                routes: [
+                    { path: '/foo', component: Foo }  //照常使用Foo
+                ]
+            });
+
+            //---------------------------------------------------------
+
+            //把组件按组分块((需要 Webpack > 2.4)
+
+            如下面的註解
+        */
+    </script>
+
+    <!--
+        這段是上面那要呈現的，但因為 /* */ 會蓋到上面的註解，所以拿下來用。實際應用就上網查到底該如何使用
+        const Foo = () => import(/* webpackChunkName: "group-foo" */  './Foo.vue')
+        const Bar = () => import(/* webpackChunkName: "group-foo" */  './Bar.vue')
+        const Baz = () => import(/* webpackChunkName: "group-foo" */  './Baz.vue')
+    -->
+
+  </body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vue Router的動態路由匹配(網圵傳參數)</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+    <!--要使用Vue Router就要加上這個-->
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+    <style>
+      /* router-link 會變成 <a> 且按完後 會加上 router-link-active的class屬性 */
+      .router-link-active {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <!--參考網圵：https://router.vuejs.org/zh/guide/essentials/dynamic-matching.html#%E6%8D%95%E8%8E%B7%E6%89%80%E6%9C%89%E8%B7%AF%E7%94%B1%E6%88%96-404-not-found-%E8%B7%AF%E7%94%B1-->
+    <!--參考網圵：https://github.com/vuejs/vue-router/blob/dev/examples/route-matching/app.js-->
+
+    <div id="app">
+      <p>
+          <!--看Basic.html中的就知道，超連結是放在to屬性中，所以用v-bind:to來繫結-->
+        <router-link v-for="link in links" v-bind:to="link">{{
+          link
+        }}</router-link>
+      </p>
+      <router-view></router-view>
+    </div>
+
+    <script>
+      const User = {
+        template: "<div>User {{ $route.params.id }}</div>",
+        watch: {
+          $route(to, from) {
+            // 对路由变化作出响应...
+            //只有在相同的模組下，例如他們都是/user 下的，所以才會觸發，如果跳去 /test的就不會
+            //可以看出來的是物件(裡面有包含路徑、參數……等)
+            console.log(to);
+            console.log(from);
+          }
+        }
+      };
+
+      const Test = {
+        template:
+          "<div> {{ $route.params.id}} 和 {{ $route.params.text}} </div>",
+        watch: {
+          $route(to, from) {
+            // 对路由变化作出响应...
+            //只有在相同的模組下，例如他們都是/test 下的，所以才會觸發，如果跳去 /user的就不會
+            //可以看出來的是物件(裡面有包含路徑、參數……等)
+            console.log(to);
+            console.log(from);
+          }
+        }
+      };
+
+      const router = new VueRouter({
+        routes: [
+          { path: "/user/:id", component: User },  //傳一個參數的
+          { path: "/test/:id/:text", component: Test },  //接2個參數的
+          {
+            // 会匹配所有路径
+            //当使用一个通配符时(有*號的)，$route.params 内会自动添加一个名为 pathMatch 参数
+            /*
+  	            // 给出一个路由 { path: '/user-*' }
+                    this.$router.push('/user-admin')
+                    this.$route.params.pathMatch // 'admin'
+                // 给出一个路由 { path: '*' }
+                    this.$router.push('/non-existing')
+                    this.$route.params.pathMatch // '/non-existing'
+            */
+            path: "*"
+          },
+          {
+            // 会匹配以 `/user-` 开头的任意路径
+            path: "/user-*"
+          },
+          //以下都是較進階的，詳細請看 https://github.com/pillarjs/path-to-regexp
+          { path: "/" },
+          // 傳入2個參數的
+          { path: "/params/:foo/:bar" },
+          // foo參數可有可無
+          { path: "/optional-params/:foo?" },
+          // 使用正規表達式
+          // 下面代表id參數要全是數字
+          { path: "/params-with-regex/:id(\\d+)" },
+          // 可以match到後面隨便是什麼都行
+          { path: "/asterisk/*" },
+          // foo/ 這個路徑可以加也可以不加
+          { path: "/optional-group/(foo/)?bar" }
+        ]
+      });
+
+      const app = new Vue({
+        router,
+        //跟原先的 new Vue一樣，可以加入data mathods computed watch……等
+        data: {
+          links: [
+            "/user/foo",
+            "/user/bar",
+            "/test/foo/hello",
+            "/test/bar/Oh Ya"
+          ]
+        }
+      }).$mount("#app");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vue Router的命名View(簡單)</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+    <!--要使用Vue Router就要加上這個-->
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  </head>
+  <body>
+    <!--參考網圵：https://router.vuejs.org/zh/guide/essentials/named-views.html#%E5%B5%8C%E5%A5%97%E5%91%BD%E5%90%8D%E8%A7%86%E5%9B%BE-->
+
+    <div id="app">
+      <router-view class="view one"></router-view>
+      <router-view class="view two" name="a"></router-view>
+      <router-view class="view three" name="b"></router-view>
+      <router-view class="view"></router-view>
+    </div>
+
+    <script>
+      const One = { template: "<div>This is one</div>" };
+      const Two = { template: "<div>This is Two</div>" };
+      const Three = { template: "<div>This is Three</div>" };
+
+      const router = new VueRouter({
+        routes: [
+          {
+            path: "/",
+            //是components 有加個s喔
+            components: {
+              default: One, //預設(router-view沒有設定name的)
+              a: Two, //router-view中name為a的
+              b: Three //router-view中name為b的
+            }
+          }
+        ]
+      });
+
+      const app = new Vue({
+        router
+      }).$mount("#app");
+    </script>
+  </body>
+</html>

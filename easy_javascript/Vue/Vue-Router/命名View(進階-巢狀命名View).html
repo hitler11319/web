@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vue Router的命名View(進階：巢狀命名View)</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+    <!--要使用Vue Router就要加上這個-->
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+    <style>
+      .us {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto;
+        grid-template-areas:
+          "header header"
+          "nav content"
+          "nav helper";
+      }
+
+      h2 {
+        grid-area: header;
+      }
+
+      .us__nav {
+        grid-area: nav;
+        border: 1px dotted;
+        margin-right: 0.75rem;
+        padding: 0.3rem;
+      }
+      .us__content {
+        grid-area: content;
+      }
+      .us__content--helper {
+        grid-area: helper;
+      }
+    </style>
+  </head>
+  <body>
+    <!--參考網圵：https://router.vuejs.org/zh/guide/essentials/named-views.html#%E5%B5%8C%E5%A5%97%E5%91%BD%E5%90%8D%E8%A7%86%E5%9B%BE-->
+    <!--參考網圵：https://jsfiddle.net/posva/22wgksa3/-->
+
+    <div id="app">
+      <h1>巢狀命名View</h1>
+      <router-view></router-view>
+    </div>
+
+    <script>
+      //先定義一個component(到時候要塞在別的component中的template裡的)
+      //要先定義的原因是，下面要引用所以必需要先認得他
+      const UserSettingsNav = {
+        template: `
+<div class="us__nav">
+	<p>這是sideMap選單</p>
+  <router-link to="/settings/emails">emails</router-link>
+  <br>
+  <router-link to="/settings/profile">profile</router-link>
+</div>
+`
+      };
+
+      const UserSettings = {
+        //在template中引用別的component
+        //且裡面還有設定命名View
+        template: `
+<div class="us">
+  <UserSettingsNav/>
+  <router-view class ="us__content"/>
+  <router-view name="helper" class="us__content us__content--helper"/>
+</div>
+  `,
+        //引用的component(和template中的要一樣名字)
+        components: { UserSettingsNav }
+      };
+
+      //以下3個都是子路由
+      const UserEmailsSubscriptions = {
+        template: `
+<div>
+	<h3>Email Subscriptions</h3>
+</div>
+  `
+      };
+
+      const UserProfile = {
+        template: `
+<div>
+	<h3>Edit your profile</h3>
+</div>
+  `
+      };
+
+      const UserProfilePreview = {
+        template: `
+<div>
+	<h3>Preview of your profile</h3>
+</div>
+  `
+      };
+
+      const router = new VueRouter({
+        routes: [
+          {
+            path: "/settings",
+            // You could also have named views at tho top
+            component: UserSettings,
+            //子路由
+            children: [
+              {
+                path: "emails",
+                component: UserEmailsSubscriptions  //雖然在UserSettings中有2個View，但如果預說一個那就是default(找沒寫name的)
+              },
+              {
+                path: "profile",
+                //命名路由
+                components: {
+                  default: UserProfile,
+                  helper: UserProfilePreview
+                }
+              }
+            ]
+          }
+        ]
+      });
+
+      //請看 路由導航.html說的
+      router.push('/settings/emails');
+
+      const app = new Vue({
+        router
+      }).$mount("#app");
+    </script>
+  </body>
+</html>

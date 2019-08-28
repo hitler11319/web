@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vue Router的路由導航</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+    <!--要使用Vue Router就要加上這個-->
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  </head>
+  <body>
+    <!--參考網圵：https://router.vuejs.org/zh/guide/essentials/navigation.html-->
+
+    <script>
+      /* router.push() 會留下一筆記錄  等同於按下 <router-link to:><router-link> */
+      const router = new VueRouter({
+        routes: []
+      });
+
+      // 对象
+      router.push({ path: "home" });
+
+      // 命名的路由
+      router.push({ name: "user", params: { userId: "123" } });
+
+      // 带查询参数，变成 /register?plan=private
+      router.push({ path: "register", query: { plan: "private" } });
+
+      const userId = "123";
+      router.push({ name: "user", params: { userId } }); // -> /user/123
+      router.push({ path: `/user/${userId}` }); // -> /user/123
+      // 这里的 params 不生效
+      router.push({ path: "/user", params: { userId } }); // -> /user
+
+      //-----------------------------------------------------------------------------------
+
+      /* router.replace() 裡面寫法和router.push()一樣，只是他不會留下一筆記錄  等同於按下 <router-link to: replace><router-link> */
+
+      //-------------------------------------------------------------------------------------
+
+      /* 操作 (都類似於 windows.history.go ……等的操作)*/
+
+      // 在浏览器记录中前进一步，等同于 history.forward()
+      router.go(1);
+
+      // 后退一步记录，等同于 history.back()
+      router.go(-1);
+
+      // 前进 3 步记录
+      router.go(3);
+
+      // 如果 history 记录不够用，那就默默地失败呗
+      router.go(-100);
+      router.go(100);
+    </script>
+  </body>
+</html>

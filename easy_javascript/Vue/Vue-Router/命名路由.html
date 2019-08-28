@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vue Router的命名路由</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+    <!--要使用Vue Router就要加上這個-->
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+  </head>
+  <body>
+    <!--參考網圵：https://router.vuejs.org/zh/guide/essentials/named-routes.html-->
+
+    
+    <div id="app">
+      <h1>命名路由</h1>
+      <p>當前 route name: {{ $route.name }}</p>
+      <ul>
+        <li><router-link :to="{ name: 'home' }">home</router-link></li>  <!-- / -->
+        <li><router-link :to="{ name: 'foo' }">foo</router-link></li>   <!-- /foo -->
+        <li>
+          <router-link :to="{ name: 'bar', params: { id: 123 }}"
+            >bar</router-link
+          >
+        </li>                                                           <!-- /bar/123 -->
+      </ul>
+      <router-view class="view"></router-view>
+    </div>
+
+    <script>
+      const Home = { template: "<div>This is Home</div>" };
+      const Foo = { template: "<div>This is Foo</div>" };
+      const Bar = { template: "<div>This is Bar {{ $route.params.id }}</div>" };
+
+      const router = new VueRouter({
+        routes: [
+          { path: "/", name: "home", component: Home },  //什麼都沒有的時候 -> 跳去home -> 呈現的路徑為 /
+          { path: "/foo", name: "foo", component: Foo },  //路徑為 /foo
+          { path: "/bar/:id", name: "bar", component: Bar } //路徑為 /bar/123
+        ]
+      });
+
+      const app = new Vue({
+        router
+      }).$mount("#app");
+    </script>
+  </body>
+</html>

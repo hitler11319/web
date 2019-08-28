@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vue Router的過渡動畫</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+    <!--要使用Vue Router就要加上這個-->
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+    <style>
+      /* 設定動畫(.fade 在這邊對應的是 transition name="fade") */
+      .fade-enter-active,
+      .fade-leave-active {
+        transition: opacity 0.5s;
+      }
+      .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!--參考網圵：https://router.vuejs.org/zh/guide/advanced/transitions.html#%E5%8D%95%E4%B8%AA%E8%B7%AF%E7%94%B1%E7%9A%84%E8%BF%87%E6%B8%A1-->
+    <!--參考網圵：https://github.com/vuejs/vue-router/blob/dev/examples/transitions/app.js-->
+
+    <div id="app">
+      <h1>過渡動畫(使用方法：用 transition標籤 包住即可)</h1>
+      <ul>
+        <li><router-link to="/">/</router-link></li>
+        <li><router-link to="/parent">/parent</router-link></li>
+        <li><router-link to="/parent/foo">/parent/foo</router-link></li>
+        <li><router-link to="/parent/bar">/parent/bar</router-link></li>
+      </ul>
+
+      <!--設定動畫的mode-->
+      <transition name="fade" mode="out-in">
+        <router-view class="view"></router-view>
+      </transition>
+    </div>
+
+    <script>
+      const Home = {
+        template: `
+    <div class="home">
+      <h2>Home</h2>
+    </div>
+  `
+      };
+
+      const Parent = {
+        data() {
+          return {
+            transitionName: "slide-left"
+          };
+        },
+        //用 導航守衛來監聽到 其的動作，並依照 他的深度(看誰的/比較多)，來決定動畫為何
+        beforeRouteUpdate(to, from, next) {
+          const toDepth = to.path.split("/").length;
+          const fromDepth = from.path.split("/").length;
+          this.transitionName =
+            toDepth < fromDepth ? "slide-right" : "slide-left";
+            //詳細還要設定 slide-right 和 slide-left的動畫(在css上)，如同本面的上面的style
+          next();
+        },
+        template: `
+    <div class="parent">
+      <h2>Parent</h2>
+      <transition :name="transitionName">
+        <router-view class="child-view"></router-view>
+      </transition>
+    </div>
+  `
+      };
+
+      const Default = { template: '<div class="default">default</div>' };
+      const Foo = { template: '<div class="foo">foo</div>' };
+      const Bar = { template: '<div class="bar">bar</div>' };
+
+      const router = new VueRouter({
+        routes: [
+          { path: "/", component: Home },
+          {
+            path: "/parent",
+            component: Parent,
+            children: [
+              { path: "", component: Default },
+              { path: "foo", component: Foo },
+              { path: "bar", component: Bar }
+            ]
+          }
+        ]
+      });
+
+      const app = new Vue({
+        router
+      }).$mount("#app");
+    </script>
+  </body>
+</html>

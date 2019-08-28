@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vue Router的路由組件傳參數</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+    <!--要使用Vue Router就要加上這個-->
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  </head>
+  <body>
+    <!--參考網圵：https://router.vuejs.org/zh/guide/essentials/passing-props.html#%E5%B8%83%E5%B0%94%E6%A8%A1%E5%BC%8F-->
+    <!--參考網圵：https://github.com/vuejs/vue-router/blob/dev/examples/route-props/app.js-->
+
+    <div id="app">
+      <h1>Route props(路由組件傳參數)</h1>
+      <ul>
+        <li><router-link to="/">/</router-link></li>
+        <li><router-link to="/hello/you">/hello/you</router-link></li>
+        <li><router-link to="/static">/static</router-link></li>
+        <li><router-link to="/dynamic/1">/dynamic/1</router-link></li>
+        <li><router-link to="/attrs">/attrs</router-link></li>
+      </ul>
+      <!--父組件傳給子組件，所以子組件應該有個props['foo']-->
+      <router-view class="view" foo="123"></router-view>
+    </div>
+
+    <script>
+      //下面要用到的函式(可自訂義客製化的回傳參數)
+      function dynamicPropsFn(route) {
+        const now = new Date();
+        return {
+          name: now.getFullYear() + parseInt(route.params.years) + "!"
+        };
+      }
+
+      const Hello = {
+        props: ["foo", "name"],
+        template: "<div>hello {{ name }} , foo = {{ foo }} </div>"
+      };
+
+      const router = new VueRouter({
+        routes: [
+          { path: "/", component: Hello }, //沒有傳入
+          { path: "/hello/:name", component: Hello, props: true }, //可以傳入 ，且如果沒寫的話就是傳路徑中的:name -> 代表組件會有個 props:['name']
+          //也可設定 props : false -> 就代表不會有傳入了
+          { path: "/static", component: Hello, props: { name: "world" } }, // static values (傳入固定參數) -> 代表組件會有個 props:['name']
+          { path: "/dynamic/:years", component: Hello, props: dynamicPropsFn }, // custom logic for mapping between route and props  客製化的傳入參數(先接收years的值，再轉成要的參數傳入進去)
+          { path: "/attrs", component: Hello, props: { name: "attrs" } } //傳入固定參數
+        ]
+      });
+
+      const app = new Vue({
+        router
+      }).$mount("#app");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vue Router的路由別名</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+    <!--要使用Vue Router就要加上這個-->
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  </head>
+  <body>
+    <!--參考網圵：https://router.vuejs.org/zh/guide/essentials/redirect-and-alias.html#%E9%87%8D%E5%AE%9A%E5%90%91-->
+    <!--參考網圵：https://github.com/vuejs/vue-router/blob/dev/examples/route-alias/app.js-->
+
+    <div id="app">
+      <h1>
+        路由別名(跟重定向不一樣，例如你按下連結/b他網圵還是/b但內容會是/a)
+      </h1>
+      <ul>
+        <li v-for="linkData in linksData">
+          <router-link v-bind:to="linkData.link">
+            {{ linkData.text }}
+          </router-link>
+        </li>
+      </ul>
+      <router-view class="view"></router-view>
+    </div>
+
+    <script>
+      const Root = { template: "<div>root</div>" };
+      const Home = {
+        template: "<div><h1>Home</h1><router-view></router-view></div>"
+      };
+      const Foo = { template: "<div>foo</div>" };
+      const Bar = { template: "<div>bar</div>" };
+      const Baz = { template: "<div>baz</div>" };
+      const Default = { template: "<div>default</div>" };
+      const Nested = { template: "<router-view/>" };
+      const NestedFoo = { template: "<div>nested foo</div>" };
+
+      const router = new VueRouter({
+        routes: [
+            //按下 /root-alias 網圵還是 /root-alias 但其實 內容會是 /root
+          { path: "/root", component: Root, alias: "/root-alias" },
+          {
+            path: "/home",
+            component: Home,
+            children: [
+              // absolute alias
+              { path: "foo", component: Foo, alias: "/foo" },
+              // relative alias (alias to /home/bar-alias)
+              { path: "bar", component: Bar, alias: "bar-alias" },
+              // multiple aliases
+              { path: "baz", component: Baz, alias: ["/baz", "baz-alias"] },
+              // default child route with empty string as alias.
+              { path: "default", component: Default, alias: "" },
+              // nested alias
+              {
+                path: "nested",
+                component: Nested,
+                alias: "nested-alias",
+                children: [{ path: "foo", component: NestedFoo }]
+              }
+            ]
+          }
+        ]
+      });
+
+      const app = new Vue({
+        router,
+        data: {
+          linksData: [
+            { link: "/root-alias", text: "/root-alias (renders /root)" },
+            { link: "/foo", text: "/foo (renders /home/foo)" },
+            {
+              link: "/home/bar-alias",
+              text: "/home/bar-alias (renders /home/bar)"
+            },
+            { link: "/baz", text: "/baz (renders /home/baz)" },
+            {
+              link: "/home/baz-alias",
+              text: "/home/baz-alias (renders /home/baz)"
+            },
+            { link: "/home", text: " /home (renders /home/default)" },
+            {
+              link: "/home/nested-alias/foo",
+              text: " /home/nested-alias/foo (renders /home/nested/foo)"
+            }
+          ]
+        }
+      }).$mount("#app");
+    </script>
+  </body>
+</html>

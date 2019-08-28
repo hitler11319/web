@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vue Router的路由元信息</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+    <!--要使用Vue Router就要加上這個-->
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  </head>
+  <body>
+    <!--參考網圵：https://router.vuejs.org/zh/guide/advanced/meta.html-->
+
+    <script>
+      var auth = {
+        loggedIn: function() {
+          return true;
+        }
+      };
+
+      const Foo = { template: "<div>This is Foo</div>" };
+      const Bar = { template: "<div>This is Bar</div>" };
+
+      //在router中可以設定一些值，叫做 路由元信息
+      const router = new VueRouter({
+        routes: [
+          {
+            path: "/foo",
+            component: Foo,
+            children: [
+              {
+                path: "bar",
+                component: Bar,
+                // a meta field
+                meta: {
+                  requiresAuth: true,
+                  key: "k123"
+                }
+              }
+            ]
+          }
+        ]
+      });
+
+      //讀取(用 導航守衛來監視你的to 和  from  並且拿到你要meta)
+      router.beforeEach((to, from, next) => {
+        //第一個會得到true，因為我們有設定
+        if (to.matched.some(record => record.meta.requiresAuth)) {
+          //這邊是做是否有登入判斷，不過這邊是測試的，所以在上面寫一隻method去讓它為true
+          if (!auth.loggedIn()) {
+            next({
+              //導去別頁
+              path: "/login",
+              query: { redirect: to.fullPath }
+            });
+          } else {
+            next(); //一定要用next
+          }
+        } else {
+          next(); // 确保一定要调用 next()
+        }
+      });
+    </script>
+  </body>
+</html>

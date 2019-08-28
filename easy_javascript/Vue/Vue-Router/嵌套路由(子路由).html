@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vue Router的嵌套路由(子路由)</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+    <!--要使用Vue Router就要加上這個-->
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+    <style>
+      /* router-link 會變成 <a> 且按完後 會加上 router-link-active的class屬性 */
+      .router-link-active {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <!--參考網圵：https://router.vuejs.org/zh/guide/essentials/nested-routes.html-->
+
+    <div id="app">
+      <ul>
+        <li v-for="link in links">
+          <router-link v-bind:to="link">{{ link }}</router-link>
+        </li>
+      </ul>
+      <router-view></router-view>
+    </div>
+
+    <script>
+      const User = {
+        template: `
+    <div class="user">
+      <h2>User 傳入的id為： {{ $route.params.id }}</h2>
+      <router-view></router-view>
+    </div>
+  `
+      };
+
+      //設定子路由的component
+      const UserHome = { template: "<div>Home</div>" };
+      const UserProfile = { template: "<div>Profile</div>" };
+      const UserPosts = {
+        template: "<div>Posts {{ $route.params.text }} </div>"
+      };
+
+      const router = new VueRouter({
+        routes: [
+          {
+            path: "/user/:id",
+            component: User,
+            //子路由
+            children: [
+              // when /user/:id is matched
+              { path: "", component: UserHome },
+
+              // when /user/:id/profile is matched
+              { path: "profile", component: UserProfile },
+
+              // when /user/:id/posts is matched
+              // 或者是 /user/:id/posts/:text 都會 match (因為是 :text? -> 代表 text 可有可無)
+              { path: "posts/:text?", component: UserPosts }
+            ]
+          }
+        ]
+      });
+
+      const app = new Vue({
+        router,
+        //一樣將連結的資料都寫在陣列中
+        data: {
+          links: [
+            "/user/foo",
+            "/user/ccc/profile",
+            "/user/ddd/posts/123",
+            "/user/bar/posts"
+          ]
+        }
+      }).$mount("#app");
+    </script>
+  </body>
+</html>
