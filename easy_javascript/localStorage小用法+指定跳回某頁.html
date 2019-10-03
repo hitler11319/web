@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>回到某一頁面+localStorage小用法</title>
+</head>
+
+<body>
+
+    <!--共有3個網頁，分別是 a.html b.html c.html
+        a.html 裡有輸入框
+        b.html 會有超聯結可以去c，且一直下去，但當按按鈕時，要回到a.html且a.html輸入的值還在
+        c.html 做多次跳頁用的
+    -->
+
+    <!--每頁都有個 record() 這隻就是在做記錄跳頁幾次了，故可以寫成共用function
+        且 "要讓 href 和 submit 前都執行這一隻"
+    -->
+
+    <!--這是第一個網頁的內容-->
+    <input type="text" >
+    <a href="b.html" onclick="record();">跳去B</a>
+
+    <script>
+        function record(){
+            if (localStorage["history"] == undefined){
+                localStorage["history"] = 0;
+            }else{
+                localStorage["history"]++;
+            }
+        }
+    </script>
+
+    <!--第二個網頁的內容-->
+    <a href="c.html" onclick="record();">跳去C</a>
+    <button type="button" onclick="Go();">按我回A</button>
+
+    <script>
+        //利用存到記錄，直接回到最開始的頁面
+        function Go(){
+            if (localStorage["history"] == undefined){
+                window.history.go();
+            }else{
+                window.history.go((-1)*localStorage["history"]);
+                localStorage["history"] = 0;
+            }
+        }
+    </script>
+
+        <script>
+        function record(){
+            if (localStorage["history"] == undefined){
+                localStorage["history"] = 0;
+            }else{
+                localStorage["history"]++;
+            }
+        }
+    </script>
+
+    <!--第三個網頁的內容-->
+    <a href="b.html" onclick="record();">跳去B</a>
+
+        <script>
+        function record(){
+            if (localStorage["history"] == undefined){
+                localStorage["history"] = 0;
+            }else{
+                localStorage["history"]++;
+            }
+        }
+    </script>
+</body>
+
+</html>
