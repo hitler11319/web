@@ -8,68 +8,66 @@
 
 <body>
 
+    <!--參考網圵：http://techaride.blogspot.com/2012/07/javascript-localstorage.html-->
+
     <!--共有3個網頁，分別是 a.html b.html c.html
         a.html 裡有輸入框
         b.html 會有超聯結可以去c，且一直下去，但當按按鈕時，要回到a.html且a.html輸入的值還在
         c.html 做多次跳頁用的
     -->
 
-    <!--每頁都有個 record() 這隻就是在做記錄跳頁幾次了，故可以寫成共用function
-        且 "要讓 href 和 submit 前都執行這一隻"
-    -->
+    <!--每頁都要有個 CheckRedirectionUrl() 並一開始進入就執行 ，故可以寫成共用function-->
+
+    <!--以下2個可以寫成一個共用的js，並且載入-->
+    <script>
+        // 如果 有 值 且 和 當前的網圵不符， 就再往上一頁
+        function CheckRedirectionUrl(){
+            if (localStorage["goalUrl"] != undefined){
+
+                // 如果相同 => 清空
+                if (localStorage["goalUrl"] == location.href){
+                    localStorage.clear();
+                }else{
+                
+                    var preHref = location.href;
+                    window.history.go(-1);
+
+                    // 確保 如果 跑到最後還是沒這一樣，那就直接顯示這一個
+                    SetTimeOut(function(){
+                        if (location.href == preHref){
+                            var href = localStorage["goalUrl"];
+                            localStorage.clear();
+                            location.href = href;
+                        }
+                    }, 500);
+                }
+            }
+        }
+    </script>
+
+    <script>
+        // 每次開始就先判斷
+        CheckRedirectionUrl();
+    </script>
 
     <!--這是第一個網頁的內容-->
     <input type="text" >
-    <a href="b.html" onclick="record();">跳去B</a>
-
-    <script>
-        function record(){
-            if (localStorage["history"] == undefined){
-                localStorage["history"] = 0;
-            }else{
-                localStorage["history"]++;
-            }
-        }
-    </script>
+    <a href="b.html">跳去B</a>
 
     <!--第二個網頁的內容-->
-    <a href="c.html" onclick="record();">跳去C</a>
-    <button type="button" onclick="Go();">按我回A</button>
+    <a href="c.html">跳去C</a>
+    <button type="button" onclick="Go('file:///C:/Users/%E5%81%89%E5%BE%B7/Desktop/a.html');">按我回A</button>
 
     <script>
-        //利用存到記錄，直接回到最開始的頁面
-        function Go(){
-            if (localStorage["history"] == undefined){
-                window.history.go();
-            }else{
-                window.history.go((-1)*localStorage["history"]);
-                localStorage["history"] = 0;
-            }
-        }
-    </script>
-
-        <script>
-        function record(){
-            if (localStorage["history"] == undefined){
-                localStorage["history"] = 0;
-            }else{
-                localStorage["history"]++;
-            }
+        //跳轉到目標頁的再寫
+        //載入進去，並且開始往前推 => 加上每頁載入都會執行 最上面的function => 故達到直接跳到目標(會看起來閃很多次，但很快)
+        function Go(url){
+            localStorage["goalUrl"] = url;
+            window.history.go(-1);
         }
     </script>
 
     <!--第三個網頁的內容-->
     <a href="b.html" onclick="record();">跳去B</a>
-
-        <script>
-        function record(){
-            if (localStorage["history"] == undefined){
-                localStorage["history"] = 0;
-            }else{
-                localStorage["history"]++;
-            }
-        }
-    </script>
 </body>
-
 </html>
