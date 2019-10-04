@@ -21,25 +21,27 @@
     <!--以下2個可以寫成一個共用的js，並且載入-->
     <script>
         // 如果 有 值 且 和 當前的網圵不符， 就再往上一頁
-        function CheckRedirectionUrl(){
-            if (localStorage["goalUrl"] != undefined){
+        function CheckRedirectionUrl(key){
+            if (key != ""){
+                if (localStorage[key] != undefined){
 
-                // 如果相同 => 清空
-                if (localStorage["goalUrl"] == location.href){
-                    localStorage.clear();
-                }else{
+                    // 如果相同 => 清空
+                    if (localStorage[key] == location.href){
+                        localStorage.clear();
+                    }else{
                 
-                    var preHref = location.href;
-                    window.history.go(-1);
+                        var preHref = location.href;
+                        window.history.go(-1);
 
-                    // 確保 如果 跑到最後還是沒這一樣，那就直接顯示這一個
-                    SetTimeOut(function(){
-                        if (location.href == preHref){
-                            var href = localStorage["goalUrl"];
-                            localStorage.clear();
-                            location.href = href;
-                        }
-                    }, 500);
+                        // 確保 如果 跑到最後還是沒這一樣，那就直接顯示這一個
+                        SetTimeOut(function(){
+                            if (location.href == preHref){
+                                var href = localStorage[key];
+                                localStorage.clear();
+                                location.href = href;
+                            }
+                        }, 500);
+                    }
                 }
             }
         }
@@ -47,7 +49,7 @@
 
     <script>
         // 每次開始就先判斷
-        CheckRedirectionUrl();
+        CheckRedirectionUrl('goalUrl');
     </script>
 
     <!--這是第一個網頁的內容-->
@@ -56,18 +58,36 @@
 
     <!--第二個網頁的內容-->
     <a href="c.html">跳去C</a>
-    <button type="button" onclick="Go('file:///C:/Users/%E5%81%89%E5%BE%B7/Desktop/a.html');">按我回A</button>
+    <button type="button" onclick="Go('goalUrl', 'file:///C:/Users/%E5%81%89%E5%BE%B7/Desktop/a.html');">按我回A</button>
 
     <script>
         //跳轉到目標頁的再寫
         //載入進去，並且開始往前推 => 加上每頁載入都會執行 最上面的function => 故達到直接跳到目標(會看起來閃很多次，但很快)
-        function Go(url){
-            localStorage["goalUrl"] = url;
-            window.history.go(-1);
+        function Go(key, url){
+            if (key != ""){
+                localStorage[key] = url;
+                window.history.go(-1);
+            }
         }
     </script>
 
     <!--第三個網頁的內容-->
-    <a href="b.html" onclick="record();">跳去B</a>
+    <a href="b.html">跳去B</a>
+
+
+    <!---------------------------------------------------------------------------------------------------------------->
+
+    <!--
+        localStorage如果關閉網頁還是會在，有個用法很類似的但關閉網頁值就消失的
+        叫作 "sessionStorage"
+
+        用法： sessionStorage.key = value;
+        例如： sessionStorage.goalUrl = "file:///C:/Users/%E5%81%89%E5%BE%B7/Desktop/a.html";
+
+        限制： 當清除時，不管你宣告多少個都是一次清掉(不像localStorage可以指定哪一個清掉)
+        用法： sessionStorage.clear();
+    -->
+
+
 </body>
 </html>
