@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>href不跳轉+得到目前focus在哪個物件上+阻止滲透事件</title>
+</head>
+
+<body>
+
+    <!--
+        href不跳轉：
+        一般使用href就算是寫onclick="return false;" 仍會執行跳轉，
+        但使用下方的就不會 (即是 href="javascript:;"")
+    -->
+
+    <a href="" onclick="return false;">會跳轉</a>
+    <a href="javascript:;" onclick="alert('不會跳轉');">不會跳轉</a>
+
+
+    <!--
+        得知目前focus在哪個物件上
+        參考網圵： https://blog.csdn.net/Dong_PT/article/details/51205960
+    -->
+
+    <script>
+        // 得到被focus物件的id
+        console.log(document.activeElement.id);
+
+        // 現在是否有focus物件
+        var hasFocus = document.hasFocus();
+    </script>
+
+    <!--
+        阻止 滲透事件(即child的事件觸發完，父新的會繼續觸發)
+        案例一： <div onclick="alert('parent');"><button onclick="alert('child');">按我</button></div>
+                如果按下按鈕，會先執行child的，再執行parent的事件
+        案例二：datetimepicker的物件為a；當按下b要出現日曆選框，我們都用 a.focus(); 但因為 b 被按下去 => 觸發了b的click的動作，故日曆就消失了
+    -->
+
+    <script>
+        // 解決方法： event.stopPropagation();
+
+        /*
+            <div onclick="alert('parent');">
+                <button onclick="alert('child');event.stopPropagation();">按我</button>
+            </div>
+        */
+
+        /*
+            <input class="datetimepicker" id="a">
+            <div onclick="document.getElementById('a').focus();event.stopPropagation();"><i class="fa fa-calender"></i></div>
+        */
+    </script>
+
+</body>
+</html>
