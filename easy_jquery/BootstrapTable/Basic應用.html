@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Basic 的 BootstrapTable應用</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="bootstrap-table-1.11.1.js"></script>
+<script src="bootstrap-table-zh-TW.js"></script>
+</head>
+<body>
+
+    <!--要呈現的物件載體-->
+    <table class="table" style="border:0px;" id="table" data-row-attributes="rowAttributes"></table>
+
+    <script>
+        //初使化參數 (這邊是取到當前參數，因為其他查詢條件基本上可以從物件上拿到，但這些不行)
+        var currentLimit;
+        var currentOffset;
+        var currentSortName;
+        var currentSortOrder;
+
+        // 儲存得到的資料
+        var rowData;
+    </script>
+
+    <script>
+        // 表格初使化設定 (可寫成一個js檔)
+        function InitTable(id, url, columns, params) {
+            $table = $("#" + id + "");
+            $table.bootstrapTable('destroy');
+            $table.bootstrapTable({
+                toggle: "table",  //物件類型
+                url: url,  // 得到資料的url
+                method: 'post',
+                queryParams: params,  //傳入的參數
+                classes: 'table table-striped table-bordered table-hover',  // table 的 class
+                queryParamsType: 'limit',
+                sidePagination: "server",
+                striped: true,
+                cache: false,
+                pagination: true,  // 是否分頁
+                pageSize: [10, 25, 50, 100],  //上面的一次顯示幾筆
+                columns: columns,  //傳入的columns
+                sortable: true  // 是否要排序
+            });
+        }
+
+        // 搜尋條件Model (目前不知這params是哪來的)
+        function Model(params) {
+
+            // 存值，以便需要
+            currentLimit = params.limit;
+            currentOffset = params.offset;
+            currentSortName = this.sortName;
+            currentSortOrder = this.sortOrder;
+
+            return {
+                searchModel: {
+                    Limit: params.limit,
+                    Offset: params.offset,
+                    SortName: this.sortName,
+                    SortOrder: this.sortOrder,  // 上面這4個是最好要有的
+                    keyword : 'aaa'  // 查詢條件
+                }
+            };
+        }
+
+        // 載入表格
+        function LoadData() {
+
+            // 假設出來的物件是
+            /*
+                {
+                    Name: 'hello',
+                    Sex : 'M'
+                }
+            */
+
+            var columns = [
+                {
+                    // 序號(後面的formatter可以傳回一個html或值)
+                    field: "No", title: "#", formatter: function (value, row, index) { return index + 1; }
+                },
+                {
+                    // 實際的Name (後面的允許排序)
+                    field: "Name", title: "姓名", sortable: true,
+                },
+                {
+                    // 物件的Sex 屬性 => 後面的formatter其實可以寫在 GridSetup 裡統一管理
+                    field: "Sex", title: "性別", sortable: true, formatter: function (value, row, index) {
+                        if (row.Sex == "M"){
+                            return "男";
+                        }else{
+                            return "女";
+                        }
+                    }
+                },
+                {
+                    // field中的名稱，如果在row物件找不到的話，就會去看formatter裡的東西
+                    field: "action1", title: "", formatter: "$.ClientSide.OperateFormatter", events: "$.ClientSide.OperateEvents"
+                },
+                {
+                    field: "action2", title: "", formatter: "$.ClientSide.DetailFormatter", events: "$.ClientSide.DetailEvents"
+                }
+            ]
+
+            // 下面的函式(用來長上面的東西)
+            GridSetup();
+
+            // 上面的初使化表格函式 (要呈現的表格id名, 網圵, 上面的columns變數, 上面的Model函式)
+            InitTable("table", "", columns, Model);
+
+            // 如果有要表格長出來後，才出現的寫在這邊 (因為表格沒長那麼快，但其實用秒數的也是不太對的)
+            //還沒那麼快產生出來，所以等個幾秒
+            setTimeout(function () {
+                //加上 表格上方的文字 (詳細設定，可以等表格出來後用F12去看要加在哪邊)
+                var showHtmlText = "<div class='pull-left'><span><b>已送出資料</b></span></div>";
+                $('div .fixed-table-header').html(showHtmlText + $('div .fixed-table-header').html());
+            }, 1000);
+        }
+
+        // 上面的formatter設定(可以把相關羅輯都放這)
+        function GridSetup() {
+            $.ClientSide = {
+                OperateFormatter: function (value, row, index) {
+                    // 上面的rowData取資料 (先確定資料沒有的才加，否則先按去第二頁再按回第一頁就重複了)
+                    if (rowData.indexOf(row) < 0){
+                        rowData.push(row);
+                    }
+
+                    return '安安';
+                },
+                DetailFormatter: function (value, row, index) {
+                    // 回傳的只要是html或值都可以
+                    // 所以回傳一個下拉式選單也是可行的
+                    return '<a onclick="Delete('+ row.Name +');">' + '刪除' + '</a>';
+                },
+                OperateEvents: {
+                    'click .action1': function (e, value, row, index) {
+                        //do something
+                    },
+                    'click .action2': function (e, value, row, index) {
+                        //do something
+                    }
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
