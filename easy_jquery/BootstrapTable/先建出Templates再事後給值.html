@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>BootstrapTable 先建出Templates再事後給值</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="bootstrap-table-1.11.1.js"></script>
+<script src="bootstrap-table-zh-TW.js"></script>
+</head>
+<body>
+
+    <!--
+        操作步驟：
+        1. 加入2個初使變數
+        2. 在 LoadData中要清空值
+        3. LoadData的結尾處，用個 幾秒後才執行的程式(讓end = true；好觸發每秒跑)
+    -->
+
+    關鍵字：<input type="text" id="keyword">
+
+    <!--要呈現的物件載體-->
+    <table class="table" style="border:0px;" id="table" data-row-attributes="rowAttributes"></table>
+
+    <script>
+        //初使化參數 (這邊是取到當前參數，因為其他查詢條件基本上可以從物件上拿到，但這些不行)
+        var currentLimit;
+        var currentOffset;
+        var currentSortName;
+        var currentSortOrder;
+
+        // 儲存得到的資料
+        var rowData;
+
+        // 相關變數控制
+        var isGetData = false;  //是否給過值
+        var isEnd = false;   //是否結束
+    </script>
+
+    <div id="template">
+        <select>
+            <option>請選擇</option>
+            <option value="M">男生</option>
+            <option value="F">女生</option>
+        </select>
+    </div>
+
+    <script>
+        // 表格初使化設定 (可寫成一個js檔)
+        function InitTable(id, url, columns, params) {
+            $table = $("#" + id + "");
+            $table.bootstrapTable('destroy');
+            $table.bootstrapTable({
+                toggle: "table",  //物件類型
+                url: url,  // 得到資料的url
+                method: 'post',
+                queryParams: params,  //傳入的參數
+                classes: 'table table-striped table-bordered table-hover',  // table 的 class
+                queryParamsType: 'limit',
+                sidePagination: "server",
+                striped: true,
+                cache: false,
+                pagination: true,  // 是否分頁
+                pageSize: [10, 25, 50, 100],  //上面的一次顯示幾筆
+                columns: columns,  //傳入的columns
+                sortable: true  // 是否要排序
+            });
+        }
+
+        // 搜尋條件Model (目前不知這params是哪來的)
+        function Model(params) {
+
+            // 存值，以便需要
+            currentLimit = params.limit;
+            currentOffset = params.offset;
+            currentSortName = this.sortName;
+            currentSortOrder = this.sortOrder;
+
+            return {
+                searchModel: {
+                    Limit: params.limit,
+                    Offset: params.offset,
+                    SortName: this.sortName,
+                    SortOrder: this.sortOrder,  // 上面這4個是最好要有的
+                    keyword : $('#keyword').val()  // 查詢條件
+                }
+            };
+        }
+
+        // 載入表格
+        function LoadData() {
+
+            // 先清空值
+            var isGetData = false;
+            var isEnd = false;
+
+            // 假設出來的物件是
+            /*
+                {
+                    Name: 'hello',
+                    Sex : 'M'
+                }
+            */
+
+            var columns = [
+                {
+                    // 序號(後面的formatter可以傳回一個html或值)
+                    field: "No", title: "#", formatter: function (value, row, index) { return index + 1; }
+                },
+                {
+                    // 實際的Name (後面的允許排序)
+                    field: "Name", title: "姓名", sortable: true,
+                },
+                {
+                    // 物件的Sex 屬性 => 後面的formatter其實可以寫在 GridSetup 裡統一管理
+                    // 這邊改個寫法
+                    field: "Sex", title: "性別", sortable: true, formatter: "$.ClientSide.SexTypeFormatter"
+                },
+                {
+                    // field中的名稱，如果在row物件找不到的話，就會去看formatter裡的東西
+                    field: "action1", title: "", formatter: "$.ClientSide.OperateFormatter", events: "$.ClientSide.OperateEvents"
+                },
+                {
+                    field: "action2", title: "", formatter: "$.ClientSide.DetailFormatter", events: "$.ClientSide.DetailEvents"
+                }
+            ]
+
+            // 下面的函式(用來長上面的東西)
+            GridSetup();
+
+            // 上面的初使化表格函式 (要呈現的表格id名, 網圵, 上面的columns變數, 上面的Model函式)
+            InitTable("table", "GetData", columns, Model);
+
+            /*
+                記住： 網圵出來的結果一定是要長這樣的
+                {
+                    Total : xxx (int型別),
+                    Rows : [] (List的上面說的物件的型別)
+                }
+            */
+
+            // 如果有要表格長出來後，才出現的寫在這邊 (因為表格沒長那麼快，但其實用秒數的也是不太對的)
+            //還沒那麼快產生出來，所以等個幾秒
+            setTimeout(function () {
+                //加上 表格上方的文字 (詳細設定，可以等表格出來後用F12去看要加在哪邊)
+                var showHtmlText = "<div class='pull-left'><span><b>已送出資料</b></span></div>";
+                $('div .fixed-table-header').html(showHtmlText + $('div .fixed-table-header').html());
+            }, 1000);
+
+            // 其實可以寫成While會更好 例如：
+            //var trNum = 0;
+            //while(trNum == 0){
+                //trNum = $("#table").find("tr").length;
+                //if (trNum > 0){
+                    //var showHtmlText = "<div class='pull-left'><span><b>已送出資料</b></span></div>";
+                    //$('div .fixed-table-header').html(showHtmlText + $('div .fixed-table-header').html());
+                //}
+            //}
+
+            // 設定幾秒後，開始觸發 每秒跑的程式(最下方)
+            setTimeout(function () {
+                isEnd = true;
+            }, 1000);
+        }
+
+        // 上面的formatter設定(可以把相關羅輯都放這)
+        function GridSetup() {
+            $.ClientSide = {
+                OperateFormatter: function (value, row, index) {
+                    // 上面的rowData取資料 (先確定資料沒有的才加，否則先按去第二頁再按回第一頁就重複了)
+                    if (rowData.indexOf(row) < 0){
+                        rowData.push(row);
+                    }
+
+                    return '安安';
+                },
+                DetailFormatter: function (value, row, index) {
+                    // 回傳的只要是html或值都可以
+                    // 所以回傳一個下拉式選單也是可行的
+                    return '<a onclick="Delete('+ row.Name +');">' + '刪除' + '</a>';
+                },
+                // 性別 (先得到範本，再來就是事後給值)
+                SexTypeFormatter: function (value, row, index){
+                    return $("#template").html();
+                },
+                OperateEvents: {
+                    'click .action1': function (e, value, row, index) {
+                        //do something
+                    },
+                    'click .action2': function (e, value, row, index) {
+                        //do something
+                    }
+                }
+            }
+        }
+
+        // 上面 table物件上有設定個 data-row-attributes="rowAttributes"
+        // 就是代表 每一行按下去後會連去哪
+        function rowAttributes(row, index) {
+            return {
+                'data-link': "Detail/" + row.Name
+            }
+        }
+    </script>
+
+    <!--一開始執行(也可以不用)-->
+    <script>
+    $(document).ready(function () {
+        LoadData();
+    });
+    </script>
+
+    <!--每秒跑的程式(去判斷是否出現秒格來給值)-->
+    <script>
+    setInterval(function () {
+        var c = $("#table").find("tr").length;
+
+        if (rowData.length > 0 && isGetValue == false && isEnd == true && c > 0) {
+
+            // 不要讓條件成立
+            isGetValue = true;
+            isEnd = false;
+
+            // 算出當前是第幾頁(因為rowData有全部的資料) => 並得到目前這頁的資料內容
+            var currentRowData = rowData.filter(function(value, index, arr){
+                // index 要介於 currentOffset 到 currentLimit + currentOffset 間
+                // 例如 第二頁是 10 - 19 (currentOffset = 10, currentLimit = 10)
+                return (index >= currentOffset) && (index < (currentOffset + currentLimit));
+            });
+
+            $("#table").find("tr").map(function (index, ele) {
+                // 標題列會是 index = 0
+                if (index > 0){
+                    // 給下拉式選單值
+                    $(ele).find("select").map(function (i, e) {
+                        // 性別
+                        if (i == 0) {
+                            // 為何要減1 ， 因為 標題列也是一個tr
+                            e.value = currentRowData[index - 1].SexType;
+                        }
+                    })
+                }
+            })
+        }
+    }, 100);
+    </script>
+
+</body>
+</html>
