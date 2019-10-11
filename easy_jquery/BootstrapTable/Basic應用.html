@@ -164,6 +164,14 @@
                 }
             }
         }
+
+        // 上面 table物件上有設定個 data-row-attributes="rowAttributes"
+        // 就是代表 每一行按下去後會連去哪
+        function rowAttributes(row, index) {
+            return {
+                'data-link': "Detail/" + row.Name
+            }
+        }
     </script>
 
     <!--一開始執行(也可以不用)-->
