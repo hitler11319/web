@@ -1,87 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>JQuery基本選擇器 + 應用</title>
+<title>Post完下載檔案</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
 </head>
 <body>
 
-<div id="Div1">
+    <!--
+        方法一： 用一個看不見的Iframe，然後form的target選擇它
+        參考網圵： https://dotblogs.com.tw/mileslin/2015/12/29/180850
+    -->
 
-    <input type="text" class="a b" id="input1" name="i1" value="1">
-    <input type="text" class="a" id="input2" name="i2" value="2">
-    <input type="text" class="b" id="input3" name="example" value="3">
-
-    <label id="label1" name="l1">aaa</label>
-    <label id="label2" name="l2">bbb</label>
-    <label id="label3" name="l3">ccc</label>
-
-</div>
-
-<div id="Div2">
-    <input type="text" class="d" id="input4" name="example2" value="4">
-</div>
-
-<script>
-
-    //基本選擇器運用
-    $('#Div1');    //得到 id為Div1的元素
-    $('div');      //得到所有為div標籤的元素
-    $('.a');       //得到所有class有含a的元素
-    $('.a.b');     //找出class為a 且 class 為 b的元素（中間不用任何符號）
-    $('input.b');  //找出為input且class含有b的元素
-    $('input');    //得到所有為input標籤的元素
-    $('input[name=example]');  //得到是input且name為example元素
-    $('input[value=2]');       //得到是input且value為2的元素
-    $('input[name=example][value=3]');  //得到是input且name為example且value為3的元素
-    //使用表達式的可以參照這一篇 https://ithelp.ithome.com.tw/articles/10095237
-    $('input[name^=i]');                //得到是input且name以i開頭的元素(故只有i1和i2會出現，並不會出現example)
-    $('input[name!=example]');                //得到是input且name不為example的元素
-    $('label[name=l1]');                //得到是label且name為l1的元素
+    <!--匯出檔案POST-->
+    <iframe name="DownLoadiFrame" width="0" height="0"></iframe>
+    <form target="DownLoadiFrame" id="DownLoadForm" action="downloadFile" method="post">
+        <input type="hidden" id="download_FILE_TYPE" name="FILE_TYPE" />
+    </form>
 
 
+    <!--
+        方法二：自己組字串，然後 submit
+    -->
 
-    //Find的應用  => 簡單來講Find就是先用選擇器選擇一個元素，再用find去找此元素裡的其他元素
-    $('#Div1').find('input');         //在id為Div1的元素中找其所有的input(故#Div2裡的input是不會出現的)
-    $('#Div1').find('input[name=example]');   //上面的選擇器都可以用在此
-    $('#Div1').find('input[name=example][value=3]');
-    $('#Div1').find('label');
-    $('#Div1').find('label[name=l1]');
+    <script>
+            var form = $('<form></form>');
+            form.attr("method", "post");
+            form.attr("action", 'downloadFile');
+            var input1 = $('<input type="hidden" id="download_FILE_TYPE" name="FILE_TYPE" value="' + "excel" +  '" />');
+            form.append(input1);
 
-    //Parent的用法 => 找其父親
-    $('input[name=example][value=3]').parent();    //得到id為Div1的這個元素
-    $('input').parent();   //得到id為Div1和Div2的元素(parent會把所有前面選擇器的父親變成陣列)
-
-    //Parents的用法 => 找其父親，但可以加上選擇器條件
-    $('input').parents('#Div2');    //這樣只會找到id為Div2的了
-
-
-    //Next的用法 => 找下一個元素(不能加入篩選條件)
-    $('input[name=example]').next();  //找到這一隻 <label id="label1" name="l1">aaa</label>
-    $('#Div1').next();                //找到 <div id="Div2"> 這個
-    $('#Div2').next();                //找到 <script> 元素
-    $('#Div2').next().next();         //找不到東西了
-
-
-    //Closest的用法 => 類似parent()，是往上找到自己的父親類且符合條件的(如果自己符合，回傳自己)
-    $('#Div1').closest('div');         //找到自己(因為自己符合)
-    $('#input1').closest('div');       //找到Div1這一個
-    $('#input4').closest('div');       //找到Div2這一個
-
-
-    //After和Before用法：
-    //Before介紹  <p id="p">aaa</p>   則 $('#p').before("<h1>aaa</h1>") => 出來的結果 <h1>aaa</h1><p id="p">aaa</p>
-    //After介紹   <p id="p">aaa</p>   則 $('#p').after("<h1>aaa</h1>") => 出來的結果 <p id="p">aaa</p><h1>aaa</h1>
-
-    $('#input4').before('<h1>這是前面</h1>');
-    $('#input4').after('<h1>這是後面</h1>');
-
-    //InsertBefore和InsertAfer的用法： 在某個元素加上元素
-    $("<h3>這是前面</h3>").insertBefore("#input4");
-    $("<h3>這是後面</h3>").insertAfter("#input4");
-
-</script>
+            $(document.body).append(form);
+            form.submit();
+    </script>
 
 </body>
 </html>
