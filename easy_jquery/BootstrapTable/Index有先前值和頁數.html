@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Basic 的 BootstrapTable應用</title>
+<title>BootstrapTable 有先前查詢條件 或在第二頁以後的跳轉</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="bootstrap-table-1.11.1.js"></script>
 <script src="bootstrap-table-zh-TW.js"></script>
 </head>
 <body>
+
+    <!--
+        如果 今天在keyword中輸入 'bbb' 而且跳到第二頁，然後按修改或什麼之類的再跳回Index => 則要呈現原本的值
+        1. 加入 初使參數 page
+        2. 在 Model 的函式中，把相關的值都存起來
+        3. 在 LoadData中 (或者 用 每秒跑) 的方法去幫他跳頁
+    -->
 
     關鍵字：<input type="text" id="keyword">
 
@@ -22,6 +29,9 @@
 
         // 儲存得到的資料
         var rowData;
+
+        // 頁數
+        var page = 0;
     </script>
 
     <script>
@@ -54,6 +64,10 @@
             currentOffset = params.offset;
             currentSortName = this.sortName;
             currentSortOrder = this.sortOrder;
+
+            // 把相關數據存起來
+            sessionStorage.page = parseInt((params.offset + params.limit) / (params.limit));
+            sessionStorage.keyword = $('#keyword').val();
 
             return {
                 searchModel: {
@@ -169,8 +183,58 @@
     <!--一開始執行(也可以不用)-->
     <script>
     $(document).ready(function () {
-        LoadData();
+        // 改成執行判斷是否有預設值的函式
+        ReloadParams();
     });
+    </script>
+
+    <!--要新增的部份-->
+    <script>
+        function ReloadParams(){
+            if (sessionStorage.keyword == undefined){
+                return false;
+            }else{
+                $("#keyword").val(sessionStorage.keyword);
+
+                page = parseInt(sessionStorage.page);
+                sessionStorage.clear();
+
+                // 這邊可以寫While比較好，或者寫每秒跑的程式(看下方)
+                // 第一頁就不用再跳轉了
+                while(page > 1){
+                    var len = $(".page-link").length;
+
+                    // 為啥要加2 ？ 因為 有 上一頁 、 下一頁 這個符號在
+                    if ((len >= (page + 2))) {                        
+                        $(".page-link").map(function (index, ele) {
+                            if (ele.innerHTML == page.toString()) {
+                                page = 0;
+                                ele.click();
+                            }
+                        })
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!--如果不用While的話，就用每秒跑-->
+    <script>
+        setInterval(function () {
+            if (page > 0) {
+                sessionStorage.clear();
+                var len = $(".page-link").length;
+
+                if ((len >= (page + 2)) && (page > 1)) {
+                    $(".page-link").map(function (index, ele) {
+                        if (ele.innerHTML == page.toString()) {
+                            page = 0;
+                            ele.click();
+                        }
+                    })
+                }
+            }
+        }, 100);
     </script>
 
 </body>
