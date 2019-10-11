@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ajax 上傳檔案</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+<form id="f1" method="post" action="uploadFile">
+    <input type="file" id="File">
+</form>
+
+<script>
+    var form_data = new FormData();  //建構new FormData()
+    var file_data = $("#File")[0].files[0];   //取得上傳檔案屬性
+
+    // 這邊就像是一個Form表單一樣 左邊是name，右邊是value
+    form_data.append('FileType', 'excel');  
+    form_data.append('File', file_data);  
+
+    // 使用 Ajax
+    $.ajax({
+        type: "POST",
+        url: url,
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: form_data, 
+        success: function (result) {
+            console.log(result); 
+        }
+    });
+</script>
+
+</body>
+</html>
