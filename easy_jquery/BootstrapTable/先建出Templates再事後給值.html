@@ -32,7 +32,8 @@
 
         // 相關變數控制
         var isGetData = false;  //是否給過值
-        var isEnd = false;   //是否結束
+
+        var isLoadFinish;
     </script>
 
     <div id="template">
@@ -68,11 +69,19 @@
         // 搜尋條件Model (目前不知這params是哪來的)
         function Model(params) {
 
+            // 如果2個不相同 => 換頁 (這邊的處理會比得資料早=>為換頁前的處理)
+            if (currentOffset != params.offset) {
+                BeforePageChange();
+            }
+
             // 存值，以便需要
             currentLimit = params.limit;
             currentOffset = params.offset;
             currentSortName = this.sortName;
             currentSortOrder = this.sortOrder;
+
+            // 讓 isLoadFinish重頭開始
+            isLoadFinish = false;
 
             return {
                 searchModel: {
@@ -87,10 +96,6 @@
 
         // 載入表格
         function LoadData() {
-
-            // 先清空值
-            var isGetData = false;
-            var isEnd = false;
 
             // 假設出來的物件是
             /*
@@ -136,29 +141,6 @@
                     Rows : [] (List的上面說的物件的型別)
                 }
             */
-
-            // 如果有要表格長出來後，才出現的寫在這邊 (因為表格沒長那麼快，但其實用秒數的也是不太對的)
-            //還沒那麼快產生出來，所以等個幾秒
-            setTimeout(function () {
-                //加上 表格上方的文字 (詳細設定，可以等表格出來後用F12去看要加在哪邊)
-                var showHtmlText = "<div class='pull-left'><span><b>已送出資料</b></span></div>";
-                $('div .fixed-table-header').html(showHtmlText + $('div .fixed-table-header').html());
-            }, 1000);
-
-            // 其實可以寫成While會更好 例如：
-            //var trNum = 0;
-            //while(trNum == 0){
-                //trNum = $("#table").find("tr").length;
-                //if (trNum > 0){
-                    //var showHtmlText = "<div class='pull-left'><span><b>已送出資料</b></span></div>";
-                    //$('div .fixed-table-header').html(showHtmlText + $('div .fixed-table-header').html());
-                //}
-            //}
-
-            // 設定幾秒後，開始觸發 每秒跑的程式(最下方)
-            setTimeout(function () {
-                isEnd = true;
-            }, 1000);
         }
 
         // 上面的formatter設定(可以把相關羅輯都放這)
@@ -208,23 +190,28 @@
     });
     </script>
 
-    <!--每秒跑的程式(去判斷是否出現秒格來給值)-->
+    <!--要給值的話，因為有跳頁的關系，所以有分查詢/跳頁前 、 查詢/跳頁後 的動作-->
     <script>
-    setInterval(function () {
+            // 跳頁前
+    function BeforePageChange() {
+        rowData = [];  //清空
+        console.log("執行跳頁前的動作，可以用於清空值相關的事項(會在Model函式被呼叫)");
+    }
+
+    // 跳頁後
+    function AfterPageChange() {
+        console.log("執行跳頁後的動作，可以用於給值相關的事項(會用個每秒跑的來呼叫)");
+
+        // 跳頁時，因為一開始就讓isGetValue 變回 false => 而他跑到時第一頁的table還沒消掉 => 直接跑每秒跑的程式 => 出錯
+        isGetValue = false;
+
+        // 每秒跑的程式可以改寫在這，而且不用每秒跑了
         var c = $("#table").find("tr").length;
 
-        if (rowData.length > 0 && isGetValue == false && isEnd == true && c > 0) {
+        if (rowData.length > 0 && isGetValue == false && c > 0) {
 
             // 不要讓條件成立
             isGetValue = true;
-            isEnd = false;
-
-            // 算出當前是第幾頁(因為rowData有全部的資料) => 並得到目前這頁的資料內容
-            var currentRowData = rowData.filter(function(value, index, arr){
-                // index 要介於 currentOffset 到 currentLimit + currentOffset 間
-                // 例如 第二頁是 10 - 19 (currentOffset = 10, currentLimit = 10)
-                return (index >= currentOffset) && (index < (currentOffset + currentLimit));
-            });
 
             $("#table").find("tr").map(function (index, ele) {
                 // 標題列會是 index = 0
@@ -234,13 +221,28 @@
                         // 性別
                         if (i == 0) {
                             // 為何要減1 ， 因為 標題列也是一個tr
-                            e.value = currentRowData[index - 1].SexType;
+                            e.value = rowData[index - 1].SexType;
                         }
                     })
                 }
             })
         }
-    }, 100);
+    }   
+    </script>
+
+    <!--每秒跑的程式，用來看是否查詢完成，並呼叫AfterPageChange函式-->
+    <script>
+        // 用來看是否表格查完的
+        setInterval(function () {
+            if (isLoadFinish == false) {
+                if ($(".fixed-table-loading").length > 0) {
+                    if ($(".fixed-table-loading")[0].style.display == "none") {
+                        isLoadFinish = true;
+                        AfterPageChange();
+                    }
+                }
+            }
+        }, 100)
     </script>
 
 </body>
