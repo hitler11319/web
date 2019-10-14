@@ -197,32 +197,18 @@
                 $("#keyword").val(sessionStorage.keyword);
 
                 page = parseInt(sessionStorage.page);
-                sessionStorage.clear();
 
-                // 這邊可以寫While比較好，或者寫每秒跑的程式(看下方)
-                // 第一頁就不用再跳轉了
-                while(page > 1){
-                    var len = $(".page-link").length;
+                LoadData();
 
-                    // 為啥要加2 ？ 因為 有 上一頁 、 下一頁 這個符號在
-                    if ((len >= (page + 2))) {                        
-                        $(".page-link").map(function (index, ele) {
-                            if (ele.innerHTML == page.toString()) {
-                                page = 0;
-                                ele.click();
-                            }
-                        })
-                    }
-                }
+                // 下面有每秒跑的
             }
         }
     </script>
 
-    <!--如果不用While的話，就用每秒跑-->
+    <!--用每秒跑去幫他按頁數-->
     <script>
         setInterval(function () {
             if (page > 0) {
-                sessionStorage.clear();
                 var len = $(".page-link").length;
 
                 if ((len >= (page + 2)) && (page > 1)) {
