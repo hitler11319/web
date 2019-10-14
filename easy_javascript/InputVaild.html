@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>JS 限制input 輸入</title>
+</head>
+
+<body>
+
+    <!--參考網圵： https://www.itread01.com/content/1503489483.html-->
+
+    <label>只能輸入英文</label>
+    <input type="text" onkeyup="OnlyEng(this);" />
+
+    <label>只能輸入數字</label>
+    <input type="text" onkeyup="OnlyNum(this);" />
+
+    <label>只能輸入數字和小數點</label>
+    <input type="text" onkeyup="OnlyFloat(this);" />
+
+    <label>只能輸入英文和數字</label>
+    <input type="text" onkeyup="OnlyEngAndNum(this);" />
+
+    <label>只能輸入中文</label>
+    <input type="text" onkeyup="OnlyChT(this);" />
+
+    <label>只能輸入中文和數字</label>
+    <input type="text" onkeyup="OnlyChTAndNum(this);" />
+
+    <label>禁止輸入法輸入(沒啥用)</label>
+    <input type="text" style="ime-mode: disabled">
+
+    <label>驗證正規化寫法(以身份證為例)</label>
+    <input type="text" onchange="VaildIdn(this, true)">
+
+    <script>
+        // 只能輸入英文
+        function OnlyEng(obj){
+            obj.value = obj.value.replace(/[^a-zA-Z]/g, "");
+        }
+
+        // 只能輸入數字
+        function OnlyNum(obj){
+            obj.value = obj.value.replace(/\D/g, "");
+        }
+
+        // 只能輸入小數點(沒擋2個點的)
+        function OnlyFloat(obj){
+            obj.value = obj.value.replace(/[^\d\._]/g, "");
+        }
+
+        // 只能輸入英文和數字
+        function OnlyEngAndNum(obj){
+            obj.value = obj.value.replace(/[\W]/g, "");
+        }
+
+        // 只能輸入中文
+        function OnlyChT(obj){
+            obj.value = obj.value.replace(/[^\u4E00-\u9FA5]/g, "");
+        }
+
+        // 只能輸入中文和數用
+        function OnlyChTAndNum(obj){
+            obj.value = obj.value.replace(/[^\u4E00-\u9FA5\d]/g, "");
+        }
+
+        // 驗證寫法
+        function VaildIdn(obj, isShowAlert) {
+            re = /^[a-zA-Z][1-2]\d{8}$/;
+
+            if (!re.test(obj.value)) {
+                if (isShowAlert) {
+                    alert("你的 身份證號碼 格式不對！");
+                }
+
+            return false;
+
+            } else {
+                return true;
+            }
+        }
+    </script>
+
+</body>
+
+</html>
