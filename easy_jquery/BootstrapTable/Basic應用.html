@@ -42,7 +42,11 @@
                 pagination: true,  // 是否分頁
                 pageSize: [10, 25, 50, 100],  //上面的一次顯示幾筆
                 columns: columns,  //傳入的columns
-                sortable: true  // 是否要排序
+                sortable: true,  // 是否要排序
+                // 換頁會執行的程式
+                onPageChange:function(currentPage, pageSize){
+                    console.log("目前頁數： " + currentPage + " 一頁顯示：" + pageSize + " 筆");
+                }
             });
         }
 
@@ -121,22 +125,21 @@
 
             // 如果有要表格長出來後，才出現的寫在這邊 (因為表格沒長那麼快，但其實用秒數的也是不太對的)
             //還沒那麼快產生出來，所以等個幾秒
+            // LoadData 只會執行一次而已，如果想要每次都會出現的話，就要寫成每秒跑的了(如下)
             setTimeout(function () {
                 //加上 表格上方的文字 (詳細設定，可以等表格出來後用F12去看要加在哪邊)
                 var showHtmlText = "<div class='pull-left'><span><b>已送出資料</b></span></div>";
                 $('div .fixed-table-header').html(showHtmlText + $('div .fixed-table-header').html());
             }, 1000);
-
-            // 其實可以寫成While會更好 例如：
-            //var trNum = 0;
-            //while(trNum == 0){
-                //trNum = $("#table").find("tr").length;
-                //if (trNum > 0){
-                    //var showHtmlText = "<div class='pull-left'><span><b>已送出資料</b></span></div>";
-                    //$('div .fixed-table-header').html(showHtmlText + $('div .fixed-table-header').html());
-                //}
-            //}
         }
+
+        // 因為LoadData只會執行一次，如果想每次table長出來都會對他做事情，那最好用每秒跑的
+        //setInterval(function () {
+            //if (('div .fixed-table-header').length > 0){
+                //var showHtmlText = "<div class='pull-left'><span><b>已送出資料</b></span></div>";
+                //$('div .fixed-table-header').html(showHtmlText + $('div .fixed-table-header').html());
+            //}
+        //}, 100);
 
         // 上面的formatter設定(可以把相關羅輯都放這)
         function GridSetup() {
