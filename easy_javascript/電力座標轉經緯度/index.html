@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>電力座標轉經緯度</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="js/proj4js.js"></script>
+</head>
+<body>
+
+    <!--
+        參考網圵： http://www.sunriver.com.tw/taiwanmap/grid_taipower_convert.php
+    -->
+
+    電力座標(例如：B8146CC58) ：<input id="CASE_ELECTRIC_POWER_COORDINATE" type="text" value="" placeholder="請輸入電力座標" />
+    得到的經緯度 ：<input id="WGS84" type="text" value="" placeholder="得到的經緯度" />
+    <button type="button" onclick="TransForm('CASE_ELECTRIC_POWER_COORDINATE');">轉換</button>
+
+<!--電力座標轉經緯度-->
+<script>
+        var projHash = {};
+    
+        Proj4js.defs["EPSG:3821"] = "+title=EPSG:3821 +proj=longlat  +towgs84=-752,-358,-179,-.0000011698,.0000018398,.0000009822,.00002329 +ellps=aust_SA +units=度 +no_defs"; //TWD67 DMS
+    
+        Proj4js.defs["EPSG:3826"] = "+title=EPSG:3826 +proj=tmerc  +lat_0=0 +lon_0=121 +k=0.9999 +x_0=250000 +y_0=0 +ellps=GRS80 +units=公尺 +no_defs"; // TWD97 TM2 Taiwan
+    
+        Proj4js.defs["EPSG:3825"] = "+title=EPSG:3825 +proj=tmerc  +lat_0=0 +lon_0=119 +k=0.9999 +x_0=250000 +y_0=0 +ellps=GRS80 +units=公尺 +no_defs"; // TWD97 TM2 Penghu
+    
+        Proj4js.defs["EPSG:3828"] = "+title=EPSG:3828 +proj=tmerc  +towgs84=-752,-358,-179,-.0000011698,.0000018398,.0000009822,.00002329 +lat_0=0 +lon_0=121 +x_0=250000 +y_0=0 +k=0.9999 +ellps=aust_SA  +units=公尺";// TWD67 TM2 Taiwan
+    
+        Proj4js.defs["EPSG:3827"] = "+title=EPSG:3827 +proj=tmerc  +towgs84=-752,-358,-179,-.0000011698,.0000018398,.0000009822,.00002329 +lat_0=0 +lon_0=119 +x_0=250000 +y_0=0 +k=0.9999 +ellps=aust_SA  +units=公尺"; // TWD67 TM2 Penghu
+    
+    
+        function initProj4js() {
+            for (var def in Proj4js.defs) {
+                //create a Proj for each definition
+                projHash[def] = new Proj4js.Proj(def);
+            }
+        }
+    
+        function TransForm(id) {
+            //var crsSource = document.getElementById('crsSource');
+            var sourceEPSG = null;
+            // 輸入電力座標的物件
+            var source = $("#" + id).val();
+    
+            if (source.charAt(0) == 'X' || source.charAt(0) == 'Y') {
+                sourceEPSG = 'EPSG:3827'; // T67 TM2 Penghu
+            } else {
+                sourceEPSG = 'EPSG:3828'; // T67 TM2 Taiwan
+            }
+            var projSource = null;
+            if (sourceEPSG) {
+                projSource = projHash[sourceEPSG];
+            } else {
+                showAlert('地點錯誤', "請檢查並重新輸入電力座標!　");
+                return;
+            }
+    
+            projDest = projHash["WGS84"];
+    
+            var pointInput = convertTai(id);
+            if (pointInput) {
+                var pointSource = new Proj4js.Point(pointInput);
+                var pointDest = Proj4js.transform(projSource, projDest, pointSource);
+                //check the Dest coordinates
+                if (isNaN(pointDest.x) || isNaN(pointDest.y)) {
+                    showAlert('地點錯誤', "請檢查並重新輸入電力座標!　");
+                    return;
+                }
+                // convert destPoint to 6-digi/longlat or 0-digi/tm2 decimal
+                pointDest.x = (pointDest.x).toFixed(6);
+                pointDest.y = (pointDest.y).toFixed(6);
+                // convert numeric degrees to deg/min/sec
+    
+                $("#WGS84").val(pointDest.x.toString() + "," + pointDest.y.toString())
+            } else {
+                alert("請檢查並重新輸入電力座標!　");
+                return;
+            }
+        }
+    
+        // 下面2個是上面轉換要用到的函式
+        function convertTai(id) {
+    
+            var taiGrid = getTai(id);
+            //set the xy original coordinates by divisions
+            var divStr = "A B C D E F G H J K L M N O P Q R T U V W X Y Z";
+            divStr = divStr.replace(/ /g, "");
+    
+            var idxOne = divStr.indexOf(taiGrid.charAt(0));
+            var idx3x = divStr.indexOf(taiGrid.charAt(5));
+            var idx3y = divStr.indexOf(taiGrid.charAt(6));
+    
+            var xArray = "170000 250000 330000 170000 250000 330000 170000 250000 90000 170000 250000 90000 170000 250000 90000 170000 250000 170000 250000 170000 250000 275000 275000 552700";
+            var yArray = "2750000 2750000 2750000 2700000 2700000 2700000 2650000 2650000 2600000 2600000 2600000 2550000 2550000 2550000 2500000 2500000 2500000 2450000 2450000 2400000 2400000 2614000 2564000 2675800";
+            var zArray = "0 1 2 3 4 5 6 7";
+    
+            xArray = xArray.split(" ");
+            yArray = yArray.split(" ");
+            zArray = zArray.split(" ");
+    
+            //convert the Taipower grid to t6767/tm2
+            var n1x = eval(xArray[idxOne]);
+            var n1y = eval(yArray[idxOne]);
+    
+            var n2x = eval(taiGrid.substr(1, 2)) * 800;
+            var n2y = eval(taiGrid.substr(3, 2)) * 500;
+    
+            var n3x = eval(zArray[idx3x]) * 100;
+            var n3y = eval(zArray[idx3y]) * 100;
+    
+            var chr9 = taiGrid.charAt(9);
+            chr9 = chr9.replace("", "0");
+            var chr10 = taiGrid.charAt(10);
+            chr10 = chr10.replace("", "0");
+    
+            var n5x = eval(taiGrid.charAt(7)) * 10 + eval(chr9);
+            var n5y = eval(taiGrid.charAt(8)) * 10 + eval(chr10);
+    
+            var xT67TM2 = n1x + n2x + n3x + n5x;
+            var yT67TM2 = n1y + n2y + n3y + n5y;
+    
+            var xyT67TM2 = xT67TM2 + ", " + yT67TM2;
+    
+            return xyT67TM2;
+    
+        }
+    
+        //check the validation of input data
+        function getTai(id) {
+    
+            var inputRe = /[A-HJ-Z]\d{4}[A-H][A-E]\d{2,4}/;
+            // 輸入電子座標的物件
+            var taiSource = $("#" + id).val();
+            taiSource = taiSource.toUpperCase();
+            var digiChk = taiSource.length;
+            var formatChk = taiSource.search(inputRe);
+            if ((digiChk != 9 && digiChk != 11) || formatChk == - 1) {
+                showAlert('地點錯誤', "座標格式錯誤，請重新檢查後再輸入一次!　");
+                return;
+            }
+    
+            var Chr0 = taiSource.charAt(0);
+    
+            if (Chr0 == "Z" || Chr0 == "S") {
+                showAlert('地點錯誤', "很抱歉，本轉換式目前不適用於金門及馬祖地區!　");
+                return;
+            }
+    
+            return taiSource;
+    
+        }
+    
+    
+        $(document).ready(function () {
+            // 初使化
+            initProj4js();
+        });
+    </script>
+
+</body>
+</html>
