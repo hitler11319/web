@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>另種Pop視窗(比dialog好)</title>
+<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" href="css/extend.css">
+<link type="text/css" rel="stylesheet" href="css/all.css">
+<link type="text/css" rel="stylesheet" href="css/font-awesome.min.css">
+<link type="text/css" rel="stylesheet" href="css/style.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/customs-dist.js"></script>
+<script src="js/custom-common.js"></script>
+<script src="js/libs-dist.js"></script>
+</head>
+<body>
+
+    <!--
+        比Dialog的原因是：
+        我之前寫地圖時，都會用到 先把 dialog叫出來(才能對地圖初使化)，而這個也不例外。
+        但是，用這個的背後不會變全黑的樣式 => 故更好
+        可以測試看看，在 doubleCheck中先加入class show 看會不會有黑畫面
+        => 但之後點開的，還是會有黑畫面
+    -->
+
+    <div class="col-12 col-lg-6">
+        <!--用個div繫結它，然後當按下div時就會開啟它-->
+        <!-- data-menu-target後面就是繫結的物件 -->
+        <!--這隻的class 只是讓div呈現像 input 而且是下拉式選單-->
+        <div class="input-group-text pseudo-dropdown-field mb-2" data-menu-target="#doubleCheck">點擊開始動作</div>
+    </div>
+
+    <!--加上special-menu special-overlay-menu 這2個class  -->
+    <div id="doubleCheck" class="special-menu special-overlay-menu show" style="opacity: 0;">
+        <div class="card">
+            <div class="card-header">
+                <i class="special-menu-close-link fa fa-times pull-right"></i>
+                <h2>標題</h2>
+            </div>
+            <div class="card-body">
+                內容
+            </div>
+            <div class="card-footer text-center">
+                <!--有加上 special-menu-close-link 這 class 的 就是 按完後會關閉視窗的-->
+                <!--而開始視窗只是這個div 加上 show 的 class ； 關閉反之 => 如下函式-->
+                <a class="btn btn-default special-menu-close-link"  href="javascript:;">取消</a>
+                <a class="btn btn-dark special-menu-close-link" href="javascript:;" onclick="">確定</a>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" onclick="OpenPop('doubleCheck');">手動開啟</button>
+    <button type="button" onclick="ClosePop('doubleCheck');">手動關閉</button>
+
+    <script>
+        // 手動開啟
+        function OpenPop(id){
+            $("#" + id).addClass("show");
+        }
+
+        // 手動關閉
+        function ClosePop(id){
+            $("#" + id).removeClass("show");
+        }
+    </script>
+
+    <!--測試一開始會不會有黑畫面-->
+    <script>
+        function Init(){
+            $("#doubleCheck").removeClass("show");
+            document.getElementById("doubleCheck").style.opacity = 1;     
+            console.log("Init Finish");      
+        }
+
+        $("body").on("load", Init());
+    </script>
+
+</body>
+</html>
