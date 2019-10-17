@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MultiLevelMenu 基本型 當頁及後面選項清空按鈕</title>
+<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" href="css/style.css">
+<link type="text/css" rel="stylesheet" href="css/extend.css">
+<link type="text/css" rel="stylesheet" href="css/all.css">
+<link type="text/css" rel="stylesheet" href="css/font-awesome.min.css">
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!--<script src="js/bootstrap.min.js"></script>
+<script src="js/customs-dist.js"></script>
+<script src="js/custom-common.js"></script>
+<script src="js/libs-dist.js"></script>
+<script src="js/def-component-half-selectMenu.js"></script>
+<script src="js/custom-multi-level-menu.js"></script>-->
+<script src="js/libs-dist.js"></script>
+</head>
+<body>
+
+    <!--基本型-->
+
+    <div class="input-group-text pseudo-dropdown-field" data-menu-target="#test2" id="t2">基本(有children的)</div>
+
+    <!--第二種：較基本的-->
+    <div class="special-menu special-overlay-menu" id="test2">
+            <div class="card">
+                <div class="card-header">
+                    <i class="special-menu-close-link fa fa-times pull-right"></i>
+                    <h2>選擇測試號碼</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <!--多掛上這個class-->
+                            <div id="testDiv" class="multiLevelMenuAddClear"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a class="btn btn-default special-menu-close-link" style="border:1px solid gray;" href="javascript:;">取消</a>
+                    <a class="btn btn-dark" href="javascript:;" onclick="SettingData2();">確定</a>
+                </div>
+            </div>
+        </div>
+
+    <script>
+
+        var defaultData2 = ['測試一' , '測試1-1']
+
+        // 要給他的資料 有要4個屬性 (可以不必每個都給，但text 和 value 一定要有)
+        // 如果要好幾層的話， children 要放 其 child 的陣列 (而 child 裡面也是 基本)
+        var data2 = [
+            {
+                text : '測試一',
+                value : 1,
+                children : [
+                    {
+                        text : '測試1-1',
+                        value : 1.1,
+                        children : []
+                    }
+                ]
+            },
+            {
+                text : '測試二',
+                value : 2,
+                children : [
+                    {
+                        text : '測試2-1',
+                        value : 2.1,
+                        children : []
+                    }
+                ]
+            }
+        ];
+
+        // 上面是資料(如果今天是用 ajax 取回來的，要記得儲存)
+        // 因為 他取的value只能取到最後一層的 => 故2層以上的話，第一層的value是取不到的 => 所以要記原值才能找到值
+
+        // 給資料 (記得都要用 $(document).ready()來給，後面的也都是)
+        $(document).ready(function () {
+                    $('#testDiv').multiLevelMenu({
+                        depth: 2,  //共有幾層
+                        fields: ['測試表', '子測試表'],  //上面標頭顯示文字(有幾層就有幾個)
+                        data: data2,  // 給的資料
+                        multiple: false,  // 是否可以多選  
+                    });
+        })
+    </script>
+
+<script>
+        // 基本上大部份的用這個即可，少部份才會用到上面的(而且上面的我也還沒全部研究完整)
+        function SettingData2(){
+
+            var resultIndex = [];  //取到的index
+            var resultValue = []; // 要透過 index 得到的value值
+            var result = [];  // 得到的文字
+
+            $("#testDiv").find("li.active").map(function(index, ele){
+                resultIndex.push(ele.dataset.index);
+                result.push(ele.innerText);
+            })
+
+            // 這邊也可以設定 至少選到哪
+            if (result.length > 1){
+                // 得到 value 值
+                resultValue.push(data2[resultIndex[0]].value);
+                // 因為上面有設一定要取到第二層 ， 不然要判斷 ，否則容易炸掉
+                resultValue.push(data2[resultIndex[0]].children[resultIndex[1]].value); 
+                
+                $("#t2").html(result.join("/"));
+                alert("取到的 value 值 為 ：" + resultValue.join(" "));
+
+                // 讓他關閉
+                $("#test2").removeClass("show");
+
+            }else{
+                alert("請至少選到 子測試 (即第二層)");
+            }
+
+        }
+    </script>
+
+
+
+    <!--當頁及後面的選項清空(記得要掛上class)-->
+    <script>
+            $(document).ready(function () {
+                $(".multiLevelMenuAddClear").map(function (index, ele) {
+                    if ($(ele).html() != "") {
+                        var levelDiv = $(ele).find(".multi-level-menu-container")[0];
+                        if (levelDiv != null && levelDiv != undefined) {
+                            var addClearBtn = "<div class='menu-clear'><button type='button' class='btn btn-dark menu-clear-btn' onclick='MultiLevelMenuClearCurrentPage(this);'>清除頁面勾選</button></div>";
+                            $(levelDiv).html(addClearBtn + $(levelDiv).html());
+                        }
+                    }
+                })
+            });
+        </script>
+        
+        <script>
+            // MultiLevelMenu 清除當頁及以後的所有勾選
+            function MultiLevelMenuClearCurrentPage(obj) {
+                var levelDiv = $(obj).parent().parent()[0];
+                if (levelDiv != null && levelDiv != undefined) {
+                    var level = parseInt($(levelDiv).attr("data-current-level"));
+                    var multiList = $(levelDiv).find(".menu-list-container");
+                    for (var i = level; i < multiList.length; i++) {
+                        $(multiList[i]).find("li").map(function (index, ele) {
+                            $(ele).removeClass("active");
+                        })
+                    }
+                }
+            }
+        </script>
+
+
+
+</body>
+</html>
