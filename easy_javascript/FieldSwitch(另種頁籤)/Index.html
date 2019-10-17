@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Field Switch (另種頁籤)</title>
+<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" href="css/extend.css">
+<link type="text/css" rel="stylesheet" href="css/all.css">
+<link type="text/css" rel="stylesheet" href="css/font-awesome.min.css">
+<link type="text/css" rel="stylesheet" href="css/style.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/customs-dist.js"></script>
+<script src="js/custom-form.js"></script>
+<script src="js/custom-table.js"></script>
+<script src="js/libs-dist.js"></script>
+</head>
+<body>
+    <!--含選項+內容 都要放在 class 為 field-switch的class的div中-->
+    <div class="field-switch">
+
+                <!--用Switch Radio-->
+                <div class="btn-group btn-group-toggle field-group-toggle d-flex" data-toggle="buttons">
+                    <!--如果有事件要寫的話，要寫在label上-->
+                    <label class="btn btn-outline-secondary active">
+                        <!-- 用 data-fields屬性 去 繫結他要呈現的內容 -->
+                        <input type="radio" name="page" data-fields=".p1" value="1" checked>第一頁
+                    </label>
+                    <label class="btn btn-outline-secondary">
+                        <input type="radio" name="page" data-fields=".p2" value="2">第二頁
+                    </label>
+                </div>
+
+                <button type="button" onclick="$('.p1').addClass('active');$('.p2').removeClass('active');">手動開啟第一頁</button>
+                <button type="button" onclick="$('.p2').addClass('active');$('.p1').removeClass('active');">手動開啟第二頁</button>
+
+        <!--控制開啟方式一樣可以用 add class 和 remove class "active" 這個屬性來手動控制開關-->
+        <!--裡面要有 field-group的 class  再來就是被繫結的屬性 -->
+        <div class="field-group p1 active">
+            這是第一頁的內容
+        </div>
+        <div class="field-group p2">
+            這是第二頁的內容
+        </div>
+    </div>
+
+    <!--有Icon的-->
+    <div class="field-switch">
+            
+                <div class="btn-group btn-group-toggle field-group-toggle d-flex" data-toggle="buttons">
+                    <label class="btn btn-outline-dark active" onclick="alert('現在進入清單頁');">
+                        <input type="radio" name="Way" data-fields=".way-1" value="0" checked><i class="fa fa-list-ul"></i>
+                    </label>
+                    <label class="btn btn-outline-dark">
+                        <!--// Memo:-->
+                        <input type="radio" name="Way" data-fields=".way-2" value="1"><i class="fa fa-map"></i>
+                    </label> 
+                </div>
+
+
+            <!-- 清單 -->
+            <div class="field-group way-1 active">
+                清單
+            </div>
+
+            <!-- 地圖 -->
+            <div class="field-group way-2">
+                地圖
+            </div>
+        </div>
+
+</body>
+</html>
