@@ -14,7 +14,7 @@
 
     電力座標(例如：B8146CC58) ：<input id="CASE_ELECTRIC_POWER_COORDINATE" type="text" value="" placeholder="請輸入電力座標" />
     得到的經緯度 ：<input id="WGS84" type="text" value="" placeholder="得到的經緯度" />
-    <button type="button" onclick="TransForm('CASE_ELECTRIC_POWER_COORDINATE');">轉換</button>
+    <button type="button" onclick="TransForm(document.getElementById('CASE_ELECTRIC_POWER_COORDINATE').value);">轉換</button>
 
 <!--電力座標轉經緯度-->
 <script>
@@ -38,11 +38,9 @@
             }
         }
     
-        function TransForm(id) {
+        function TransForm(source) {
             //var crsSource = document.getElementById('crsSource');
             var sourceEPSG = null;
-            // 輸入電力座標的物件
-            var source = $("#" + id).val();
     
             if (source.charAt(0) == 'X' || source.charAt(0) == 'Y') {
                 sourceEPSG = 'EPSG:3827'; // T67 TM2 Penghu
@@ -59,7 +57,7 @@
     
             projDest = projHash["WGS84"];
     
-            var pointInput = convertTai(id);
+            var pointInput = convertTai(source);
             if (pointInput) {
                 var pointSource = new Proj4js.Point(pointInput);
                 var pointDest = Proj4js.transform(projSource, projDest, pointSource);
@@ -81,9 +79,9 @@
         }
     
         // 下面2個是上面轉換要用到的函式
-        function convertTai(id) {
+        function convertTai(source) {
     
-            var taiGrid = getTai(id);
+            var taiGrid = getTai(source);
             //set the xy original coordinates by divisions
             var divStr = "A B C D E F G H J K L M N O P Q R T U V W X Y Z";
             divStr = divStr.replace(/ /g, "");
@@ -128,11 +126,9 @@
         }
     
         //check the validation of input data
-        function getTai(id) {
+        function getTai(taiSource) {
     
             var inputRe = /[A-HJ-Z]\d{4}[A-H][A-E]\d{2,4}/;
-            // 輸入電子座標的物件
-            var taiSource = $("#" + id).val();
             taiSource = taiSource.toUpperCase();
             var digiChk = taiSource.length;
             var formatChk = taiSource.search(inputRe);
