@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>查詢框收合</title>
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="css/extend.css" />
+    <link type="text/css" rel="stylesheet" href="css/all.css" />
+    <link type="text/css" rel="stylesheet" href="css/font-awesome.min.css" />
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/libs-dist.js"></script>
+    
+  </head>
+  <body>
+      
+    <div class="container-fluid">
+      <div class="animated fadeIn">
+        <h1><span class="title-text">查詢頁</span></h1>
+        <div class="row">
+          <div class="col-12">
+            <div class="card bg-light border-0">
+              <div class="card-body py-lg-4">
+                <div class="form-group row align-items-center">
+                  <h4 class="col-lg-auto col-xl-2 m-0 text-lg-center">
+                    查詢條件
+                  </h4>
+                  <div class="col-lg-8">
+                    <!--全部要用這個div包起來 (class 為 field-collapse)-->
+                    <div class="field-collapse">
+
+                      <!--計算目前填幾筆的(合起來時呈現) => 全部複製即可-->
+                      <!--有這個，下面還有他的另一半要寫-->
+                      <div class="field-collapse-summary">
+                        <div class="row mb-0 mb-lg-2">
+                          <div class="col-12 col-lg-6 offset-lg-3 offset-xl-2">
+                            <div class="form-control form-control-static"  id="QueryCaseCount">已設定0項</div>
+                          </div>
+                          <div class="col-md-3 mt-2 mt-lg-0">
+                            <button  class="btn btn-link btn-field-collapse btn-field-collapse-open"  type="button">
+                              <i class="fa fa-angle-down"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!--查詢條件 (都要用個 class 為 field-collapse-detail 的 div 包起來)-->
+                      <div class="field-collapse-detail">
+                        <div class="row mb-0 mb-lg-2">
+                          <div
+                            class="col-12 col-lg-3 col-xl-2 col-form-label text-lg-left"
+                          >
+                            查詢A
+                          </div>
+                          <div class="col-12 col-lg-6">
+                            <input type="text" id="A" />
+                          </div>
+                        </div>
+
+                        <div class="row mb-0 mb-lg-2">
+                          <div
+                            class="col-12 col-lg-3 col-xl-2 col-form-label text-lg-left"
+                          >
+                            查詢B
+                          </div>
+                          <div class="col-12 col-lg-6">
+                            <input type="text" id="B" />
+                          </div>
+                        </div>
+
+                        <div class="row mb-0 mb-lg-2">
+                          <div
+                            class="col-12 col-lg-3 col-xl-2 col-form-label text-lg-left"
+                          >
+                            查詢C
+                          </div>
+                          <div class="col-12 col-lg-6">
+                            <input type="text" id="C" />
+                          </div>
+                          <div class="col-md-4 mt-lg-0">
+                                <button class="btn btn-link" id="reset" type="reset">回預設值</button>
+                                <button class="btn btn-dark" type="button" id="searchMESSAGE">&nbsp;&nbsp;查詢&nbsp;&nbsp;</button>
+                                <!--最主要是要再加上這個(直接複製即可)-->
+                                <button class="btn btn-link btn-field-collapse btn-field-collapse-close" type="button" onclick="QueryCaseCount();"><i class="fa fa-angle-up"></i></button>
+                            </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--最後要寫一個算數目的(function名要一樣)-->
+    <script>
+      function QueryCaseCount() {
+        var cnt = 0;
+        if ($("#A").val() != "") cnt += 1;
+        if ($("#B").val() != "") cnt += 1;
+        if ($("#C").val() != "") cnt += 1;
+
+        $("#QueryCaseCount").text("已設定" + cnt + "項");
+      }
+    </script>
+  </body>
+</html>
