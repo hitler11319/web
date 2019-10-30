@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>EZMap 顯示圖層(線 + 多邊形 + 圓形 + 矩形)</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!--載入EZMap-->
+<script type="text/javascript" src="https://easymap.gis.tw/easymap/latest/easymap.js"></script>
+
+</head>
+<body>
+
+    <!--參考網圵： https://easymap.gis.tw/easymap/api.html-->
+
+        <div id="EZMAP" ></div>
+
+        <!--初使化地圖 + 設定中心點-->
+        <script>
+            var map;
+
+            // 初使化地圖
+            function InitMap() {
+                //initMap
+                // 中心點
+                //var x = 120.95397949218749;
+                //var y = 24.567108352575985;
+
+                var x = 121;
+                var y = 24;
+
+                $("#EZMAP").html("");
+                map = new Easymap('EZMAP');  // 初使化
+                map.zoomToXY(new dgXY(x, y), 8);  //移到 指定的點 (8 = zoomSize)
+            }
+        </script>
+
+        <!--讓Body的onload執行InitMap-->
+        <script>
+            // 設定 body 的 onload 執行 initMap
+            $("body").on("load", InitMap());
+        </script>
+
+        <!------------------------------------------------------------------------------------------------------------------>
+
+        <!--顯示(畫) 線-->
+        <script>
+            // 畫線 
+            // map = 指定的地圖物件； pointList = 有 x , y 屬性的 點陣列 ； lineStroke 線條粗細 ； color 為顏色 (例如： "rgba(200,0,0,0.8)")
+            function DrawPolyline(map, pointList, lineStroke, color){
+                var points = [];
+                for (var i = 0; i < pointList.length; i++){
+                    var x = pointList[i].x;
+                    var y = pointList[i].y;
+                    if (x != undefined && y != undefined ){
+                        points.push(new dgXY(x, y));
+                    }
+                }
+
+                var LL = new dgPolyline(points, color, lineStroke);
+                map.addItem([LL]);   //其實是可以放陣列(多組的)
+            }
+        </script>
+
+        <!--方便型，輸入2點畫線-->
+        <script>
+            function DrawLine(map, x1, y1, x2, y2, lineStroke, color){
+                var pointList = [];
+                pointList.push({x : x1, y: y1});
+                pointList.push({x : x2, y: y2});
+                DrawPolyline(map, pointList, lineStroke, color);
+            }
+        </script>
+
+        <!------------------------------------------------------------------------------------------------------------------->
+
+        <!--顯示(畫) 多邊型-->
+        <script>
+            // map = 指定的地圖物件； pointList = 有 x , y 屬性的 點陣列 ； lineStroke 線條粗細 ； color 為顏色 (例如： "rgba(200,0,0,0.8)")
+            // 而 innerColor = 裡面填滿的顏色 ； boderColor : 外框的顏色
+            function DrawPolygon(map, pointList, lineStroke, boderColor, innerColor){
+                var points = [];
+                for (var i = 0; i < pointList.length; i++){
+                    var x = pointList[i].x;
+                    var y = pointList[i].y;
+                    if (x != undefined && y != undefined ){
+                        points.push(new dgXY(x, y));
+                    }
+                }
+
+                // 多邊現的頭尾要相同
+                var lastIndex = points.length - 1;
+                if (points[0] != points[lastIndex]){
+                    points.push(points[0]);
+                }
+
+                var PP = new dgPolygon(points, boderColor, innerColor, lineStroke);
+                map.addItem([PP]);   //是加入陣列的型別
+            }
+        </script>
+
+        <!-------------------------------------------------------------------------------------------------------------------->
+
+        <!--畫矩形-->
+
+        <script>
+            // 畫矩形 (用2個點來畫，剩下丟去畫多邊形那)
+            function DrawRectangle(x1, y1, x2, y2, map, lineStroke, boderColor, innerColor){
+                var point = [];
+                point.push({x : x1, y : y1});
+                point.push({x : x1, y : y2});
+                point.push({x : x2, y : y2});
+                point.push({x : x2, y : y1});
+
+                // 丟去多邊型那處理
+                DrawPolygon(map, point, lineStroke, boderColor, innerColor);
+            }
+        </script>
+
+
+        <!--------------------------------------------------------------------------------------------------------------------->
+
+        <!--畫圓-->
+        <script>
+            // map = 指定的地圖物件； x , y , r = 半徑(公尺) ； lineStroke 線條粗細 ； color 為顏色 (例如： "rgba(200,0,0,0.8)")
+            // 而 innerColor = 裡面填滿的顏色 ； boderColor : 外框的顏色
+            function DrawCircle(map, x, y, r, boderColor, innerColor, lineStroke){
+                var point = new dgXY(x, y);
+
+                var arcAngle1 = 0;//Math.random() * 60;//起使角度
+                var arcAngle2 = 180;//60 + (Math.random() * 60);//結束角度
+                var clockwise = false;//順時針true/　逆時針flase
+                var curve = new dgCurve(point, boderColor, innerColor, r, lineStroke, arcAngle1, arcAngle2, clockwise);
+
+                map.addItem(curve);
+            }
+        </script>
+
+
+        <!--
+            畫圓進階：他這邊目前沒看到TWD97，但他畫圓又要用距離來畫
+            => 用我之寫寫多邊形畫圓的方法(無法真的很圓)，但可以處理輸入2個點來畫圓
+            隱患： 因為 經緯度 相減 會 < 1 => 故平方算距離會 變更小 => 所以要先讓 座標都乘上 10000 或更高的值
+            總結：效果不太對 => 請看官方給的方法 -> DrawCircle3 ； 但是 我的那個圓公式是對的 -> 有測過了
+        -->
+
+        <script>
+            // 因為最終是要用 多邊型來畫 => 故參數都跟矩形差不多 ，只差在 range參數就是上面所說的要乘的數字
+            function DrawCircle2(x1, y1, x2, y2, map, lineStroke, boderColor, innerColor, range){
+
+                // 半徑
+                var r = (GetPointDistance(x1, y1, x2, y2, range) / range);
+
+                // 開始算圓的點
+                var pointList = [];
+
+                for(var i = 0; i < 360; i = i + 1){
+                    // Math.Cos 和 Math.Sin 在算某些數時，會變成 科學符號 e -> 故要固定位數才行
+                    var x = x1 + r * parseFloat(Math.cos(Math.PI * (i / 180)).toFixed(12));
+                    var y = y1  + r * parseFloat(Math.sin(Math.PI * (i / 180)).toFixed(12));
+
+                    pointList.push({x : x, y: y});
+                }
+
+                DrawPolygon(map, pointList, lineStroke, boderColor, innerColor);
+            }
+
+            // 算距離 (如果像上面，已經先乘過的，只要把range = 1 即可)
+            function GetPointDistance(x1, y1, x2, y2, range){
+                x1 = x1 * range;
+                y1 = y1 * range;
+                x2 = x2 * range;
+                y2 = y2 * range;
+
+                var dx = x1 - x2;
+                var dy = y1 - y2;
+
+                return Math.sqrt((dx * dx) + (dy * dy));
+            }
+        </script>
+
+
+        <!--
+            官方給的畫圓公式
+        -->
+        <script>
+            // 同上 的參數
+            function DrawCircle3(x1, y1, x2, y2, map, lineStroke, boderColor, innerColor){
+                var r = GetDistance(x1, y1, x2, y2);
+                DrawCircle(map, x1, y1, r, boderColor, innerColor, lineStroke);
+            }
+
+            // 算2點距離 (回傳 公尺)
+            function GetDistance(lon1, lat1, lon2, lat2) {
+                //二個經緯度換算距離
+                var R = 6371; // km (change this constant to get miles)
+                var dLat = (lat2 - lat1) * Math.PI / 180;
+                var dLon = (lon2 - lon1) * Math.PI / 180;
+                var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                var d = R * c * 1000;
+                //if (d>1) return Math.round(d)+"km";
+                //else if (d<=1) return Math.round(d*1000)+"m";
+
+                return d;
+            }
+
+            // 額外的，這裡不會用到 => 算此點有沒有在這距離內
+            function isPointInCircle(x, y, r, cX, cY) {
+                //檢查一個點是否在圓的範圍內
+                //checkPoint 是檢查點 x,y
+                //c_x、c_y 是圓心
+                //檢查點至圓心的距離，小餘等於半徑 r
+                //就回應 true，反之回應 false
+                var d = GetDistance(x, y , cX, cY);
+                return (d <= r);
+            }
+        </script>
+
+        <!--------------------------------------------------------------------------------------------------------------------->
+
+        <!--丟測試資料執行-->
+        <script>
+                // 畫線
+                var pointList = [];
+                pointList.push({x : 121.2222, y: 23.4444});
+                pointList.push({x : 122.2223, y: 24.5484});
+                pointList.push({x : 120.2322, y: 25.4333334});
+                DrawPolyline(map, pointList, 4, "rgba(200,0,0,0.8)");
+
+                // 簡單版 => 給2點畫線
+                DrawLine(map, 119, 23, 121, 24, 5, "rgba(200,0,100,0.8)");
+    
+                // 畫多邊型
+                pointList = [];
+                pointList.push({x : 122.2222, y: 24.4444});
+                pointList.push({x : 121.2223, y: 23.4484});
+                pointList.push({x : 125.2322, y: 25.4344});
+                DrawPolygon(map, pointList, 5, "rgba(0,0,200,0.6)", "rgba(200,0,200,0.6)");
+
+                // 畫矩形
+                DrawRectangle(119, 23, 121, 25, map, 4, "rgba(0,200,0,0.6)", "rgba(200,0,200,0.6)")
+    
+                // 畫圓
+                DrawCircle(map, 119.3232, 23.3232, 30000, "rgba(200,0,0,0.8)", "rgba(200,0,0,0.4)", 4);
+
+                // 進階畫圓(用2個點來畫，其中第一個點就是圓心)
+                DrawCircle2(119.3232, 23.3232, 119.3, 23.6, map, 4, "rgba(0,200,200,0.6)", "rgba(100,0,200,0.6)", 1);
+
+                // 進階畫圓2  ， 會和上面的結果有點差異
+                DrawCircle3(119.3232, 23.3232, 119.3, 23.6, map, 4, "rgba(200,200,200,0.6)", "rgba(100,100,200,0.6)");
+        </script>
+
+</body>
+</html>

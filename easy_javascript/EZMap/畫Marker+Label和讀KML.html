@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>畫Marker+Label 和 讀 KML</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!--載入EZMap-->
+<script type="text/javascript" src="https://easymap.gis.tw/easymap/latest/easymap.js"></script>
+
+</head>
+<body>
+
+    <!--參考網圵： https://easymap.gis.tw/easymap/api.html-->
+
+        <div id="EZMAP" style="height: 700px;"></div>
+
+        <!--初使化地圖 + 設定中心點-->
+        <script>
+            var map;
+
+            // 初使化地圖
+            function InitMap() {
+                //initMap
+                // 中心點
+                var x = 120.95397949218749;
+                var y = 24.567108352575985;
+
+                $("#EZMAP").html("");
+                map = new Easymap('EZMAP');  // 初使化
+                map.zoomToXY(new dgXY(x, y), 8);  //移到 指定的點 (8 = zoomSize)
+        }
+        </script>
+
+        <!--讓Body的onload執行InitMap-->
+        <script>
+            // 設定 body 的 onload 執行 initMap
+            $("body").on("load", InitMap());
+        </script>
+
+        <!-------------------------------------------------------------------------------------->
+
+        <!--畫Marker-->
+        <script>
+            // 參數說明： map = map物件 , x , y ,  htmlText = 按Marker要出現的文字框內容
+            // imageUrl = Marker的圖片, zoomIndex = 縮放大小(地圖) , clear = 是否要清掉之前的圖
+            function addMarker(map, x, y, htmlText, imageUrl, zoomIndex, clear) {
+
+                if (clear) {
+                    // 清除
+                    map.clearMarker();
+                    map.clearDraw();
+                }
+
+                var coor = new dgXY(x, y);
+                map.zoomToXY(coor, zoomIndex);  //移至(可以分開寫)
+
+                // 設定 Marker (用 html 這種的 出現雖大，但位置會和真實的有偏差 -> 因為有位移過) -> 必要時去改style 的 left 和 top 去調整位置
+                var marker = new dgMarker(coor, '<span  style="position:absolute;left:-8px;top:-16px;"><img src="' + imageUrl + '" width="32" height="32" border="0" ></span>', false);
+                
+                if (htmlText != null && htmlText != ""){
+                    marker.setContent(htmlText);  //Marker按一下會出現什麼文字
+                }
+
+                map.addItem(marker);
+            }
+
+            // 可以拖拉的按鈕 -> 是不能使用 html 建出來的
+            // DragFunc = 拖拉完後觸發的程式
+            function addDragableMarker(map, x, y, htmlText, imageUrl, zoomIndex, clear, DragFunc){
+                if (clear) {
+                    // 清除
+                    map.clearMarker();
+                    map.clearDraw();
+                }
+
+                var coor = new dgXY(x, y);
+                map.zoomToXY(coor, zoomIndex);  //移至(可以分開寫)
+
+                var icon = new dgIcon(imageUrl, 64, 64);  // 這種的位置比較不會有偏差，但是圖示大小有侷限
+                var marker = new dgMarker(coor, icon, true);
+
+                if (htmlText != null && htmlText != ""){
+                    marker.setContent(htmlText);  //Marker按一下會出現什麼文字(不建議，因為拖完後，這個還在固定位置)                   
+                }      
+                
+                // 拖完後要執行的函式
+                marker.ondragend = function (dgxy, dgmarker) {
+
+                    console.log(this);
+
+                    // 如果要取到Marker的 xy屬性
+                    // x = this._dgxy.x     y = this._dgxy.y
+                    // 改變值 -> 如果不加這一段，那改變成之後取到的還是原值
+                    this._dgxy.x = dgxy.x;
+                    this._dgxy.y = dgxy.y;                   
+
+                    //console.log(dgxy);
+                    //console.log(dgmarker);
+                    DragFunc(dgxy, dgmarker);
+                }
+
+                map.addItem(marker);
+            }
+        
+            
+            // 其中Marker那中間是html語法，所以可以直接寫html
+            function addHtmlMarker(map, x, y, htmlText, html, zoomIndex, clear){
+                if (clear) {
+                    // 清除
+                    map.clearMarker();
+                    map.clearDraw();
+                }
+
+                var coor = new dgXY(x, y);
+                map.zoomToXY(coor, zoomIndex);  //移至(可以分開寫)
+
+                // 設定 Marker
+                var marker = new dgMarker(coor, html, false);
+                
+                if (htmlText != null && htmlText != ""){
+                    marker.setContent(htmlText);  //Marker按一下會出現什麼文字
+                }
+
+                map.addItem(marker);
+            }
+        </script>
+
+        <!------------------------------------------------------------------------------------->
+
+        <!--畫Label-->
+        <script>
+            // 其實就是Marker的應用，只是把中間呈現img 的 改成 h 而已
+            // 參數說明 ： LabelText = 要呈現的文字 , LabelColor = 要呈現的顏色 (請輸入 "red" 這種) , LabelSize = 文字大小 1-6
+            function addLabel(map, x, y, LabelText, LabelColor, LabelSize, htmlText, zoomIndex, clear){
+                if (clear) {
+                    // 清除
+                    map.clearMarker();
+                    map.clearDraw();
+                }
+
+                var coor = new dgXY(x, y);
+                map.zoomToXY(coor, zoomIndex);  //移至(可以分開寫)
+
+                // 設定 Marker
+                // 那些position 是讓他不要偏移
+                var labelStyle = "<h" + LabelSize + " style='color:" + LabelColor + ";position:absolute;left:-8px;top:-16px;'>" + LabelText + "</h" + LabelSize + ">";
+                var marker = new dgMarker(coor, labelStyle, false);               
+
+                if (htmlText != null && htmlText != ""){
+                    marker.setContent(htmlText);  //Marker按一下會出現什麼文字
+                }
+
+                map.addItem(marker);
+            }
+
+            // 沒法用 可拖拉的Label => 因為他裡面是html--> 除非 用可拖拉的 Marker ， 然後 URL給 文字的圖片
+        </script>
+
+        <!-------------------------------------------------------------------------------------->
+
+        <!--讀取 KML檔-->
+        <script>
+            function ReadKML(map, kmlUrl){
+                var kml = new dgKml(kmlUrl, function () {});
+                kml.setUpperZoomByBoundary(false);
+                kml.setLabelVisible(false);
+
+                map.addItem(kml);
+            }
+        </script>
+
+        <!---------------------------------------------------------------------------------------->
+
+        <!--實際測試-->
+        <script>
+            // 一般 marker
+            addMarker(map, 120, 24, "不可拖的Marker", "https://easymap.gis.tw/easymap/images/balloon.png", 8, false);
+
+            // 可以拖的 (有 Bug ， 那就是 圖片的大小好像調不太動)
+            // 而且 setContent 還是會在原本的地方喔
+            addDragableMarker(map, 120.5, 24, "", "https://easymap.gis.tw/easymap/images/balloon.png", 8, false, function(dgxy, dgmarker){
+                alert(dgxy.x.toString() + " , " + dgxy.y.toString());
+            });
+
+            // 連中間的不用marker，直接寫 checkbox
+            addHtmlMarker(map, 120.5, 25, "", "<input type='checkbox'>請點選我", 8, false);
+
+            // 裡面也可以放html
+            addMarker(map, 123, 23, "<h2>裡面是可以放html語法的</h2><a href='http://www.google.com.tw'>點我去google</a>", "https://easymap.gis.tw/easymap/images/asylum.png", 8, false);
+
+            // Label
+            addLabel(map, 121.5, 23, "HI", "red", 3, "這是Label", 8, false);
+
+            // 讀KML
+            ReadKML(map, "https://easymap.gis.tw/easymap/uploadfile/kml/原住民部落點位.kml");
+        </script>
+</body>
+</html>

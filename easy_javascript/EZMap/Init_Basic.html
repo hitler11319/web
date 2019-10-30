@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>初使化EZMap + 基本操作</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!--載入EZMap-->
+<script type="text/javascript" src="https://easymap.gis.tw/easymap/latest/easymap.js"></script>
+
+</head>
+<body>
+
+    <!--參考網圵： https://easymap.gis.tw/easymap/api.html-->
+
+        <div id="EZMAP" style="height: 700px;"></div>
+
+        <button type="button" onclick="f_addcontrol(map);">增加工具列</button>
+        <button type="button" onclick="f_swcontrol(map);">開關工具列(要先增加工具列後才能用)</button>
+        <button type="button" onclick="alert('zoomSize : ' + GetZoomLevel(map));">取得現在的ZoomSize</button>
+        <button type="button" onclick="SetZoomLevel(map, 12);">設定ZoomSize = 12</button>
+        <button type="button" onclick="ZoomTo(map, 12);">設定ZoomSize = 12，用漸近(看起來沒差)</button>
+        <button type="button" onclick="MoveTo(map, 121.55555, 24.33242, 12);">移至 121.55555, 24.33242 zoomSize = 12</button>
+        <button type="button" onclick="PanTo(map, 121.55555, 24.33242);">移至 121.55555, 24.33242 用漸近(沒有ZoomSize的選項)</button>
+        <button type="button" onclick="GetCurrentCenterPointXY(map);">得到目前中心點的經緯度座標</button>
+        <button type="button" onclick="console.log(RevXY(map, 500, 500));">將螢幕座標(500, 500)轉成座標</button>
+
+        <!--初使化地圖 + 設定中心點 + 設定圖台事件(例如：onclick)-->
+        <script>
+            var map;
+
+            var f_swcontrol_sw = false;  // 控制工具列的開關狀態
+
+            // 初使化地圖
+            function InitMap() {
+                //initMap
+                // 中心點
+                var x = 120.95397949218749;
+                var y = 24.567108352575985;
+
+                $("#EZMAP").html("");
+                map = new Easymap('EZMAP');  // 初使化
+                map.zoomToXY(new dgXY(x, y), 8);  //移到 指定的點 (8 = zoomSize)
+
+                // 設定圖台事件
+                // 點到某處，就得到他的經緯度
+                map.attachEvent('onclick', function (e, dgxy) {
+                    //$("#X").val(dgxy.x);
+                    //$("#Y").val(dgxy.y);
+                    alert(dgxy.x.toString() + "," + dgxy.y.toString());
+                });
+
+                // 點擊2下的事件會被 點一下用完 就結束了
+                map.attachEvent('ondblclick', function(e, dgxy){
+                    alert("你點擊2下了");
+                })
+        }
+        </script>
+
+        <!--讓Body的onload執行InitMap-->
+        <script>
+            // 設定 body 的 onload 執行 initMap
+            $("body").on("load", InitMap());
+        </script>
+
+        <!------------------------------------------------------------------------------------------------------------------>
+
+        <!--開關工具列-->
+        <script>
+            // 增加工具列
+            function f_addcontrol(map) {
+                map.addMapControl([10, 10]);
+                map.addMapTypeSelector();
+                map.addWMap();
+
+                f_swcontrol_sw = true;
+            }
+
+            // 開關工具列
+            function f_swcontrol(map) {
+                f_swcontrol_sw = !f_swcontrol_sw;
+                map.setMapControlV(f_swcontrol_sw);       //工具列
+                map.setMapTypeSelectorV(f_swcontrol_sw);  //多主題圖
+                map.setWMapV(f_swcontrol_sw);             //鷹眼
+                map.wheelZoom(f_swcontrol_sw);            //滑鼠滾輪開關
+            }
+        </script>
+
+        <!--------------------------------------------------------------------------------------------------------------------->
+
+        <!--改變圖台大小-->
+        <script>
+        function f_resize(map, height, width) {
+            map.resize(height, width);//改變圖台大小
+        }
+        </script>
+
+        <!----------------------------------------------------------------------------------------------------------------------->
+
+        <!--取得/設定 縮放大小(ZoomSize)-->
+        <script>
+            // 取得
+            function GetZoomLevel(map){
+                return map.getZoomLevel();
+            }
+
+            // 設定
+            function SetZoomLevel(map, zoomSize){
+                map.setZoomLevel(zoomSize);
+            }
+
+            // 同樣是設定 => 但會漸近的方式移過去
+            function ZoomTo(map, zoomSize){
+                map.zoomTo(zoomSize);
+            }
+        </script>
+
+        <!------------------------------------------------------------------------------------------------------------------------->
+
+        <!--移至某點-->
+        <script>
+            // 移至某點
+            function MoveTo(map, x, y, zoomSize){
+                var point = new dgXY(x, y);
+                map.zoomToXY(point, zoomSize);
+            }
+
+            // 移至某點，漸近
+            function PanTo(map, x, y){
+                var point = new dgXY(x, y);
+                map.panTo(point);
+            }
+        </script>
+
+        <!-------------------------------------------------------------------------------------------------------------------------->
+
+        <!--得到目前中心點的經緯度座標-->
+        <script>
+            function GetCurrentCenterPointXY(map){
+                var cx = map.getCX();
+                var cy = map.getCY();
+                alert(cx + ":" + cy);
+            }
+        </script>
+
+        <!-------------------------------------------------------------------------------------------------------------------------->
+
+        <!--將螢幕座標轉成經緯度-->
+        <script>
+            function RevXY(map, x, y){
+                var point = map.revXY(x, y);
+                return point;
+            }
+        </script>
+
+        <!-------------------------------------------------------------------------------------------------------------------------->
+
+        <!--輸入2個點，自動Zoom到最適合的範圍-->
+        <script>
+            function GetUpperZoomByBoundary(map, x1, y1, x2, y2) {
+                var xy1 = new dgXY(x1, y1);
+                var xy2 = new dgXY(x2, y2);
+
+                map.getUpperZoomByBoundary(xy1, xy2);
+            }
+        </script>
+</body>
+</html>

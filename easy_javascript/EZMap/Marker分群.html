@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Marker 分群(看看就好)</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!--載入EZMap-->
+<script type="text/javascript" src="https://easymap.gis.tw/easymap/latest/easymap.js"></script>
+
+</head>
+<body>
+
+    <!--參考網圵： https://easymap.gis.tw/easymap/api.html-->
+
+        <div id="EZMAP" style="height: 700px;"></div>
+
+        <button type="button" onclick="Gmarker();">產生結果</button>
+
+        <!--初使化地圖 + 設定中心點-->
+        <script>
+            var map;
+
+            var eventattachEvent3 = null;
+            var gmarker  = null;
+            var POINTS = [];
+
+            // 初使化地圖
+            function InitMap() {
+                //initMap
+                // 中心點
+                var x = 120.95397949218749;
+                var y = 24.567108352575985;
+
+                $("#EZMAP").html("");
+                map = new Easymap('EZMAP');  // 初使化
+                map.zoomToXY(new dgXY(x, y), 8);  //移到 指定的點 (8 = zoomSize)
+        }
+        </script>
+
+        <!--讓Body的onload執行InitMap-->
+        <script>
+            // 設定 body 的 onload 執行 initMap
+            $("body").on("load", InitMap());
+        </script>
+
+        <!------------------------------------------------------------------------------------------->
+
+        <!--產生分群的結果-->
+        <script>
+            function Gmarker() {
+
+                if (eventattachEvent3 != null) {
+                    map.detachEvent("zoomend", eventattachEvent3);
+                    eventattachEvent3 = null;
+                }
+                if (gmarker) {
+                    map.removeItem(gmarker);
+                    gmarker = null;
+                }
+                if (POINTS) {
+                    map.removeItem(POINTS);
+                    POINTS = [];
+                }
+
+                var markers = [];
+
+                var px, py;
+                var features = [];
+                var num = 200;
+
+                //產生一定數量的marker以便測試
+                for (var x = 110; x <= 124; x += 2) {
+                    for (var y = 20; y <= 24; y += 2) {
+                        px = x + Math.random();
+                        py = y + Math.random();
+
+                        var icon = new dgIcon("https://easymap.gis.tw/easymap/images/balloon.png", 16, 16);
+
+                        xxyy = new dgXY(px, py);
+                        //m = new dgMarker(xxyy, '<img src="easymap/imgs/icon01.png" border="0" onclick="alert(\"test\");">');
+                        m = new dgMarker(xxyy, icon);
+                        m.setContent('<div>hello</div>');
+                        markers.push(m);
+
+                        point = new dgPoint(xxyy, "rgba(0,0,200,0.5)", 12);
+                        //POINTS.push(point);
+                    }
+                }
+
+                outer_loop:
+                for (var i = 0; i < 100; i++) {
+                    for (var x = 120; x <= 121; x += 0.025) {
+                        for (var y = 22; y <= 23; y += 0.025) {
+                            px = x + Math.random();
+                            py = y + Math.random();
+
+                            xxyy = new dgXY(px, py);
+                            m = new dgMarker(xxyy, '<img src="https://easymap.gis.tw/easymap/images/marker-gold.png" border="0" onclick="alert(\'testaa\');">');
+                            markers.push(m);
+
+                            if (markers.length >= num) break outer_loop;
+                        }
+                    }
+                }
+
+                for (var i = 0; i <= 5; i++) {
+
+                    xxyy = new dgXY(121, 26);
+                    var icon = new dgIcon("imgs/zoom-world.png", 16, 16);
+                    m = new dgMarker(xxyy, '<img src="https://easymap.gis.tw/easymap/images/zoom-world.png" style="position:absolute;left:-20px;top:-20px;width:40px;height:40px;" border="0" onclick="alert(\"test\");">');
+                    markers.push(m);
+                }
+
+                var distance = 100;
+                var threshold = 3;
+                var zoom = 12;
+
+                gmarker = new dgGMarker(markers, distance, threshold);
+
+                var texttag = "<div class='GIS_CLUSTER_HTML_DIV' style='left:-29px;top:-29px;width:58px;height:58px;line-height:58px;text-align:center;margin-left:auto;margin-right:auto;padding-left:auto;padding-right:auto;color:white;font-size:10px;font-weight:bold;position:absolute;z-index:1;'>{0}</div>";
+                //自訂圖形，可不設定
+                var role = {
+                        high: 100,  //大於該值為high
+                        medium: 20, //大於該值小於high值，為Medium; 小於該值為Low
+                        picHigh: "<div style='position:absolute;left:-29px;top:-29px;'><img src='https://easymap.gis.tw/easymap/images/nuclear-b.png' width='58' height='58'></div>", //大於100個marker
+                        picMedium: "<div style='position:absolute;left:-29px;top:-29px;'><img src='https://easymap.gis.tw/easymap/images/nuclear-g.png' width='58' height='58'></div>",       //介於20~100個marker
+                        picLow: "<div style='position:absolute;left:-29px;top:-29px;'><img src='https://easymap.gis.tw/easymap/images/nuclear-y.png' width='58' height='58'></div>",           //小於20個marker
+                        texttagHigh: texttag,    //{0}為cluster的數量
+                        texttagMedium: texttag,  //{0}為cluster的數量
+                        texttagLow: texttag     //{0}為cluster的數量
+                        //文字顯示的css
+                };
+
+                gmarker.setRole(role);                  //設定不完整將執行預設參數 
+
+                gmarker.setZoomWithoutCluster(true, zoom);//設定在哪個zoom以上，不做cluster
+
+                gmarker.register("click", function (markers) {
+                    //markers: 這個群組裡的parent.dgXY
+                    if (markers.length <= 1) {
+                        window.open(markers[0].url);
+                    } else {
+                        alert("num:" + markers.length);
+                    }
+                });
+
+                map.addItem(gmarker);
+                map.addItem(POINTS);
+                gmarker.setZIndexTop();
+            }
+        </script>
+</body>
+</html>

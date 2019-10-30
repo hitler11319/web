@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>3D 基本操作</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!--載入EZMap-->
+<script type="text/javascript" src="https://easymap.gis.tw/easymap/latest/easymap.js"></script>
+
+</head>
+<body>
+
+    <!--參考網圵： https://easymap.gis.tw/easymap/api.html-->
+
+        <div id="EZMAP" style="height: 700px;"></div>
+
+        <button type="button" onclick="Enable3D(map);">啟用3D</button>
+        <button type="button" onclick="Disable3D(map);">關閉3D</button>
+        <button type="button" onclick="SetTerrainUrl(map, '');">設定地形路徑(目前看不出效果)</button>
+        <button type="button" onclick="Enable3DTerrain(map);">開啟地形(目前看不出效果)</button>
+        <button type="button" onclick="Disable3DTerrain(map);">關閉地形</button>
+        <button type="button" onclick="Set3DAltitude(map, 1000);">設定高度1000</button>
+        <button type="button" onclick="Set3DDistance(map, 93.9559518428415);">設定距離93.9559518428415(目前會炸掉)</button>
+        <button type="button" onclick="Set3DHeading(map, 0.24409993824008084);">設定方位角0.24409993824008084</button>
+        <button type="button" onclick="Set3DTilt(map, 1.2243874800306376);">設定仰角1.2243874800306376</button>
+        <button type="button" onclick="Set3Dkml(map, 'https:\/\/easymap.gis.tw/easymap/data/3dcity.kml');">3D 的 KML</button>
+
+        <!--初使化地圖 + 設定中心點-->
+        <script>
+            var map;
+
+            // 初使化地圖
+            function InitMap() {
+                //initMap
+                // 中心點
+                var x = 120.95397949218749;
+                var y = 24.567108352575985;
+
+                $("#EZMAP").html("");
+                map = new Easymap('EZMAP');  // 初使化
+                map.zoomToXY(new dgXY(x, y), 8);  //移到 指定的點 (8 = zoomSize)
+
+                // 初使就讓它啟用3D
+                map.enable3D();
+        }
+        </script>
+
+        <!--讓Body的onload執行InitMap-->
+        <script>
+            // 設定 body 的 onload 執行 initMap
+            $("body").on("load", InitMap());
+        </script>
+
+        <!------------------------------------------------------------------------------------------------------------------>
+
+        <!--開關3D-->
+        <script>
+            // 開啟3D
+            function Enable3D(map) {
+                map.enable3D();
+            }
+
+            // 關閉3D
+            function Disable3D(map) {
+                map.disable3D();
+            }
+        </script>
+
+        <!--------------------------------------------------------------------------------------------------------------------->
+
+        <!--設定地形路徑-->
+        <script>
+        function SetTerrainUrl(map, url) {
+            var u = (url == null || url == "" || url == undefined) ? "https://maps.tilehosting.com/data/terrain-quantized-mesh/?key=UhguM5rA4BKa6p2UTZrG" : url;
+            map.enable3D(function () {
+                map.setTerrainUrl(u);
+                map.enable3DTerrain();
+            });
+        }
+        </script>
+
+        <!----------------------------------------------------------------------------------------------------------------------->
+
+        <!--開關地形-->
+        <script>
+            // 開啟地形
+            function Enable3DTerrain(map){
+                map.enable3DTerrain();
+            }
+
+            // 關閉地形
+            function Disable3DTerrain(map){
+                map.disable3DTerrain();
+            }
+        </script>
+
+        <!------------------------------------------------------------------------------------------------------------------------->
+
+        <!--相關設定-->
+        <script>
+            // 設定高度
+            function Set3DAltitude(map, altitude) {
+                map.set3DAltitude(altitude);
+            }
+
+            // 設定距離
+            function Set3DDistance(map, distance) {
+                map.set3DDistance(distance);
+            }
+
+            // 設定方位角
+            function Set3DHeading(map, heading) {
+                map.set3DHeading(heading);
+            }
+
+            // 設定仰角
+            function Set3DTilt(map, tilt) {
+                map.set3DTilt(tilt);
+            }
+        </script>
+
+        <!--------------------------------------------------------------------------------------------------------------------------->
+
+        <!--3D的 KML-->
+        <script>
+            function Set3Dkml(map, kmlUrl) {
+                map.enable3D(function () {
+                    var layer = new dg3D('kml', kmlUrl);
+                    map.addItem(layer);
+                });
+            }
+        </script>
+
+        <!--3D讀Json-->
+        <script>
+            // 很類似上面的kml
+            function Set3DJson(map, jsonUrl){
+                // 固定寫這個
+                map.switchMapType("googlesatellite");
+
+                map.enable3D(function () {
+                    // 這個製造點
+                    var xy = new dgXY(119.564036, 23.564773);
+                    map.zoomToXY(xy, 17);
+
+                    // 製造仰角
+                    map.set3DTilt(1.2243874800306376);
+
+                    //# 加入透視 (要輸入2個 dgXY 的物件)
+                    //map.add3DGroundClass(xy, xy);
+
+                    // 主要的內容 (上面的那幾個仰角和點其實可以不用寫)
+                    var layer = new dg3D('3dtiles', 'https://easymap.gis.tw/easymap/data/penghu_detailmodel/tileset.json');
+                    map.addItem(layer);
+                });
+            }
+        </script>
+</body>
+</html>

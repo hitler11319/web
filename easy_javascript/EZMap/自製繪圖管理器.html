@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>自製繪圖管理器</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!--載入EZMap-->
+<script type="text/javascript" src="https://easymap.gis.tw/easymap/latest/easymap.js"></script>
+
+</head>
+<body>
+
+    <!--參考網圵： https://easymap.gis.tw/easymap/api.html-->
+
+        <button type="button" onclick="drawMode = 'POINT';DisableDragBox(map);">標記點</button>
+        <button type="button" onclick="drawMode = 'LINE';DisableDragBox(map);">線</button>
+        <button type="button" onclick="drawMode = 'RECTANGLE';EnableRectangleDragBox(map);rectancleEnd = false;">矩形</button>
+        <button type="button" onclick="drawMode = 'POLYGON';DisableDragBox(map);">多邊形</button>
+        <button type="button" onclick="drawMode = 'CIRCLE';DisableDragBox(map);EnableCircleDragBox(map);">圓形</button>
+        <button type="button" onclick="drawMode = 'LABEL';DisableDragBox(map);">文字標籤(會與實際位置有所偏移)</button>
+        <input type="text" id="LabelText" placeholder="文字標籤顯示文字">
+        <button type="button" onclick="ClearDraw(map);">清除繪圖</button>
+
+        <span style="color:red;">如果 線 和 多邊形 要結束畫圖 只要在最後一個點上再按一下即可</span>
+
+        <div id="EZMAP" style="height: 700px;"></div>
+
+        <!--初使化地圖 + 設定中心點 + 設定圖台事件(例如：onclick)-->
+        <script>
+            var map;
+            var drawMode = 'POINT';
+            var tmpDraw = [];   //儲存暫時的marker
+            var DrawPoint = [];  // 線 和 多邊邊 的點 -> 要等到結束時，才會把全部轉出來
+            var drawResult = [];  //儲存畫的圖形點資訊(圓形暫時沒有)
+
+            var rectancleEnd = false;  // 用來讓 矩形 只能畫一次的
+
+            // 初使化地圖
+            function InitMap() {
+                //initMap
+                // 中心點
+                var x = 120.95397949218749;
+                var y = 24.567108352575985;
+
+                $("#EZMAP").html("");
+                map = new Easymap('EZMAP');  // 初使化
+                map.zoomToXY(new dgXY(x, y), 8);  //移到 指定的點 (8 = zoomSize)
+
+                // 設定圖台事件
+                // 點到某處，就得到他的經緯度
+                map.attachEvent('onclick', function (e, dgxy) {
+                    var range = 0.0000000001;  // 差多近的距離視為 要結束此次畫圖
+                    var noBBOX = ['POINT', 'LINE', 'POLYGON', 'LABEL'];
+
+                    if (drawMode != null){
+                        if (noBBOX.indexOf(drawMode) >= 0){
+                            switch(drawMode){
+                                case 'POINT':
+                                    addMarker(map, dgxy.x, dgxy.y, "標記點", "https://easymap.gis.tw/easymap/images/balloon.png");
+                                    drawMode = null;
+                                    break;
+                                case 'LABEL':
+                                    addLabel(map, dgxy.x, dgxy.y, $("#LabelText").val(), "red", 5, "");
+                                    drawMode = null;
+                                    break;
+                                case 'LINE':
+                                    var l = DrawPoint.length;
+                                    var lastPoint = null;
+
+                                    // 取到上一個點(如果有的話)
+                                    if (l > 0){
+                                        lastPoint = {x : DrawPoint[l - 1].x , y : DrawPoint[l - 1].y};
+                                    }
+
+                                    // 如果按的很近 => 視同要結束
+                                    if (lastPoint != null && ((Math.abs(dgxy.x - lastPoint.x) + Math.abs(dgxy.y - lastPoint.y)) <= range)){
+                                        DrawPolyline(map, DrawPoint, 2, "rgba(0,0,200,0.6)");
+                                        ClearTmp(map);
+                                    }else{
+                                        addTmpLabel(map, dgxy.x, dgxy.y);
+                                    }
+
+                                    break;
+                                case 'POLYGON':
+                                    // 基本上跟線一樣，只差在函式而已
+                                    var l = DrawPoint.length;
+                                    var lastPoint = null;
+
+                                    // 取到上一個點(如果有的話)
+                                    if (l > 0){
+                                        lastPoint = {x : DrawPoint[l - 1].x , y : DrawPoint[l - 1].y};
+                                    }
+
+                                    // 如果按的很近 => 視同要結束
+                                    if (lastPoint != null && ((Math.abs(dgxy.x - lastPoint.x) + Math.abs(dgxy.y - lastPoint.y)) <= range)){
+                                        DrawPolygon(map, DrawPoint, 2, "rgba(0,0,200,0.6)", "rgba(211,211,211,0.6)");
+                                        ClearTmp(map);
+                                    }else{
+                                        addTmpLabel(map, dgxy.x, dgxy.y);
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }                   
+                });
+
+                // 處理 矩形只能用一次
+                map.attachEvent('onmousedown', function(e, dgxy){
+                    if (drawMode == null && rectancleEnd){
+                        DisableDragBox(map);
+                    }
+                })
+        }
+        </script>
+
+        <!--讓Body的onload執行InitMap-->
+        <script>
+            // 設定 body 的 onload 執行 initMap
+            $("body").on("load", InitMap());
+        </script>
+
+        <!--清除繪圖-->
+        <script>
+            function ClearDraw(map){
+                map.clearMarker();
+                map.clearDraw();
+
+                tmpMarker = [];
+                drawResult = [];
+            }
+        </script>
+
+        <!--加入暫存的圖-->
+        <script>
+            // 加入暫存的 LABEL
+            function addTmpLabel(map, x, y){
+                var coor = new dgXY(x, y);
+
+                // 設定 Marker
+                var labelStyle = "<h4 style='color:blue;position:absolute;left:-4px;top:-19px;'>●</h4>";
+                var marker = new dgMarker(coor, labelStyle, false);                
+
+                map.addItem(marker);
+
+                // 加入至暫存
+                tmpDraw.push(marker);
+
+                // 如果前一個有點 -> 要畫線出來
+                if (DrawPoint.length > 0){
+                    var l = DrawPoint.length;
+                    addTmpLine(map, DrawPoint[l - 1].x, DrawPoint[l - 1].y, x, y);
+                }
+                DrawPoint.push({x : x, y: y});
+            }
+
+            // 加入暫存的 LINE
+            function addTmpLine(map, x1, y1, x2, y2){
+                var points = [];
+                points.push(new dgXY(x1, y1));
+                points.push(new dgXY(x2, y2));
+
+                var LL = new dgPolyline(points, "rgba(0,0,200,0.6)", 2);
+                map.addItem([LL]);   //其實是可以放陣列(多組的)
+            }
+
+            // 清除暫存 + 之前的點
+            function ClearTmp(map){
+                drawMode = null;
+                DrawPoint = [];
+
+                for (var i = 0; i < tmpDraw.length; i++){
+                    map.removeItem(tmpDraw[i]);
+                }
+
+                tmpDraw = [];
+            }
+        </script>
+
+        <!------------------------------------------------------------------------------------------------------------------>
+
+        <!--圓形和矩形的部份用BBOX處理-->
+        <script>
+            //關閉BBOX
+            function DisableDragBox(map) {
+                map.disableDragBox();
+            }
+
+            //啟用BBOX框選 -> 來畫 矩形
+            function EnableRectangleDragBox(map) {
+                map.enableDragBox(function (extent) {
+                    var p1 = new dgXY(extent[0], extent[1]);
+                    var p2 = new dgXY(extent[2], extent[3]);
+
+                    var points = [];
+                    points.push({x : extent[0], y : extent[1]});
+                    points.push({x : extent[0], y : extent[3]});
+                    points.push({x : extent[2], y : extent[3]});
+                    points.push({x : extent[2], y : extent[1]});
+                    DrawPolygon(map, points, 2, "rgba(0,0,200,0.6)", "rgba(211,211,211,0.6)");
+
+                    rectancleEnd = true;
+                    drawMode = null;
+                });               
+            }
+
+            // 畫圓(用BBOX)
+            function EnableCircleDragBox(map) {
+
+                window['texts_Interval'] = setInterval(function () {
+                    if (map._drawHelpTooltipElement) {
+                        //map._drawHelpTooltipElement.innerHTML="請圈出範圍";
+                        map._drawHelpTooltipElement.hidden = true;
+                    }
+                }, 100);
+
+                var type = "Circle";
+                map.setDrawMode(type, function (e) {//測量結束事件
+                    var p = map.getDrawResult();
+
+                    var r = GetDistance(p[0]['x'], p[0]['y'], p[1]['x'], p[1]['y']);
+                    DrawCircle(map, p[0]['x'], p[0]['y'], r, "rgba(0,0,200,0.6)", "rgba(211,211,211,0.6)", 2);
+                }, function (e) {//繪制過程開始
+            });
+        }
+        </script>
+
+        <!---------------------------------------------------------------------------------------------------------------->
+
+        <!--其餘用正常的畫圖(除了上面要用到的函式也要加進來)-->
+
+        <script>
+            // 畫線(有正式+2點即畫的)
+            function DrawPolyline(map, pointList, lineStroke, color){
+                var points = [];
+                for (var i = 0; i < pointList.length; i++){
+                    var x = pointList[i].x;
+                    var y = pointList[i].y;
+                    if (x != undefined && y != undefined ){
+                        points.push(new dgXY(x, y));
+                    }
+                }
+
+                // 加入至結果
+                drawResult.push({type: 'LINE', points : pointList});
+
+                var LL = new dgPolyline(points, color, lineStroke);
+                map.addItem([LL]);   //其實是可以放陣列(多組的)
+            }
+
+            function DrawLine(map, x1, y1, x2, y2, lineStroke, color){
+                var pointList = [];
+                pointList.push({x : x1, y: y1});
+                pointList.push({x : x2, y: y2});
+                DrawPolyline(map, pointList, lineStroke, color);
+            }
+
+            // 畫多邊形
+            function DrawPolygon(map, pointList, lineStroke, boderColor, innerColor){
+                var points = [];
+                for (var i = 0; i < pointList.length; i++){
+                    var x = pointList[i].x;
+                    var y = pointList[i].y;
+                    if (x != undefined && y != undefined ){
+                        points.push(new dgXY(x, y));
+                    }
+                }
+
+                // 多邊現的頭尾要相同
+                var lastIndex = points.length - 1;
+                if (points[0] != points[lastIndex]){
+                    points.push(points[0]);
+                }
+
+                // 加入至結果
+                var lastPIndex = pointList.length - 1;
+                if (pointList[0] != pointList[lastPIndex]){
+                    pointList.push(pointList[0]);
+                }
+                drawResult.push({type: 'POLYGON', points: pointList});
+
+
+                var PP = new dgPolygon(points, boderColor, innerColor, lineStroke);
+                map.addItem([PP]);   //是加入陣列的型別
+            }
+
+            // 畫圓
+            function DrawCircle(map, x, y, r, boderColor, innerColor, lineStroke){
+                var point = new dgXY(x, y);
+
+                var arcAngle1 = 0;//Math.random() * 60;//起使角度
+                var arcAngle2 = 180;//60 + (Math.random() * 60);//結束角度
+                var clockwise = false;//順時針true/　逆時針flase
+                var curve = new dgCurve(point, boderColor, innerColor, r, lineStroke, arcAngle1, arcAngle2, clockwise);
+
+                // 加入至結果 (圓的部份就先存圓心，因為不確定我的那種寫法出來的圓是不是正確的)
+                drawResult.push({type: 'CIRCLE', points: {x : x, y : y}});
+
+                map.addItem(curve);
+            }
+
+            // 算距離
+            function GetDistance(lon1, lat1, lon2, lat2) {
+                //二個經緯度換算距離
+                var R = 6371; // km (change this constant to get miles)
+                var dLat = (lat2 - lat1) * Math.PI / 180;
+                var dLon = (lon2 - lon1) * Math.PI / 180;
+                var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                var d = R * c * 1000;
+                //if (d>1) return Math.round(d)+"km";
+                //else if (d<=1) return Math.round(d*1000)+"m";
+
+                return d;
+            }
+
+            // Marker
+            function addMarker(map, x, y, htmlText, imageUrl) {
+                var coor = new dgXY(x, y);
+
+                var icon = new dgIcon(imageUrl, 20, 20);
+                //var marker = new dgMarker(coor, icon, false);
+                // 自己用裡面的 style 去調位置
+                var marker = new dgMarker(coor, '<span  style="position:absolute;left:-16px;top:-30px;"><img src="' + imageUrl + '" width="32" height="32" border="0" ></span>', false);
+
+                if (htmlText != null && htmlText != ""){
+                    marker.setContent(htmlText);  //Marker按一下會出現什麼文字
+                }
+
+                // 加入至結果
+                drawResult.push({type: 'POINT', points: {x : x, y : y}});
+
+                map.addItem(marker);
+            }
+
+            // Label
+            function addLabel(map, x, y, LabelText, LabelColor, LabelSize, htmlText){
+
+                var coor = new dgXY(x, y);
+
+                // 設定 Marker
+                var labelStyle = "<h" + LabelSize + " style='color:" + LabelColor + ";position:absolute;left:-8px;top:-16px;'>" + LabelText + "</h" + LabelSize + ">";
+                var marker = new dgMarker(coor, labelStyle, false);               
+
+                if (htmlText != null && htmlText != ""){
+                    marker.setContent(htmlText);  //Marker按一下會出現什麼文字
+                }
+
+                // 加入至結果
+                drawResult.push({type: 'LABEL', points: {x : x, y : y}});
+
+                map.addItem(marker);
+            }
+        </script>
+
+</body>
+</html>
