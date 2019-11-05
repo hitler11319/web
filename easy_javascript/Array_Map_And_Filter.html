@@ -18,6 +18,11 @@
             return value * 2;
         })
 
+        // 他的第二個參數是 index 喔
+        var mappingData2 = data.map(function(value, index){
+            // todo;
+        })
+
 
         //如果今天是html的物件的話，可以用map的函式
         /*
@@ -45,6 +50,19 @@
                         "沒有重複的陣列：" + NoRepeatData.join(",") + "\n" + "重複的值之陣列：" + RepeatData.join(",");
 
         alert(alertText);
+
+
+        // 物件取其所有Key值
+        var obj = {
+            a : 'a',
+            b : 'a',
+            c : 'a',
+            d : 'a',
+            e : 'a',
+        }
+
+        var keyList = Object.keys(obj);
+        console.log(keyList);
 
     </script>
 </body>
