@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>地圖超連結用法</title>
+      <link rel="stylesheet" href="">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+      <!--不要讓選完後，出現藍框-->
+      <!--如果想要測試大小在哪，可先把這一段拿掉-->
+      <!--<style>
+            map *:focus{
+                  outline:none;
+            }
+      </style>-->
+</head>
+
+<body onclick="GetCoor(event);">
+      <!--
+            參考網圵： https://spicyboyd.blogspot.com/2018/06/web-html-map-tag.html
+      -->
+
+      <div id="map">
+            <!--框選區域的地圖超連結(就是那種可以 用 圖形 來超連結的-->
+            <!--用一個map 標籤包住，裡面用 area ， shape 是圖形(poly=多邊形；還有矩形和圓形)； coords 是座標點 ； href就是超連結目標-->
+            <!--注意：這座標點是以這個map為框底的，不是windows本身喔(所以取座標點只能幫一下忙，不代表得到的是實際值)-->
+            <!-- 美食地圖-->
+            <img src="https://i.imgur.com/MyY3RRs.png" usemap="#map_1">
+
+            <map name="map_1">
+                  <!-- coords=X1,Y1,X2,Y2(左上右下座標) -->
+                  <area href="http://www.google.com.tw" target="_blank" alt="Google" title="Google" shape="poly" coords="0,0,900,0,449,471" />
+                  <area href="http://www.yahoo.com.tw" target="_blank" alt="Yahoo" title="Yahoo" shape="rect" coords="526,442,1684,1300" />
+            </map>
+      </div>
+
+      <!--去取到 座標資料-->
+      <script>
+            var coors = [];
+            function GetCoor(event){
+                  var x = event.clientX;
+                  var y = event.clientY;
+
+                  coors.push(x);
+                  coors.push(y);
+                  alert(x.toString() + "," + y.toString());
+            }
+      </script>
+</body>
+
+</html>
