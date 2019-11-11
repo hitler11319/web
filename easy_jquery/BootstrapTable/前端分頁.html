@@ -2,6 +2,10 @@
 <html>
 <head>
 <title>BootstrapTable 的前端分頁</title>
+
+<link type="text/css" rel="stylesheet" href="style.css">
+<link type="text/css" rel="stylesheet" href="extend.css">
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="bootstrap-table-1.11.1.js"></script>
 <script src="bootstrap-table-zh-TW.js"></script>
@@ -51,7 +55,8 @@
                 striped: true,
                 cache: false,
                 pagination: true,  // 是否分頁
-                pageSize: [10, 25, 50, 100],  //上面的一次顯示幾筆
+                pageSize: 10,
+                pageList: [10, 25, 50, 100],  //上面的一次顯示幾筆
                 columns: columns,  //傳入的columns
                 sortable: true,  // 是否要排序
                 // 換頁會執行的程式
@@ -173,6 +178,20 @@
     <script>
         LoadData();
     </script>
+
+        <!--每秒去跑，讓 "載入中" 的標語不見 -->
+        <script>
+            setInterval(function () {
+                var t = $(".fixed-table-loading");
+    
+                if (t.length > 0) {
+                    $(".fixed-table-loading").map(function (index, ele) {
+                        ele.style.display = "none";
+                    })
+                }
+    
+            }, 1000);
+        </script>
 
     <!--
         PS : 前端分頁的 換頁相關的動作還沒研究完
