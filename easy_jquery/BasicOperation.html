@@ -79,6 +79,13 @@
     $("<h3>這是前面</h3>").insertBefore("#input4");
     $("<h3>這是後面</h3>").insertAfter("#input4");
 
+
+    // Append的用法： 加在最後面 (用於 Div Select Label ……等)
+    // 例如： <div id="a"><h2>111</h2></div>  => $("#a").append("<h1>222</h1>"); => <div id="a"><h2>111</h2><h1>222</h1></div>
+
+    $("#Div2").append("<script>alert('hello');<//script>");
+    // 注意： 如果 append 的是 script => 會觸發喔
+
     </script>
 
 </body>
