@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+      <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>表格框線 TD的部份(可取消框線)</title>
+            <link rel="stylesheet" href="">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      </head>
+
+      <body>
+
+                  <table id="test" border="1" cellpadding="0" cellspacing="0" style="width:90%">
+                              <tbody>
+                               <tr>
+                                <td rowspan="3" style="height:28px; width:9%">
+                                <p style="text-align:center">時間</p>
+                                </td>
+                                <td colspan="2" rowspan="2" style="height:28px">
+                                <p style="text-align:center">物品</p>
+                                </td>
+                                <td colspan="2" rowspan="2" style="height:28px">
+                                <p style="text-align:center">集合</p>
+                             
+                                <p style="text-align:center">測試</p>
+                                </td>
+                                <td colspan="8" style="height:28px">
+                                <p style="text-align:center">發行</p>
+                                </td>
+
+                                <!--上下都要一起加喔(這邊是上面的格子 => 所以要讓下方的線不見)-->
+                                <td colspan="2" style="border-bottom-width: 0px;">
+                                <p style="text-align:center">除錯</p>
+                                </td>
+                               </tr>
+                               <tr>
+                                <td colspan="2" style="height:10px">
+                                <p style="text-align:center">如何發行</p>
+                                </td>
+                                <td colspan="2" style="height:10px">
+                                <p style="text-align:center">正在發行</p>
+                                </td>
+                                <td colspan="2" style="height:10px">
+                                <p style="text-align:center">發行後處理</p>
+                                </td>
+                                <td colspan="2" style="height:10px">
+                                <p style="text-align:center">回收</p>
+                                </td>
+                                <!--上下都要一起加喔(這邊是下面的格子 => 所以要讓上方的線不見)-->
+                                <td colspan="2" style="height:10px;border-top-width: 0px;">
+                                    <p style="text-align:center"></p>
+                                    </td>
+                               </tr>
+                               <tr>
+                                <td style="height:10px; width:6.5%">
+                                <p style="text-align:center">件</p>
+                                </td>
+                                <td style="height:10px; width:6.5%">
+                                <p style="text-align:center">人</p>
+                                </td>
+                                <td style="height:10px; width:6.5%">
+                                <p style="text-align:center">件</p>
+                                </td>
+                                <td style="height:10px; width:6.5%">
+                                <p style="text-align:center">人</p>
+                                </td>
+                                <td style="height:10px; width:6.5%">
+                                <p style="text-align:center">件</p>
+                                </td>
+                                <td style="height:10px; width:6.5%">
+                                <p style="text-align:center">人</p>
+                                </td>
+                                <td style="height:10px; width:6.5%">
+                                <p style="text-align:center">件</p>
+                                </td>
+                                <td style="height:10px; width:6.5%">
+                                <p style="text-align:center">人</p>
+                                </td>
+                                <td style="height:10px; width:6.5%">
+                                <p style="text-align:center">件</p>
+                                </td>
+                                <td style="height:10px; width:6.5%">
+                                <p style="text-align:center">人</p>
+                                </td>
+                                <td style="height:10px; width:6.5%">
+                                <p style="text-align:center">件</p>
+                                </td>
+                                <td style="height:10px; width:6.5%">
+                                <p style="text-align:center">人</p>
+                                </td>
+                                <td style="height:10px; width:6.5%">
+                                <p style="text-align:center">件</p>
+                                </td>
+                                <td style="height:10px; width:6.5%">
+                                <p style="text-align:center">人</p>
+                                </td>
+                               </tr>
+                              </tbody>
+                             </table>
+
+            <script>
+                  // 設定 表格長寬(會把全部都分配完)
+                  var w = 6.5;  // 單一 col 時的 寬度
+                  var h = 20;  // 單一 row 時的 高度 
+                  $("#test").find("td").map(function(index, ele){
+                        var cSpan = $(ele).attr("colspan");
+                        var rSpan = $(ele).attr("rowSpan");
+
+                        cSpan = cSpan == undefined ? 1 : cSpan;
+                        rSpan = rSpan == undefined ? 1 : rSpan;
+
+                        ele.style.width = (cSpan * w).toString() + "%";
+                        ele.style.height = (rSpan * h).toString() + "%";
+                  })
+            </script>
+
+      </body>
+</html>
