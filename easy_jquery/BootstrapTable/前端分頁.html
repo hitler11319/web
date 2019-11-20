@@ -145,10 +145,20 @@
         function GridSetup() {
             $.ClientSide = {
                 OperateFormatter: function (value, row, index) {
-                    // 上面的rowData取資料 (先確定資料沒有的才加，否則先按去第二頁再按回第一頁就重複了)
-                    if (rowData.indexOf(row) < 0){
-                        rowData.push(row);
+                    // 如果你的 rowData 修改了
+                    // 只要在這邊設定 => 在 跳頁時，或者重刷時，值都會在喔
+
+                    // 用一個 Key 值去找到 其值就可以修改了
+                    var data;
+                    for(var i = 0; i < rowData.length; i++){
+                        if (rowData[i].Name == row.Name){
+                            data = rowData[i];
+                            break;
+                        }
                     }
+
+                    // 取相關的值做設定
+                    // return data.Sex  => 這樣如果有修改了，這邊呈現的就會是正確的
                     return '安安';
                 },
                 DetailFormatter: function (value, row, index) {
