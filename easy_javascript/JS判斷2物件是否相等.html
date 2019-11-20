@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>JS 判斷2物件是否相等</title>
+    <link rel="stylesheet" href="" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <script>
+      // 判斷的寫法 (寫個擴充) => 可比較 Array 和 Object
+      Object.prototype.equals = function(x) {
+        var p;
+        for (p in this) {
+          if (typeof x[p] == "undefined") {
+            return false;
+          }
+        }
+        for (p in this) {
+          if (this[p]) {
+            switch (typeof this[p]) {
+              case "object":
+                if (!this[p].equals(x[p])) {
+                  return false;
+                }
+                break;
+              case "function":
+                if (
+                  typeof x[p] == "undefined" ||
+                  (p != "equals" && this[p].toString() != x[p].toString())
+                )
+                  return false;
+                break;
+              default:
+                if (this[p] != x[p]) {
+                  return false;
+                }
+            }
+          } else {
+            if (x[p]) return false;
+          }
+        }
+        for (p in x) {
+          if (typeof this[p] == "undefined") {
+            return false;
+          }
+        }
+        return true;
+      };
+    
+      var a = {
+            aaa : 'aaa',
+            bbb : 'bbb'
+      };
+
+      var b = {
+            aaa : 'aaa',
+            bbb : 'bbb'
+      };
+
+      var c = {
+            aaa : 'aaa',
+            bbb : 'bb'
+      };
+
+      alert("a 和 b 是否相同" + a.equals(b).toString());
+      alert("a 和 c 是否相同" + a.equals(c).toString());
+    </script>
+  </body>
+</html>
