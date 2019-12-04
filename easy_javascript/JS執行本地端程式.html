@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>JS執行本地端程式</title>
+    <link rel="stylesheet" href="" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <!--
+                  參考網圵： https://www.itread01.com/article/1454460757.html
+                  基本上： 只能在 IE 開啟 (連 Edge都不行) => 因為要執行 ActiveXObject
+            -->
+
+    <input id="command" type="text" placeholder="例如：cmd.exe" />
+    <button onclick="exec(document.getElementById('command').value);">執行</button>
+
+    <script>
+          // 執行
+      function exec(command) {
+        window.oldOnError = window.onerror;
+        window._command = command;
+
+        window.onerror = function(err) {
+          if (err.indexOf("utomation") != -1) {
+            alert("命令" + window._command + " 已經被使用者禁止！");
+            return true;
+          }
+          else{
+            return false;
+          }
+        };
+
+        var wsh = new ActiveXObject("WScript.Shell");
+        if (wsh) wsh.Run(command);
+        wsh = null;
+        window.onerror = window.oldOnError;
+      }
+    </script>
+  </body>
+</html>
