@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+      <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>JS動態變數 + 動態執行 JS 函式</title>
+            <link rel="stylesheet" href="">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      </head>
+
+      <body>
+
+            <!--
+                  參考網圵：
+                  1. JS 動態變數： https://www.itread01.com/content/1548465136.html
+                  2. 動態執行 JS 函式： https://www.itread01.com/content/1545548237.html
+            -->
+
+            <script>
+                  // JS 動態變數 ： 使用 window['name']  ， 裡面的是字串喔(類似字典)
+                  for(var i = 1; i <= 5; i++){
+                        window['num' + i.toString()] = i;
+                  }
+
+                  document.write(num1);
+                  document.write(num2);
+                  document.write(num3);
+                  document.write(num4);
+                  document.write(num5);
+            </script>
+
+            <script>
+                  // 動態執行 函式
+
+                  // 測試的函式
+                  function Test(){
+                        alert('Test');
+                  }
+
+                  // 動態執行的函式
+                  function ExecFunc(funcName){
+                        if(typeof(eval(funcName)) == "function")  
+                        {
+                              // 執行 js (例如：   eval('console.log("aaa")');        )
+                              eval(funcName+"();");
+                        }
+	                  else
+	                  {
+	                        // 函式不存在
+	                  }
+                  }
+
+                  eval("console.log('aaa');");
+                  ExecFunc("Test");
+            </script>
+
+      </body>
+</html>
