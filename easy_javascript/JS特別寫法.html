@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+      <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>JS特別寫法</title>
+            <link rel="stylesheet" href="">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      </head>
+
+      <body>
+
+            <!--
+                  參考網圵： https://www.itread01.com/article/1462961706.html
+            -->
+
+            <!--使用!!操作符轉換布林值-->
+            <script>
+                  var a = null;
+                  var b = 0;
+                  var c = 2;
+                  document.write(!!a);
+                  document.write("<br>");
+                  document.write(!!b);
+                  document.write("<br>");
+                  document.write(!!c);
+                  document.write("<br>");
+            </script>
+
+            <script>
+                  document.write("<hr>");
+                  document.write("<br>");
+            </script>
+
+            <!--使用+將字串轉換成數字-->
+            <script>
+                  var a = "123";
+                  var b = "123.33222";
+                  var c = "ABC";
+                  var d = new Date();
+
+                  document.write(+a);
+                  document.write("<br>");
+                  document.write(+b);
+                  document.write("<br>");
+                  document.write(+c);
+                  document.write("<br>");
+                  document.write(+d);
+                  document.write("<br>");
+            </script>
+
+            <script>
+            document.write("<hr>");
+            document.write("<br>");
+            </script>
+
+            <!--使用 && 運算子 (如果前面的回傳是true(像第一種的) => 則執行 && 後面的動作)-->
+            <script>
+                  var a = null;
+                  var b = 1;
+
+                  a && alert("a");  // 不會執行alert
+                  b && alert("b");  // 會執行alert
+            </script>
+
+            <!--使用 || 運算子 (如果前面的回傳是false(像第一種的) => 後面的當作預設值)-->
+            <script>
+                  var a = null;
+                  var b = 1;
+
+                  var c = a || 2;  // c = 2
+                  var d = b || 3;  // d = 1
+
+                  document.write(c);
+                  document.write("<br>");
+                  document.write(d);
+                  document.write("<br>");
+            </script>
+
+            <script>
+                  document.write("<hr>");
+                  document.write("<br>");
+            </script>
+
+            <!--在迴圈中快取array.length-->
+            <script>
+                  var array = ['aaa', 'bbb', 'ccc'];
+                  for(var i = 0, length = array.length; i < length; i++) {
+                        console.log(array[i]);
+                  }
+            </script>
+
+            <!--檢測物件中屬性-->
+            <script>
+                  var a = {
+                        b : 'bbb',
+                        c : 'ccc'
+                  }
+
+                  var b = 'b' in a;
+                  var d = 'd' in a;
+
+                  document.write(b);
+                  document.write("<br>");
+                  document.write(d);
+                  document.write("<br>");
+            </script>
+
+            <!--獲取陣列從後面屬來幾個值-->
+            <script>
+                  var array = [1,2,3,4,5,6];
+                  console.log(array.slice(-1)); // [6]
+                  console.log(array.slice(-2)); // [5,6]
+                  console.log(array.slice(-3)); // [4,5,6]
+            </script>
+
+            <!--陣列截斷-->
+            <script>
+                  var array = [1,2,3,4,5,6];
+                  console.log(array.length); // 6
+                  array.length = 3;
+                  console.log(array.length); // 3
+                  console.log(array); // [1,2,3]
+            </script>
+
+            <!--合併陣列-->
+            <script>
+                  var array1 = [1,2,3];
+                  var array2 = [4,5,6];
+                  console.log(array1.concat(array2)); // [1,2,3,4,5,6];   //較粍記憶體
+                  console.log(array1.push.apply(array1, array2)); // [1,2,3,4,5,6];  //較不粍記憶體
+            </script>
+
+            <!--將element元素集合轉成陣列-->
+            <script>
+                  var elements = document.querySelectorAll("p"); // NodeList
+                  var arrayElements = [].slice.call(elements); // Now the NodeList is an array
+                  var arrayElements = Array.from(elements); // This is another way of converting NodeList to Array
+            </script>
+
+            <!--將陣列隨機洗順序-->
+            <script>
+                  var list = [1, 2, 3, 4, 5, 6, 7];
+                  console.log(list.sort(function() { return  Math.random() - 0.5 })); 
+            </script>
+
+      </body>
+</html>
