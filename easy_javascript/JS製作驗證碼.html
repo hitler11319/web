@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+      <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>用JS製作驗證碼</title>
+            <link rel="stylesheet" href="">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+            <style>
+                  #mycanvas{
+                        cursor: pointer;
+                  }
+            </style>
+      </head>
+
+      <body>
+            <!--
+                  參考網圵： https://www.itread01.com/article/1491123831.html
+            -->
+
+                  <input type="text" id="input" placeholder="請輸入驗證碼">
+                  <canvas id="mycanvas" width='130' height='50'>
+                        您的瀏覽器不支援canvas，請換個瀏覽器試試~
+                  </canvas>
+                  <button type="button" onclick="ChangeCAPTCHA();">重新產生驗證碼</button>
+                  <button type="button" onclick="CheckCAPTCHA();">提交</button>
+
+
+            <script>
+                  var $CAPTCHA = "";
+                  /*生成4位隨機數*/
+                  function randCAPTCHA(numLength){
+                        var str="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                        var arr=str.split("");
+                        var validate= [];
+                        var ranNum;
+
+                        for(var i=0;i<numLength;i++){
+                              ranNum=Math.floor(Math.random()*62); //隨機數在[0,35]之間
+                              validate.push(arr[ranNum]);
+                        }
+                        return validate;
+                  }
+
+                  /*干擾線的隨機x座標值*/
+                  function lineX(width){
+                        var ranLineX=Math.floor(Math.random()*width);
+                        return ranLineX;
+                  }
+
+                  /*干擾線的隨機y座標值*/
+                  function lineY(height){
+                        var ranLineY=Math.floor(Math.random()*height);
+                        return ranLineY;
+                  }
+
+                  // 生成 顏色的隨機
+                  function randColor(){
+                        var color = ['red', 'orange', 'yellow', 'green', 'blue'];
+                        return color[Math.floor(Math.random()*(color.length))];
+                  }
+
+                  // 重新產生 驗證碼
+                  function ChangeCAPTCHA(){
+                        var mycanvas=document.getElementById('mycanvas');
+                        var cxt=mycanvas.getContext('2d');
+
+                        var height = $("#mycanvas").height();
+                        var width = $("#mycanvas").width();
+
+                        // 背景填滿
+                        cxt.fillStyle='#000';
+
+                        // 這裡設定畫圖的大小
+                        cxt.fillRect(0,0,width,height);
+
+                        var lineNum = 20;
+                        /*生成干擾線20條*/
+                        for(var j=0;j<lineNum;j++){
+                              cxt.strokeStyle='#fff';
+                              cxt.beginPath(); //若省略beginPath，則每點選一次驗證碼會累積干擾線的條數
+                              cxt.moveTo(lineX(width),lineY(height));
+                              cxt.lineTo(lineX(width),lineY(height));
+                              cxt.lineWidth=0.5;
+                              cxt.closePath();
+                              cxt.stroke();
+                        }
+
+                        var rand = randCAPTCHA(4);
+                        var l = rand.length;
+                        for(var k = 0; k < l;k++) {
+                              cxt.fillStyle = randColor();
+                              cxt.font = 'bold 30px Arial';
+                              cxt.fillText(rand[k] , 5 + (k * 30) , 30); //把rand()生成的隨機數文字填充到canvas中 
+                        }
+                        $CAPTCHA = rand.join("");
+                  }
+            
+                  // 確認結果
+                  function CheckCAPTCHA(){
+                        var input = $("#input").val();
+
+                        if (input == $CAPTCHA){
+                              alert("輸入正確");
+                        }
+                        else{
+                              alert("輸入錯誤");
+                        }
+                  }
+            </script>
+
+            <!--一開始就要產生驗證碼-->
+            <script>
+                  ChangeCAPTCHA();
+            </script>
+
+      </body>
+</html>
