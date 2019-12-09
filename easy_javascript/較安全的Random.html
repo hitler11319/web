@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+      <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>較安全的Random </title>
+            <link rel="stylesheet" href="">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      </head>
+
+      <body>
+
+            <!--
+                  參考網圵： https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues
+
+                  基本範例：
+
+                  var array = new Uint32Array(10);
+                  window.crypto.getRandomValues(array);
+
+                  for (var i = 0; i < array.length; i++) {
+                        console.log(array[i]);
+                  }
+
+                  介紹：
+                  array 能用的型別有 Uint8Array 、 Uint16Array、 Uint32Array、 Int8Array 、 Int16Array 、 Int32Array
+                  兩者差別在負數 => Uint8Array -> 0 ~ (2的8次方 - 1)
+                                => Int8Array -> -(2的8次方 - 1) ~ (2的8次方 - 1)
+
+                  裡面的 Uint32Array(10) 的 10 是代碼 要建幾個數值 (所以如果你要一次產生 5 個亂數，裡面就是5)
+
+                  window.crypto.getRandomValues(array); => 開始產生亂數，並給值回 array
+            -->
+
+            <!--
+                  因為 要做到 0 ~ 1之間的數， 他給的算起來不太平等 => 所以下面會自己寫
+            -->
+
+            <button onclick="alert(MathRandom(10));">產生亂數</button>
+
+            <script>
+                  // 自己寫的產生亂數
+                  function MathRandom(len){
+                        len = len || 1;   // 預設長度為1
+
+                        var rng = window.crypto || window.msCrypto;  // 先確認他這瀏覽器有沒有支援
+                        var haveRng = !!rng;  // 如果有就用他的，如果沒有 就用回原本的 Math.random()
+
+                        var currentLen = 0;  // 計算當前到第幾位了
+
+                        var result = "";    // 結果
+
+                        // 直到 長度相同
+                        while(currentLen < len){
+                              var num = 0;
+
+                              if (haveRng){
+
+                                    var r = 255;  // 因為用 Uint8Array 得到的 會有 250 ~ 255 => 不平均
+                                    while( r >= 250){
+                                          r = rng.getRandomValues(new Uint8Array(1))[0];
+                                    }
+                                    num = r;
+                              }else{
+                                    num = parseInt(Math.random().toString().split(".")[1]);
+                              }
+
+                              result += (num % 10).toString();
+                              currentLen++;
+                        }
+
+                        return +("0." + result);
+                  }
+            </script>
+
+      </body>
+</html>
