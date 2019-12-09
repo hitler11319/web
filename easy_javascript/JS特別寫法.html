@@ -145,5 +145,24 @@
                   console.log(list.sort(function() { return  Math.random() - 0.5 })); 
             </script>
 
+            <script>
+                  document.write("<hr>");
+                  document.write("<br>");
+            </script>
+
+            <!--將數字出現千分位-->
+            <script>
+                  var a = 1234567890;
+                  var b = 123456.789;
+
+                  document.write(a.toLocaleString());
+                  document.write("<br>");
+                  document.write(b.toLocaleString());
+                  document.write("<br>");
+
+                  // 有些瀏覽器 會出現小數點後2位 => 如果確定不用的話
+                  // (1234567890).toLocaleString().split(".")[0];
+            </script>
+
       </body>
 </html>
