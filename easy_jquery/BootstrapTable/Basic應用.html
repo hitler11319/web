@@ -88,7 +88,8 @@
             var columns = [
                 {
                     // 序號(後面的formatter可以傳回一個html或值)
-                    field: "No", title: "#", formatter: function (value, row, index) { return index + 1; }
+                    // align 是文字容容的對齊方式，而halign是表頭的(如果沒寫這個，但有align的話，表頭會套用align的設定)
+                    field: "No", title: "#", align: "right", halign: "center", formatter: function (value, row, index) { return index + 1; }
                 },
                 {
                     // 實際的Name (後面的允許排序)
@@ -113,6 +114,7 @@
                     field: "action2", title: "", formatter: "$.ClientSide.DetailFormatter", events: "$.ClientSide.DetailEvents"
                 },
                 {
+                    // 類似第一個的
                     field: "special", title: "特別的設定", align: 'center', valign: 'middle', visible: false
                 }
             ]
