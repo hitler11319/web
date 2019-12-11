@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+      <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>EasyMap 加入 行政區邊界圖層</title>
+            <link rel="stylesheet" href="">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+            <!--載入EZMap-->
+            <script type="text/javascript" src="https://easymap.gis.tw/easymap/latest/easymap.js"></script>
+      </head>
+
+      <body onload="init();">
+
+            <!--
+                參考網圵： https://easymap.gis.tw/easymap/api.html
+                目前還沒看到： 真正的地形圖 + 衛星圖
+            -->
+
+            <button onclick="remove();">移除圖層</button>
+            <button onclick="addCityLayer();">加入行政區邊界圖層</button>
+            <button onclick="addTownLayer();">加入鄉鎮市區邊界圖層</button>
+            <button onclick="addVillageLayer();">加入村里邊界圖層</button>
+            <button onclick="addTaiwanUniversalLayer();">套台灣通用電子地圖</button>
+            <button onclick="addTopographyLayer();">套基本地形圖</button>
+
+            <div id="map" style="width:800px; height:600px; border:1px solid red;"></div>
+            <script type="text/javascript">
+                var map = null;
+                var layer = null;
+
+                function init() {
+                    map = new Easymap('map');	//'map'為div的id
+                    map.zoomToXY(new dgXY(121.3, 24.5), 9);
+        
+                    // 加入圖層
+                    addCityLayer();
+                }
+
+                // 移除圖層
+                function remove() {
+                    map.removeItem(layer);
+                }
+
+                // 加入Google 行政區邊界圖層
+                function addCityLayer(){
+                    //google layer
+                    var op = {};
+                    op.bg = false;
+                    op.url = "https://wmts.nlsc.gov.tw/wmts/CITY/default/EPSG:3857/${z}/${y}/${x}";
+                    layer = new dgSource("GOOGLE", op);
+                    map.addItem(layer);
+                }
+
+                // 加入 Google 鄉鎮市區 邊界圖
+                function addTownLayer(){
+                    //google layer
+                    var op = {};
+                    op.bg = false;
+                    op.url = "https://wmts.nlsc.gov.tw/wmts/TOWN/default/EPSG:3857/${z}/${y}/${x}";
+                    layer = new dgSource("GOOGLE", op);
+                    map.addItem(layer);
+                }
+
+                // 加入 Google 村里 邊界圖
+                function addVillageLayer(){
+                    //google layer
+                    var op = {};
+                    op.bg = false;
+                    op.url = "https://wmts.nlsc.gov.tw/wmts/Village/default/EPSG:3857/${z}/${y}/${x}";
+                    layer = new dgSource("GOOGLE", op);
+                    map.addItem(layer);
+                }
+
+                // 套 臺灣通用電子地圖
+                function addTaiwanUniversalLayer(){
+                    var op = {};
+                    op.bg = false;
+                    op.name = "Emap";
+                    op.chname = "臺灣通用電子地圖";
+                    op.url = "http://wmts.nlsc.gov.tw/wmts";
+                    op.layer = "EMAP";
+                    op.matrixSet = "EPSG:3857";
+                    op.format = "image/png";
+                    op.zoomOffset = 0;
+                    var wmts = new dgSource("WMTS", op)
+                    map.addItem(wmts);
+                }
+
+                // 套 基本地形圖(Google的)
+                function addTopographyLayer(){
+                    var op = {};
+                    op.bg = false;
+                    op.name = "osm";
+                    op.chname = "谷歌地形圖";
+                    op.iconMax = "imgs/googlestreets.png";
+                    op.iconMin = "imgs/mapB-2.png";
+                    op.url = "https://mts1.google.com/vt/lyrs=m@267065157&hl=zh-TW&x=${x}&y=${y}&z=${z}&s=Gal&lyrs=t@129,r@183000000";
+                    console.log(op.url);
+                    op.tileOptions = { crossOriginKeyword: null };
+
+                    osm = new dgSource("GOOGLE", op);
+                    map.addItem(osm);
+                }
+            </script>
+        </body>
+</html>
