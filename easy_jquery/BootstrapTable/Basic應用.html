@@ -182,7 +182,11 @@
         // 就是代表 每一行按下去後會連去哪
         function rowAttributes(row, index) {
             return {
-                'data-link': "Detail/" + row.Name
+                'data-link': "Detail/" + row.Name,
+                // onclick的事件
+                // 'onclick' : "alert('aaa');",
+                // 滑鼠 移到 上面 會變成 手指
+                // 'style' : 'cursor : pointer'
             }
         }
     </script>
