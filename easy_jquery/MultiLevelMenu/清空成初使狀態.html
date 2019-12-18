@@ -134,12 +134,14 @@
     <script>
         function Reset(){
 
-            // 清空 (一樣 ， 因為這邊有 desc => 所以特別)
-            $('#test').find(".menu-list").find("li.active").map(function(index, ele){
-                            ele.click();   // 因為 有 selected: true  => 故 只要再按一次，他就是清空了
-                    })
+            // 清空 (直接去找 總輸出 (有多選的會有個目前已選的項目)， 去那邊把每個按一遍，就會清掉了) => 但要每筆跑(所以要先取到筆數)
+            var len = $('#test').find(".selected-list").find("li").length;
 
-            $("#t1").html("");
+            for(var i = 0; i < len; i++){
+                $('#test').find(".selected-list").find("li").click();
+            }
+
+            $("#t1").html("較進階，有篩選功能");
 
             // 如果有預設值的 ， 清完後 ，這邊可以再寫一次 給預設值的 程式 即可
         }
