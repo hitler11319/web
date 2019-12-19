@@ -103,7 +103,7 @@
         
                     /*
                         1. 如果是 selected : true 的 會有個 class 為 selected-list 的 ul (選你勾選到的) => 故直接拿 .find("li.active") 會去到2次
-                            => 改成 .find(".menu-list").find("li.active")
+                            => 改成 .find(".selected-list").find("li.active")
         
                         2. 如果有 desc 的 => 要取值的話要變成 
                         .find("li.active").find(".item-text").map(function(index, ele){
@@ -118,7 +118,7 @@
         
                     // 這裡的符合 第1、2點
                     // 因為 第一點的關系 要特別 .find(".menu-list")
-                    $('#test').find(".menu-list").find("li.active").find(".item-text").map(function(index, ele){
+                    $('#test').find(".selected-list").find("li.active").find(".item-text").map(function(index, ele){
                             var d = ele.innerHTML.split("<br>");
                             // d[0] = text ； d[1] = desc  // 因為 第二點的關系 ： 所以要特別 .find(".item-text") 再用 <br> 分開
                             result.push(d[0]);

@@ -1787,6 +1787,12 @@ td.no-results {
 .multi-level-menu-container .multi-level-menu-group .menu-list-container:first-child .menu-item {
   border-left-width: 0;
 }
+
+/* Hong 2019-12-19 為 加入 readOnly 選項 設計*/
+.multi-level-menu-container .multi-level-menu-group .menu-list-container:first-child .menu-item-readonly {
+  border-left-width: 0;
+}
+
 .multi-level-menu-container .multi-level-menu-group .menu-list-container:only-child {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 100%;
@@ -1796,10 +1802,18 @@ td.no-results {
   border-left-width: 0;
   border-right-width: 0;
 }
+
+/* Hong 2019-12-19 為 加入 readOnly 選項 設計*/
+.multi-level-menu-container .multi-level-menu-group .menu-list-container:only-child .menu-item-readonly {
+  border-left-width: 0;
+  border-right-width: 0;
+}
+
 .multi-level-menu-container .selected-list,
 .multi-level-menu-container .selectable-list,
 .multi-level-menu-container .menu-list,
-.multi-level-menu-container .menu-item {
+.multi-level-menu-container .menu-item,
+.multi-level-menu-container .menu-item-readonly {
   margin: 0;
   padding: 0;
 }
@@ -1815,6 +1829,7 @@ td.no-results {
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 .multi-level-menu-container .menu-item,
+.multi-level-menu-container .menu-item-readonly,
 .multi-level-menu-container .menu-search {
   background-color: #f0f3f5;
   border: 1px solid rgba(0, 0, 0, 0.125);
@@ -1826,11 +1841,18 @@ td.no-results {
 .multi-level-menu-container .menu-item {
   list-style: none;
 }
-.multi-level-menu-container .menu-item:last-child {
+
+/* Hong 2019-12-19 為 加入 readOnly 選項 設計*/
+.multi-level-menu-container .menu-item-readonly {
+  list-style: none;
+}
+.multi-level-menu-container .menu-item-t:last-child {
   margin-bottom: 0;
 }
 .multi-level-menu-container .menu-item a,
-.multi-level-menu-container .menu-item label {
+.multi-level-menu-container .menu-item-readonly a,
+.multi-level-menu-container .menu-item label,
+.multi-level-menu-container .menu-item-readonly label {
   text-decoration: none;
   width: 100%;
   background: none;
@@ -1850,8 +1872,11 @@ td.no-results {
   align-items: center;
 }
 .multi-level-menu-container .menu-item.normal-item.active,
+.multi-level-menu-container .menu-item-readonly.normal-item.active,
 .multi-level-menu-container .menu-item.cross-item.active,
-.multi-level-menu-container .menu-item.list-all-item.active {
+.multi-level-menu-container .menu-item-readonly.cross-item.active,
+.multi-level-menu-container .menu-item.list-all-item.active,
+.multi-level-menu-container .menu-item-readonly.list-all-item.active {
   background-color: #01A9AC;
   border-color: #01A9AC;
 }
@@ -1860,7 +1885,13 @@ td.no-results {
 .multi-level-menu-container .menu-item.list-all-item.active a,
 .multi-level-menu-container .menu-item.normal-item.active label,
 .multi-level-menu-container .menu-item.cross-item.active label,
-.multi-level-menu-container .menu-item.list-all-item.active label {
+.multi-level-menu-container .menu-item.list-all-item.active label,
+.multi-level-menu-container .menu-item-readonly.normal-item.active a,
+.multi-level-menu-container .menu-item-readonly.cross-item.active a,
+.multi-level-menu-container .menu-item-readonly.list-all-item.active a,
+.multi-level-menu-container .menu-item-readonly.normal-item.active label,
+.multi-level-menu-container .menu-item-readonly.cross-item.active label,
+.multi-level-menu-container .menu-item-readonly.list-all-item.active label {
   color: #fff;
 }
 .multi-level-menu-container .checkbox-item,
