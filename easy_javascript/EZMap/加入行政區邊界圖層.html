@@ -24,13 +24,14 @@
             <button onclick="addTownLayer();">加入鄉鎮市區邊界圖層</button>
             <button onclick="addVillageLayer();">加入村里邊界圖層</button>
             <button onclick="addTaiwanUniversalLayer();">套台灣通用電子地圖</button>
+            <button onclick="addConvenienceStoreLayer();">套超商圖層</button>
+            <button onclick="addLANDSECTLyaer();">套 段籍圖</button>
             <button onclick="addTopographyLayer();">套基本地形圖</button>
 
             <div id="map" style="width:800px; height:600px; border:1px solid red;"></div>
             <script type="text/javascript">
                 var map = null;
                 var layer = null;
-
                 function init() {
                     map = new Easymap('map');	//'map'為div的id
                     map.zoomToXY(new dgXY(121.3, 24.5), 9);
@@ -38,12 +39,10 @@
                     // 加入圖層
                     addCityLayer();
                 }
-
                 // 移除圖層
                 function remove() {
                     map.removeItem(layer);
                 }
-
                 // 加入Google 行政區邊界圖層
                 function addCityLayer(){
                     //google layer
@@ -53,7 +52,6 @@
                     layer = new dgSource("GOOGLE", op);
                     map.addItem(layer);
                 }
-
                 // 加入 Google 鄉鎮市區 邊界圖
                 function addTownLayer(){
                     //google layer
@@ -63,13 +61,22 @@
                     layer = new dgSource("GOOGLE", op);
                     map.addItem(layer);
                 }
-
                 // 加入 Google 村里 邊界圖
                 function addVillageLayer(){
                     //google layer
                     var op = {};
                     op.bg = false;
-                    op.url = "https://wmts.nlsc.gov.tw/wmts/Village/default/EPSG:3857/${z}/${y}/${x}";
+                    op.url = "https://wmts.nlsc.gov.tw/wmts/Village201910/default/EPSG:3857/${z}/${y}/${x}";
+                    layer = new dgSource("GOOGLE", op);
+                    map.addItem(layer);
+                }
+
+                // 段籍圖
+                function addLANDSECTLyaer(){
+                    //google layer
+                    var op = {};
+                    op.bg = false;
+                    op.url = "https://wmts.nlsc.gov.tw/wmts/LANDSECT/default/EPSG:3857/${z}/${y}/${x}";
                     layer = new dgSource("GOOGLE", op);
                     map.addItem(layer);
                 }
@@ -78,15 +85,20 @@
                 function addTaiwanUniversalLayer(){
                     var op = {};
                     op.bg = false;
-                    op.name = "Emap";
-                    op.chname = "臺灣通用電子地圖";
-                    op.url = "http://wmts.nlsc.gov.tw/wmts";
-                    op.layer = "EMAP";
-                    op.matrixSet = "EPSG:3857";
-                    op.format = "image/png";
-                    op.zoomOffset = 0;
-                    var wmts = new dgSource("WMTS", op)
-                    map.addItem(wmts);
+                    op.url = "http://wmts.nlsc.gov.tw/wmts/EMAP98/default/EPSG:3857/${z}/${y}/${x}";
+                    layer = new dgSource("GOOGLE", op)
+                    map.addItem(layer);
+                }
+
+                // 參照 wmts.xml 中的 可以把以上四個的模型 => 只要改網圵即可
+                // 當然也可以把這些載下來後，放到自己的網圵上來呼叫(不然怕哪一天不見)
+                // 例如： 超商
+                function addConvenienceStoreLayer(){
+                    var op = {};
+                    op.bg = false;
+                    op.url = "http://wmts.nlsc.gov.tw/wmts/ConvenienceStore/default/EPSG:3857/${z}/${y}/${x}";
+                    layer = new dgSource("GOOGLE", op)
+                    map.addItem(layer);
                 }
 
                 // 套 基本地形圖(Google的)
@@ -100,7 +112,6 @@
                     op.url = "https://mts1.google.com/vt/lyrs=m@267065157&hl=zh-TW&x=${x}&y=${y}&z=${z}&s=Gal&lyrs=t@129,r@183000000";
                     console.log(op.url);
                     op.tileOptions = { crossOriginKeyword: null };
-
                     osm = new dgSource("GOOGLE", op);
                     map.addItem(osm);
                 }
