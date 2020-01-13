@@ -86,6 +86,16 @@
     $("#Div2").append("<script>alert('hello');<//script>");
     // 注意： 如果 append 的是 script => 會觸發喔
 
+    // 和 append 相反的 是 prepend()
+    // 例如： <div id="a"><h2>111</h2></div>  => $("#a").prepend("<h1>222</h1>"); => <div id="a"><h1>222</h1><h2>111</h2></div>
+
+    // JQuery 取到屬性 => 用 attr()
+    // 例如 ： <div id="a" data-val="3" name="test"></div>
+    // $("#a").attr("data-val");   // 會得出 3 (而且 data-val 還是我們自創的)
+    // $("#a").attr("name");    // 得到 test
+
+    // 但如果要改值的話，還是建議用 prop()
+
     </script>
 
 </body>
