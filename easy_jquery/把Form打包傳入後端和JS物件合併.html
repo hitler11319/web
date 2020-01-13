@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>JQuery 把 Form 打包 再用 Ajax 傳去後端  + JS 物件 合併</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+    <form id="CreateForm" action="a.php" method="post">
+        <!--
+            裡面放你的Form 資料
+        -->
+    </form>
+
+    <script>
+        // 把 Form 打包再用 Ajax 傳去後端
+        function SubmitByAjax() {
+            var $this = $("#CreateForm");
+
+            // 序列化
+            var arr = $this.serializeArray();
+
+            // 用像是  Ajax 上傳檔案的方式來接
+            var form_data = new FormData();
+            arr.map(function (el) {
+                // 這邊會加 model. 的原因是 controller 長這樣
+                // public ActionResult xxx (xxxModel model){}  => 這個model. 就是 model 變數，然後裡面的值
+                form_data.append("model." + el.name, el.value);
+            });
+
+            // 檔案
+            var pic_data;
+
+            if ($("#FileInputPicture").length > 0) {
+                pic_data = $("#FileInputPicture")[0].files[0] || null;
+                console.log(pic_data);
+            }
+
+            // 加入檔案
+            form_data.append("FileInputPicture", pic_data);
+
+
+            /*
+                這邊 也可以像以前的ajax 寫法一樣：
+                以前的 ajax 是 data:{
+                    model:{
+                        aaa : 1,
+                        bbb : 2
+                    }
+                }
+
+                用上面的 arr.map(function (el) {});  去做
+
+
+                JS 的物件合併寫法：
+                var obj = {key1: "value1", key2: "value2"};
+                Object.assign(obj, {key3: "value3"});
+
+                --------------------------------------------------------實際做法
+
+                JS 物件的 動態累加 Key 寫法：
+                var obj = new Object();
+                arr.map(function (el) {
+                    obj[el.name] = el.value;
+                });
+
+                然後用 data:{
+                    model: obj
+                }
+                即可
+            */
+
+            $.ajax({
+                type: "POST",
+                url: $this.attr('action'),
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: form_data,
+                success: function (res) {
+                    console.log(res);
+                },
+            });
+        }
+    </script>
+
+</body>
+</html>
