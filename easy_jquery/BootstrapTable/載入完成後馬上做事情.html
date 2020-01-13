@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>BootstrapTable 的前端分頁</title>
+<title>BootstrapTable 載完後 做事情</title>
 
 <link type="text/css" rel="stylesheet" href="style.css">
 <link type="text/css" rel="stylesheet" href="extend.css">
@@ -9,71 +9,78 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="bootstrap-table-1.11.1.js"></script>
 <script src="bootstrap-table-zh-TW.js"></script>
-
-<!--CSS要載 => 前面的也都忘了載-->
 </head>
 <body>
+
+    關鍵字：<input type="text" id="keyword">
 
     <!--要呈現的物件載體-->
     <table class="table" style="border:0px;" id="table" data-row-attributes="rowAttributes"></table>
 
     <script>
+        //初使化參數 (這邊是取到當前參數，因為其他查詢條件基本上可以從物件上拿到，但這些不行)
+        var currentLimit;
+        var currentOffset;
+        var currentSortName;
+        var currentSortOrder;
+
         // 儲存得到的資料
         var rowData;
     </script>
 
     <script>
-        // 因為是前端分頁 => 故 會先用Ajax取到資料
-        rowData = [
-            {
-                Name : '王大明',
-                Sex : 'M'
-            },
-            {
-                Name : '王小明',
-                Sex : 'M'
-            },
-            {
-                Name : '陳小美',
-                Sex : 'F'
-            },
-        ];
-    </script>
-
-    <script>
         // 表格初使化設定 (可寫成一個js檔)
-        // 前端分頁的 => 這邊要有變動
-        function InitTable(id, columns, data) {
+        // 因為要設定 載入完要做的事 => 所以多一個 onLoadFunc參數 (這個 是一個 function， 且只接收一個參數)
+        function InitTable(id, url, columns, params, onLoadFunc) {
             $table = $("#" + id + "");
             $table.bootstrapTable('destroy');
             $table.bootstrapTable({
                 toggle: "table",  //物件類型
-                data: data,   // 不再是用url ，而是拿直接取到的資料
+                url: url,  // 得到資料的url
+                method: 'post',
+                queryParams: params,  //傳入的參數
                 classes: 'table table-striped table-bordered table-hover',  // table 的 class
                 queryParamsType: 'limit',
-                sidePagination: "client",  // 改成並端的
+                sidePagination: "server",
                 striped: true,
                 cache: false,
                 pagination: true,  // 是否分頁
-                pageSize: 10,
-                pageList: [10, 25, 50, 100],  //上面的一次顯示幾筆
+                pageSize: [10, 25, 50, 100],  //上面的一次顯示幾筆
                 columns: columns,  //傳入的columns
                 sortable: true,  // 是否要排序
                 // 換頁會執行的程式
                 onPageChange:function(currentPage, pageSize){
                     console.log("目前頁數： " + currentPage + " 一頁顯示：" + pageSize + " 筆");
-                }
+                },
+
+                // 加入這個事件 (在載入完成後做事， 而這個 參數 data 就是)
+                onLoadSuccess: function (data) { onLoadFunc(data) },
             });
         }
 
         // 搜尋條件Model (目前不知這params是哪來的)
-        // 前端分頁是沒有 Model 的
         function Model(params) {
-        }
 
+            // 存值，以便需要
+            currentLimit = params.limit;
+            currentOffset = params.offset;
+            currentSortName = this.sortName;
+            currentSortOrder = this.sortOrder;
+
+            return {
+                searchModel: {
+                    Limit: params.limit,
+                    Offset: params.offset,
+                    SortName: this.sortName,
+                    SortOrder: this.sortOrder,  // 上面這4個是最好要有的
+                    keyword : $('#keyword').val()  // 查詢條件
+                }
+            };
+        }
 
         // 載入表格
         function LoadData() {
+
             // 假設出來的物件是
             /*
                 {
@@ -81,14 +88,17 @@
                     Sex : 'M'
                 }
             */
+
             var columns = [
                 {
                     // 序號(後面的formatter可以傳回一個html或值)
-                    field: "No", title: "#", formatter: function (value, row, index) { return index + 1; }
+                    // align 是文字容容的對齊方式，而halign是表頭的(如果沒寫這個，但有align的話，表頭會套用align的設定)
+                    field: "No", title: "#", align: "right", halign: "center", formatter: function (value, row, index) { return index + 1; }
                 },
                 {
                     // 實際的Name (後面的允許排序)
-                    field: "Name", title: "姓名", sortable: true,
+                    // title 其實也是 html 喔 ，如下
+                    field: "Name", title: "姓名 <a href='https://www.google.com.tw'>去google</a>", sortable: true,
                 },
                 {
                     // 物件的Sex 屬性 => 後面的formatter其實可以寫在 GridSetup 裡統一管理
@@ -108,22 +118,37 @@
                     field: "action2", title: "", formatter: "$.ClientSide.DetailFormatter", events: "$.ClientSide.DetailEvents"
                 },
                 {
+                    // 類似第一個的
                     field: "special", title: "特別的設定", align: 'center', valign: 'middle', visible: false
                 }
             ]
+
             // 下面的函式(用來長上面的東西)
             GridSetup();
 
-            // 上面的初使化表格函式 (要呈現的表格id名, 網圵, 上面的columns變數, 上面的Model函式)
-            InitTable("table", columns, rowData);
+            // 設定載入完成後要做的事
+            // 得到的 data 就是 141 行這個物件 (包含 total, rows , 自己給的變數 ) 之物件
+            var loadFunc = function(data){
+                console.log(data.total);
+                console.log(data.rows);
+                console.log(data.test);
+            }
+
+            // 上面的初使化表格函式 (要呈現的表格id名, 網圵, 上面的columns變數, 上面的Model函式， 傳入  載入完成後 要執行的 函式)
+            InitTable("table", "GetData", columns, Model, loadFunc);
 
             /*
                 記住： 網圵出來的結果一定是要長這樣的
+                PS： 一定要有前2個，但還可以加其他自己想加的變數
                 {
                     total : xxx (int型別),
-                    rows : [] (List的上面說的物件的型別)
+                    rows : [], (List的上面說的物件的型別)
+
+                    // 可以自己再傳入到前面做事的
+                    test : "ha ha ha"
                 }
             */
+
             // 如果有要表格長出來後，才出現的寫在這邊 (因為表格沒長那麼快，但其實用秒數的也是不太對的)
             //還沒那麼快產生出來，所以等個幾秒
             // LoadData 只會執行一次而已，如果想要每次都會出現的話，就要寫成每秒跑的了(如下)
@@ -141,24 +166,16 @@
                 //$('div .fixed-table-header').html(showHtmlText + $('div .fixed-table-header').html());
             //}
         //}, 100);
+
         // 上面的formatter設定(可以把相關羅輯都放這)
         function GridSetup() {
             $.ClientSide = {
                 OperateFormatter: function (value, row, index) {
-                    // 如果你的 rowData 修改了
-                    // 只要在這邊設定 => 在 跳頁時，或者重刷時，值都會在喔
-
-                    // 用一個 Key 值去找到 其值就可以修改了
-                    var data;
-                    for(var i = 0; i < rowData.length; i++){
-                        if (rowData[i].Name == row.Name){
-                            data = rowData[i];
-                            break;
-                        }
+                    // 上面的rowData取資料 (先確定資料沒有的才加，否則先按去第二頁再按回第一頁就重複了)
+                    if (rowData.indexOf(row) < 0){
+                        rowData.push(row);
                     }
 
-                    // 取相關的值做設定
-                    // return data.Sex  => 這樣如果有修改了，這邊呈現的就會是正確的
                     return '安安';
                 },
                 DetailFormatter: function (value, row, index) {
@@ -176,36 +193,26 @@
                 }
             }
         }
+
         // 上面 table物件上有設定個 data-row-attributes="rowAttributes"
         // 就是代表 每一行按下去後會連去哪
         function rowAttributes(row, index) {
             return {
-                'data-link': "Detail/" + row.Name
+                'data-link': "Detail/" + row.Name,
+                // onclick的事件
+                // 'onclick' : "alert('aaa');",
+                // 滑鼠 移到 上面 會變成 手指
+                // 'style' : 'cursor : pointer'
             }
         }
     </script>
 
+    <!--一開始執行(也可以不用)-->
     <script>
+    $(document).ready(function () {
         LoadData();
+    });
     </script>
-
-        <!--每秒去跑，讓 "載入中" 的標語不見 -->
-        <script>
-            setInterval(function () {
-                var t = $(".fixed-table-loading");
-    
-                if (t.length > 0) {
-                    $(".fixed-table-loading").map(function (index, ele) {
-                        ele.style.display = "none";
-                    })
-                }
-    
-            }, 1000);
-        </script>
-
-    <!--
-        PS : 前端分頁的 換頁相關的動作還沒研究完
-    -->
 
 </body>
 </html>
