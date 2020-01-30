@@ -1846,6 +1846,13 @@ td.no-results {
 .multi-level-menu-container .menu-item-readonly {
   list-style: none;
 }
+
+/* 有 disbled 的效果 */
+.multi-level-menu-container .menu-item-readonly > label {
+  opacity: 0.33;
+  cursor: not-allowed;
+}
+
 .multi-level-menu-container .menu-item-t:last-child {
   margin-bottom: 0;
 }
