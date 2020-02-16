@@ -8,11 +8,36 @@ $(document).ready(function(){
     //附加事件，要附加的是onclick => 所以要打click，後面接function
     $("#b1").on('click', function(){
         alert('hello');
-    })
+    });
+
+    // $().on() 是會疊加效果的， 例如再用一次的話，2個都會觸發
+	$("#b1").on("click", function(){alert(1);});
+
+    // 解除繫結事件(全部)：
+    $('#b1').unbind();
+
+    // 解除繫結指定事件
+    $('#b1').unbind("click");
+
+    /*
+        解除特定的事件function，例：
+            var a = function(){
+                alert($("#a").val());
+            };
+            $("#b1").on("click", a);
+
+            var b = function() {
+                alert('aaa');
+            }
+            $('#b1').on('click', b);
+
+            // a 這個func還有作用，但b這個func無作用
+            $('#b1').unbind("click", b);
+    */
 
     $("#i1").on('keyup', function(){
         $("#p1").html("you input:" + $("#i1").val());
-    })
+    });
 });
 </script>
 </head>
