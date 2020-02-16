@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>EZMap 判斷點是否在多邊型內</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!--載入EZMap-->
+<script type="text/javascript" src="https://easymap.gis.tw/easymap/latest/easymap.js"></script>
+
+</head>
+<body>
+
+    <!--
+            參考網圵： https://easymap.gis.tw/easymap/api.html
+            參考網圵： https://blog.csdn.net/kangrydotnet/article/details/52163392
+        -->
+
+        <div id="EZMAP" ></div>
+
+        <!--初使化地圖 + 設定中心點-->
+        <script>
+            var map;
+
+            // 初使化地圖
+            function InitMap() {
+                //initMap
+                // 中心點
+                //var x = 120.95397949218749;
+                //var y = 24.567108352575985;
+
+                var x = 121;
+                var y = 24;
+
+                $("#EZMAP").html("");
+                map = new Easymap('EZMAP');  // 初使化
+                map.zoomToXY(new dgXY(x, y), 8);  //移到 指定的點 (8 = zoomSize)
+
+                map.attachEvent('onclick', function (e, dgxy) {
+                    var isInPolygon = PointInPolygon(3, pointList, dgxy.x, dgxy.y);
+
+                    var text = isInPolygon ? "這個點在多邊型內" : "這個點不在迻邊型內";
+                    alert(text);
+                });
+            }
+        </script>
+
+        <!--讓Body的onload執行InitMap-->
+        <script>
+            // 設定 body 的 onload 執行 initMap
+            $("body").on("load", InitMap());
+        </script>
+
+        <!------------------------------------------------------------------------------------------------------------------>
+
+        <!--顯示(畫) 多邊型-->
+        <script>
+            var t;
+            // map = 指定的地圖物件； pointList = 有 x , y 屬性的 點陣列 ； lineStroke 線條粗細 ； color 為顏色 (例如： "rgba(200,0,0,0.8)")
+            // 而 innerColor = 裡面填滿的顏色 ； boderColor : 外框的顏色
+            function DrawPolygon(map, pointList, lineStroke, boderColor, innerColor){
+                var points = [];
+                for (var i = 0; i < pointList.length; i++){
+                    var x = pointList[i].x;
+                    var y = pointList[i].y;
+                    if (x != undefined && y != undefined ){
+                        points.push(new dgXY(x, y));
+                    }
+                }
+
+                // 多邊現的頭尾要相同
+                var lastIndex = points.length - 1;
+                if (points[0] != points[lastIndex]){
+                    points.push(points[0]);
+                }
+
+                var PP = new dgPolygon(points, boderColor, innerColor, lineStroke);
+
+                map.addItem(PP);   //是加入陣列的型別
+            }
+        </script>
+
+        <!-------------------------------------------------------------------------------------------------------------------->
+
+        <!--判斷點是否在多邊型內-->
+        <script>
+                // nvert 是 多邊型的 點 個數； pointList 是多邊型的點 (用跟之前的一樣，{x, y}的形式；不過最後一個點不用重複)
+                // x = 你要判斷的點的x； y = 你要判斷的點的 y
+                function PointInPolygon(nvert, pointList, x, y){
+                        var i, j = 0;
+                        var result = false;
+
+                        x = parseFloat(x);
+                        y = parseFloat(y);
+
+                        // 3 個點以上才是多邊型
+                        if (nvert >= 3){
+                                for (i = 0, j = nvert-1; i < nvert; j = i++) {
+                                if ( ((pointList[i].y > y) != (pointList[j].y > y)) &&
+                                        (x < (pointList[j].x - pointList[i].x) * (y - pointList[i].y) / (pointList[j].y - pointList[i].y ) + pointList[i].x) )
+                                                result = !result;
+                                }
+                        }
+                        
+                        return result;
+                }
+        </script>
+
+        <!--------------------------------------------------------------------------------------------------------------------->
+
+        <!--丟測試資料執行-->
+        <script>  
+                // 畫多邊型
+                var pointList = [];
+                pointList.push({x : 122.2222, y: 24.4444});
+                pointList.push({x : 121.2223, y: 23.4484});
+                pointList.push({x : 125.2322, y: 25.4344});
+                DrawPolygon(map, pointList, 5, "rgba(0,0,200,0.6)", "rgba(200,0,0,0.6)");
+        </script>
+
+</body>
+</html>
