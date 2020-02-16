@@ -39,6 +39,10 @@
             // 加入檔案
             form_data.append("FileInputPicture", pic_data);
 
+            // 如果是陣列的屬性的的話
+            form_data.append("model.DataList[0]", "first");
+            form_data.append("model.DataList[1]", "first");
+
 
             /*
                 這邊 也可以像以前的ajax 寫法一樣：
