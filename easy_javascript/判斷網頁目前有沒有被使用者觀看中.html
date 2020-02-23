@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>判斷網頁目前有沒有被使用者觀看中</title>
+                <link rel="stylesheet" href="">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        </head>
+
+        <body>
+
+                <!--
+                        平常我們對 物件 使用 事件，那可以對 網頁(window本身嗎)？
+                        答案： 就是可以啦 => 所以要判斷使用者有沒有在觀看此網頁 => 用 onfocus 和 onblur 就可以啦
+                -->
+
+                <p style="color: red;" id="k"></p>
+                <script>
+                        $(window).on("blur", function(){
+                                $("#k").html("失焦");
+                                $("#k")[0].style.color = "red";
+                        });
+
+                        $(window).on("focus", function(){
+                                $("#k").html("未失焦");
+                                $("#k")[0].style.color = "green";
+                        });
+                </script>
+
+        </body>
+</html>
