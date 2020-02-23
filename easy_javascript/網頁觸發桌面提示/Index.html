@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>用網頁觸發桌面提示</title>
+                <link rel="stylesheet" href="">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        </head>
+
+        <body>
+
+                <!--
+                        參考網圵： https://www.zhangxinxu.com/wordpress/2016/07/know-html5-web-notification/
+                -->
+
+                <!--
+                        注意：
+                        最新的Chrome的Notification要想有效果需要https協議才行
+                        故直接開 html 是不會有效果的 => 要在 https上的才行
+
+                        然後 Edge 不知為何開不起來
+                        然後 IE 不會觸發 詢問的功能
+
+                        => 故我把他架在 IIS上 然後跑，實測是可以的
+                -->
+
+                <h1>當前允許通知的狀態： <span id="status"></span></h1>
+
+                標題： <input type="text" id="title"> <br><br>
+                內容： <textarea id="content" cols="30" rows="30"></textarea> <br><br>
+                圖片： <select id="pic">
+                                <option value="img/1.jpg">拉麵</option>
+                                <option value="img/2.jpg">丼飯</option>
+                                <option value="img/3.jpg">魯肉飯</option>
+                        </select>
+
+                        <button type="button" onclick="StartNotification();">送出通知</button> <br>
+
+                        <h2>使用者是否按下通知： <span id="isclick"></span></h2>
+
+                <!--Notification相關作業-->
+                <script>
+                        var $notificationPermission = "default";   // 因為不知為何 Notification.permission 沒做用，所以改用變數存
+
+                        // 相關函式 (Notification 相關的)
+                        function AskIsAllowNotification(func){
+                                // 這裡是 會詢問是否 允許通知 (Chrome會跳出一個視窗，跟問是否要定位一樣的那個)
+                                // 不管選什麼，選過一次在瀏覽器未關掉前都無法再觸發此函式
+                                Notification.requestPermission().then(function(permission) {
+                                        Notification.permission = permission;
+                                        $notificationPermission = permission;
+                                        console.log(permission);
+
+                                        // permission 可能是是granted, denied, 或default
+                                        // granted表示用戶 允许通知，denied表示用戶禁用你，default表示用戶目前還沒管你
+                                        // 這裡的 permission 其實可以用 Notification.permission 得到值 (預設是 default)
+                                        if (func != null){
+                                                // 得到後要做什麼事
+                                                func(permission);
+                                        }
+                                });
+                        }
+
+                        // 得到目前是否允許
+                        function GetNotificationPermission(){
+                                // return Notification.permission;   // 目前不知道為何得到的還是default(上面我已經允許了 => 所以改用變數存)
+                                return $notificationPermission;
+                        }
+                
+                        // 新增一個 Notification (詳細請看參考網圵的參數)
+                        function CreateNotification(title, options, clickFunc, showFunc){
+                                var notification = new Notification(title, options);
+
+                                if (clickFunc != null){
+                                        notification.onclick = function(){
+                                                clickFunc();
+
+                                                // 開閉提示窗
+                                                // notification.close()
+                                                this.close();
+                                        }
+                                }
+
+                                if (showFunc != null){
+                                        notification.onshow = function(){
+                                                showFunc();
+                                        }
+                                }
+                        }
+                
+                        /*
+                                新增 Notification 的 option 參數是個 object 其內容如下：
+
+                                dir	 默認值是auto, 可以是ltr或rtl，有點類似direction属性。表示提示主體内容的水平書寫顺序。
+                                lang	 提示的語言。沒出来有什麼用。大家可以忽略之~
+                                body	 提示主體内容。string。 (用html標籤會直接顯示 => 沒用喔)
+                                tag	 string。標記當前通知的標籤。
+                                icon	 string。通知面板左邊的圖片src。
+                                data	 任意類型和通知相關聯的数據。
+                                vibrate	 通知顯示时候，設備震動硬體需要的震動模式。
+                                renotify boolean。新通知出现的时候是否替換之前的。如果設為true，则表示替換，表示當前通知只会出现一個。
+                                silent	 boolean。通知出現的时候，是否要有聲音。默認false, 表示無聲。
+                                sound	 string。音樂src。
+                                noscreen boolean。是否不再螢幕上顯示通知信息。默設false, 表示要在螢幕上顯示通知内容。顯示桌面通知
+                                sticky	 boolean。是否通知具有粘性，这样用戶不太容易清除通知。默設false, 表示没有粘性。
+                        */
+                </script>
+
+                <!--相關元件動作-->
+                <script>
+                        // 一開始要先詢問是否允許通知
+                        AskIsAllowNotification(function(permission){
+                                var text = "預設";
+                                var color = "black";
+
+                                switch(permission){
+                                        case "granted":
+                                                text = "允許";
+                                                color = "green";
+                                                break;
+                                        case "denied":
+                                                text = "禁止";
+                                                color = "red";
+                                                break;
+                                        case "default":
+                                                text = "預設";
+                                                color = "black";
+                                                break;
+                                        default :
+                                                text = "預設";
+                                                color = "black";
+                                                break;
+                                }
+                        
+                                $("#status").html(text);
+                                $("#status")[0].style.color = color;
+                        })
+
+                        // 新增通知的動作
+                        function StartNotification(){
+
+                                var allowNotification = GetNotificationPermission() == "granted";
+
+                                if (allowNotification){
+                                        $("#isclick").html("否");
+                                        $("#isclick")[0].style.color = "red";
+
+                                        var title = $("#title").val();
+                                        var content = $("#content").val();
+                                        var pic = $("#pic").val();
+
+                                        CreateNotification(title, {
+                                                body : content,
+                                                icon : pic
+                                        }, function(){
+                                                $("#isclick")[0].style.color = "green";
+                                                $("#isclick").html("是");
+                                        }, function(){
+                                                console.log("已發出通知！！");
+                                        })
+                                }
+                                else{
+                                        alert("你並未開啟允許通知");
+                                }
+                        }
+                </script>
+
+        </body>
+</html>
