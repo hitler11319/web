@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Console進階用法</title>
+                <link rel="stylesheet" href="">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        </head>
+
+        <body>
+                <!--
+                        你已為只有 Console.log() ? 錯了！
+                        參考網圵： https://medium.com/devgorilla/the-console-object-provides-access-to-the-browsers-debugging-console-354eda9d2d50
+                -->
+
+                <script>
+                        // 先宣告物件
+                        var foo = { id: 1, height: '200px', width: '100px' };
+                        var bar = { id: 2, height: '250px', width: '200px' };
+
+                        // 一、Console.log()  大家熟悉的 顯示出來
+                        console.log(foo);
+
+                        // 二、Console.warn()  黃色提醒
+                        console.warn("提示");
+
+                        // 三、Console.error()  紅色錯誤
+                        console.error("錯誤");
+
+                        // 四、Console.group()  做群組化(預設開起來)
+                        console.group("A群");
+                        console.log(1);
+                        console.log(2);
+                        console.groupEnd();
+
+                        console.group("B群");
+                        console.log(3);
+                        console.log(4);
+                        console.groupEnd();
+
+                        // 五、Console.groupCollapsed()  做群組化(預設收起來)
+                        console.groupCollapsed("預設收起來");
+                        console.log(5);
+                        console.log(6);
+                        console.groupEnd();
+
+                        // 六、Console.table()   表格化
+                        console.table(foo);
+                        console.table(bar);
+
+                        var k = [];
+                        k.push(foo);
+                        k.push(bar);
+                        console.table(k);
+
+                        var y = {
+                                bar : bar,
+                                foo : foo
+                        };
+                        console.table(y);
+
+                        // 七、console.trace()  找出是誰呼叫這隻的記錄
+                        console.trace();
+
+                        // 八、console.time()   大家最關注的效能啊 (算時間)
+                        console.time();
+                        for(var i = 0; i <= 10000; i++){}
+                        console.timeEnd();
+
+                        // 九、console.clear()  清除
+
+                        // 十、console.dir()   看物件用(不知何用？要再研究)
+                        console.dir(foo);
+                </script>
+
+        </body>
+</html>
