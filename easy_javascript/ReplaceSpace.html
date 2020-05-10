@@ -30,6 +30,20 @@
             //所以要改用 str.replace(/,/g, "-");  即可   ，  就是用  /要取代的東西/g    來進行取代
             //但要注意： 不能用/*/g  =>  因為 只要 /* 就視同註解了
 
+            /*
+              但如果今天替換的文字是個變數呢？
+              假設 var b = "aaa";
+              則 text.replace(/b/g, ""); => 會變成 把 "b" 替換掉
+
+              解法：
+              var a = "112211"; 
+              var b = "11";
+              a.replace(new RegExp(b,"gm"), "kk");
+
+              // 平常是用 (但如果把 "11" 變成變數就無法用 / /g 處理)
+              a.replace(/11/g, "kk");  
+            */
+
             document.getElementById('text').value = text;
         }
 
@@ -63,13 +77,6 @@
 
             alert(r1 + "\n" + r2);
     </script>
-
-
-
-
-
-
-
 
   </body>
 </html>
