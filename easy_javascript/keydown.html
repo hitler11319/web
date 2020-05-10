@@ -14,6 +14,16 @@ function myFunction(event) {
     var x = event.which || event.keyCode;
     document.getElementById("demo").innerHTML = "The Unicode value is: " + x;
 }
+
+// 增加快捷鍵
+// 參考網圵： https://www.twblogs.net/a/5b8834f52b71775d1cdb0052
+// 設置 Ctrl + S = 儲存
+document.onkeydown = function(){
+		var a=window.event.keyCode;
+		if((a==83)&&(event.ctrlKey)){
+			alert("你按下了 Ctrl + S 了");
+		}
+	};
 </script>
 
 </body>
