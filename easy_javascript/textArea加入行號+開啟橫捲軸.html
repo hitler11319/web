@@ -1,0 +1,89 @@
+
+<html> 
+        <head>
+        <title>Js给TextArea 加入行號</title>
+        <style type="text/css">
+         #codeTextarea{width: 500px;height: 610px;}
+        .textAreaWithLines{font-family: courier;border: 1px solid #ddd;}
+        .textAreaWithLines textarea,.textAreaWithLines div{border: 0px;line-height: 120%;font-size: 12px;}
+        .lineObj{color: #666;}
+        </style>
+        <script type="text/javascript">
+        var offsetWidth = 30;
+        var offsetHeight = 2;
+
+        function createTextAreaWithLines(id)
+        {
+           var el = document.createElement('DIV');
+           var ta = document.getElementById(id);
+           ta.parentNode.insertBefore(el,ta);
+           el.appendChild(ta);
+           el.className='textAreaWithLines';
+           el.style.width = (ta.offsetWidth + offsetWidth) + 'px';
+           ta.style.position = 'absolute';
+           ta.style.left = offsetWidth + 'px';
+           el.style.height = (ta.offsetHeight + offsetHeight) + 'px';
+           el.style.overflow='hidden';
+           el.style.position = 'relative';
+           el.style.width = (ta.offsetWidth + offsetWidth) + 'px';
+           var lineObj = document.createElement('DIV');
+           lineObj.style.position = 'absolute';
+           lineObj.style.top = offsetHeight + 'px';
+           lineObj.style.left = '0px';
+           lineObj.style.width = '27px';
+           el.insertBefore(lineObj,ta);
+           lineObj.style.textAlign = 'right';
+           lineObj.className='lineObj';
+           var string = '';
+
+           // 總行數會出現多少 (這邊是 1 - 1000)
+           for(var no=1;no<=1000;no++){
+              if(string.length>0)string = string + '<br>';
+              string = string + no;
+            }
+              ta.onkeydown = function() { positionLineObj(lineObj,ta); };
+              ta.onmousedown = function() { positionLineObj(lineObj,ta); };
+              ta.onscroll = function() { positionLineObj(lineObj,ta); };
+              ta.onblur = function() { positionLineObj(lineObj,ta); };
+              ta.onfocus = function() { positionLineObj(lineObj,ta); };
+              ta.onmouseover = function() { positionLineObj(lineObj,ta); };
+              lineObj.innerHTML = string;
+           }
+        function positionLineObj(obj,ta)
+        {
+              obj.style.top = (ta.scrollTop * -1 + offsetHeight) + 'px';   
+        }
+        </script>
+        </head>   
+        <body>
+        <form>
+          <input type="checkbox" onclick="OpenXScroll(this);">開啟橫捲軸
+        <textarea id="codeTextarea"></textarea>
+        </form>
+        <script type="text/javascript">
+        createTextAreaWithLines('codeTextarea');
+        </script>
+
+        <script>
+        /*加入橫捲軸
+        document.getElementById("ConfigureArea").wrap = "off";
+        即 <textarea wrap="off" />
+
+        取消橫捲軸：
+        document.getElementById("ConfigureArea").wrap = "soft";
+
+        或者不加這個 Attribute
+        */
+
+        function OpenXScroll(obj){
+          if (obj.checked){
+            document.getElementById("codeTextarea").wrap = "off";
+          }
+          else{
+            document.getElementById("codeTextarea").wrap = "soft";
+          }
+        }
+        </script>
+
+        </body>
+        </html>
