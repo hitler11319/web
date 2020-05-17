@@ -8,10 +8,13 @@
         .textAreaWithLines textarea,.textAreaWithLines div{border: 0px;line-height: 120%;font-size: 12px;}
         .lineObj{color: #666;}
         </style>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script type="text/javascript">
         var offsetWidth = 30;
         var offsetHeight = 2;
 
+          // 加入行號
         function createTextAreaWithLines(id)
         {
            var el = document.createElement('DIV');
@@ -54,35 +57,84 @@
               obj.style.top = (ta.scrollTop * -1 + offsetHeight) + 'px';   
         }
         </script>
+
         </head>   
         <body>
         <form>
           <input type="checkbox" onclick="OpenXScroll(this);">開啟橫捲軸
         <textarea id="codeTextarea"></textarea>
+
+        <p>當前反白的文字為： <span id="areaFocusText" style="color:red;"></span></p>
+
+        <button type="button" onclick="GetAreaLineCount('codeTextarea');">取到總行數</button>
+        <p>當前行數為： <span id="areaLineCount" style="color:red;"></span></p>
+
+        <button type="button" onclick="GetCurrentScrollHeight('codeTextarea');">取到目前捲軸總長度</button>
+        <p>當前捲軸總長度為： <span id="areaScrollHeight" style="color:red;"></span></p>
+
         </form>
-        <script type="text/javascript">
-        createTextAreaWithLines('codeTextarea');
-        </script>
 
         <script>
-        /*加入橫捲軸
-        document.getElementById("ConfigureArea").wrap = "off";
-        即 <textarea wrap="off" />
-
-        取消橫捲軸：
-        document.getElementById("ConfigureArea").wrap = "soft";
-
-        或者不加這個 Attribute
-        */
-
-        function OpenXScroll(obj){
-          if (obj.checked){
-            document.getElementById("codeTextarea").wrap = "off";
+          /*加入橫捲軸
+          document.getElementById("ConfigureArea").wrap = "off";
+          即 <textarea wrap="off" />
+  
+          取消橫捲軸：
+          document.getElementById("ConfigureArea").wrap = "soft";
+  
+          或者不加這個 Attribute
+          */
+  
+          function OpenXScroll(obj){
+            if (obj.checked){
+              document.getElementById("codeTextarea").wrap = "off";
+            }
+            else{
+              document.getElementById("codeTextarea").wrap = "soft";
+            }
           }
-          else{
-            document.getElementById("codeTextarea").wrap = "soft";
+          
+          // 得到反白文字 (在 IE上跑不出來)
+          function GetTextAreaFocusText(id){
+            if (window.getSelection) {
+              try {
+                var ta = $('#' + id)[0];
+                // selectionStart 就是游標的開始位置， 反之 selectionEnd 就是結束位置
+                return ta.value.substring(ta.selectionStart, ta.selectionEnd);
+              } catch (e) {}
+            } 
+
+            // For IE
+            if (document.selection && document.selection.type != "Control") {
+              return document.selection.createRange().text;
+            }
           }
-        }
+
+          // 得到行數
+          function GetAreaLineCount(id){
+            // 總行數
+            var totalLineCount = $("#" + id).val().split(/\n/g).length;
+            $("#areaLineCount").html(totalLineCount);
+          }
+          
+          // 得到捲軸總長度
+          function GetCurrentScrollHeight(id){
+            var totalHeight = $("#" + id)[0].scrollHeight - $("#" + id)[0].clientTop;
+
+            // 如果你要的是 areaText 的話 裡面的 id 就是你那隻 areaText 的 id
+            // 如果要用 body 的話 那就是 document.body.scrollHeight 這種
+
+            $("#areaScrollHeight").html(totalHeight);
+          }
+          </script>
+
+        <script type="text/javascript">
+        createTextAreaWithLines('codeTextarea');
+
+        // 得到反白文字的動作
+        $("textarea").on('mouseup',function(){
+          $("#areaFocusText").html(GetTextAreaFocusText(this.id));
+        })
         </script>
 
         </body>
