@@ -37,9 +37,103 @@ document.write(line);
 //Read(num):讀取 num 個字元
 //ReadAll():讀取檔案全部
 
-
 //關閉檔案
 objStream.Close();
+</script>
+
+<script>
+
+  var path = "\\sample";     //隨便設個名稱，要展示用的
+
+  // 得到目錄列表
+  function GetDirList(){
+    var result = [];
+
+    //使用ActiveX技術
+    var objShowFolderFSO = new ActiveXObject("Scripting.FileSystemObject");
+	  var objShowFolderFolder = objShowFolderFSO.GetFolder(".");     // 一個 . 是當前跟這個 html 這個 資料夾下
+
+	  if (! objShowFolderFSO.FolderExists(objShowFolderFolder + path)){
+		  //alert("找不到系統預設目錄");
+		  //window.close();
+      return result;
+	  }
+
+    // 得到資料夾物件
+	  var objSampleFolder = objShowFolderFSO.GetFolder(objShowFolderFolder + path);
+
+	  //使用模擬的容器盛載，然後歷遍
+	  var objSubfolders = new Enumerator(objSampleFolder.Subfolders);
+
+    // 加入資料夾名稱
+    for (;!objSubfolders.atEnd(); objSubfolders.moveNext()){
+		  var dirName =objSubfolders.item().Name;
+		  result.push(dirName);
+	  }
+  }
+
+  // 得到某個目錄下的 全部檔案(不包含資料夾，要取得資料夾用上面的方法取)
+  function GetDirAllFiles(dirName){
+    var resut = [];
+    var fso = new ActiveXObject("Scripting.FileSystemObject");
+    var objShowFolderFolder = objShowFolderFSO.GetFolder(".");     // 一個 . 是當前跟這個 html 這個 資料夾下
+
+	  if (! objShowFolderFSO.FolderExists(objShowFolderFolder + path + dirName)){
+		  //alert("找不到系統預設目錄");
+		  //window.close();
+      return result;
+	  }
+
+    var f = fso.GetFolder(objShowFolderFolder + path + dirName);
+    var fc = new Enumerator(f.files);  // 創建Enumerator 迴圈找全部檔案
+    for (; !fc.atEnd(); fc.moveNext())
+    {
+      var x=(fc.item()+"").replace(/\\/g,"//");
+      result.push(x);
+    }
+  }
+  
+  // 開啟資料夾
+  function OpenDir(dirName){
+    var objFSO = new ActiveXObject("Scripting.FileSystemObject");
+	  var objFolder = objFSO.GetFolder(".");       // 當前目錄
+	  var objNoteFolder = objFolder + path + "\\" + dirName;
+
+	  var objRun = new ActiveXObject("Wscript.Shell");
+	
+	  if (objFSO.FolderExists(objNoteFolder)){
+		  objRun.Run("explorer.exe /e," + objNoteFolder);
+	  }
+  }
+
+  // 新增資料夾
+  function CreateDir(dirName){
+    if (!!dirName){
+      try{
+		    var objFSO = new ActiveXObject("Scripting.FileSystemObject");
+		    var objFolder = objFSO.GetFolder(".");
+		    if(objFSO.FolderExists(objFolder) == true){
+			    objFSO.CreateFolder(objFolder + path + "\\" + dirName);
+		    }
+	    }catch(e){
+		    alert("發生" + e + "錯誤! 或是你的資料夾名稱含非法字元");
+	    }
+    }
+  }
+
+  // 刪除資料夾
+  function DeleteDir(dirName){
+    try{
+      var objFSO = new ActiveXObject("Scripting.FileSystemObject");
+		  var objFolder = objFSO.GetFolder("." + path + "\\" + dirName);
+		  if(objFSO.FolderExists(objFolder)){
+			  objFSO.DeleteFolder(objFolder);
+		  }
+    }
+    catch (e){
+      alert("刪除資料夾時發生錯誤！");
+    }
+  }
 </script>
 
 </body>
