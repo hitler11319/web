@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>剪貼簿的操作 + 執行 COPY 和 PASTE</title>
+                <link rel="stylesheet" href="">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        </head>
+
+        <body>
+                <!--
+                        注： 一樣在 IE 來看， Chrome 不行
+
+                        參考網圵： https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/263979/
+
+                        得到： (後面的參數 只有 "Text" 和 "Url") => 目前無法得知 得到 Format (就有些是有格式的是得不到的)
+                        var txt=window.clipboardData.getData("Text");
+
+                        設定：
+                        var temp=$('#tempForClip').val();
+                        window.clipboardData.setData("Text",temp);  // 裡面的 "Text" 同上方的參數
+                -->
+
+                <input type="text" id="copyInput">
+                <button type="button" onclick="CopyToCopyBook();">將INPUT複製到剪貼簿中</button>
+                <button type="button" onclick="GetCopyBookValue();">得到當前剪貼簿的值</button>
+
+                <script>
+                        // 複製到剪貼簿中
+                        function CopyToCopyBook(){
+                                var v=$('#copyInput').val();
+                                window.clipboardData.setData("Text",v);
+                        }
+
+                        // 得到當前 剪貼簿的值
+                        function GetCopyBookValue(){
+                                var v = window.clipboardData.getData("Text");
+                                alert(v);
+                        }
+                </script>
+
+                <br>
+
+                <hr>
+                <h1>下方是 在 網頁中 自動幫使用者按下 Ctrl+C 和 Ctrl+V (即執行 COPY 和 PASTE)</h1>
+
+                <h3>輸入</h3>
+                <button type="button" onclick="execCOPY();">複製</button>
+                <textarea id="Input"></textarea> 
+
+                <br>
+
+                <h3>輸出</h3>
+                <button type="button" onclick="execPASTE();">貼上</button>
+                <textarea id="Output"></textarea> 
+
+                <script>
+                        // 執行 COPY
+                        function execCOPY(){
+                                var sel = document.body.createTextRange();  // 創建一個空間
+			        sel.moveToElementText(Input);  // 給個 物件 id 會把裡面的 innerHTML 丟進去(但一定要display不能為none)
+			        sel.select();                 
+			        sel.execCommand("Copy");       // 執行複製
+                        }
+
+                        // 執行 PASTE
+                        function execPASTE(){
+                                var editor = document.getElementById("Output");     // summernote 主要放的 div
+				editor.innerHTML = "";
+				editor.contentEditable = true;   // 如果今天是 div 的話 要開啟這個 (重要)
+				editor.focus();
+				document.execCommand("Paste", null, null);  // 執行 Paste (後面一定要放2個參數)
+                        }
+                </script>
+        </body>
+</html>
