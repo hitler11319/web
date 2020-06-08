@@ -134,7 +134,79 @@ objStream.Close();
       alert("刪除資料夾時發生錯誤！");
     }
   }
+
+  // 讓使用者選取 資料夾 路徑
+  function ChooseFolderPath(isFullName){
+	var path = "C://";
+
+	var objShell = new ActiveXObject("Shell.Application");
+
+	// 選擇 資料夾 (Path 是 預設開給他的目錄，只會找裡面的所有資料夾給他)
+	// => 所以選 C槽 就可以跑出全部了
+	// (第3個參數用 -1 是取檔案， 0 是取 資料夾)
+	var chooseFolder = objShell.BrowseForFolder(0, "挑選目錄：", 0, path);
+	//alert(chooseFolder.Self.Path);  // 完整路徑是 chooseFolder.Self.Path
+
+	if (!chooseFolder){
+		// 如果沒選 回傳空字串
+		return "";
+	}
+
+	if (isFullName){
+		return chooseFolder.Self.Path;  // 如果要完整路徑的話
+	}
+	else{
+		return chooseFolder;  // 反之 得到 選到的目錄名稱而已
+	}
+}
+
+  // 讓使用者選取 檔案 路徑
+  function ChooseFilePath(isFullName){
+	//var path = "C://";
+
+	//var objShell = new ActiveXObject("Shell.Application");
+
+	// 選擇 檔案 (第3個參數用 -1 是取檔案， 0 是取 資料夾)
+	// (Path 是 預設開給他的目錄，只會找裡面的所有資料夾給他)
+	// => 所以選 C槽 就可以跑出全部了
+	//var chooseFile;
+	//try{
+		//chooseFile = objShell.BrowseForFolder(0, "挑選檔案：", -1, path);
+		//alert(chooseFile);  // 完整路徑是 chooseFile.Self.Path
+
+		/*
+			這邊寫 try catch 是因為 有幾種副檔名 是會爆錯的(也不知道原因)
+			doc 檔會錯
+
+			=> 最後決定用 <input type="file"> 了
+		*/
+	//}
+	//catch (e){
+		//chooseFile = null;
+	//}
+
+	//if (!chooseFile){
+		// 如果沒選 回傳空字串
+		//return "";
+	//}
+
+	//if (isFullName){
+		//return chooseFile.Self.Path;  // 如果要完整路徑的話
+	//}
+	//else{
+		//return chooseFile;  // 反之 得到 選到的目錄名稱而已
+	//}
+
+  // 最後決定 選檔案的就用 上傳檔案 的 input 來做
+  // 得到的值就是  document.getElementById("ChooseFilePath").value 即可
+	document.getElementById("ChooseFilePath").click();
+
+  // 這邊還可以設定 onchange 事件 => 來決定 之後要做啥事
+}
 </script>
+
+<!--要去得選擇的檔案路徑 (onchange 事件 可以寫在 function 中 也可以寫在 自已 tag 中)-->
+<input type="file" id="ChooseFilePath" accept=".doc" style="display:none;" onchange="ImportWord(this.value);">
 
 </body>
 </html>
