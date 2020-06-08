@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+      <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios" />
+            <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+            <title>Word 用 ActiveObjectX 的 操作 (匯入 + 匯出)</title>
+            <link rel="stylesheet" href="" />
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      </head>
+
+      <body>
+            <!--
+                        這邊不作實作， 只做筆記用
+                        只能在 IE 上跑， 因為用 ActiveObjectX
+                -->
+
+            <h3>輸入</h3>
+            <textarea id="Input"></textarea>
+
+            <br />
+
+            <h3>輸出</h3>
+            <textarea id="Output"></textarea>
+
+            <!--匯出 Word 用的 (也不一定要，也可以直接 textarea 也行)-->
+            <form id="form" style="width: 550px;">
+                  <!--display 不能為 none -->
+            </form>
+
+            <!--Word相關-->
+            <script>
+                  // 匯出 Word (目前有些許會有問題，不太好使用)
+                  // 參考網圵： https://www.twblogs.net/a/5b7df6082b71776838549562
+                  //           https://juejin.im/post/5d834518f265da03be49127a
+                  function ExportWord() {
+
+                        // 可自由拿掉了
+                        var strTipsName = document.getElementById('TipsLists').value;
+                        if (strTipsName == '') {
+                              alert('沒有選取正確的項目，無法匯出!');
+                              return;
+                        }
+
+                        var objFSO = new ActiveXObject('Scripting.FileSystemObject');
+                        var objFolder = objFSO.GetFolder('.');
+                        var objSampleFolder = objFSO.GetFolder(objFolder + strSamplePath + '//' + strTipsName);  // 路徑
+                        if (objFSO.FolderExists(objSampleFolder) == false) {
+                              return;
+                        }
+
+                        var word = new ActiveXObject('Word.Application');
+                        word.Application.Visible = false;
+                        var doc = word.Documents.Add('', 0, 1); //不打開模版直接加入內容
+                        var Range = doc.Range();
+
+                        var v = document.getElementById("Input").value;
+                        v = HandleTableOverLimit(v); // 處理 Table 超出上限寬度 (最大 寬550px)
+                        document.getElementById('form').innerHTML = v;
+                        document.getElementById('form').style.display = '';
+
+                        var success = false;
+                        var ex;
+
+                        try {
+                              // 裡面同 COPY 和 PASTE 那邊說的一樣
+                              var sel = document.body.createTextRange();
+                              sel.moveToElementText(form); // 給個 物件 id 會把裡面的 innerHTML 丟進去
+                              sel.select();
+                              sel.execCommand('Copy'); // 執行複製
+                              Range.Paste();
+                              success = true;
+                        } catch (e) {
+                              success = false;
+                              ex = e;
+                        }
+
+                        document.getElementById('form').style.display = 'none';
+                        var path = objSampleFolder + '\\ExportWord.doc';   // 只支援 .doc ， .docx不支援
+                        path = path.replace(/\\/g, '//'); 
+
+                        // 儲存 + 關閉 
+                        doc.saveAs(path);
+                        doc.close();
+
+                        if (success) {
+                              alert('匯出 Word 已成功');
+                        } else {
+                              alert('匯出成 Word發生錯誤： ' + ex);
+                        }
+                  }
+
+                  // 因為 如果表格寬度超過 550 他還是照寫進 word ，所以幫他改掉 (圖片不確定會不會有)
+                  // 只做 第一個 表格而已 (所以如果有很多表格的 可能沒辦法)
+                  function HandleTableOverLimit(v) {
+                        var limitWidth = 550;
+                        var result = v;
+
+                        if (v.indexOf('<table ') >= 0) {
+                              var totalTableData = v.split('<table');
+
+                              for (var i = 1, l = totalTableData.length; i < l; i++) {
+                                    var data = totalTableData[i].split('>')[0];
+
+                                    // 底下有分2種 一個寫在外面 一個寫在 style 裡面
+                                    var method1 = data;
+                                    if (method1.indexOf('width="') >= 0) {
+                                          var method1Data = method1.split('width="')[1].split('"')[0];
+                                          var method1Value = parseInt(method1Data);
+                                          if (method1Value > limitWidth) {
+                                                result = result.replace('width="' + method1Data + '"', 'width="' + limitWidth + '"');
+                                          }
+                                    }
+
+                                    var method2 = data;
+                                    if (method2.indexOf('style="') >= 0) {
+                                          var method2Data1 = method2.split('style="')[1].split('"')[0];
+
+                                          if (method2Data1.indexOf('width:') >= 0) {
+                                                var method2Data2 = method2Data1.split('width:')[1].split(';')[0].replace('px', '');
+                                                var method2Value = parseInt(method2Data2);
+                                                if (method2Value > limitWidth) {
+                                                      result = result.replace('width:' + method2Data2 + 'px;', 'width: ' + limitWidth + 'px;');
+                                                }
+                                          }
+                                    }
+                              }
+                        }
+
+                        return result;
+                  }
+
+                  // 匯入 Word
+                  function ImportWord(path) {
+                        if (!!path) {
+                              // 目前只支援到 .doc
+                              if (path.substr(path.length - 4, 4).toUpperCase() != '.DOC') {
+                                    alert('你輸入的路徑檔名不是 .doc');
+                                    ChooseFilePath();
+                              } else {
+                                    // 執行主程式
+                                    path = path.replace(/\//g, '//');
+                                    path = path.replace(/\\/g, '//');
+
+                                    var success = false;
+                                    var ex;
+                                    var doc = null;
+
+                                    try {
+                                          var word = new ActiveXObject('Word.Application');
+                                          word.Application.Visible = false;
+                                          doc = word.Documents.Open(path); // 開啟Word
+
+                                          // 得到 doc 的全部資料 (上面匯出時，是用 Paste ，這裡用 Copy=> 但 Copy 前要先 Select)
+                                          var Range = doc.Range();
+                                          Range.Select();
+                                          Range.Copy();
+
+                                          // 等個幾秒 (要讓他Select 的時間)
+                                          setTimeout(function () {
+                                                var editor = document.getElementById("Output"); // summernote 主要放的 div
+                                                editor.innerHTML = '';
+                                                editor.contentEditable = true; // 最重要，不然 貼不上去
+                                                editor.focus();
+                                                document.execCommand('Paste', null, null); // 執行 Paste (後面一定要放2個參數)
+                                          }, 900);
+
+                                          success = true;
+                                    } catch (e) {
+                                          ex = e;
+                                          success = false;
+                                    }
+
+                                    // 關閉檔案
+                                    if (doc != null && doc != undefined) {
+                                          doc.close();
+                                    }
+
+                                    if (success) {
+                                          alert('匯入 Word 成功');
+                                    } else {
+                                          alert('匯入 Word發生錯誤： ' + ex);
+                                    }
+                              }
+                        } else {
+                              // 依情況，看你要重跑還是跳alert都行
+                        }
+                  }
+            </script>
+      </body>
+</html>
