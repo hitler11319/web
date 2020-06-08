@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Iframe 進階技巧 (這是父親)</title>
+                <link rel="stylesheet" href="">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        </head>
+
+        <!--
+                參考網圵：
+                https://www.itread01.com/content/1548293967.html
+
+                父得到子的資料：
+                https://www.itread01.com/content/1549691120.html
+
+                測的時候用 IE來看， 因為 Chrome 有封殺 cross-x 的那個
+        -->
+
+        <body>
+
+                <h1>父親的部份</h1>
+
+                <input type="text" id="parentInput"><br>
+
+                <button type="button" onclick="controlChildElement();">控制孩子Element</button>
+                <button type="button" onclick="GetChildVarValue();">得到孩子變數</button>
+                <button type="button" onclick="callChildFunction();">呼叫孩子函式</button>
+
+                <span style="color: red;">此為分隔(以上是 父親， 底下是 孩子)</span><br>
+
+                <iframe name="myFrame" id="myFrame" src="child.html"></iframe>
+
+                <script>
+                        var parentVar = "這是父親的變數";
+
+                        function AlertParent(){
+                                alert("父親被觸發了！！");
+                        }
+
+                        // 得到 孩子的物件控制
+                        function controlChildElement(){
+                                // $("#objid",document.frames('iframename').document)
+                                // window.frames["iframe_ID"].document.getElementByIdx_x("元素id");
+                                window.frames["myFrame"].document.getElementById("childInput").value = "父親控制你了！";
+                        }
+
+                        // 得到 孩子的 變數
+                        function GetChildVarValue(){
+                                var childVar = window.frames["myFrame"].childVar;
+                                alert(childVar);
+                        }
+
+                        // 呼叫 孩子的 function
+                        function callChildFunction(){
+                                window.frames["myFrame"].AlertChild();
+                        }
+                </script>
+
+        </body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>Iframe 進階技巧 (孩子)</title>
+                <link rel="stylesheet" href="">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        </head>
+
+        <body>
+
+                <h2>這是孩子</h2>
+
+                <button type="button" onclick="callParentFunction();">呼叫父親的函式</button>
+                <button type="button" onclick="GetParentVarValue();">得到父親的變數</button>
+                <button type="button" onclick="ControlParentElement();">控制父親的Element</button>
+
+                <input type="text" id="childInput">
+
+                <script>
+                        /*
+                                如果有好幾層的就 window.parent.parent 這種用法 (但我目前只是筆記 => 只用一層)
+                        */
+
+                        var childVar = "這是孩子的變數";
+
+                        // 呼叫父親的 function
+                        function callParentFunction(){
+                                // window.parent.method
+                                window.parent.AlertParent();
+                        }
+
+                        // 得到父親的變數
+                        function GetParentVarValue(){
+                                // window.parent.variable
+                                var parentVar = window.parent.parentVar;
+                                alert(parentVar);
+                        }
+
+                        // 控制父親的 物件
+                        function ControlParentElement(){
+                                // window.parent.document.getElementById("id")
+                                // $("#id",window.parent.document)
+                                window.parent.document.getElementById("parentInput").value = "孩子控制你了！";
+                        }
+
+                        function AlertChild(){
+                                alert("孩子被觸發了！！！");
+                        }
+                </script>
+
+        </body>
+</html>
