@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+      <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios" />
+            <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+            <title>Excel 用 ActiveObjectX 的 操作 (匯入 + 匯出)</title>
+            <link rel="stylesheet" href="" />
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      </head>
+
+      <body>
+            <!--
+                        這邊不作實作， 只做筆記用
+                        只能在 IE 上跑， 因為用 ActiveObjectX
+
+                        *** 重要： 而且得出來的 Excel 開起來一定會問你說 這個格式和副檔名錯誤
+                          => 就按 "是" 就行了
+                        ***
+                -->
+
+            <h3>輸入</h3>
+            <textarea id="Input"></textarea>
+
+            <br />
+
+            <h3>輸出</h3>
+            <textarea id="Output"></textarea>
+
+            <!--匯出 Excel 用的 (也不一定要，也可以直接 textarea 也行)-->
+            <form id="form" style="width: 550px;">
+                  <!--display 不能為 none -->
+            </form>
+
+            <!--Excel 通關 (跟 Word 的很相似)-->
+            <script>
+                    // 匯出 Excel
+                    // 參考網圵： https://blog.csdn.net/qq285679784/article/details/57084206
+                  function ExportExcel() {
+
+                        // 可自由拿掉了
+                        var strTipsName = document.getElementById('TipsLists').value;
+                        if (strTipsName == '') {
+                              alert('沒有選取正確的項目，無法匯出!');
+                              return;
+                        }
+
+                        var objFSO = new ActiveXObject('Scripting.FileSystemObject');
+                        var objFolder = objFSO.GetFolder('.');
+                        var objSampleFolder = objFSO.GetFolder(objFolder + strSamplePath + '//' + strTipsName);  // 路徑
+                        if (objFSO.FolderExists(objSampleFolder) == false) {
+                              return;
+                        }
+
+                        var excel = new ActiveXObject("Excel.Application");
+		        excel.Visible = false;
+		        var workBoos = excel.Workbooks.Add();
+		        var sheet = workBoos.Worksheets(1);   // 得到當前的
+		        sheet.Application.Visible = false;
+                        sheet.Name = "這是測試1";
+                        
+                        document.getElementById("form").innerHTML = document.getElementById("Input").value;
+
+		        var success = false;
+		        var ex;
+
+		        try{
+			        var sel = document.body.createTextRange();
+			        sel.moveToElementText(form);  // 給個 物件 id 會把裡面的 innerHTML 丟進去
+			        sel.select();                 
+			        sel.execCommand("Copy");       // 執行複製
+			        sheet.Paste();	
+			        success = true;
+		        }
+		        catch (e){
+			        success = false;
+			        ex = e;
+		        }
+
+		        // 但會加在前面 (所以要逆著來)
+		        var sheet2 = workBoos.Worksheets.Add();
+		        sheet = workBoos.Worksheets(1);   // 取到剛新增的
+		        sheet.Name = "這是測試2";
+
+		        document.getElementById("form").style.display = "none";
+		        var path = objSampleFolder + "\\ExportExcel.xls";
+		        sheet.saveAs(path);
+		        workBoos.Close();
+
+		        if (success){
+			        alert("匯出 Excel 已成功");
+		        }
+		        else{
+			        alert("匯出成 Excel 發生錯誤： " + ex);
+		        }
+                  }
+
+                  // 匯入 Excel
+                  function ImportExcel(){
+                          // 這邊還沒研究，不過應該跟 Word 的做法差不多
+                  }
+            </script>
+      </body>
+</html>
