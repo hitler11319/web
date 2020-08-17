@@ -42,9 +42,31 @@
 
               // 平常是用 (但如果把 "11" 變成變數就無法用 / /g 處理)
               a.replace(/11/g, "kk");  
+
+              // 但仍然有缺陷，因為他是用 表達式去找的
+              // 所以 要取代 . 會變成要輸入 \.
+              // 解法： 用我下面自已擴充的的 Replace 來做
+              // 詳細作法就是 先 用 被取代的文字 split 再用 取代的新文字 join 即可
             */
 
             document.getElementById('text').value = text;
+        }
+
+        // 大量取代 (因為用 .replace 只會取代第一個找到的)
+        // Replace (來源字串, 要被取代的文字, 取代後的文字)
+        function Relpace(str, replacedStr, replaceStr){
+                if (!!str && replacedStr != undefined && replacedStr != null && replaceStr != undefined && replaceStr != null){
+                        // 原本可以用 
+                        // result.replace(new RegExp(oldColnumName[i],"gm"), newColnumName[i]);
+                        // 但因為 他是用表達式在取代 => 所以當要取代 . 時，反而要輸 入 \. 才會取代成功
+                        // 所
+                        // 解法： 直接用要被取代的來 分割 再用 取代的文字 join 回去 即可
+                        var items = str.split(replacedStr);
+                        return items.join(replaceStr);
+                }
+                else{
+                        return "";
+                }
         }
 
         function content(){
