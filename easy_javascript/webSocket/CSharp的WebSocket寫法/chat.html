@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Chat Room</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+    // 將後台得到的資料解碼回來
+    function Decode(message){
+        return new TextDecoder("utf-8").decode(event.data);
+    }
+</script>
+
+<script language="javascript" type="text/javascript">
+$(document).ready(function () {
+    var url = "ws://localhost:55688/FirstWebSocket/";
+    var socket = new WebSocket(url);
+    socket.binaryType = "arraybuffer";  // 在 C# 的要多加這一段喔 (跟 python 後台的不一樣)
+
+    socket.onopen = function(){
+    	alert("success");
+    }
+
+    socket.onclose = function(event){
+        // 在 C# 的要多加這一段喔 (跟 python 後台的不一樣)
+        var serverErrorMessage = Decode(event.data);
+    	alert("error " + serverErrorMessage);
+    }
+
+    socket.onmessage = function(event) {
+        // 在 C# 的要多加這一段喔 (跟 python 後台的不一樣)
+        var serverMessage = Decode(event.data);
+        $("#message").append("<div>" + serverMessage + "</div>");
+    }
+    
+    $("#send").click(function() {
+        socket.send($("#text").val());
+        $("#text").val("").select();
+    });
+});
+</script>
+</head>
+<body>
+<div id="message"></div>
+<textarea id="text"></textarea>
+<input type="button" id="send" value="send" />
+</body>
+</html>
+
+<!--請先執行C# 的 FirstWebSocket\FirstWebSocket\bin\Debug\FirstWebSocket.exe  要先開好server-->

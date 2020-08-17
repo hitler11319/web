@@ -1,0 +1,9 @@
+C:\摳叮幫幫忙\研究\CSharp的WebSocket寫法\FirstWebSocket\FirstWebSocket\bin\Debug\FirstWebSocket.exe.config
+C:\摳叮幫幫忙\研究\CSharp的WebSocket寫法\FirstWebSocket\FirstWebSocket\bin\Debug\FirstWebSocket.exe
+C:\摳叮幫幫忙\研究\CSharp的WebSocket寫法\FirstWebSocket\FirstWebSocket\bin\Debug\FirstWebSocket.pdb
+C:\摳叮幫幫忙\研究\CSharp的WebSocket寫法\FirstWebSocket\FirstWebSocket\bin\Debug\websocket-sharp.dll
+C:\摳叮幫幫忙\研究\CSharp的WebSocket寫法\FirstWebSocket\FirstWebSocket\bin\Debug\websocket-sharp.xml
+C:\摳叮幫幫忙\研究\CSharp的WebSocket寫法\FirstWebSocket\FirstWebSocket\obj\Debug\FirstWebSocket.csproj.CoreCompileInputs.cache
+C:\摳叮幫幫忙\研究\CSharp的WebSocket寫法\FirstWebSocket\FirstWebSocket\obj\Debug\FirstWebSocket.csproj.CopyComplete
+C:\摳叮幫幫忙\研究\CSharp的WebSocket寫法\FirstWebSocket\FirstWebSocket\obj\Debug\FirstWebSocket.exe
+C:\摳叮幫幫忙\研究\CSharp的WebSocket寫法\FirstWebSocket\FirstWebSocket\obj\Debug\FirstWebSocket.pdb
