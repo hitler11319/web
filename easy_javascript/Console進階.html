@@ -7,12 +7,16 @@
                 <title>Console進階用法</title>
                 <link rel="stylesheet" href="">
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+                <!--第十二點用到-->
+                <script src="https://cdn.rawgit.com/adriancooney/console.image/c9e6d4fd/console.image.min.js"></script>
         </head>
 
         <body>
                 <!--
                         你已為只有 Console.log() ? 錯了！
                         參考網圵： https://medium.com/devgorilla/the-console-object-provides-access-to-the-browsers-debugging-console-354eda9d2d50
+                        參考網圵： https://ithelp.ithome.com.tw/articles/10209871
                 -->
 
                 <script>
@@ -73,6 +77,13 @@
 
                         // 十、console.dir()   看物件用(不知何用？要再研究)
                         console.dir(foo);
+
+                        // 十一、 %s 和 %c(css的用法)
+                        console.log("%s World", "Hello");  // Hello World
+                        console.log("%cHello %cWorld", "color:red;", "color:blue;background:yellow"); //包含紅色字的Hello，和黃底藍字的World
+
+                        // 十二、看圖片 (需先引入 script "https://cdn.rawgit.com/adriancooney/console.image/c9e6d4fd/console.image.min.js")
+                        console.image("https://ithelp.ithome.com.tw/storage/image/logo.svg");
                 </script>
 
         </body>
