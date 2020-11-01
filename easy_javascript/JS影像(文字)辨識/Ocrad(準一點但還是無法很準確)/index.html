@@ -1,0 +1,63 @@
+<html>
+      <head>
+            <meta charset="utf-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>JS 文字辨識</title>
+            <style>
+                  body {
+                        background: whiteSmoke;
+                        font-family: sans-serif;
+                        margin: 30px;
+                  }
+                  .transcription {
+                        border: 1px solid black;
+                        background: white;
+                        font-size: 30px;
+                        padding: 30px;
+                        min-width: 300px;
+                        color: gray;
+                  }
+                  .transcription.done {
+                        color: black;
+                  }
+            </style>
+      </head>
+      <body>
+            <!--
+                  註： 一樣要丟到 IIS 上才能跑
+            -->
+
+            <h1>文字辨識</h1>
+            <!--參考網圵： https://www.twblogs.net/a/5bfbe192bd9eee7aed3311a8-->
+            <script src="js/ocrad.js"></script>
+            <script>
+                  function recognize_image(n) {
+                        var result = (document.getElementById('transcription' + '_' + n.toString()).innerText = '(辨識中...)');
+
+                        OCRAD(document.getElementById('pic' + '_' + n.toString()), function (text) {
+                              document.getElementById('transcription' + '_' + n.toString()).innerText = text;
+                              document.getElementById('transcription' + '_' + n.toString()).style.color = "black";
+                        });
+                  }
+            </script>
+            <img id="pic_1" class="pic" src="img/source.png" onload="recognize_image(1)" />
+            <div class="transcription" id="transcription_1"></div>
+            <br />
+
+            <img id="pic_2" class="pic" src="img/source1.png" onload="recognize_image(2)" />
+            <div class="transcription" id="transcription_2"></div>
+            <br />
+
+            <img id="pic_3" class="pic" src="img/source2.png" onload="recognize_image(3)" />
+            <div class="transcription" id="transcription_3"></div>
+            <br />
+
+            <img id="pic_4" class="pic" src="img/source3.png" onload="recognize_image(4)" />
+            <div class="transcription" id="transcription_4"></div>
+            <br />
+
+            <img id="pic_5" class="pic" src="img/source4.png" onload="recognize_image(5)" />
+            <div class="transcription" id="transcription_5"></div>
+      </body>
+</html>

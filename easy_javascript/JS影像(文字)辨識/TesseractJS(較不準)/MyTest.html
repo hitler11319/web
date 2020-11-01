@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>JavaScript OCR (影像辨識範例)</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-145083566-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+
+</head>
+
+<!--
+    參考網圵：https://github.com/kdzwinel/JS-OCR-demo 和 https://www.itread01.com/p/1080490.html
+    原始 code 請去看 index.html
+    PS： 這邊只單純做最主要的 讀取img 然後 得出 文字 (要把 index.html + main.js 合併才行)
+-->
+
+<!--
+        註：要丟到 IIS 上跑才行， 反之 直接 開 html 檔跑的無法執行
+        且 "有解析出來，但解出來是錯的" => 可能要再研究了！ (有點不準)
+-->
+
+<body class="step1">
+
+<div class="container">
+    <div class="jumbotron">
+
+        <h2>按下以下圖片，開始進行 解析</h2>
+        <img src="img/source.png" onclick="SetPic(this);">
+        <img src="img/source1.png" onclick="SetPic(this);">
+        <img src="img/source2.png" onclick="SetPic(this);">
+        <img src="img/source3.png" onclick="SetPic(this);">
+        <img src="img/source4.png" onclick="SetPic(this);">
+
+        <!--來源圖片-->
+        <img id="source" src="">
+
+        
+            <p class="lead">結果就在下方</p>
+            <canvas id="canvas"></canvas>
+
+            <blockquote>
+                <div class="spinner">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                </div>
+                <p id="result"></p>
+                <footer></footer>
+            </blockquote>
+        
+
+    </div>
+</div>
+<!-- /container -->
+
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="js/vendor/modernizr.min.js"></script>
+<script src="js/vendor/bootstrap.min.js"></script>
+<script src='https://cdn.jsdelivr.net/gh/naptha/tesseract.js@v1.0.14/dist/tesseract.min.js'></script>
+
+<!--JS 主邏輯-->
+<script>
+    // 參數
+    var sourceImg = document.getElementById("source");
+
+    // 解析圖片成文字
+    function OCR() {
+        var canvas = document.getElementById("canvas");
+        
+        // 把圖片載入 canvas
+        var ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);  // 先清空
+        ctx.drawImage(sourceImg, 0, 0);
+
+        // 等待動畫 + 清空原值
+        var spinner = $('.spinner');
+        spinner.show();
+        $('blockquote p').text('');
+        $('blockquote footer').text('');
+
+        // do the OCR!
+        Tesseract.recognize(ctx).then(function (result) {
+            var resultText = result.text ? result.text.trim() : '';
+
+            //show the result
+            spinner.hide();
+            $('blockquote p').html('&bdquo;' + resultText + '&ldquo;');
+            $('blockquote footer').text('(' + resultText.length + ' characters)');
+        });
+    }
+
+    // 點擊圖片 (給值 + 開始解析)
+    function SetPic(obj){
+        var src = obj.src;
+        sourceImg.src = src;
+
+        // 開始解析
+        OCR();
+    }
+
+    $('.spinner').hide();
+</script>
+    
+</body>
+</html>
