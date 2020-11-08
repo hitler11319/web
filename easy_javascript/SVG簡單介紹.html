@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>SVG 簡單介紹</title>
+                <link rel="stylesheet" href="">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        </head>
+
+        <body>
+                <!--
+                        參考網圵： https://www.w3schools.com/graphics/svg_path.asp
+                -->
+
+                <!--先宣告一個 svg 區域 (以下的 所有 點 都是相對於 這個區域內喔)-->
+                <svg height="500" width="700">
+
+                        <!--
+                                fill ： 填滿
+                                stroke：外框線
+                                stroke-width： 外框線粗細
+                        -->
+
+                        <!--多邊形 (至少3點)-->
+                        <polygon points="220,10 20,50 335,50" style="fill:lime;stroke:purple;stroke-width:1" onclick="PicHref('https://www.google.com.tw');" />
+                        <!--多邊形只給2點 => 就是線-->
+                        <polygon points="400,10 400,50" style="fill:lime;stroke:purple;stroke-width:1" />
+                      
+                        <!--文字-->
+                        <text x="220" y="35">A</text>
+                        <text x="255" y="35" fill="red">B</text>
+                        
+                        <!--線條-->
+                        <line x1="0" y1="0" x2="200" y2="200" style="stroke:rgb(255,0,0);stroke-width:2" />
+                        
+                        <g stroke="black" stroke-width="1" > <!--包在一起可以共用 stroke stroke-width fill-->
+
+                          <!--圓形-->
+                          <circle id="pointA" cx="100" cy="150" r="3" onclick="alert(1);" fill="red" />
+                          <circle id="pointB" cx="250" cy="50" r="3" fill="blue" />
+                          <circle id="pointC" cx="400" cy="150" r="3" fill="orangle" />
+                        </g>
+                        
+                        <!--楕圓-->
+                        <ellipse cx="200" cy="250" rx="100" ry="50" style="fill:yellow;stroke:purple;stroke-width:2" />
+                        
+                        <!--矩形-->
+                        <rect  x="50" y="330" width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
+                        
+                        <!--路徑-->
+                        <!--
+                                M =移動
+                                L =線到
+                                H =水平線
+                                V =垂直線
+                                C =曲線
+                                S =平滑曲線
+                                Q =二次貝塞爾曲線
+                                T =光滑二次貝塞爾曲線
+                                A =橢圓弧
+                                Z =封閉路徑
+                                注意：上面所有命令也可以用小寫字母表示。大寫字母表示絕對定位，小寫字母表示相對定位。
+                        -->
+                        <!--先移到 600,0 線到 500,200 線到 700,200 結束-->
+                        <path d="M600 0 L500 200 L700 200 Z" />
+                      </svg>
+
+                      <!--如果想要按圖塊 就有超連結(要做點事)-->
+                      <a href="" style="display: none;" id="tmpPicHref" target="_blank">圖塊暫存連結區</a>
+
+                <script>
+                        // 圖塊按下超連結
+                        function PicHref(href){
+                                var a = document.getElementById("tmpPicHref");
+                                if (!!href){
+                                        a.href = href;
+                                }
+
+                                a.click();
+                        }
+                </script>
+
+        </body>
+</html>
