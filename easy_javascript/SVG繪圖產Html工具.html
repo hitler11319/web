@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>SVG 繪圖 產 Html 工具</title>
+                <link rel="stylesheet" href="">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        </head>
+
+        <body>
+
+                <table>
+                        <tr>
+                                <td>
+                                        X ： <input id="x" type="number" placeholder="輸入 x 最大為多少">
+                                        Y ： <input id="y" type="number" placeholder="輸入 y 最大為多少">
+                                        細緻度 ： <input id="range" type="number" placeholder="細緻度(1~20)">
+
+                                        <button type="button" id="InitBtn" onclick="InitPic();">產生畫布</button>
+                                </td>
+                                <td>
+                                        <h2>當前狀態：<span id="currentType" style="color: red;">多邊型</span></h2>
+                                </td>
+                                <td>  
+                                        <button type="button" onclick="ChangeType('多邊型');">切換多邊型</button>
+                                        <button type="button" onclick="ChangeType('文字');">切換文字</button>
+                                        <button type="button" onclick="ChangeType('圓形');">切換圓形</button>
+                                        <button type="button" onclick="ShowResult();">產生結果</button>
+                                </td>
+                        </tr>
+                        <tr>
+                                <td colspan="2">
+                                        <svg id="pic"></svg>
+                                </td>
+
+                                <td>
+                                        <table border="1" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                        <td id="polygon">
+                                                                <h3 style="color: blue;">多邊型</h3>
+                                                                <table id="polygonTable" class="HandleTable" border="1" cellpadding="0" cellspacing="0">
+                                                                        <tr>
+                                                                                <th>座標點</th>
+                                                                                <th>顏色</th>
+                                                                                <th>刪除</th>
+                                                                        </tr>
+                                                                        <tbody></tbody>
+                                                                </table>
+
+                                                                <br>
+                                                                顏色 ：  <select id="polygonColor" class="selectColor"></select>
+                        
+                                                                <button type="button" id="polygonCreateBtn" class="createBtn" onclick="CreatePolygon();">新增</button>
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td id="text">
+                                                                <h3 style="color: green;">文字</h3>
+                                                                <table id="textTable" class="HandleTable" border="1" cellpadding="0" cellspacing="0">
+                                                                        <tr>
+                                                                                <th>座標點</th>
+                                                                                <th>顏色</th>
+                                                                                <th>文字</th>
+                                                                                <th>刪除</th>
+                                                                        </tr>
+                                                                        <tbody></tbody>
+                                                                </table>
+
+                                                                <br>
+                                                                顏色 ：  <select id="textColor" class="selectColor"></select>
+                                                                文字 ：  <input id="textInput" placeholder="輸入文字" type="text">
+                        
+                                                                <button type="button" id="textCreateBtn" class="createBtn" onclick="CreateText();">新增</button>
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td id="circle">
+                                                                <h3 style="color: orange;">文字</h3>
+                                                                <table id="circleTable" class="HandleTable" border="1" cellpadding="0" cellspacing="0">
+                                                                        <tr>
+                                                                                <th>座標點</th>
+                                                                                <th>顏色</th>
+                                                                                <th>半徑</th>
+                                                                                <th>刪除</th>
+                                                                        </tr>
+                                                                        <tbody></tbody>
+                                                                </table>
+
+                                                                <br>
+                                                                顏色 ：  <select id="circleColor" class="selectColor"></select>
+                                                                半徑 ：  <input id="circleInput" placeholder="請輸入半徑" type="number">
+                        
+                                                                <button type="button" id="circleCreateBtn" class="createBtn" onclick="CreateCircle();">新增</button>
+                                                        </td>
+                                                </tr>     
+                                        </table>
+                                </td>
+                        </tr>
+
+                        <tr>
+                                <td colspan="3">
+                                        <textarea id="result" cols="200" rows="100"></textarea>
+                                </td>
+                        </tr>
+                </table>
+
+
+                <!--相關變數-->
+                <script>
+                        // 預設值
+                        var defaultX = 1300;
+                        var defaultY = 720;
+                        var defaultRange = 15;
+
+                        // 目前的點資料
+                        var currentCoorList = [];
+
+                        // 顏色列表
+                        var colorList = ["red", "orange", "yellow", "green", "blue", "lime", "purple", "black"];
+                        var colorHtml = "";
+
+                        // 各範本
+                        var polygonTableTemplate = "<tr><td>{coor}</td><td>{color}</td><td><button type='button' onclick='DeleteRow(this);'>刪除</button></td></tr>";
+                        var polygonHtmlTemple = '<polygon points="{coor}" style="fill:none;stroke:{color};stroke-width:1" class="add" />';
+                        var textTableTemplate = "<tr><td>{coor}</td><td>{color}</td><td>{text}</td><td><button type='button' onclick='DeleteRow(this);'>刪除</button></td></tr>";
+                        var textHtmlTemple = '<text x="{coorX}" y="{coorY}" fill="{color}" class="add">{text}</text>';
+                        var circleTableTemplate = "<tr><td>{coor}</td><td>{color}</td><td>{radius}</td><td><button type='button' onclick='DeleteRow(this);'>刪除</button></td></tr>";
+                        var circleHtmlTemple = '<circle cx="{coorX}" cy="{coorY}" r="{radius}" style="fill:none;stroke:{color};stroke-width:1" class="add" />';
+                </script>
+
+                <!--相關函式-->
+                <script>
+                        // init 做的事
+                        function Init(){
+                                for (var i = 0, l = colorList.length; i <= l; i++){
+                                        colorHtml += "<option value='" + colorList[i] + "'>" + colorList[i] + "</option>"; 
+                                }
+
+                                $(".selectColor").map(function(index, ele){
+                                        ele.innerHTML = colorHtml;
+                                });
+
+                                document.getElementById("x").value = defaultX;
+                                document.getElementById("y").value = defaultY;
+                                document.getElementById("range").value = defaultRange;
+                        }
+
+                        // 初始化 圖
+                        function InitPic(){
+                                var x = parseInt(document.getElementById("x").value);
+                                var y = parseInt(document.getElementById("y").value);
+                                var range = parseInt(document.getElementById("range").value);
+
+                                // 給預設
+                                x = !x ? defaultX : x;
+                                y = !y ? defaultY : y;
+                                range = !range ? defaultRange : range;
+
+                                // 半徑
+                                var r = parseInt(range / 4);
+
+                                // 設定 長、寬
+                                var pic = document.getElementById("pic");
+                                pic.style.width = x.toString() + "px";
+                                pic.style.height = y.toString() + "px";
+
+                                // 畫點點
+                                var html = "";
+                                html += '<g>';
+                                for (var i = 0; i <= x; i+= range){
+                                        for (var j = 0; j <= y; j+= range){
+                                                html += '<circle class="point" cx="' + i.toString() + '" cy="' + j.toString() + '" r="' + r.toString() + '" onclick="RecordXY(' + i + ', ' + j + ');" fill="gray" />';
+                                        }
+                                }
+                                html += '</g>';
+
+                                pic.innerHTML = html;
+
+                                // 清空陣列
+                                currentCoorList = new Array();
+                        }
+
+                        // 改變當前狀態
+                        function ChangeType(type){
+                                document.getElementById("currentType").innerHTML = type;
+                        }
+
+                        // 點下去點的時候 (要記錄 x, y)
+                        function RecordXY(x, y){
+                                //alert(x + ", " + y);
+
+                                if (!!x && !!y){
+                                        var html = x.toString() + "," + y.toString();
+
+                                        // 如果有在 列表中 => 把他變回 灰的
+                                        var index = currentCoorList.indexOf(html);
+                                        if (index >= 0){
+
+                                                // 從陣列去掉
+                                                currentCoorList.splice(index, 1);
+
+                                                // 變灰
+                                                $(".point").map(function(index, ele){
+                                                        var cx = $(ele).attr("cx");
+                                                        var cy = $(ele).attr("cy");
+
+                                                        if (cx == x.toString() && cy == y.toString()){
+                                                                $(ele).attr("fill", "gray");
+                                                        }
+                                                });
+                                        }
+                                        else{
+                                                var currentType = document.getElementById("currentType").innerHTML;
+                                                if (currentType == "文字" || currentType == "圓形"){
+                                                        if (currentCoorList.length > 0){
+                                                                alert("文字 和 圓形 只要一個點就行");
+                                                                return;
+                                                        }
+                                                }
+
+                                                // 加入進去
+                                                currentCoorList.push(html);
+
+                                                // 變紅
+                                                $(".point").map(function(index, ele){
+                                                        var cx = $(ele).attr("cx");
+                                                        var cy = $(ele).attr("cy");
+
+                                                        if (cx == x.toString() && cy == y.toString()){
+                                                                $(ele).attr("fill", "red");
+                                                        }
+                                                });
+                                        }                                     
+                                }
+                        }
+                
+                        // 呈現在 Result 中
+                        function ShowResult(){
+                                var pic = document.getElementById("pic");
+                                var totalHtml = pic.innerHTML;
+                                var data = totalHtml.split("</g>")[1];
+
+                                var width = pic.style.width.toString().replace("px", "");
+                                var height = pic.style.height.toString().replace("px", "");
+
+                                var header = "<svg width='" + width + "' height='" + height + "' >";
+                                data = data.replace(/class=\"add\"/g, "");
+                                var footer = "</svg>";
+
+                                data = header + data + footer;
+
+                                document.getElementById("result").innerHTML = data;
+                        }
+                
+                        // 刪除 那行 Rows
+                        function DeleteRow(obj){
+                                // 要改圖清掉
+                                var type = $(obj).parent().parent().parent().parent().parent().find(".createBtn")[0].id.replace("CreateBtn", "");
+                                var coor = $(obj).parent().parent().find("td")[0].innerHTML;
+                                var coorX = coor.split(",")[0];
+                                var coorY = coor.split(",")[1];
+
+                                switch(type){
+                                        case "polygon":
+                                                $("polygon.add").map(function(index, ele){
+                                                        if ($(ele).attr("points") == coor){
+                                                                $(ele).remove();
+                                                        }
+                                                });
+                                                break;
+                                        case "text":
+                                                $("text.add").map(function(index, ele){
+                                                        if ($(ele).attr("x") == coorX && $(ele).attr("y") == coorY){
+                                                                $(ele).remove();
+                                                        }
+                                                });
+                                                break;
+                                        case "circle":
+                                                $("circle.add").map(function(index, ele){
+                                                        if ($(ele).attr("cx") == coorX && $(ele).attr("cy") == coorY){
+                                                                $(ele).remove();
+                                                        }
+                                                });
+                                                break;
+                                        default:
+                                                break;
+                                }
+
+                                // 刪掉那邊
+                                $(obj).parent().parent().remove();
+                        }
+                
+                        // 將點 變灰
+                        function PointGray(list){
+
+                                // 變灰
+                                $(".point").map(function(index, ele){
+                                        var cx = $(ele).attr("cx");
+                                        var cy = $(ele).attr("cy");
+                                        var s = cx + "," + cy;
+
+                                        if (list.indexOf(s) >= 0){
+                                                $(ele).attr("fill", "gray");
+                                        }
+                                });
+                        }
+
+                        // 新增 多邊型
+                        function CreatePolygon(){
+
+                                if (currentCoorList.length <= 1){
+                                        alert("請至少選擇2個點");
+                                        return;
+                                }
+
+                                var color = document.getElementById("polygonColor").value;
+                                color = !color ? "red" : color;
+
+                                // 產生 Table 文字
+                                var coor = currentCoorList.join(" ");
+                                var Tablehtml = polygonTableTemplate;
+                                Tablehtml = Tablehtml.replace(/{coor}/g, coor); 
+                                Tablehtml = Tablehtml.replace(/{color}/g, color); 
+                                $($("#polygonTable").find("tbody")[0]).append(Tablehtml);
+
+                                // 改變 圖片
+                                var Pichtml = polygonHtmlTemple;
+                                Pichtml = Pichtml.replace(/{coor}/g, coor); 
+                                Pichtml = Pichtml.replace(/{color}/g, color);  
+                                document.getElementById("pic").innerHTML += Pichtml;
+
+                                // 將 點變灰
+                                PointGray(currentCoorList);
+
+                                // 刪除列表
+                                currentCoorList = new Array();                            
+                        }
+                
+                        // 新增 文字
+                        function CreateText(){
+                                if (currentCoorList.length > 1){
+                                        alert("文字 只能選擇1個點");
+                                        return;
+                                }
+
+                                var input = document.getElementById("textInput").value;
+                                if (!input){
+                                        alert("請輸入文字");
+                                        return;
+                                }
+
+                                var color = document.getElementById("textColor").value;
+                                color = !color ? "red" : color;
+
+                                // 產生 Table 文字
+                                var coor = currentCoorList[0];
+                                var Tablehtml = textTableTemplate;
+                                Tablehtml = Tablehtml.replace(/{coor}/g, coor); 
+                                Tablehtml = Tablehtml.replace(/{color}/g, color); 
+                                Tablehtml = Tablehtml.replace(/{text}/g, input);
+                                $($("#textTable").find("tbody")[0]).append(Tablehtml);
+
+                                // 改變 圖片
+                                var Pichtml = textHtmlTemple;
+                                var coorX = coor.split(",")[0];
+                                var coorY = coor.split(",")[1];
+                                Pichtml = Pichtml.replace(/{coorX}/g, coorX); 
+                                Pichtml = Pichtml.replace(/{coorY}/g, coorY); 
+                                Pichtml = Pichtml.replace(/{color}/g, color); 
+                                Pichtml = Pichtml.replace(/{text}/g, input);
+                                document.getElementById("pic").innerHTML += Pichtml;
+
+                                // 將 點變灰
+                                PointGray(currentCoorList);
+
+                                // 刪除列表
+                                currentCoorList = new Array();
+                        }
+                
+                        // 新增 圓
+                        function CreateCircle(){
+                                if (currentCoorList.length > 1){
+                                        alert("圓形 只能選擇1個點");
+                                        return;
+                                }
+
+                                var input = parseInt(document.getElementById("circleInput").value);
+                                if (!input){
+                                        alert("請輸入半徑 且 要大於 零");
+                                        return;
+                                }
+
+                                var color = document.getElementById("circleColor").value;
+                                color = !color ? "red" : color;
+
+                                // 產生 Table 文字
+                                var coor = currentCoorList[0];
+                                var Tablehtml = circleTableTemplate;
+                                Tablehtml = Tablehtml.replace(/{coor}/g, coor); 
+                                Tablehtml = Tablehtml.replace(/{color}/g, color); 
+                                Tablehtml = Tablehtml.replace(/{radius}/g, input);
+                                $($("#circleTable").find("tbody")[0]).append(Tablehtml);
+
+                                // 改變 圖片
+                                var Pichtml = circleHtmlTemple;
+                                var coorX = coor.split(",")[0];
+                                var coorY = coor.split(",")[1];
+                                Pichtml = Pichtml.replace(/{coorX}/g, coorX); 
+                                Pichtml = Pichtml.replace(/{coorY}/g, coorY); 
+                                Pichtml = Pichtml.replace(/{color}/g, color); 
+                                Pichtml = Pichtml.replace(/{radius}/g, input);
+                                document.getElementById("pic").innerHTML += Pichtml;
+
+                                // 將 點變灰
+                                PointGray(currentCoorList);
+
+                                // 刪除列表
+                                currentCoorList = new Array();
+                        }
+                </script>
+
+                <!--初始動作-->
+                <script>
+                        Init();
+                </script>
+        </body>
+</html>
