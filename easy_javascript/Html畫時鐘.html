@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>用 Html 和 JS 畫出時鐘(Canvas 應用)</title>
+                <link rel="stylesheet" href="">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        </head>
+
+        <body>
+                <!--
+                        參考網圵： https://www.w3schools.com/graphics/canvas_clock_start.asp                      
+                -->
+
+
+                <h4>固定時間</h4>
+                <canvas id="timer" width="400" height="400" style="background-color:#333" onclick="GetCanvasXY(this, event);"></canvas>
+
+                <h4>每秒跑</h4>
+                <canvas id="timer2" width="400" height="400" style="background-color:#333"></canvas>
+
+                <!--畫時鐘 函式組-->
+                <script>
+                        // 畫時鐘
+                        function DrawClock(canvasId, hour, minute, second){
+
+                                // 做基礎判斷
+                                if (!canvasId){
+                                        return;
+                                }
+                          
+                                var canvas = document.getElementById(canvasId);             
+                                DrawClockByObj(canvas, hour, minute, second);
+                        }
+
+                        // 畫時鐘
+                        function DrawClockByObj(canvasObj, hour, minute, second, isInit = true, ctx, radius){
+                                // 做基礎判斷
+                                if (!canvasObj){
+                                        return;
+                                }
+
+                                hour = hour < 0 ? 0 : hour > 23 ? 23 : hour;
+                                minute = minute < 0 ? 0 : minute > 59 ? 59 : minute;
+                                second = second < 0 ? 0 : second > 59 ? 59 : second;
+
+                                if (isInit)
+                                {
+                                        ctx = canvasObj.getContext("2d");
+                                        radius = canvasObj.height / 2;
+                                        ctx.translate(radius, radius);
+                                        radius = radius * 0.90
+                                }
+                                else
+                                {
+                                        if (!ctx || !radius){
+                                                return;
+                                        }
+                                }
+
+                                drawClock(ctx, radius, hour, minute, second);
+                        }
+
+                        // 開始畫
+                        function drawClock(ctx, radius, hour, minute, second) {
+                                // 畫 鐘面
+                                drawFace(ctx, radius);
+                                // 畫數字
+                                drawNumbers(ctx, radius);
+                                // 畫時間
+                                drawTime(ctx, radius, hour, minute, second);
+                        }
+
+                        // 畫 鐘面          
+                        function drawFace(ctx, radius) {
+                                var grad;
+                                ctx.beginPath();
+                                ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+                                ctx.fillStyle = 'white';
+                                ctx.fill();
+                                grad = ctx.createRadialGradient(0,0,radius*0.95, 0,0,radius*1.05);
+                                grad.addColorStop(0, '#333');
+                                grad.addColorStop(0.5, 'white');
+                                grad.addColorStop(1, '#333');
+                                ctx.strokeStyle = grad;
+                                ctx.lineWidth = radius*0.1;
+                                ctx.stroke();
+                                ctx.beginPath();
+                                ctx.arc(0, 0, radius*0.1, 0, 2*Math.PI);
+                                ctx.fillStyle = '#333';
+                                ctx.fill();
+                        }
+
+                        // 畫 數字
+                        function drawNumbers(ctx, radius) {
+                                var ang;
+                                var num;
+                                ctx.font = radius*0.15 + "px arial";
+                                ctx.textBaseline="middle";
+                                ctx.textAlign="center";
+                                for(num = 1; num < 13; num++){
+                                  ang = num * Math.PI / 6;
+                                  ctx.rotate(ang);
+                                  ctx.translate(0, -radius*0.85);
+                                  ctx.rotate(-ang);
+                                  ctx.fillText(num.toString(), 0, 0);
+                                  ctx.rotate(ang);
+                                  ctx.translate(0, radius*0.85);
+                                  ctx.rotate(-ang);
+                                }
+                        }
+
+                        // 畫 時間
+                        function drawTime(ctx, radius, hour, minute, second){
+                                //hour
+                                hour=hour % 12;
+                                hour = (hour * Math.PI / 6)+ (minute * Math.PI / (6*60)) + (second * Math.PI/(360*60));
+                                drawHand(ctx, hour, radius*0.5, radius*0.07);
+
+                                //minute
+                                minute=(minute*Math.PI/30)+(second*Math.PI/(30*60));
+                                drawHand(ctx, minute, radius*0.8, radius*0.07);
+                                // second
+
+                                second=(second*Math.PI/30);
+                                drawHand(ctx, second, radius*0.9, radius*0.02);
+                        }
+
+                        // 畫 鐘的那條線
+                        function drawHand(ctx, pos, length, width) {
+                                ctx.beginPath();
+                                ctx.lineWidth = width;
+                                ctx.lineCap = "round";
+                                ctx.moveTo(0,0);
+                                ctx.rotate(pos);
+                                ctx.lineTo(0, -length);
+                                ctx.stroke();
+                                ctx.rotate(-pos);
+                        }
+                </script>
+
+                <script>
+                        DrawClock("timer", 13, 24, 44);
+
+                        // 每秒跑 (不能用傳入 id 的，他會莫名一直錯)
+                        var canvas = document.getElementById("timer2");  // 設為全域
+                        var ctx = canvas.getContext("2d");
+                        var radius = canvas.height / 2;
+                        ctx.translate(radius, radius);
+                        radius = radius * 0.90;
+
+                        setInterval(function(){
+                                var date = new Date();
+                                var h = date.getHours();
+                                var m = date.getMinutes();
+                                var s = date.getSeconds();
+                               DrawClockByObj(canvas, h, m, s, false, ctx, radius);
+                        }, 1000);
+                </script>
+
+                <!--Canvas 按下後得到 X Y-->
+                <script>
+                        // 參考網圵： https://www.itdaan.com/tw/c86ae50d2fefe3a0b3ed6f64c5b751f9
+                        function GetCanvasXY(obj, ev){
+                                var x, y;   
+                                if (ev.layerX || ev.layerX == 0) {   
+                                        x = ev.layerX;   
+                                        y = ev.layerY;   
+                                }else if (ev.offsetX || ev.offsetX == 0) { // Opera   
+                                        x = ev.offsetX;   
+                                        y = ev.offsetY;   
+                                }   
+
+                                return {x: x, y: y};
+                        }
+                </script>
+
+        </body>
+</html>
