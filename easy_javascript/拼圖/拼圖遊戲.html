@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>自創 拼圖遊戲</title>
+                <link rel="stylesheet" href="">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        </head>
+
+        <body>
+
+                <table border="1" cellpadding="0" cellspacing="0">
+                        <tr>
+                                <td>
+                                        <h3>拼圖遊戲</h3>
+
+                                </td>
+
+                                <td>
+                                        <button type="button" onclick="Init();">重新開始</button>
+                                </td>
+
+                                <td rowspan="3">
+                                        <table id="result" border="1" cellpadding="0" cellspacing="0"></table>
+                                </td>
+                        </tr>
+
+                        <tr>
+                                <td>
+                                        <h4>當前圖片：</h4>
+                                </td>
+                                <td>
+                                        <img src="" id="currentPic">
+                                        <input type="text" id="currentPicValue" style="display: none;">
+                                </td>
+                        </tr>
+
+                        <tr>
+                                <td colspan="2">
+                                        <h4 style="color: red;">操作方式：</h4>
+                                        <h4 style="color: red;">點取下方圖片，會看到當前圖片出現時。再按旁邊的表格選擇要放入的位置</h4>
+                                        <h4 style="color: red;">如果想拿下圖片，先確定當前圖片是空的，再按旁邊的表格選擇你要拿下來的圖片即可</h4>
+                                        <table id="source"></table>
+                                </td>
+                        </tr>
+                </table>
+
+                <!--相關變數-->
+                <script>
+                        // 答案
+                        var ans = [
+                                [1 ,4, 7],
+                                [2 ,5, 8],
+                                [3 ,6, 9]
+                                ];
+
+                        // 以下有提供快速的寫法： (拿去隨便的網頁 F12 執行 => 就是上面的 ans 陣列裡的內容)
+                        /*
+                                var H = 20;  // 幾x幾 的寫法 (但不用寬度)
+                                var Max = 280;  // 有幾片圖片
+                                var a = [];
+                                for (var i = 1; i <= H; i += 1){
+                                        var b = [];
+                                        for (var j = i; j <= Max; j += H){
+                                                b.push(j);
+                                        }
+                                        a.push("[" + b.join(", ") + "]");
+                                }
+                                var c = a.join(",\n");
+                                console.log(c);
+                        */
+
+                        var ansList = [];
+
+                        // 長度
+                        var len = 0;
+                        var defaultWidth = 40;
+                        var width = defaultWidth;  // 預設
+                        var defaultHeight = 40;
+                        var height = defaultHeight;  // 預設
+
+                        // 副檔名
+                        var subName = ".jpg";
+
+                        // 空白 路徑
+                        var spacePicPath = "img/space.png";
+                </script>
+
+                <!--相關函式-->
+                <script>
+                        // 初始化
+                        function Init(){
+                                ClearCurrentPic();
+                                CountLen();
+                                MakeSourceTableHtml();
+                        }
+
+                        // 清空當前圖片
+                        function ClearCurrentPic(){
+                                document.getElementById("currentPic").src = spacePicPath;
+                                document.getElementById("currentPicValue").value = "";
+                        }
+
+                        // 算長度
+                        function CountLen(){
+                                len = 0;
+                                ansList = [];
+
+                                for (var i = 0; i < ans.length; i++){
+                                        for (var j = 0; j < ans[i].length; j++){
+                                                ansList.push(ans[i][j]);
+                                        }
+                                }
+
+                                len = ansList.length;
+                        }
+
+                        // 產生 Source Table
+                        function MakeSourceTableHtml(){
+                                document.getElementById("source").innerHTML = "";
+
+                                // 先打亂順序
+                                RandomNum();
+
+                                var html = "";
+                                var range = 3;  // 每幾個換下一個
+                                var haveEnd = false;
+
+                                for (var i = 0; i < len; i++){
+
+                                        if (i % range == 0){
+                                                html += "<tr>";
+                                                haveEnd = false;
+                                        }
+
+                                        html += "<td><img src='img/" + ansList[i] + subName + "' class='sourcePic' onclick='PutCurrent(this);' ><input type='text' class='sourceValue' style='display:none;' value='" + ansList[i] + "' id='source_" + i + "' ></td>";
+
+                                        if (i % range == (range - 1)){
+                                                html += "</tr>";
+                                                haveEnd = true;
+                                        }
+                                }
+                                
+                                if (haveEnd == false){
+                                        html += "</tr>";
+                                }
+
+                                document.getElementById("source").innerHTML = html;
+
+                                // 做後續的處理
+                                MakeResultTableHtml();
+
+                                // 得值一直有問題 => 給他延1秒
+                                setTimeout(function(){                                    
+                                        SettingResultTable();
+                                }, 500);           
+                        }
+
+                        // 亂數
+                        function RandomNum(){
+                                // 用最簡單的交換即可
+                                var times = len * 3;  // 做幾次交換
+                                for (var i = 1; i <= times; i++){
+                                        var r1 = parseInt(Math.random() * len);
+                                        var r2 = parseInt(Math.random() * len);
+
+                                        if (r1 != r2){
+                                                var tmp = ansList[r1];
+                                                ansList[r1] = ansList[r2];
+                                                ansList[r2] = tmp;
+                                        }
+                                }
+                        }
+
+                        // 用第一張圖片得到 大小
+                        function GetWidthAndHeightByFirstPic(){
+                                width = parseInt($($("#source").find("img")[0]).width());
+                                height = parseInt($($("#source").find("img")[0]).height());
+                                console.log(width);
+                                console.log(height);
+                        }
+
+                        // 產生 Result Table
+                        function MakeResultTableHtml(){
+                                document.getElementById("result").innerHTML = "";
+
+                                var html = "";
+
+                                var template = "<td><img src='' class='resultPic' onclick='PutResult(this);' ><input type='text' class='resultValue' style='display:none;' value='' id='result_{x}_{y}'></td>";
+
+                                for (var i = 0; i < ans.length; i++){
+                                        html += "<tr>";
+
+                                        for (var j = 0; j < ans[i].length; j++){
+                                                var tmp = template;
+                                                tmp = tmp.replace(/{x}/g ,i).replace(/{y}/g, j);
+                                                html += tmp;
+                                        }
+
+                                        html += "</tr>";
+                                }
+
+                                document.getElementById("result").innerHTML = html;
+                        }
+                
+                        // 把 長寬設定好
+                        function SettingResultTable(){
+
+                                GetWidthAndHeightByFirstPic();
+
+                                var range = 0;
+
+                                $("#result").find("td").map(function(index, ele){
+                                        ele.style.width = (width + range) + "px";
+                                        ele.style.height = (height + range) + "px";
+                                });
+
+                                $("#result").find("img").map(function(index, ele){
+                                        ele.style.width = width + "px";
+                                        ele.style.height = height + "px";
+                                        ele.src = spacePicPath;
+                                });
+
+                                $("#source").find("img").map(function(index, ele){
+                                        ele.style.width = width + "px";
+                                        ele.style.height = height + "px";
+                                });
+
+                                var current = document.getElementById("currentPic");
+                                current.src = spacePicPath;
+                                current.style.width = width + "px";
+                                current.style.height = height + "px";
+                        }
+                
+                        // 按下 sourcePic
+                        function PutCurrent(obj){
+                                var src = obj.src;
+                                var v = $(obj).parent().find(".sourceValue")[0].value;
+
+                                document.getElementById("currentPic").src = src;
+                                document.getElementById("currentPicValue").value = v;
+                        }
+                
+                        // 按下 resultPic
+                        function PutResult(obj){
+                                var currentV = document.getElementById("currentPicValue").value;
+                                var currentSrc = document.getElementById("currentPic").src;
+
+                                var objV = $(obj).parent().find(".resultValue")[0].value;
+                                var objSrc = obj.src;
+
+                                if ((currentV != "") && (currentSrc != spacePicPath)){
+                                        // 如果當前有圖片的話 => 先換掉； 反之 => 直接 壓上去
+                                        if ((objV != "") && (objSrc != spacePicPath)){
+                                                FindEmptySourceAndResultOut(obj);
+                                        }
+
+                                        $(obj).parent().find(".resultValue")[0].value = currentV;
+                                        obj.src = currentSrc;
+
+                                        // 清空原本的 sourcePic
+                                        ClearSourceTable(currentV);
+
+                                        // 清空 currentPic
+                                        ClearCurrentPic();
+
+                                        // 確認答案
+                                        VaildAns();
+                                }
+                                else{
+                                        // 如果當前有圖片的話 => 拿掉 ； 反之 => 不做事
+                                        if ((objV != "") && (objSrc != spacePicPath)){
+                                                FindEmptySourceAndResultOut(obj);
+                                        }
+                                }
+                        }
+
+                        // 找尋 空的 Source ， 並把 Result 拿下來
+                        function FindEmptySourceAndResultOut(obj){
+                                var objV = $(obj).parent().find(".resultValue")[0].value;
+                                var objSrc = obj.src;
+
+                                var haveEmpty = false;
+                                $("#source").find("td").map(function(index, ele){
+                                        if (!haveEmpty){
+                                                var src = $(ele).find("img")[0].src;
+                                                var v = $(ele).find(".sourceValue")[0].value;
+
+                                                if ((v == "") || (src == spacePicPath)){
+                                                        $(ele).find("img")[0].src = objSrc;
+                                                        $(ele).find(".sourceValue")[0].value = objV;
+                                                        haveEmpty = true;
+                                                }
+                                        }
+                                });
+
+                                if (haveEmpty){
+                                        obj.src = spacePicPath;
+                                        $(obj).parent().find(".resultValue")[0].value = "";
+                                }
+                        }
+                
+                        // 清空 Source 裡的值
+                        function ClearSourceTable(v){
+                                $("#source").find("td").map(function(index, ele){
+                                        if ($(ele).find(".sourceValue")[0].value == v){
+                                                $(ele).find("img")[0].src = spacePicPath;
+                                                $(ele).find(".sourceValue")[0].value = "";   
+                                        }
+                                })
+                        }
+
+                        // 確認答案是否正確
+                        function VaildAns(){
+                                var success = true;
+                                $("#result").find("td").map(function(index, ele){
+                                        var v = parseInt($(ele).find(".resultValue")[0].value);
+                                        var id = $(ele).find(".resultValue")[0].id;
+
+                                        var tmp = id.split("_");
+                                        var x = parseInt(tmp[1]);
+                                        var y = parseInt(tmp[2]);
+                                        var successAns = ans[x][y];
+
+                                        if (successAns != v){
+                                                success = false;
+                                        }
+                                });
+
+                                if (success){
+                                        setTimeout(function(){
+                                                alert("完成！！");
+                                        }, 500);
+                                        
+                                }
+                        }
+                </script>
+
+
+                <!--一開始的動作-->
+                <script>
+                        Init();
+                </script>
+        </body>
+</html>
