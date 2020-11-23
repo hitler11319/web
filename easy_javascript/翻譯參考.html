@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>翻譯參考</title>
+                <link rel="stylesheet" href="">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        </head>
+
+        <body>
+                <h3>本篇是 組成 翻譯 (Google) 的網圵， 下來得到的會是 一個檔案</h3>
+
+                <h4 style="color: red;">請註意：不要用太多次 => 會被鎖起來喔…</h4>
+
+                翻譯類型： <select id="transMethod" onchange="ChangeTransMethod();">
+                        <option value="en,zh-TW" selected>英翻中</option>
+                        <option value="zh-TW,en">中翻英</option>
+                </select>
+
+                <br>
+
+                輸入文字：
+                <textarea cols="70" rows="30" id="inputQuery"></textarea>
+                <button type="button" onclick="GetUrl();" style="width: 60px;height: 40px;">翻譯</button>
+
+                <br>
+                <hr>
+
+                得到的超連結：
+                <a href="" target="_blank" id="result"></a>
+
+                <script>
+
+                        // 目標是：
+                        // https://translate.google.so/translate_a/t?client=any_client_id_works&sl=auto&tl=zh-TW&sl=en&q=service&tbb=1&ie=UTF-8&oe=UTF-8
+                        // https://translate.google.so/translate_a/t?client=any_client_id_works&sl=auto&tl=翻譯語言&sl=來源語言&q=查詢文字&tbb=1&ie=UTF-8&oe=UTF-8
+
+                        var header = "https://translate.google.so/translate_a/t?client=any_client_id_works&sl=auto&tl=zh-TW&sl=en&q=";  // 預設 英翻中
+                        var footer = "&tbb=1&ie=UTF-8&oe=UTF-8";
+
+                        // 轉換類型
+                        function ChangeTransMethod(){
+                                var v = $("#transMethod").val();
+                                var tmp = v.split(",");
+
+                                var sourceLang = tmp[0];
+                                var goalLang = tmp[1];
+
+                                header = "https://translate.google.so/translate_a/t?client=any_client_id_works&sl=auto&tl=" + goalLang + "&sl=" + sourceLang + "&q=";
+                        }
+
+                        // 翻譯
+                        function GetUrl(){
+                                var input = $("#inputQuery").val();
+                                var url = header + input + footer;
+
+                                var obj = document.getElementById("result");
+                                obj.href = url;
+                                obj.innerHTML = url;
+                                obj.click();
+                        }
+                </script>
+
+        </body>
+</html>
