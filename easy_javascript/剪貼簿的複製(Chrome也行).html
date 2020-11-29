@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>複製至剪貼簿 (Chrome) </title>
+                <link rel="stylesheet" href="">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        </head>
+
+        <body>
+
+                <!--
+                        參考網圵： https://blog.ja-anything.com/2018/01/18/javascript-jquery-execcommand-%E8%A4%87%E8%A3%BD%E6%96%87%E5%AD%97%E8%87%B3%E5%89%AA%E8%B2%BC%E7%B0%BF-javascript-jquery-execcommand-copy-text-to-clipboard/
+
+                        我們之前在我的 github 中 的 剪貼簿操作和執行COPY和PASTE.html 中 用的語法 只 For IE
+                        這次做個補充
+                -->
+
+                <!--文字的複製-->
+                <input type="text" placeholder="Copy Text to Clipboard" id="myInput">
+                <button onclick="copyFunction()">Copy text</button>
+
+                <script>
+                        // 複製 Input 裡的文字
+                        function copyFunction(){
+                                var copyText = $("#myInput");
+                                copyText.select();
+                                document.execCommand("Copy");  // 語法就是這段
+                        }
+                </script>
+
+                <!--div 和 p 的複製-->
+                <p id="myText">Copy Text to Clipboard</p>
+                <button id="copyBtn" name="myText" onclick="copyPorDivElment();">Copy Button</button>
+
+                <script>
+                        // 複製 p 或 div 裡的文字
+                        function copyPorDivElment(){
+                                var el = document.getElementById("myText");
+                                var range = document.createRange();
+                                range.selectNodeContents(el);
+                                var sel = window.getSelection();
+                                sel.removeAllRanges();
+                                sel.addRange(range);
+                                document.execCommand('copy');
+                        }
+                </script>
+        </body>
+</html>
