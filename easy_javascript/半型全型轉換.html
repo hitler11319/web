@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>半型全型轉換</title>
+                <link rel="stylesheet" href="">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        </head>
+
+        <body>
+                <!--參考網圵： https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/281005/-->
+
+                <div id="result"></div>
+
+                <script>
+                        // 半型轉全型
+                        function toDBC(str){
+                                var result = "";
+                                var len = str.length;
+                                for(var i = 0; i < len; i++)
+                                {
+                                    var cCode = str.charCodeAt(i);
+                                    //全形與半形相差（除空格外）：65248(十進位制)
+                                    cCode = (cCode >= 0x0021 && cCode <= 0x007E) ? (cCode + 65248) : cCode;
+                                    //處理空格
+                                    cCode = (cCode == 0x0020) ? 0x03000 : cCode;
+                                    result += String.fromCharCode(cCode);
+                                }
+                                return result;
+                        }
+
+                        // 全型轉半型
+                        function toSBC(str){
+                                var result = "";
+                                var len = str.length;
+                                for(var i = 0 ; i < len; i++)
+                                {
+                                    var cCode = str.charCodeAt(i);
+                                    //全形與半形相差（除空格外）：65248（十進位制）
+                                    cCode = (cCode >= 0xFF01 && cCode <= 0xFF5E) ? (cCode - 65248) : cCode;
+                                    //處理空格
+                                    cCode = (cCode == 0x03000 ) ? 0x0020 : cCode;
+                                    result += String.fromCharCode(cCode);
+                                }
+                                return result;
+                        }
+                </script>
+
+                <script>
+                        var result = document.getElementById("result");
+                        result.innerHTML += toDBC("0123 456 789") + "<br>";
+                        result.innerHTML += toSBC("０１２３　４５６　７８９");
+                </script>
+
+        </body>
+</html>
