@@ -34,6 +34,37 @@
             console.log(result); 
         }
     });
+
+    /*
+        (這段沒測過，用時自己要測測看)
+        如果要下載檔案的話：
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data, 
+            success: function (result) {
+                // 這邊一定要用原生的 document.createElement
+                // jQuery 沒辦法真的模擬原生的 click event
+                const $a = document.createElement("a")
+                // 給下載回來的資料產生一個網址
+                const url = URL.createObjectURL(data)
+                // 設定下載的檔名
+                $a.download = "foo.png"
+                // 設定網址
+                $a.href = url
+                // 模擬使用者按下連結
+                $a.click()
+                // 5 秒後清除產生的網址，這時候使用者應該按下了下載的按鈕了
+                // 不清除的話會造成記憶體的浪費，這不會中斷使用者的下載
+                // 不過若你下載完就要跳轉到下一頁的話，其實這個可以不用
+                setTimeout(() => URL.revokeObjectURL(url), 5000)
+            }
+        });
+    */
 </script>
 
 </body>
