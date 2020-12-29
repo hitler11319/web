@@ -27,7 +27,8 @@
 
   <!-- The Modal -->
   <div class="modal" id="myModal" role="model">
-    <div class="modal-dialog">  <!-- class="modal-dialog modal-sm" 會有動畫出現dialog, 而不是直接出現 --> <!-- class="modal-dialog modal-lg" 是比較大的dialog -->
+    <!--z-index是要加在這，而不是上面喔-->
+    <div class="modal-dialog" style="z-index: 99;">  <!-- class="modal-dialog modal-sm" 會有動畫出現dialog, 而不是直接出現 --> <!-- class="modal-dialog modal-lg" 是比較大的dialog -->
       <div class="modal-content">
       
         <!-- Modal Header -->
@@ -53,6 +54,45 @@
       </div>
     </div>
   </div>
+
+  <!--要置中Modal-->
+  <script>
+    // 設定 Modal 為置中顯示
+function SetModalInMiddle(id) {
+    // 先切成置中
+    var $modal_dialog = $(id).find('.modal-dialog');
+    //獲取可視視窗的高度  
+    var clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+    //console.log(clientHeight);
+
+    //得到dialog的高度
+    var dialogHeight = $modal_dialog.height();
+    //console.log(dialogHeight);
+
+    //計算出距離頂部的高度
+    var m_top = (clientHeight - dialogHeight) / 2;
+    //console.log(m_top);
+    $modal_dialog.css({ 'margin': m_top + 'px auto' });
+}
+
+// 開啟Modal
+function OpenModal(modalID) {
+    // 組出 id
+    var id = '#' + modalID;
+
+    // 設定Modal置中
+    SetModalInMiddle(id);
+
+    // 開啟 Modal
+    //{"backdrop":"static"}點選背景不會消失  
+    $(id).modal({ "backdrop": "static" }).modal('show');
+}
+
+// 關閉Modal
+function CloseModal(modalID) {
+    $("#" + modalID).modal('hide');
+}
+  </script>
   
 </div>
 
