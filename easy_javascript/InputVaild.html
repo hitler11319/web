@@ -42,7 +42,7 @@
 
         // 只能輸入數字
         function OnlyNum(obj){
-            obj.value = obj.value.replace(/\D/g, "");
+            obj.value = obj.value.replace(/\d/g, "");
         }
 
         // 只能輸入小數點(沒擋2個點的)
@@ -52,7 +52,7 @@
 
         // 只能輸入英文和數字
         function OnlyEngAndNum(obj){
-            obj.value = obj.value.replace(/[\W]/g, "");
+            obj.value = obj.value.replace(/[\w]/g, "");
         }
 
         // 只能輸入中文
@@ -60,9 +60,82 @@
             obj.value = obj.value.replace(/[^\u4E00-\u9FA5]/g, "");
         }
 
-        // 只能輸入中文和數用
+        // 只能輸入中文和數字
         function OnlyChTAndNum(obj){
             obj.value = obj.value.replace(/[^\u4E00-\u9FA5\d]/g, "");
+        }
+
+        // 只能輸入電話 (即 只能有 ( 、) 、 # 、 - 、 數字)
+        function OnlyInputTel(obj) {
+            obj.value = obj.value.replace(/[^\d\(\)#-]/g, "");
+        
+            // 只能出現一次 ( 、 ) 、 #
+            obj.value = obj.value.replace(/\({2,}/g, "("); //保證只有出現一個 (
+            obj.value = obj.value.replace("(", "$#$").replace(/\(/g, "").replace("$#$", "("); //保證 ( 只出現一次，而不能出現兩次以上
+        
+            obj.value = obj.value.replace(/\){2,}/g, ")"); //保證只有出現一個 )
+            obj.value = obj.value.replace(")", "$#$").replace(/\)/g, "").replace("$#$", ")"); //保證 ) 只出現一次，而不能出現兩次以上
+        
+            obj.value = obj.value.replace(/\#{2,}/g, "#"); //保證只有出現一個 #
+            obj.value = obj.value.replace("#", "$*$").replace(/\#/g, "").replace("$*$", "#"); //保證 # 只出現一次，而不能出現兩次以上
+        
+            // - 最多只能出現 2個 (02-1111-2222)
+            var tmp = obj.value.split("-");
+            if (tmp.length > 3) {
+                var v = tmp[0] + "-" + tmp[1] + "-" + tmp[2];
+                for (var i = 3, l = tmp.length; i < l; i++) {
+                    v += tmp[i];
+                }
+                obj.value = v;
+            }
+        
+            // 確定 ) 在 ( 之後
+            var i1 = obj.value.indexOf("(");
+            var i2 = obj.value.indexOf(")");
+        
+            // 如果沒有 (  就把 ) 去掉
+            if (i1 < 0) { obj.value = obj.value.replace(")", ""); }
+        
+            // 如果 ) 在 ( 之前 就把括號都拿掉
+            if (i1 > i2) {
+                obj.value = obj.value.replace(")", "");
+                obj.value = obj.value.replace("(", "");
+            }
+        }
+
+        // 只能輸入 手機 (即 只能有 ( 、 ) 、 - 、 數字)
+        function OnlyInputPhone(obj) {
+            obj.value = obj.value.replace(/[^\d\(\)-]/g, "");
+        
+            // 只能出現一次 ( 、 ) 、 #
+            obj.value = obj.value.replace(/\({2,}/g, "("); //保證只有出現一個 (
+            obj.value = obj.value.replace("(", "$#$").replace(/\(/g, "").replace("$#$", "("); //保證 ( 只出現一次，而不能出現兩次以上
+        
+            obj.value = obj.value.replace(/\){2,}/g, ")"); //保證只有出現一個 )
+            obj.value = obj.value.replace(")", "$#$").replace(/\)/g, "").replace("$#$", ")"); //保證 ) 只出現一次，而不能出現兩次以上
+        
+            // - 最多只能出現 2個 (0922-234-221)
+            var tmp = obj.value.split("-");
+            if (tmp.length > 3) {
+                var v = tmp[0] + "-" + tmp[1] + "-" + tmp[2];
+                for (var i = 3, l = tmp.length; i < l; i++) {
+                    v += tmp[i];
+                }
+                obj.value = v;
+            }
+        
+            // 確定 ) 在 ( 之後
+            var i1 = obj.value.indexOf("(");
+            var i2 = obj.value.indexOf(")");
+        
+            // 如果沒有 (  就把 ) 去掉
+            if (i1 < 0) { obj.value = obj.value.replace(")", ""); }
+        
+            // 如果 ) 在 ( 之前 就把括號都拿掉
+            if (i1 > i2) {
+                obj.value = obj.value.replace(")", "");
+                obj.value = obj.value.replace("(", "");
+            }
         }
 
         // 驗證寫法
@@ -79,6 +152,96 @@
             } else {
                 return true;
             }
+        }
+
+        // 驗證 Mail
+        function VaildMail(v) {
+            re = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+            return re.test(v);
+        }
+
+        //驗證數字
+        function VaildNum(v) {
+            re = /^\d+$/;
+            return re.test(v);
+        }
+
+        // 驗證英文
+        function VaildEng(v) {
+            re = /^[a-zA-Z]+$/;
+            return re.test(v);
+        }
+
+        // 驗證 英文 + 數字
+        function VaildEngOrNum(v) {
+            re = /^\W+$/;
+            return re.test(v);
+        }
+
+        // 驗證 中文
+        function VaildChi(v) {
+            re = /^[\u4E00-\u9FA5]+$/;
+            return re.test(v);
+        }
+
+        // 驗證 中文 + 數字
+        function VaildChiOrNum(v) {
+            re = /^[\u4E00-\u9FA5\d]+$/;
+            return re.test(v);
+        }
+
+        // 驗證電話
+        function VaildTel(v) {
+            re = /(\d{2,3}-?|\(\d{2,3}\))\d{3,4}-?\d{4}/;
+            return re.test(v);
+        }
+
+        // 驗證電話 (有加上 # 分機號碼的)
+        function VaildTel2(v) {
+            var tmp = v.split("#");
+            var len = tmp.length;
+        
+            if (len > 2) { return false; }
+            else {
+                if (len == 1) { return VaildTel(v); }
+                else {
+                    // 確保分機後面 只有 1-4碼
+                    var after = tmp[1];
+                    var aLen = after.length;
+                
+                    if (aLen <= 0 || aLen >= 5) { return false; }
+                    else {
+                        var before = tmp[0];
+                        return VaildTel(before) && VaildNum(after);
+                    }
+                }
+            }
+        }
+
+        // 驗證手機
+        function VaildPhone(v) {
+            re = /09\d{2}(\d{6}|-\d{3}-\d{3})/;
+            return re.test(v);
+        }
+
+        // 是否函有中文
+        function IsContainChi(v) {
+            return escape(v).indexOf("%u") != -1;
+        }
+
+        // 最大長度限制
+        function VaildMaxLen(v, maxLen) {
+            return v.length <= maxLen;
+        }
+
+        // 最小長度限制
+        function VaildMinLen(v, minLen) {
+            return v.length >= minLen;
+        }
+
+        // 長度限制
+        function VaildLen(v, minLen, maxLen) {
+            return VaildMinLen(v, minLen) && VaildMaxLen(v, maxLen);
         }
     </script>
 
