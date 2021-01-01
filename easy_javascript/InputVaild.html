@@ -97,9 +97,11 @@
             if (i1 < 0) { obj.value = obj.value.replace(")", ""); }
         
             // 如果 ) 在 ( 之前 就把括號都拿掉
-            if (i1 > i2) {
-                obj.value = obj.value.replace(")", "");
-                obj.value = obj.value.replace("(", "");
+            if (i2 >= 0) {
+                if (i1 > i2) {
+                    obj.value = obj.value.replace(")", "");
+                    obj.value = obj.value.replace("(", "");
+                }
             }
         }
 
@@ -132,9 +134,11 @@
             if (i1 < 0) { obj.value = obj.value.replace(")", ""); }
         
             // 如果 ) 在 ( 之前 就把括號都拿掉
-            if (i1 > i2) {
-                obj.value = obj.value.replace(")", "");
-                obj.value = obj.value.replace("(", "");
+            if (i2 >= 0) {
+                if (i1 > i2) {
+                    obj.value = obj.value.replace(")", "");
+                    obj.value = obj.value.replace("(", "");
+                }
             }
         }
 
@@ -192,7 +196,7 @@
 
         // 驗證電話
         function VaildTel(v) {
-            re = /(\d{2,3}-?|\(\d{2,3}\))\d{3,4}-?\d{4}/;
+            re = /^(\d{2,3}-?|\(\d{2,3}\))\d{3,4}-?\d{4}$/;
             return re.test(v);
         }
 
@@ -220,7 +224,7 @@
 
         // 驗證手機
         function VaildPhone(v) {
-            re = /09\d{2}(\d{6}|-\d{3}-\d{3})/;
+            re = /^(09\d{2}|\(09\)\d{2})(\d{6}|-\d{3}-\d{3})$/;
             return re.test(v);
         }
 
