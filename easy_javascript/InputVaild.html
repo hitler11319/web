@@ -209,11 +209,11 @@
             else {
                 if (len == 1) { return VaildTel(v); }
                 else {
-                    // 確保分機後面 只有 1-4碼
+                    // 確保分機後面 只有 1-6碼
                     var after = tmp[1];
                     var aLen = after.length;
                 
-                    if (aLen <= 0 || aLen >= 5) { return false; }
+                    if (aLen <= 0 || aLen >= 7) { return false; }
                     else {
                         var before = tmp[0];
                         return VaildTel(before) && VaildNum(after);
