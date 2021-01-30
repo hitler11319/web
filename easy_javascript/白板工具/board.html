@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+      <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios" />
+            <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+            <title>白板工具</title>
+            <link rel="stylesheet" href="" />
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+            <style>
+                  canvas {
+                        border: solid 1px gray;
+                  }
+                  .panel {
+                        margin: 5px 5px 5px 5px;
+                        padding: 5px 5px 5px 5px;
+                        border: solid 2px #336699;
+                        width: 1578px;
+                  }
+                  .tools {
+                        margin-right: 5px;
+                        padding: 2px 2px 2px 2px;
+                        border: solid 2px #6699cc;
+                        width: 120px;
+                        height: 574px;
+                        float: left;
+                  }
+                  label {
+                        font-size: 10px;
+                  }
+            </style>
+            <link rel="stylesheet" href="css/colorPicker.css" type="text/css" />
+            <script src="js/jquery.colorPicker.js"></script>
+            <script src="js/EventEmitter.js"></script>
+            <script src="js/PaintTool.js"></script>
+      </head>
+
+      <!--
+              參考網圵： https://ithelp.ithome.com.tw/articles/10105831
+                        https://ithelp.ithome.com.tw/articles/10106030
+                        https://ithelp.ithome.com.tw/articles/10106167
+      -->
+
+      <body>
+            <script>
+                  $(document).ready(function () {
+                        // global variables
+                        var canvas = $('#canvas');
+                        var context = canvas[0].getContext('2d');
+                        var drawing = false;
+                        var queue = [];
+                        var start = [];
+                        var tool = $C(context);
+
+                        // drawing tool setup
+                        tool.on('drawType', function (v) {
+                              var vText = document.getElementById(v).innerHTML;
+                              $('#drawtypestatus').html(vText);
+                        });
+
+                        tool.lineCap = 'round';
+                        tool.lineJoin = 'round';
+                        tool.lineWidth = 1;
+
+                        // color picker setup
+                        $('#color1').colorPicker({
+                              pickerDefault: 'ffffff',
+                              onColorChange: function (id, val) {
+                                    tool.fillStyle = val;
+                              },
+                        });
+                        $('#color2').colorPicker({
+                              pickerDefault: 'ffffff',
+                              onColorChange: function (id, val) {
+                                    tool.strokeStyle = val;
+                              },
+                        });
+                        tool.on('fillStyle', function (val) {
+                              $('#keyin').css('color', val);
+                        });
+                        tool.on('font', function (val) {
+                              $('#keyin').css('font', val);
+                        });
+
+                        // keyin 按下去的動作
+                        $('#keyin').bind('keypress', function (e) {
+                              if (e.which == '13') {
+                                    tool.do($(this).val(), start[0], start[1]);
+                                    start = [];
+                                    drawing = false;
+                                    $(this).css('display', 'none');
+                                    $(this).val('');
+                              }
+                        });
+
+                        //滑鼠點擊 => 開炲畫圖
+                        canvas.bind('mousedown', function (e) {
+                              e.preventDefault();
+                              if (!drawing && tool.drawType === 'drawText') {
+                                    e.stopPropagation();
+                                    var offset = $(e.currentTarget).offset();
+                                    tool.ctx.textBaseline = 'middle';
+                                    var t = $('#keyin');
+                                    t.css('left', e.pageX + 1 + 'px');
+                                    t.css('top', e.pageY - t.outerHeight() / 2 + 1 + 'px');
+                                    t.css('display', 'block');
+                                    t.focus();
+                                    drawing = true;
+                                    start = [e.pageX - offset.left, e.pageY - offset.top];
+                              }
+                              if (!drawing && tool.drawType !== 'drawText') {
+                                    $(this).data('cursor', $(this).css('cursor'));
+                                    $(this).css('cursor', 'pointer');
+                                    drawing = true;
+                                    if (
+                                          tool.drawType == 'strokeRect' ||
+                                          tool.drawType == 'fillRect' ||
+                                          tool.drawType == 'strokeCircle' ||
+                                          tool.drawType == 'fillCircle' ||
+                                          tool.drawType == 'strokeEclipse' ||
+                                          tool.drawType == 'fillEclipse'
+                                    ) {
+                                          tool.pushCanvas();
+                                    }
+                                    var offset = $(e.currentTarget).offset();
+                                    var x = e.pageX - offset.left;
+                                    var y = e.pageY - offset.top;
+                                    tool.do(x, y, x, y);
+                                    queue.push([x, y]);
+                              }
+                        });
+                        // 滑鼠移動 => 畫路徑
+                        canvas.bind('mousemove', function (e) {
+                              e.preventDefault();
+                              if (drawing && tool.drawType !== 'drawText') {
+                                    var old = queue.shift();
+                                    if (
+                                          tool.drawType == 'strokeRect' ||
+                                          tool.drawType == 'fillRect' ||
+                                          tool.drawType == 'strokeCircle' ||
+                                          tool.drawType == 'fillCircle' ||
+                                          tool.drawType == 'strokeEclipse' ||
+                                          tool.drawType == 'fillEclipse'
+                                    ) {
+                                          tool.restoreCanvas();
+                                          queue.push(old);
+                                    }
+                                    var offset = $(e.currentTarget).offset();
+                                    var x = e.pageX - offset.left;
+                                    var y = e.pageY - offset.top;
+                                    tool.do(old[0], old[1], x, y);
+                                    if (tool.drawType == 'freestyle') {
+                                          queue.push([x, y]);
+                                    }
+                              }
+                        });
+                        // 滑鼠結束 => 結束(drawing = false)
+                        canvas.bind('mouseup', function (e) {
+                              if (drawing && tool.drawType === 'drawText') drawing = false;
+                              if (drawing && tool.drawType !== 'drawText') {
+                                    $(this).css('cursor', $(this).data('cursor'));
+                                    tool.dropCanvas();
+                                    var old = queue.shift();
+                                    var offset = $(e.currentTarget).offset();
+                                    var x = e.pageX - offset.left;
+                                    var y = e.pageY - offset.top;
+                                    tool.do(old[0], old[1], x, y);
+                                    drawing = false;
+                              }
+                        });
+                        // 滑鼠離開 => 結束 (drawing = false)
+                        canvas.bind('mouseleave', function (e) {
+                              if (drawing && tool.drawType !== 'drawText') {
+                                    $(this).css('cursor', $(this).data('cursor'));
+                                    tool.dropCanvas();
+                                    var old = queue.shift();
+                                    var offset = $(e.currentTarget).offset();
+                                    var x = e.pageX - offset.left;
+                                    var y = e.pageY - offset.top;
+                                    tool.do(old[0], old[1], x, y);
+                                    drawing = false;
+                              }
+                        });
+
+                        // 繫結 drawType
+                        $('#freestyle').bind('click', function () {
+                              tool.drawType = 'freestyle';
+                        });
+                        $('#strokeRect').bind('click', function () {
+                              tool.drawType = 'strokeRect';
+                        });
+                        $('#fillRect').bind('click', function () {
+                              tool.drawType = 'fillRect';
+                        });
+                        $('#strokeCircle').bind('click', function () {
+                              tool.drawType = 'strokeCircle';
+                        });
+                        $('#fillCircle').bind('click', function () {
+                              tool.drawType = 'fillCircle';
+                        });
+                        $('#strokeEclipse').bind('click', function () {
+                              tool.drawType = 'strokeEclipse';
+                        });
+                        $('#fillEclipse').bind('click', function () {
+                              tool.drawType = 'fillEclipse';
+                        });
+                        $('#drawText').bind('click', function () {
+                              tool.drawType = 'drawText';
+                        });
+                        // 橡皮擦
+                        $('#eraser').bind('click', function () {
+                              // 類型 = 畫線
+                              tool.drawType = 'freestyle';
+                              // 外框 為 白色
+                              $("#color2").val("#ffffff");
+                              $("#color2").change();
+                              tool.strokeStyle = "#ffffff";
+                        });
+                        $('#clearBtn').bind('click', function(){
+                                // 清除畫布
+                                var c = document.getElementById("canvas");
+                                var cxt = c.getContext("2d");
+                                cxt.clearRect(0, 0, c.width, c.height);
+                        });
+                        
+                        // 擊結設定
+                        $('#linewidth').bind('change', function () {
+                              tool.lineWidth = $(this).val();
+                        });
+                        $('#fontface').bind('change', function () {
+                              tool.fontFace = $(this).val();
+                        });
+                        $('#fontsize').bind('change', function () {
+                              tool.fontSize = $(this).val();
+                        });
+                        $('#fontweight').bind('change', function () {
+                              tool.fontWeight = $(this).val();
+                        });
+                        $('#fontstyle').bind('change', function () {
+                              tool.fontStyle = $(this).val();
+                        });
+                  });
+            </script>
+
+            <div class="panel">
+                  <div class="tools" id="tools">
+                        <div>
+                              <label for="drawtypestatus">當前作畫類型: </label><span id="drawtypestatus"></span><br />
+                              <hr size="1" width="100%" />
+                        </div>
+                        <div>
+                              <label for="color2">外框: </label>
+                              <div style="display: inline-block"><input type="text" id="color2" name="color2" value="#000000" /></div>
+                              <br />
+                              <label for="color1">填滿: </label>
+                              <div style="display: inline-block"><input type="text" id="color1" name="color1" value="#000000" /></div>
+                              <br />
+                              <label for="linewidth">線條寬度: </label
+                              ><select id="linewidth">
+                                    <option value="1">1</option>
+                                    <option value="3">3</option>
+                                    <option value="5">5</option>
+                                    <option value="7">7</option>
+                                    <option value="9">9</option>
+                              </select>
+                              <hr size="1" width="100%" />
+                        </div>
+                        <div>
+                              <button id="freestyle">畫筆</button><br>
+                              <button id="strokeRect">外框矩型</button><br>
+                              <button id="fillRect">填滿矩型</button><br>
+                              <button id="strokeCircle">外框圓型</button><br>
+                              <button id="fillCircle">填滿圓型</button><br>
+                              <button id="strokeEclipse">外框憜圓</button><br>
+                              <button id="fillEclipse">填滿憜型</button><br>
+                              <button id="drawText">輸入文字</button><br>
+                              <button id="eraser">橡皮擦</button><br>
+                              <button id="clearBtn">清除畫布</button>
+                              <hr size="1" width="100%" />
+                        </div>
+                        <div>
+                              <label for="fontface">字型: </label
+                              ><select id="fontface">
+                                    <option value="sans-serif">sans-serif</option>
+                                    <option value="serif">serif</option>
+                                    <option value="cursive">cursive</option>
+                                    <option value="fantasy">fantasy</option>
+                                    <option value="monospace">monospace</option>
+                              </select><br>
+                              <label>字型大小: </label
+                              ><select id="fontsize">
+                                    <option value="10px">10px</option>
+                                    <option value="12px">12px</option>
+                                    <option value="14px">14px</option>
+                                    <option value="16px">16px</option>
+                                    <option value="18px">18px</option>
+                                    <option value="20px">20px</option>
+                                    <option value="24px">24px</option>
+                              </select><br>
+                              <label>字體寬度: </label
+                              ><select id="fontweight">
+                                    <option value="400">預設</option>
+                                    <option value="700">粗體</option>
+                              </select><br>
+                              <label>字型風格: </label
+                              ><select id="fontstyle">
+                                    <option value="normal">正常</option>
+                                    <option value="italic">斜體</option>
+                              </select>
+                        </div>
+                  </div>
+                  <canvas id="canvas" width="1440" height="700"></canvas>
+            </div>
+            <input type="text" id="keyin" size="25" />
+      </body>
+</html>
