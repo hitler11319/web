@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>自動切換為英文輸入法</title>
+                <link rel="stylesheet" href="">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        </head>
+
+        <body>
+
+                <!--參考網圵： https://www.itread01.com/p/1340348.html-->
+                <!--註：以下用法 僅 一個只有IE與FireFox支援的特殊CSS屬性 (所以 Chrome 不行喔)-->
+                不顯示輸入法,即用鍵盤也不能切換輸入法： <input id="test1" name="test1" style="ime-mode:disabled"></input> <br>
+                自動切換成英文的輸入法,但還可以用鍵盤切換： <input id="test2" name="test2" style="ime-mode:active"></input> <br>
+                自動切換成中文輸入法,但還可以用鍵盤切換： <input id="test3" name="test3" style="ime-mode:inactive"></input> <br>
+                根據當前的輸入法來確定的,如果當前是英文的,那就顯示英文,是中文的那就顯示中文： <input id="test4" name="test4" style="ime-mode:auto"></input> <br>
+
+                <!--下一種方法：把 type 改成 url 會自動切換成英文 (但像我的 嘸蝦米好像不會)-->
+                <input type="url" placeholder="這個用新注音會自動切成英文(但還是可輸入中文)"> <br>
+
+                <!--參考網圵： https://segmentfault.com/q/1010000006009273-->
+                <input type="text" class="no-ime">
+
+                <script>
+                        // focus 時，把 type 改為 url (所以會切為英文輸入法)
+                        $(".no-ime").focusin(function(){
+                            $(this).attr("type","url");
+                        });
+
+                        // 離開時要記得 切type 回 text
+                        $(".no-ime").focusout(function(){
+                            $(this).attr("type","text");
+                        });
+
+                        // 因為他還是可以切回中文輸入，所以要擋他
+                        $(".no-ime").on("input", function(){
+                            var that = $(this);
+                            var val = that.val();
+                            var noChiValue = val.replace(/[\u4E00-\u9FA5]/g, "");  // 把是中文的字都去掉
+                            that.val(noChiValue);
+                        });
+                </script>
+
+        </body>
+</html>
