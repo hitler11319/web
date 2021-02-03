@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>產生 BarCode</title>
+                <link rel="stylesheet" href="">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+                <script type="text/javascript" src="jquery-barcode.js"></script> 
+        </head>
+
+        <body>
+                <!--
+                        參考網圵： https://dotblogs.com.tw/daniel/2018/01/07/204301
+                -->
+
+                  <h1 style="margin-top:150px;">Barcode產生器</h1> 
+                        請出入BarCode: <input type="text" id="barcodeValue" value="EADB-1213130-DASDA"> <br>
+                        請選擇類型   ： <select id="barcodeType">
+                                                <option value="code11">code11</option>
+                                                <option value="code39">code39</option>
+                                                <option value="code93">code93</option>
+                                                <option value="code128">code128</option>
+                                                <option value="ean8">ean8</option>
+                                                <option value="ean13">ean13</option>
+                                                <option value="std25">std25</option>
+                                                <option value="int25">int25</option>
+                                                <option value="msi">msi</option>
+                                                <option value="datamatrix">datamatrix</option>
+                                        </select>
+
+                        <input type="button" onclick="generateBarcode();" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;產生BarCode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+
+                  <div id="barcodeTarget" class="barcodeTarget"></div>     
+                  
+                  <script type="text/javascript">
+                        // 產生 barcode
+                        function generateBarcode(){
+                                  //取得Input值
+                          var value = $("#barcodeValue").val();
+                          var btype = $("#barcodeType").val();
+                                  
+                          $("#barcodeTarget").html("").show().barcode(value, btype);
+                                //barcode方法 第一個參數:BarCode值,第二個參數:BarCode類別 
+                        }
+                         
+                        $(function(){
+                                $("#barcodeType").val("code128");
+                                generateBarcode();
+                        });
+                    
+                  </script>
+
+        </body>
+</html>
